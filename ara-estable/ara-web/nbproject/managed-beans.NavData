@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="user/ListUser.jsp" x="1900" y="450" zoom="true"/>
+        <Node id="admin/profile/listProfile.jsp" x="1400" y="300" zoom="true"/>
+        <Node id="species/newTaxonDescriptionRecord.jsp" x="650" y="300" zoom="true"/>
+        <Node id="user/EditUser.jsp" x="1400" y="150" zoom="true"/>
+        <Node id="admin/profile/newProfile.jsp" x="900" y="750" zoom="true"/>
+        <Node id="audience/AudienceList.jsp" x="150" y="1650" zoom="true"/>
+        <Node id="specimen/EditSpecimen.jsp" x="900" y="1200" zoom="true"/>
+        <Node id="stage/EditStages.jsp" x="2150" y="600" zoom="true"/>
+        <Node id="gathering/editGathering.jsp" x="150" y="300" zoom="true"/>
+        <Node id="identification/searchByTaxon.jsp" x="650" y="1350" zoom="true"/>
+        <Node id="identification/searchByGathering.jsp" x="150" y="900" zoom="true"/>
+        <Node id="gathering/newGatheringDetail.jsp" x="400" y="600" zoom="true"/>
+        <Node id="about.jsp" x="400" y="900" zoom="true"/>
+        <Node id="audience/EditAudience.jsp" x="1650" y="300" zoom="true"/>
+        <Node id="admin/institution/editInstitution.jsp" x="1400" y="600" zoom="true"/>
+        <Node id="site/editSite.jsp" x="400" y="1200" zoom="true"/>
+        <Node id="TaxonomyEdit.jsp" x="400" y="150" zoom="true"/>
+        <Node id="nomenclaturalgroup/newNomenclaturalGroup.jsp" x="900" y="900" zoom="true"/>
+        <Node id="identification/searchByGatheringDetail.jsp" x="900" y="450" zoom="true"/>
+        <Node id="admin/institution/newInstitution.jsp" x="1400" y="750" zoom="true"/>
+        <Node id="gathering/gatheringList.jsp" x="2150" y="450" zoom="true"/>
+        <Node id="audience/NewAudience.jsp" x="650" y="600" zoom="true"/>
+        <Node id="specimen/SpecimenList.jsp" x="1650" y="150" zoom="true"/>
+        <Node id="species/speciesNew.jsp" x="1150" y="600" zoom="true"/>
+        <Node id="gathering/specimenGeneration.jsp" x="150" y="1500" zoom="true"/>
+        <Node id="gathering/specimenGenerationV2.jsp" x="2650" y="300" zoom="true"/>
+        <Node id="species/editTaxonDescriptionRecord.jsp" x="1650" y="750" zoom="true"/>
+        <Node id="specimen/SpecimenReport.jsp" x="400" y="1050" zoom="true"/>
+        <Node id="site/listSite.jsp" x="1150" y="150" zoom="true"/>
+        <Node id="specimen/SearchSpecimen.jsp" x="150" y="600" zoom="true"/>
+        <Node id="admin/person/editPerson.jsp" x="150" y="750" zoom="true"/>
+        <Node id="species/Preview.jsp" x="150" y="150" zoom="true"/>
+        <Node id="species/speciesNew_v2.jsp" x="2400" y="300" zoom="true"/>
+        <Node id="admin/person/listPerson.jsp" x="2650" y="150" zoom="true"/>
+        <Node id="group/GroupList.jsp" x="1900" y="750" zoom="true"/>
+        <Node id="group/NewGroup.jsp" x="650" y="750" zoom="true"/>
+        <Node id="references/NewReference.jsp" x="2400" y="450" zoom="true"/>
+        <Node id="references/EditReference.jsp" x="400" y="300" zoom="true"/>
+        <Node id="moduleList.jsp" x="400" y="450" zoom="true"/>
+        <Node id="specimen/PreviewSpecimen.jsp" x="1650" y="450" zoom="true"/>
+        <Node id="gathering/editGatheringDetail.jsp" x="2900" y="150" zoom="true"/>
+        <Node id="admin/person/newPerson.jsp" x="650" y="1050" zoom="true"/>
+        <Node id="admin/institution/listInstitution.jsp" x="1650" y="900" zoom="true"/>
+        <Node id="gathering/generatedSpecimenList.jsp" x="650" y="150" zoom="true"/>
+        <Node id="identification/listIdentification.jsp" x="2150" y="150" zoom="true"/>
+        <Node id="identification/reIdentify.jsp" x="1400" y="900" zoom="true"/>
+        <Node id="admin/institution/searchInstitution.jsp" x="1150" y="900" zoom="true"/>
+        <Node id="gathering/GatheringNew.jsp" x="400" y="1350" zoom="true"/>
+        <Node id="admin/collection/adminCollections.jsp" x="150" y="1200" zoom="true"/>
+        <Node id="stage/NewStage.jsp" x="1900" y="600" zoom="true"/>
+        <Node id="admin/selectionlist/listSelectionList.jsp" x="1150" y="300" zoom="true"/>
+        <Node id="species/speciesEdit.jsp" x="650" y="900" zoom="true"/>
+        <Node id="species/searchSpecies.jsp" x="1400" y="450" zoom="true"/>
+        <Node id="references/SearchReference.jsp" x="1900" y="150" zoom="true"/>
+        <Node id="identification/editIdentification.jsp" x="1900" y="300" zoom="true"/>
+        <Node id="welcomeV2.jsp" x="150" y="1050" zoom="true"/>
+        <Node id="user/NewUser.jsp" x="900" y="150" zoom="true"/>
+        <Node id="admin/profile/searchProfile.jsp" x="2150" y="300" zoom="true"/>
+        <Node id="user/ChangePassword.jsp" x="150" y="450" zoom="true"/>
+        <Node id="nomenclaturalgroup/editNomenclaturalGroup.jsp" x="1400" y="1050" zoom="true"/>
+        <Node id="nomenclaturalgroup/listNomenclaturalGroup.jsp" x="1150" y="1050" zoom="true"/>
+        <Node id="admin/profile/editProfile.jsp" x="400" y="750" zoom="true"/>
+        <Node id="collectionSelect.jsp" x="650" y="450" zoom="true"/>
+        <Node id="species/speciesList.jsp" x="900" y="300" zoom="true"/>
+        <Node id="references/ReferenceList.jsp" x="1150" y="450" zoom="true"/>
+        <Node id="login.jsp" x="1150" y="750" zoom="true"/>
+        <Node id="group/EditGroup.jsp" x="1650" y="600" zoom="true"/>
+        <Node id="admin/person/searchPerson.jsp" x="150" y="1350" zoom="true"/>
+        <Node id="site/newSite.jsp" x="400" y="1500" zoom="true"/>
+        <Node id="species/popUpMessageWindow.jsp" x="900" y="600" zoom="true"/>
+        <Node id="stage/ListStages.jsp" x="900" y="1050" zoom="true"/>
+        <Node id="welcome.jsp" x="2400" y="150" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

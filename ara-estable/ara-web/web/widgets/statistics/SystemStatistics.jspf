@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Document   : systemStatistics
+	Created on : Mar 25, 2009, 10:08:18 AM
+	Author     : jgutierrez
+-->
+<div xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:webuijsf="http://www.sun.com/webui/webuijsf">
+    <table cellspacing="20px">
+        <f:subview id="SystemStatistics">
+            <thead>
+				<h1><webuijsf:staticText id="fragmentTitle" text="#{resources.systemStatistics}" /> </h1>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <webuijsf:table augmentTitle="false" id="t_species" title="#{resources.speciesByCollection}" width="300">
+                            <webuijsf:tableRowGroup id="speciesTable" rendered="true" rows="10"
+                                sourceData="#{widgets$statistics$SystemStatisticsSessionBean.speciesDataProvider}" sourceVar="currentRow">
+                                <webuijsf:tableColumn id="c_name_species" rendered="true" width="200">
+                                    <webuijsf:staticText id="tnspecime1" text="#{currentRow.value['name']}"/>
+                                    <br/>
+                                </webuijsf:tableColumn>
+                                <webuijsf:tableColumn id="c_value_species" rendered="true">
+                                    <webuijsf:staticText id="tnspecie2" text="#{currentRow.value['value']}"/>
+                                    <br/>
+                                </webuijsf:tableColumn>
+                            </webuijsf:tableRowGroup>
+                        </webuijsf:table>
+                    </td>
+                    <td>
+                        <webuijsf:table augmentTitle="false" id="t_specimens" title="#{resources.specimenByCollection}" width="300">
+                            <webuijsf:tableRowGroup id="specimenTable" rendered="true" rows="10"
+                                sourceData="#{widgets$statistics$SystemStatisticsSessionBean.specimenDataProvider}" sourceVar="currentRow">
+                                <webuijsf:tableColumn id="t_name_specimens" rendered="true" width="200">
+									<webuijsf:staticText id="tnspecimens1" text="#{currentRow.value['name']}"/>
+                                    <br/>
+                                </webuijsf:tableColumn>
+                                <webuijsf:tableColumn id="t_value_specimens" rendered="true">
+                                    <webuijsf:staticText id="tnspecimens2" text="#{currentRow.value['value']}"/>
+                                    <br/>
+                                </webuijsf:tableColumn>
+                            </webuijsf:tableRowGroup>
+                        </webuijsf:table>
+                    </td>
+                </tr>
+            </tbody>
+        </f:subview>
+    </table>
+</div>

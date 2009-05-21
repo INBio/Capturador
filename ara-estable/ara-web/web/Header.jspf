@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<div style="-rave-layout: grid" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:webuijsf="http://www.sun.com/webui/webuijsf">
+	<f:subview id="Header">
+		<webuijsf:form id="headerForm">
+			<div id="banner-rep">
+				<div id="banner">
+					<div id="title">
+						<h1>
+							<webuijsf:staticText id="headerApplicationName" escape="false" text="#{resources.applicationName}" />
+						</h1>
+					</div>
+					<div id="lang">
+						<webuijsf:hyperlink actionExpression="#{Header.spanishLink1_action}" id="spanishLink1" immediate="true" text="es"/>
+						<webuijsf:hyperlink actionExpression="#{Header.englishLink1_action}" id="englishLink1" immediate="true" text="en"/>
+						<webuijsf:hyperlink actionExpression="#{Header.frenchLink1_action}" id="frenchLink1" immediate="true" text="fr"/>
+					</div>
+					<div id="actions">
+						<webuijsf:hyperlink actionExpression="back" id="linkAction1" immediate="true" text="#{resources.btnBack}"/>
+						<webuijsf:hyperlink actionExpression="exit" id="linkAction2" immediate="true" text="#{resources.btnExit}"/>
+					</div>
+					<div id="wrap">
+						<ul id="navbar">
+							<li class="taxonomy">
+								<webuijsf:hyperlink id="menuSubsystemTaxonomy" text="#{resources.menuSubsystemTaxonomy}" visible="true"/>
+								<ul>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleNomenclaturalGroups_action}" id="menuModuleNomenclaturalGroups"
+							  text="#{resources.menuModuleNomenclaturalGroups}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleSpecies_action}" id="menuModuleSpecies" text="#{resources.menuModuleSpecies}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleTaxa_action}" id="menuModuleTaxa" text="#{resources.menuModuleTaxa}" visible="false"/>
+									</li>
+								</ul>
+							</li>
+							<li class="inventory">
+								<webuijsf:hyperlink id="menuSubsystemInventory"  text="#{resources.menuSubsystemInventory}" visible="true"/>
+								<ul>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleGatheringsObservations_action}" id="menuModuleGatheringsObservations"
+							  text="#{resources.menuModuleGatheringsObservations}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleIdentifications_action}" id="menuModuleIdentifications"
+							  text="#{resources.menuModuleIdentifications}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleSpecimens_action}" id="menuModuleSpecimens" text="#{resources.menuModuleSpecimens}" visible="false"/>
+									</li>
+								</ul>
+							</li>
+							<li class="geographical">
+								<webuijsf:hyperlink id="menuSubsystemGeographicalInformation" text="#{resources.menuSubsystemGeographicalInformation}" visible="true"/>
+								<ul>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleLocations_action}" id="menuModuleLocations" text="#{resources.menuModuleLocations}" visible="false"/>
+									</li>
+								</ul>
+							</li>
+							<li class="administration">
+								<webuijsf:hyperlink id="menuSubsystemAdministration" text="#{resources.menuSubsystemAdministration}" visible="true"/>
+								<ul>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleAdminCollections_action}" id="menuModuleAdminCollections"
+							  text="#{resources.menuModuleAdminCollections}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleAudiences_action}" id="menuModuleAudiences" text="#{resources.menuModuleAudiences}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleChangePassword_action}" id="menuModuleChangePassword"
+							  text="#{resources.menuModuleChangePassword}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleInstitutions_action}" id="menuModuleInstitutions"
+							  text="#{resources.menuModuleInstitutions}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModulePeople_action}" id="menuModulePeople" text="#{resources.menuModulePeople}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleProfiles_action}" id="menuModuleProfiles" text="#{resources.menuModuleProfiles}" visible="false"/>
+									</li>
+									<!--
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleReferences_action}" id="menuModuleReferences" text="#{resources.menuModuleReferences}" visible="false"/>
+									</li>
+									-->
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleSelectionLists_action}" id="menuModuleSelectionLists"
+							  text="#{resources.menuModuleSelectionLists}" visible="true"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleStages_action}" id="menuModuleStages" text="#{resources.menuModuleStages}" visible="false"/>
+									</li>
+								</ul>
+							</li>
+							<li class="security">
+								<webuijsf:hyperlink id="menuSubsystemSecurity" text="#{resources.menuSubsystemSecurity}" visible="true"/>
+								<ul>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleGroups_action}" id="menuModuleGroups" text="#{resources.menuModuleGroups}" visible="false"/>
+									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleUsers_action}" id="menuModuleUsers" text="#{resources.menuModuleUsers}" visible="false"/>
+									</li>
+								</ul>
+							</li>
+							<li class="reports">
+								<webuijsf:hyperlink id="menuSubsystemReports" text="#{resources.menuSubsystemReports}" visible="true"/>
+								<ul>
+									<li>
+										<!-- -->
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleReportsSpecimen_action}" id="menuModuleReportsSpecimen"
+							  text="#{resources.menuModuleReportsSpecimen}" visible="false"/>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</webuijsf:form>
+	</f:subview>
+</div>

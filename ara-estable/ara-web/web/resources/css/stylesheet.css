@@ -1,0 +1,195 @@
+/* Style rules to make data tables look better */
+
+.list-header {
+  background-color: #eeeeee;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.list-paging-header {
+  background-color: white;
+}
+
+.list-paging-footer {
+  background-color: white;
+}
+
+.list-row-even {
+}
+
+.list-row-odd {
+  background-color: #eeeeee;
+}
+
+/* Style rules for message severity levels */
+
+.infoMessage {
+  color: green;
+}
+
+.warnMessage {
+  color: orange;
+  font-weight: bold;
+}
+
+.errorMessage {
+  color: red;
+  font-weight: bold;
+}
+
+.fatalMessage {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+}
+
+table.Tbl {
+   background-color: #ffcc66;
+}
+caption.TblTtlTxt {
+   background-color: #990000;
+   background-image: none!important;
+   color: #ffffb4;
+   font-style: oblique;
+   font-weight: bolder
+}
+
+.TblHdrTxt {
+   background-image: none!important;
+}
+
+table.TblLt .TblHdrTxt {
+   background-image: none!important;
+}
+
+table.Tbl .TblHdrTxt {
+   background-image: none!important;
+   font-weight: lighter
+}
+
+table.Tbl td, table.Tbl th {
+   border-color: #ffcc66;
+}
+
+table.Tbl th.TblColHdr {
+   background-color: #ffcc66;
+   border-color: #f2b741
+}
+
+
+table.Tbl a.TblHdrLnk:link, table.Tbl a.TblHdrLnk:visited {
+   background-color: #ffcc66;
+   background-image: none!important;
+   color: #663389;
+   font-weight: bold;
+}
+
+table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
+   background-color: #ffcc66;
+   background-image: none!important;
+   border-color: #f2b741;
+}
+.TblTtlTxt_sun4 {
+   background-color: #006600;
+   color: #ffffff;
+   font-style: normal;
+   font-weight: bold
+}
+/*add by CG*/
+html {height:100%}
+body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;}
+
+#banner {background: url(../images/banner2.jpg) no-repeat 0 0; height: 123px;}
+#banner-rep { background: url(../images/banner-rep.png) repeat-x 960px 0; height: 123px; }
+
+#title h1 { float: left; position:absolute; font-family:Arial, Helvetica, sans-serif; font-size: 16px; margin:0; width:220px; padding: 35px 0 0 135px; line-height:17px;color:#336600;}
+
+#lang {width: 90px; height:20px; padding: 65px 0 0 0; float:right; z-index:999}
+#lang span {float:left; background: url(../images/boton1.png) no-repeat top center; display:block; width:30px; text-align:center;}
+#lang span a { color:#fff; margin:2px; line-height: 20px;}
+
+#actions {width: auto; padding: 89px 0 0 20px; float:left; position:absolute;z-index: 9999}
+#actions span { float:left; padding:0 3px;}
+#actions span a { display:block; padding: 3px 8px; color:#fff; background-color: #006600; -moz-border-radius: 3px; -webkit-border-radius: 3px;}
+#actions span a:hover {background-color:#d22425;}
+
+#contenido {background: url(../images/bk-conten.png)  repeat-x  top center; margin: 0; height:100px;}
+
+#outer { width: 100%; position:absolute;}
+#footer-cont { text-align:center; background:#fff;  border-top: 1px solid #eee; height:30px;}
+#footer-cont span {text-align:center; font-weight: bold; line-height:25px;}
+
+.title {font-family:Arial, Helvetica, sans-serif; font-size:18px; color:red; font-weight:bold;}
+
+/* These styles create the dropdown menus. */
+/* Tomado de: http://www.cssnewbie.com/easy-css-dropdown-menus */
+/* 19 marzo 2009 */
+#wrap {
+    /*font-size: 1.3em;*/
+    width: auto;
+    padding: 89px 0 0 175px;
+    margin: 0 auto;
+    /*background-color: #fff;*/
+    position: absolute;
+    z-index:99;
+    float:left;}
+
+#navbar {
+    margin: 0;
+    padding: 0;
+    height: 1em; }
+#navbar li {
+    list-style: none;
+    float: left;
+    padding: 0;
+    margin: 0 3px;}
+#navbar li ul li {margin: 0}
+#navbar li ul li a {padding:3px 6px;}
+#navbar li a {
+    display: block;
+    padding: 3px 8px 3px 22px;
+    background-color: #3b79a4;
+    color: #fff;
+    text-decoration: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;}
+/*mouse sobre el menu-> muestra color rojo*/
+#navbar li a:hover {
+    background-color: #cc0000;
+}
+#navbar li ul {
+    display: none;
+    width: 13em; /* Width to help Opera out */
+    margin: 0;
+    padding: 0;
+    }
+#navbar li:hover ul, #navbar li.hover ul {
+    display: block;
+    position: absolute;
+    border-top: 0px solid #d2e87e;
+    border-right: 0px solid #d2e87e;
+    border-bottom: 5px solid #d2e87e;
+    border-left: 0px solid #d2e87e;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    }
+#navbar li:hover li, #navbar li.hover li {
+    float: none;
+    }
+#navbar li:hover li a, #navbar li.hover li a {
+    background-color: #d2e87e;
+    color: #000;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;}
+ #navbar li li a { background-image: url(../images/none)}
+#navbar li li a:hover {
+    background-color: #a6c62d; color:#fff; }
+/*menu icons*/
+.taxonomy a {background: url(../images/taxonomia.png)}
+.inventory a {background: url(../images/inventario.png)}
+.administration a {background: url(../images/administracion.png)}
+.geographical a {background: url(../images/info-geo.png)}
+.security a { background: url(../images/seguridad.png)}
+.reports a { background: url(../images/report.png)}
+.taxonomy a, .inventory a, .administration a, .geographical a, .security a, .reports a
+{ background-position: 3px 3px; background-repeat:no-repeat;}
