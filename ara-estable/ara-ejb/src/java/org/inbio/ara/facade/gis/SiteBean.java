@@ -28,13 +28,17 @@ package org.inbio.ara.facade.gis;
 
 import java.math.BigInteger;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
+import org.inbio.ara.manager.SiteManagerRemote;
 import org.inbio.ara.persistence.gis.FeatureType;
+import org.inbio.ara.persistence.gis.GeoreferencedSite;
+import org.inbio.ara.persistence.gis.GeoreferencedSitePK;
 import org.inbio.ara.persistence.gis.Projection;
 import org.inbio.ara.persistence.gis.Site;
 import org.inbio.ara.persistence.gis.SiteCalculationMethod;
@@ -51,6 +55,12 @@ public class SiteBean implements SiteRemote, SiteLocal {
     @PersistenceContext
     private EntityManager em;
     private String message;
+
+    /**
+     * Managers
+     */
+    @EJB
+    private SiteManagerRemote siteManager;
     
     /** Creates a new instance of SiteBean */
     public SiteBean() {
@@ -81,16 +91,23 @@ public class SiteBean implements SiteRemote, SiteLocal {
     public boolean create(Site site, List<SiteCoordinate> coordinateList) {
         return persist(site, coordinateList);
     }
+
+    public boolean create(Site site, List<SiteCoordinate> coordinateList,List<GeoreferencedSitePK> georeferencedSitesPKs){
+        return persist(site, coordinateList,georeferencedSitesPKs);
+    }
     
     public boolean delete(Long siteId) {
         if (this.canDeleteSite(siteId)) {
             try {
                 Site site = em.find(Site.class,siteId);
                 if (site != null) {
+
+                    //borra lo que haya en georeferencedSite
+                    siteManager.deleteForSite(site.getId());
                     em.remove(site);
                     return true;
                 } else {
-                    this.setMessage("Id de sitio inválido");
+                    this.setMessage("Id de sitio invï¿½lido");
                     return false;
                 }
             } catch (IllegalStateException ex1) {
@@ -101,7 +118,7 @@ public class SiteBean implements SiteRemote, SiteLocal {
                 return false;
             }
         } else {
-            this.setMessage("El sitio no puede ser borrado pues está siendo referenciado en " + this.getGatheringObservationCountBySite(siteId) + " recolecciones/observaciones.");
+            this.setMessage("El sitio no puede ser borrado pues estï¿½ siendo referenciado en " + this.getGatheringObservationCountBySite(siteId) + " recolecciones/observaciones.");
             return false;
         }
     }
@@ -118,7 +135,7 @@ public class SiteBean implements SiteRemote, SiteLocal {
                     site.setSiteCalculationMethod(em.find(SiteCalculationMethod.class,site.getSiteCalculationMethod().getId()));
                     site.setOriginalProjection(em.find(Projection.class,site.getOriginalProjection().getId()));
                     em.persist(site);
-                    
+
                     // Crear las coordenadas
                     if (coordinateList != null) {
                         if (coordinateList.size() > 0) {
@@ -131,6 +148,65 @@ public class SiteBean implements SiteRemote, SiteLocal {
                             }
                         }
                     }
+                    persisted = true;
+                } catch(EntityExistsException ex0) {
+                    this.setMessage(ex0.getMessage());
+                    return false;
+                } catch(IllegalStateException ex1) {
+                    this.setMessage(ex1.getMessage());
+                    return false;
+                } catch (IllegalArgumentException ex2) {
+                    this.setMessage(ex2.getMessage());
+                    return false;
+                } catch (TransactionRequiredException ex3) {
+                    this.setMessage(ex3.getMessage());
+                    return false;
+                }
+            } else {
+                setMessage("La recoleccion ya existe en el sistema.");
+                persisted = false;
+            }
+        } else {
+            this.setMessage(this.getMessage() + " El registro no fue creado.");
+        }
+        return persisted;
+    }
+
+        private boolean persist(Site site, List<SiteCoordinate> coordinateList,List<GeoreferencedSitePK> georeferencedSitesPKs) {
+        boolean persisted = false;
+        if (!isSiteNull(site)){
+            if (this.isSiteUnique(site)) {
+                try {
+                    // Incorporar las entidades auxiliares al contexto de la transaccion
+                    // Primero las obligatorias
+                    site.setBaseProjection(em.find(Projection.class,site.getBaseProjection().getId()));
+                    site.setFeatureType(em.find(FeatureType.class,site.getFeatureType().getId()));
+                    site.setSiteCalculationMethod(em.find(SiteCalculationMethod.class,site.getSiteCalculationMethod().getId()));
+                    site.setOriginalProjection(em.find(Projection.class,site.getOriginalProjection().getId()));
+                    em.persist(site);
+
+                    // Crear las coordenadas
+                    if (coordinateList != null) {
+                        if (coordinateList.size() > 0) {
+                            for (int i=0; i<coordinateList.size(); i++) {
+                                coordinateList.get(i).setSite(site);
+                                coordinateList.get(i).setSequence(i+1);
+                                coordinateList.get(i).setCreatedBy(site.getCreatedBy());
+                                coordinateList.get(i).setLastModificationBy(site.getLastModificationBy());
+                                em.persist(coordinateList.get(i));
+                            }
+                        }
+                    }
+                    System.out.println("en el SiteBean.java> siteId="+site.getId());
+                    if(georeferencedSitesPKs!=null){
+                        for(GeoreferencedSitePK gsPK : georeferencedSitesPKs){
+                            siteManager.saveOrUpdateGeoreferenceForSite(site.getId(), gsPK.getGeographicLayerId(), gsPK.getGeographicSiteId());
+                        //saveOrUpdateGeoreferenceForSite()
+                        }
+                    }
+    
+
+
                     persisted = true;
                 } catch(EntityExistsException ex0) {
                     this.setMessage(ex0.getMessage());
@@ -210,17 +286,17 @@ public class SiteBean implements SiteRemote, SiteLocal {
     
     private boolean isSiteNull(Site site) {
         if (site.getDescription() == null) {
-            this.setMessage("Falta la descripción");
+            this.setMessage("Falta la descripciï¿½n");
             return true;
         }
         
         if (site.getDescription().equals("")) {
-            this.setMessage("Falta la descripción");
+            this.setMessage("Falta la descripciï¿½n");
             return true;
         }
         
         if (site.getBaseProjection() == null) {
-            this.setMessage("Falta la proyección");
+            this.setMessage("Falta la proyecciï¿½n");
             return true;
         }
         
@@ -230,7 +306,7 @@ public class SiteBean implements SiteRemote, SiteLocal {
         }
         
         if (site.getOriginalProjection()==null) {
-            this.setMessage("Falta la proyección original");
+            this.setMessage("Falta la proyecciï¿½n original");
             return true;
         }        
         return false;
@@ -238,7 +314,7 @@ public class SiteBean implements SiteRemote, SiteLocal {
     
     private boolean isSiteUnique(Site site) {
         if (site == null) {
-            this.setMessage("Entidad Sitio no válida (nula).");
+            this.setMessage("Entidad Sitio no vï¿½lida (nula).");
             return false;
         } else {
             if (site.getId() == null) {

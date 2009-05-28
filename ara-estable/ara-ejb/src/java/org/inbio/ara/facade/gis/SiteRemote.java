@@ -20,6 +20,7 @@ package org.inbio.ara.facade.gis;
 
 import java.util.List;
 import javax.ejb.Remote;
+import org.inbio.ara.persistence.gis.GeoreferencedSitePK;
 import org.inbio.ara.persistence.gis.Site;
 import org.inbio.ara.persistence.gis.SiteCoordinate;
 
@@ -34,6 +35,8 @@ public interface SiteRemote {
     java.lang.String getMessage();
 
     boolean create(Site site, List<SiteCoordinate> coordinateList);
+
+    public boolean create(Site site, List<SiteCoordinate> coordinateList,List<GeoreferencedSitePK> georeferencedSitesPKs);
 
     boolean delete(Long siteId);
 
