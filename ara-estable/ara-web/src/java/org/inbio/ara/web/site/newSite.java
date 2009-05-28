@@ -606,6 +606,11 @@ public class newSite extends AbstractPageBean {
      */
     public void prerender() {
         this.getsite$SiteSessionBean().populateList();
+
+        this.getsite$SiteSessionBean().setActualPoliticValuesToDropDowns(null);
+        this.getsite$SiteSessionBean().setCountriesDropDownData();
+        this.getsite$SiteSessionBean().setProvincesDropDownData();
+        System.out.println("prerender");
     }
     
     /**

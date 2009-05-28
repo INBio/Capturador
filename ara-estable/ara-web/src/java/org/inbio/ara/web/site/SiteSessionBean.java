@@ -26,14 +26,22 @@ package org.inbio.ara.web.site;
 import com.sun.data.provider.RowKey;
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import com.sun.webui.jsf.model.Option;
+import com.sun.webui.jsf.model.SingleSelectOptionsList;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.faces.FacesException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.inbio.ara.facade.gis.SiteRemote;
+import org.inbio.ara.manager.SiteManagerRemote;
+import org.inbio.ara.persistence.gis.GeoreferencedSitePK;
 import org.inbio.ara.persistence.gis.Site;
+import org.inbio.ara.persistence.util.Country;
+import org.inbio.ara.persistence.util.Province;
 import org.inbio.ara.web.ApplicationBean1;
 import org.inbio.ara.web.AraApplicationBean;
 import org.inbio.ara.web.SessionManager;
@@ -74,12 +82,211 @@ public class SiteSessionBean extends AbstractSessionBean {
     private void _init() throws Exception {
     }
     // </editor-fold>
-    
+
+
+    /**
+     * Managers
+     */
+    @EJB
+    private SiteManagerRemote siteManager;
+
+    /** Datos del DropDown de Paises**/
+    private SingleSelectOptionsList countriesDropDownData = new SingleSelectOptionsList();
+    /** Datos del DropDown de Provincias**/
+    private SingleSelectOptionsList provincesDropDownData = new SingleSelectOptionsList();
+    private Long selectedCountryId = null;
+    private Long selectedProvinceId = null;
+
+    private Long INVALID_VALUE_ID = new Long(-1);
+
+
     /**
      * <p>Construct a new session data bean instance.</p>
      */
     public SiteSessionBean() {
     }
+
+
+
+    /**
+     * Busca la provincia asignada en la base de datos para un sitio y se lo
+     * asigna a la propiedad province de esta clase.
+     *
+     * @param siteId
+     */
+    public void setActualPoliticValuesToDropDowns(Long siteId){
+
+
+        //el caso de los paises
+        if(getSelectedCountryId() == null){
+
+            if(siteId != null){
+
+                Country country = getSiteManager().getCountryForSite(siteId);
+                if(country!=null){
+                    System.out.println("Actual country: "+country.getName());
+                    setSelectedCountryId(country.getId());
+                } else
+                    setSelectedCountryId(INVALID_VALUE_ID);
+            } else
+                setSelectedCountryId(INVALID_VALUE_ID);
+
+        }
+
+        
+        //el caso de las provincias
+        if(selectedProvinceId == null ) {
+
+            if(siteId != null){
+
+                Province province = getSiteManager().getProvinceForSite(siteId);
+                if(province!=null){
+                    System.out.println("Actual province: "+province.getName());
+                    selectedProvinceId = province.getId();
+                } else
+                    selectedProvinceId = INVALID_VALUE_ID;
+            } else
+                selectedProvinceId = INVALID_VALUE_ID;
+        }
+    }
+
+
+
+    /*
+     *
+     */
+    public void onCountryChange(){
+        System.out.println("Aca hay un cambio registrado en el CountryDropDown");
+        
+        System.out.println("countryId="+getSelectedCountryId());
+        if (getSelectedCountryId().equals(INVALID_VALUE_ID)){
+            updateProvincesDropDownData(null);
+        } else{
+            updateProvincesDropDownData(getSelectedCountryId());
+        }
+
+    }
+
+
+    /**
+     * Salva los valores para division politica.
+     * 
+     * @param siteId
+     */
+    public void createOrUpdatePolicDivision(Long siteId){
+
+        if (!getSelectedProvinceId().equals(INVALID_VALUE_ID))
+            getSiteManager().saveOrUpdateGeoreferenceForSite(siteId, SiteManagerRemote.PROVINCE_LAYER ,selectedProvinceId);
+        else
+            getSiteManager().deleteGeoreferenceForSite(siteId, SiteManagerRemote.PROVINCE_LAYER);
+
+        if (!getSelectedCountryId().equals(INVALID_VALUE_ID))
+            getSiteManager().saveOrUpdateGeoreferenceForSite(siteId, SiteManagerRemote.COUNTRY_LAYER ,selectedCountryId);
+        else
+            getSiteManager().deleteGeoreferenceForSite(siteId, SiteManagerRemote.COUNTRY_LAYER);
+
+    }
+
+    /**
+     * Devuelve la lista de GeoreferencedSitePK con el siteId en null.
+     * @return
+     */
+    public List<GeoreferencedSitePK> getGeoreferencedSitePKListForCreate(){
+        List<GeoreferencedSitePK> gsPKs = new ArrayList<GeoreferencedSitePK>();
+
+        if (!getSelectedProvinceId().equals(INVALID_VALUE_ID))
+            gsPKs.add(new GeoreferencedSitePK(null,SiteManagerRemote.PROVINCE_LAYER ,selectedProvinceId));
+
+        if (!getSelectedCountryId().equals(INVALID_VALUE_ID))
+            gsPKs.add(new GeoreferencedSitePK(null,SiteManagerRemote.PROVINCE_LAYER ,selectedCountryId));
+
+        return gsPKs;
+    }
+
+    /**
+     * Carga todos los paises en el dropdown y si country no es nulo
+     * entonces pone como pais seleccionado el que este en la variable
+     * contry
+     */
+    public void setCountriesDropDownData(){
+
+        List<Country> countriesLists = getSiteManager().getAllCountries();
+
+        ArrayList<Option> allOptions = new ArrayList<Option>();
+        Option[] allOptionsInArray;
+        Option option;
+
+        allOptions.add(new Option(INVALID_VALUE_ID, ""));
+        for(Country c : countriesLists){
+            option = new Option(c.getId(), c.getName());
+            allOptions.add(option);
+        }
+
+        //sets the elements in the SingleSelectedOptionList Object
+        allOptionsInArray = new Option[allOptions.size()];
+
+
+        this.countriesDropDownData.setOptions(allOptions.toArray(allOptionsInArray));
+    }
+
+    /**
+     * Carga todas las provincias en el dropdown y si province no es nulo
+     * entonces pone como province seleccionado ese
+     */
+    public void setProvincesDropDownData(){
+        
+        List<Province> provincessLists;
+        if(selectedCountryId != null && !selectedCountryId.equals(INVALID_VALUE_ID))
+            provincessLists = getSiteManager().getAllProvincesForContry(getSelectedCountryId());
+        else
+            provincessLists = new ArrayList<Province>();
+
+        ArrayList<Option> allOptions = new ArrayList<Option>();
+        Option[] allOptionsInArray;
+        Option option;
+
+        allOptions.add(new Option(INVALID_VALUE_ID, ""));
+        for(Province p : provincessLists){
+            option = new Option(p.getId(), p.getName());
+            allOptions.add(option);
+        }
+
+        //sets the elements in the SingleSelectedOptionList Object
+        allOptionsInArray = new Option[allOptions.size()];
+        //ssol.setOptions(allOptions.toArray(allOptionsInArray));
+
+
+        this.provincesDropDownData.setOptions(allOptions.toArray(allOptionsInArray));
+    }
+
+    /**
+     * Actualiza los datos del dropdown
+     * 
+     * @param countryId
+     */
+    public void updateProvincesDropDownData(Long countryId){
+
+        List<Province> provincessLists = getSiteManager().getAllProvincesForContry(countryId);
+
+        ArrayList<Option> allOptions = new ArrayList<Option>();
+        Option[] allOptionsInArray;
+        Option option;
+
+        allOptions.add(new Option(INVALID_VALUE_ID, ""));
+        for(Province p : provincessLists){
+            option = new Option(p.getId(), p.getName());
+            allOptions.add(option);
+        }
+
+        //sets the elements in the SingleSelectedOptionList Object
+        allOptionsInArray = new Option[allOptions.size()];
+        //ssol.setOptions();
+
+        //ssol.setSelectedValue(new Long(-1));
+
+        this.provincesDropDownData.setOptions(allOptionsInArray);
+    }
+
     
     /**
      * <p>This method is called when this bean is initially added to
@@ -283,8 +490,8 @@ public class SiteSessionBean extends AbstractSessionBean {
         site.setSiteCalculationMethod(this.getutil$SelectionListBean().getSiteCalculationMethod(this.getSelectedSiteCalculationMethod()));
         site.setCreatedBy(this.getSessionManager().getUser().getUserName());
         site.setLastModificationBy(site.getCreatedBy());
-        if (this.lookupSiteBean().create(site, this.coordinateDataProvider.getList())) {
-            this.getutil$MessageBean().addSuccessMessage("Sitio creado con éxito");
+        
+        if (this.lookupSiteBean().create(site, this.coordinateDataProvider.getList(), getGeoreferencedSitePKListForCreate())) {
             return true;
         } else {
             this.getutil$MessageBean().addErrorMessage(this.lookupSiteBean().getMessage());
@@ -300,7 +507,7 @@ public class SiteSessionBean extends AbstractSessionBean {
         site.setCreatedBy(this.getSessionManager().getUser().getUserName());
         site.setLastModificationBy(site.getCreatedBy());
         if (this.lookupSiteBean().update(site, this.coordinateDataProvider.getList())) {
-            this.getutil$MessageBean().addSuccessMessage("Sitio modificado con éxito");
+            this.getutil$MessageBean().addSuccessMessage("Sitio modificado con ï¿½xito");
             return true;
         } else {
             this.getutil$MessageBean().addErrorMessage(this.lookupSiteBean().getMessage());
@@ -328,7 +535,7 @@ public class SiteSessionBean extends AbstractSessionBean {
         if (rowKey != null) {
             Site site = (Site)this.getSiteDataProvider().getObject(rowKey);
             if (this.lookupSiteBean().delete(site.getId())) {
-                this.getutil$MessageBean().addSuccessMessage("Registro borrado con éxito");
+                this.getutil$MessageBean().addSuccessMessage("Registro borrado con ï¿½xito");
             } else {
                 this.getutil$MessageBean().addSuccessMessage("Error al borrar el registro: " + lookupSiteBean().getMessage());
             }                    
@@ -366,4 +573,77 @@ public class SiteSessionBean extends AbstractSessionBean {
         coordinateDataProvider = new CoordinateDataProvider();
         site = null;
     }
+
+    /**
+     * @return the countriesDropDownData
+     */
+    public SingleSelectOptionsList getCountriesDropDownData() {
+        return countriesDropDownData;
+    }
+
+    /**
+     * @param countriesDropDownData the countriesDropDownData to set
+     */
+    public void setCountriesDropDownData(SingleSelectOptionsList countriesDropDownData) {
+        this.countriesDropDownData = countriesDropDownData;
+    }
+
+
+    /**
+     * @return the provincesDropDownData
+     */
+    public SingleSelectOptionsList getProvincesDropDownData() {
+        return provincesDropDownData;
+    }
+
+    /**
+     * @param provincesDropDownData the provincesDropDownData to set
+     */
+    public void setProvincesDropDownData(SingleSelectOptionsList provincesDropDownData) {
+        this.provincesDropDownData = provincesDropDownData;
+    }
+
+
+    /**
+     * @return the siteManager
+     */
+    public SiteManagerRemote getSiteManager() {
+        return siteManager;
+    }
+
+    /**
+     * @param siteManager the siteManager to set
+     */
+    public void setSiteManager(SiteManagerRemote siteManager) {
+        this.siteManager = siteManager;
+    }
+
+    /**
+     * @return the selectedCountryId
+     */
+    public Long getSelectedCountryId() {
+        return selectedCountryId;
+    }
+
+    /**
+     * @param selectedCountryId the selectedCountryId to set
+     */
+    public void setSelectedCountryId(Long selectedCountryId) {
+        this.selectedCountryId = selectedCountryId;
+    }
+
+    /**
+     * @return the selectedProvinceId
+     */
+    public Long getSelectedProvinceId() {
+        return selectedProvinceId;
+    }
+
+    /**
+     * @param selectedProvinceId the selectedProvinceId to set
+     */
+    public void setSelectedProvinceId(Long selectedProvinceId) {
+        this.selectedProvinceId = selectedProvinceId;
+    }
+
 }

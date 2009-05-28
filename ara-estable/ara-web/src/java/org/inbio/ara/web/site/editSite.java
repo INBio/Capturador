@@ -147,15 +147,6 @@ public class editSite extends AbstractPageBean {
         this.dd_siteCalculationMethod = dd;
     }
 
-    private TabSet tabSet1 = new TabSet();
-
-    public TabSet getTabSet1() {
-        return tabSet1;
-    }
-
-    public void setTabSet1(TabSet ts) {
-        this.tabSet1 = ts;
-    }
 
     private Tab tab1 = new Tab();
 
@@ -515,7 +506,17 @@ public class editSite extends AbstractPageBean {
             this.txt_datum.setValue(String.valueOf((Long)this.getsite$SiteSessionBean().getSite().getGeodeticDatum()));
             this.txt_description.setValue(this.getsite$SiteSessionBean().getSite().getDescription());
             this.txt_precision.setValue(String.valueOf((Long)this.getsite$SiteSessionBean().getSite().getPrecision()));
+
+            //jgutierrez  <--> Division Politica, limpia los valores para cuando se entra por 1era vez
+            this.getsite$SiteSessionBean().setSelectedCountryId(null);
+            this.getsite$SiteSessionBean().setSelectedProvinceId(null);
         }
+         //jgutierrez  <--> Division Politica
+            this.getsite$SiteSessionBean().setActualPoliticValuesToDropDowns(this.getsite$SiteSessionBean().getSite().getId());
+            this.getsite$SiteSessionBean().setCountriesDropDownData();
+            this.getsite$SiteSessionBean().setProvincesDropDownData();
+            System.out.println("prerender");
+
     }
     
     /**
@@ -783,6 +784,12 @@ public class editSite extends AbstractPageBean {
             }
             if (this.getsite$SiteSessionBean().update(site)) {
                 this.getsite$SiteSessionBean().cleanParameters();
+
+                //politic division values
+                System.out.println("btnSavePoliticDivision");
+                this.getsite$SiteSessionBean().createOrUpdatePolicDivision(site.getId());
+                
+
                 return "saveSite";
             } else {
                 return null;
@@ -855,7 +862,7 @@ public class editSite extends AbstractPageBean {
         }
         return true;
     }
-
+  
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */
