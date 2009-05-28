@@ -116,6 +116,9 @@
 										<webuijsf:hyperlink actionExpression="#{Header.menuModuleReportsSpecimen_action}" id="menuModuleReportsSpecimen"
 							  text="#{resources.menuModuleReportsSpecimen}" visible="false"/>
 									</li>
+									<li>
+										<webuijsf:hyperlink actionExpression="#{Header.menuShare_action}" id="menuShare" text="#{resources.menuShare}" visible="false"/>
+									</li>
 								</ul>
 							</li>
 						</ul>
