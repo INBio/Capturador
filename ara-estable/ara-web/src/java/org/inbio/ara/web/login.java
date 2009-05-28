@@ -130,15 +130,6 @@ public class login extends AbstractPageBean {
 	public void setForm1(Form f) {
 		this.form1 = f;
 	}
-	private ImageComponent image1 = new ImageComponent();
-
-	public ImageComponent getImage1() {
-		return image1;
-	}
-
-	public void setImage1(ImageComponent ic) {
-		this.image1 = ic;
-	}
 	private Label lb_title = new Label();
 
 	public Label getLb_title() {
@@ -156,15 +147,6 @@ public class login extends AbstractPageBean {
 
 	public void setTxt_userName(TextField tf) {
 		this.txt_userName = tf;
-	}
-	private Button btn_login = new Button();
-
-	public Button getBtn_login() {
-		return btn_login;
-	}
-
-	public void setBtn_login(Button b) {
-		this.btn_login = b;
 	}
 	private PasswordField txt_password = new PasswordField();
 
