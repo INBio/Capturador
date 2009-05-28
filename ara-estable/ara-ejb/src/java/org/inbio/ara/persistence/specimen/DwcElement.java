@@ -19,11 +19,11 @@ import javax.persistence.Table;
 
 /**
  *
- * @author herson
+ * @author esmata
  */
 @Entity
 @Table(name = "dwc_element")
-@NamedQueries({@NamedQuery(name = "DwcElement.findAll", query = "SELECT d FROM DwcElement d"), @NamedQuery(name = "DwcElement.findByElementId", query = "SELECT d FROM DwcElement d WHERE d.elementId = :elementId"), @NamedQuery(name = "DwcElement.findByElementName", query = "SELECT d FROM DwcElement d WHERE d.elementName = :elementName"), @NamedQuery(name = "DwcElement.findByElementKeyword", query = "SELECT d FROM DwcElement d WHERE d.elementKeyword = :elementKeyword")})
+@NamedQueries({@NamedQuery(name = "DwcElement.findAll", query = "SELECT d FROM DwcElement d"), @NamedQuery(name = "DwcElement.findByElementId", query = "SELECT d FROM DwcElement d WHERE d.elementId = :elementId"), @NamedQuery(name = "DwcElement.findByElementName", query = "SELECT d FROM DwcElement d WHERE d.elementName = :elementName"), @NamedQuery(name = "DwcElement.findByElementKeyword", query = "SELECT d FROM DwcElement d WHERE d.elementKeyword = :elementKeyword"), @NamedQuery(name = "DwcElement.findByElementRequired", query = "SELECT d FROM DwcElement d WHERE d.elementRequired = :elementRequired")})
 public class DwcElement implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -36,6 +36,9 @@ public class DwcElement implements Serializable {
     @Basic(optional = false)
     @Column(name = "element_keyword")
     private String elementKeyword;
+    @Basic(optional = false)
+    @Column(name = "element_required")
+    private String elementRequired;
     @JoinColumn(name = "element_category_id", referencedColumnName = "category_id")
     @ManyToOne(optional = false)
     private DwcCategory elementCategoryId;
@@ -47,10 +50,11 @@ public class DwcElement implements Serializable {
         this.elementId = elementId;
     }
 
-    public DwcElement(BigDecimal elementId, String elementName, String elementKeyword) {
+    public DwcElement(BigDecimal elementId, String elementName, String elementKeyword, String elementRequired) {
         this.elementId = elementId;
         this.elementName = elementName;
         this.elementKeyword = elementKeyword;
+        this.elementRequired = elementRequired;
     }
 
     public BigDecimal getElementId() {
@@ -75,6 +79,14 @@ public class DwcElement implements Serializable {
 
     public void setElementKeyword(String elementKeyword) {
         this.elementKeyword = elementKeyword;
+    }
+
+    public String getElementRequired() {
+        return elementRequired;
+    }
+
+    public void setElementRequired(String elementRequired) {
+        this.elementRequired = elementRequired;
     }
 
     public DwcCategory getElementCategoryId() {
