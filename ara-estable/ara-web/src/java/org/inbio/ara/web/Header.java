@@ -470,4 +470,8 @@ public class Header extends AbstractFragmentBean {
         this.getSessionManager().setCurrentModuleId(new Long(22));
         return "reportSpecimen";
     }
+    public String menuShare_action() {
+        this.getSessionManager().setCurrentModuleId(new Long(23));
+        return "share";
+    }
 }
