@@ -47,8 +47,9 @@ public class BaseEAOImpl implements BaseLocalEAO{
         em.flush();
     }
 
+    @Override
 	public void update(Object entity) {
-        em.merge(entity);
+        em.refresh(entity);
         em.flush();
     }
 }
