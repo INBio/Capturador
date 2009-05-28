@@ -29,8 +29,8 @@ package org.inbio.ara.persistence.gis;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import org.inbio.ara.persistence.genericEntity;
 
 /**
  * Entity class GeoreferencedSite
@@ -38,11 +38,14 @@ import javax.persistence.ManyToOne;
  * @author roaguilar
  */
 @Entity
-public class GeoreferencedSite implements Serializable {
+@Table(name ="georeferenced_site")
+//@TableGenerator(name="georeferenced_site_id_gen",table="ID_GEN",pkColumnName="GEN_KEY",valueColumnName="GEN_VALUE",pkColumnValue="georeferenced_site_id",allocationSize=1)
+public class GeoreferencedSite extends genericEntity implements Serializable {
 
     @EmbeddedId
     private GeoreferencedSitePK georeferencedSitePK;
-    
+
+    /*
     @JoinColumn(name="site_id", referencedColumnName="site_id", insertable = false, updatable = false)
     @ManyToOne()
     private Site site;
@@ -50,9 +53,20 @@ public class GeoreferencedSite implements Serializable {
     @JoinColumn(name="geographic_layer_id", referencedColumnName="geographic_layer_id", insertable = false, updatable = false)
     @ManyToOne()
     private GeographicLayer geographicLayer;
+     */
     
     /** Creates a new instance of GeoreferencedSite */
     public GeoreferencedSite() {
+    }
+
+    /** Creates a new instance of GeoreferencedSite */
+    public GeoreferencedSite(GeoreferencedSitePK georeferencedSitePK) {
+        this.georeferencedSitePK = georeferencedSitePK;
+    }
+
+    public GeoreferencedSite(Long siteId, Long geographicLayerId, Long geographicSiteId){
+        GeoreferencedSitePK gsPK = new GeoreferencedSitePK(siteId,geographicLayerId, geographicSiteId);
+        this.georeferencedSitePK = gsPK;
     }
 
     /**
@@ -63,7 +77,7 @@ public class GeoreferencedSite implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (this.georeferencedSitePK != null ? this.georeferencedSitePK.hashCode() : 0);
+        hash += (this.getGeoreferencedSitePK() != null ? this.getGeoreferencedSitePK().hashCode() : 0);
         return hash;
     }
 
@@ -82,7 +96,7 @@ public class GeoreferencedSite implements Serializable {
             return false;
         }
         GeoreferencedSite other = (GeoreferencedSite)object;
-        if (this.georeferencedSitePK != other.georeferencedSitePK && (this.georeferencedSitePK == null || !this.georeferencedSitePK.equals(other.georeferencedSitePK))) return false;
+        if (this.getGeoreferencedSitePK() != other.getGeoreferencedSitePK() && (this.getGeoreferencedSitePK() == null || !this.georeferencedSitePK.equals(other.georeferencedSitePK))) return false;
         return true;
     }
 
@@ -93,31 +107,22 @@ public class GeoreferencedSite implements Serializable {
      */
     @Override
     public String toString() {
-        return "org.inbio.ara.persistence.gis.GeoreferencedSite[id=" + georeferencedSitePK.toString() + "]";
+        return "org.inbio.ara.persistence.gis.GeoreferencedSite[id=" + getGeoreferencedSitePK().toString() + "]";
     }
 
+    /**
+     * @return the georeferencedSitePK
+     */
     public GeoreferencedSitePK getGeoreferencedSitePK() {
         return georeferencedSitePK;
     }
 
+    /**
+     * @param georeferencedSitePK the georeferencedSitePK to set
+     */
     public void setGeoreferencedSitePK(GeoreferencedSitePK georeferencedSitePK) {
         this.georeferencedSitePK = georeferencedSitePK;
     }
 
-    public Site getSite() {
-        return site;
-    }
-
-    public void setSite(Site site) {
-        this.site = site;
-    }
-
-    public GeographicLayer getGeographicLayer() {
-        return geographicLayer;
-    }
-
-    public void setGeographicLayer(GeographicLayer geographicLayer) {
-        this.geographicLayer = geographicLayer;
-    }
     
 }
