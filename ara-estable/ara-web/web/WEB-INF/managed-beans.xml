@@ -585,4 +585,30 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <managed-bean-name>share$StandardDarwin</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.share.StandardDarwin</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>share$StandardSelection</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.share.StandardSelection</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>share$SessionBeanShare</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.share.SessionBeanShare</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>share$StandardPlinian</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.share.StandardPlinian</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>share$DwcSuccess</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.share.DwcSuccess</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
 </faces-config>
