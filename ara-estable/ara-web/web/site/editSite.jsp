@@ -47,12 +47,12 @@
                                         </webuijsf:table>
                                     </webuijsf:panelLayout>
                                 </webuijsf:tab>
-                                <webuijsf:tab id="tab2" text="~División Política~">
+                                <webuijsf:tab id="tab2" text="#{resources.politicDivision}">
                                     <webuijsf:panelLayout id="layoutPanel_tab2" style="height: 203px; position: relative; width: 100%; -rave-layout: grid">
                                         <webuijsf:label id="label_contry" requiredIndicator="true" style="left: 0px; top: 72px; position: absolute" text="#{resources.Country}"/>
                                         <webuijsf:dropDown id="dd_country" items="#{site$SiteSessionBean.countriesDropDownData.options}" submitForm="true" actionExpression="#{site$SiteSessionBean.onCountryChange}"
                                             selected="#{site$SiteSessionBean.selectedCountryId}" style="left: 150px; top: 72px; position: absolute; width: 120px"/>
-                                        <webuijsf:label id="label_province" requiredIndicator="true" style="left: 0px; top: 96px; position: absolute" text="~Province~"/>
+                                            <webuijsf:label id="label_province" requiredIndicator="true" style="left: 0px; top: 96px; position: absolute" text="#{resources.province}"/>
                                         <webuijsf:dropDown id="dd_province" items="#{site$SiteSessionBean.provincesDropDownData.options}"
                                             selected="#{site$SiteSessionBean.selectedProvinceId}" style="left: 150px; top: 96px; position: absolute; width: 120px"/>
                                     </webuijsf:panelLayout>
