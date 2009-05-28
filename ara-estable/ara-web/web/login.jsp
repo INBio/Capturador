@@ -29,6 +29,8 @@
                                         </webuijsf:form>
                                     </td>
                                 </tr>
+                                <tr><td align="CENTER"><img src="resources/images/inb-iabin.gif" width="350" height="82" alt="inb-iabin"/>
+                                </td></tr>
                             </tbody>
                         </table>
                     </webuijsf:panelLayout>
