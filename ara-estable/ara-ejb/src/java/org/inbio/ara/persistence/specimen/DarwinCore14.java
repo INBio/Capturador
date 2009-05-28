@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author herson
+ * @author esmata
  */
 @Entity
 @Table(name = "darwin_core_1_4")
@@ -162,7 +162,7 @@ public class DarwinCore14 implements Serializable {
     @Column(name = "maximumelevationinmeters")
     private Double maximumelevationinmeters;
     @Column(name = "verbatimelevation")
-    private String verbatimelevation;
+    private Double verbatimelevation;
     @Column(name = "minimumdepthinmeters")
     private Double minimumdepthinmeters;
     @Column(name = "maximumdepthinmeters")
@@ -721,11 +721,11 @@ public class DarwinCore14 implements Serializable {
         this.maximumelevationinmeters = maximumelevationinmeters;
     }
 
-    public String getVerbatimelevation() {
+    public Double getVerbatimelevation() {
         return verbatimelevation;
     }
 
-    public void setVerbatimelevation(String verbatimelevation) {
+    public void setVerbatimelevation(Double verbatimelevation) {
         this.verbatimelevation = verbatimelevation;
     }
 
