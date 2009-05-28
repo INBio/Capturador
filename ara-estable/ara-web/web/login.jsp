@@ -12,24 +12,19 @@
                     <jsp:directive.include file="/Header_Login.jspf"/>
                     <webuijsf:panelLayout id="contenido">
                         <h:messages binding="#{login.messageList1}" errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1"
-                                                infoClass="infoMessage" warnClass="warnMessage"/>
+                            infoClass="infoMessage" warnClass="warnMessage"/>
                         <table align="center" style="margin-top: 50px;" width="60%">
-                            <thead></thead>
                             <tbody>
                                 <tr>
-                                    <th>
-                                        <webuijsf:label binding="#{login.lb_title}" id="lb_title" text="#{resources.enter_system}"/>
-                                    </th>
-                                </tr>
-                                <tr>
                                     <td align="CENTER">
+                                        <webuijsf:label binding="#{login.lb_title}" id="lb_title" text="#{resources.enter_system}"/>
                                         <webuijsf:form binding="#{login.form1}" id="form1" style="border-style: solid; border-color: rgb(216, 241, 139); text-align: center; vertical-align: middle; width: 258px">
-                                            <h:panelGrid columns="1" id="gridPanel1">
+                                            <h:panelGrid columns="1" id="gridPanel1" width="261">
                                                 <webuijsf:label id="label1" text="#{resources.username}"/>
                                                 <webuijsf:textField binding="#{login.txt_userName}" id="txt_userName" label="" maxLength="20" required="true"/>
                                                 <webuijsf:label id="label2" text="#{resources.password}"/>
                                                 <webuijsf:passwordField binding="#{login.txt_password}" id="txt_password" label="" required="true" valueChangeListenerExpression="#{login.txt_password_processValueChange}"/>
-                                                <webuijsf:button id="btn_login" text="#{resources.enter}"/>
+                                                <webuijsf:button actionExpression="#{login.btn_login_action}" id="btn_login" text="#{resources.enter}"/>
                                             </h:panelGrid>
                                         </webuijsf:form>
                                     </td>
