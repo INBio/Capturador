@@ -6,7 +6,7 @@
             <webuijsf:html id="html1">
                 <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:script  id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
+                    <webuijsf:script id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header.jspf"/>
@@ -14,19 +14,16 @@
                         <webuijsf:form id="form1">
                             <h:messages binding="#{site$editSite.messageList1}" errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1"
                                 infoClass="infoMessage" style="left: 456px; top: 24px; position: absolute" warnClass="warnMessage"/>
-                            <webuijsf:label id="label1"
-                                style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 382px" text="#{resources.edit_site}"/>
+                            <webuijsf:label id="label1" style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 382px" text="#{resources.edit_site}"/>
                             <webuijsf:dropDown binding="#{site$editSite.dd_siteCalculationMethod}" id="dd_siteCalculationMethod"
                                 items="#{site$SiteSessionBean.siteCalculationMethod}" selected="#{site$SiteSessionBean.selectedSiteCalculationMethod}" style="left: 168px; top: 240px; position: absolute"/>
                             <webuijsf:label id="label2" style="left: 48px; top: 312px; position: absolute" text="#{resources.datum}"/>
-                            <webuijsf:tabSet binding="#{site$editSite.tabSet1}" id="tabSet1" selected="tab1" style="border: 1px solid gray; height: 35px; left: 48px; top: 336px; position: absolute; width: 766px">
+                            <webuijsf:tabSet id="tabSet1" selected="tab1" style="border: 1px solid gray; height: 35px; left: 48px; top: 336px; position: absolute; width: 766px">
                                 <webuijsf:tab binding="#{site$editSite.tab1}" id="tab1" text="#{resources.coordinates}">
                                     <webuijsf:panelLayout binding="#{site$editSite.layoutPanel1}" id="layoutPanel1" style="height: 203px; position: relative; width: 100%; -rave-layout: grid">
-                                        <webuijsf:label id="label3" requiredIndicator="true"
-                                            style="left: 0px; top: 72px; position: absolute" text="#{resources.longitude}"/>
+                                        <webuijsf:label id="label3" requiredIndicator="true" style="left: 0px; top: 72px; position: absolute" text="#{resources.longitude}"/>
                                         <webuijsf:textField binding="#{site$editSite.txt_longitude}" id="txt_longitude" style="left: 72px; top: 72px; position: absolute; width: 120px"/>
-                                        <webuijsf:label id="label4" requiredIndicator="true"
-                                            style="left: 0px; top: 96px; position: absolute" text="#{resources.latitude}"/>
+                                        <webuijsf:label id="label4" requiredIndicator="true" style="left: 0px; top: 96px; position: absolute" text="#{resources.latitude}"/>
                                         <webuijsf:textField binding="#{site$editSite.txt_latitude}" id="txt_latitude" style="left: 72px; top: 96px; position: absolute; width: 120px"/>
                                         <webuijsf:button actionExpression="#{site$editSite.btn_addCoordinate_action}"
                                             binding="#{site$editSite.btn_addCoordinate}" id="btn_addCoordinate"
@@ -50,12 +47,22 @@
                                         </webuijsf:table>
                                     </webuijsf:panelLayout>
                                 </webuijsf:tab>
+                                <webuijsf:tab id="tab2" text="~División Política~">
+                                    <webuijsf:panelLayout id="layoutPanel_tab2" style="height: 203px; position: relative; width: 100%; -rave-layout: grid">
+                                        <webuijsf:label id="label_contry" requiredIndicator="true" style="left: 0px; top: 72px; position: absolute" text="#{resources.Country}"/>
+                                        <webuijsf:dropDown id="dd_country" items="#{site$SiteSessionBean.countriesDropDownData.options}" submitForm="true" actionExpression="#{site$SiteSessionBean.onCountryChange}"
+                                            selected="#{site$SiteSessionBean.selectedCountryId}" style="left: 150px; top: 72px; position: absolute; width: 120px"/>
+                                        <webuijsf:label id="label_province" requiredIndicator="true" style="left: 0px; top: 96px; position: absolute" text="~Province~"/>
+                                        <webuijsf:dropDown id="dd_province" items="#{site$SiteSessionBean.provincesDropDownData.options}"
+                                            selected="#{site$SiteSessionBean.selectedProvinceId}" style="left: 150px; top: 96px; position: absolute; width: 120px"/>
+                                    </webuijsf:panelLayout>
+                                </webuijsf:tab>
                             </webuijsf:tabSet>
                             <webuijsf:dropDown binding="#{site$editSite.dd_featureType}" id="dd_featureType" items="#{site$SiteSessionBean.featureTypeOption}"
                                 selected="#{site$SiteSessionBean.selectedFeatureType}" style="left: 168px; top: 192px; position: absolute"/>
                             <webuijsf:label binding="#{site$editSite.label5}" id="label5" requiredIndicator="true"
                                 style="left: 48px; top: 240px; position: absolute" text="#{resources.determination_method}"/>
-                                <webuijsf:textField binding="#{site$editSite.txt_precision}" id="txt_precision" style="left: 168px; top: 264px; position: absolute" validatorExpression="#{util$ValidatorHelper.integerNumberFormatValidator}"/>
+                            <webuijsf:textField binding="#{site$editSite.txt_precision}" id="txt_precision" style="left: 168px; top: 264px; position: absolute" validatorExpression="#{util$ValidatorHelper.integerNumberFormatValidator}"/>
                             <webuijsf:label binding="#{site$editSite.label6}" id="label6" requiredIndicator="true"
                                 style="left: 48px; top: 192px; position: absolute" text="#{resources.type}"/>
                             <webuijsf:label binding="#{site$editSite.label7}" id="label7" requiredIndicator="true"
