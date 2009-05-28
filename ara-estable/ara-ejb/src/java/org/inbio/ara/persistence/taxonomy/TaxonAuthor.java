@@ -35,6 +35,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.inbio.ara.persistence.person.Person;
 
 /**
  * Entity class TaxonAuthor
@@ -57,6 +58,10 @@ public class TaxonAuthor extends genericEntity {
         })
     @ManyToOne()
     private PersonProfile personProfile;
+
+    @JoinColumn(name = "taxon_author_person_id", referencedColumnName = "person_id", insertable = false, updatable = false)
+    @ManyToOne()
+    private Person taxonAuthorPersonId;
 
     @JoinColumn(name = "taxon_id", referencedColumnName = "taxon_id", insertable = false, updatable = false)
     @ManyToOne()
@@ -118,6 +123,13 @@ public class TaxonAuthor extends genericEntity {
      */
     public void setTaxonAuthorPersonId(PersonProfile personProfile) {
         this.personProfile = personProfile;
+    }
+
+    /**
+     * @return the taxonAuthorPersonId
+     */
+    public Person getTaxonAuthorPersonId() {
+        return taxonAuthorPersonId;
     }
 
     /**
