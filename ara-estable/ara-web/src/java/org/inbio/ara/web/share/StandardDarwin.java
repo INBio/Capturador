@@ -701,12 +701,14 @@ public class StandardDarwin extends AbstractPageBean {
     }
 
     public String buttonReload_action() {
-        String result = getshare$SessionBeanShare().getShareBR().createDwCTable();
+        this.getspecimen$SpecimenSessionBean().getSpecimenBean().reloadDarwinCoreTable();
+        MessageBean.setSuccessMessageFromBundle("dwc_14_success");
+        /*String result = getshare$SessionBeanShare().getShareBR().createDwCTable();
         if (result.equals("success")) {
             MessageBean.setSuccessMessageFromBundle("dwc_14_success");
         } else {
             MessageBean.setErrorMessageFromBundle("dwc_14_fail");
-        }
+        }*/
         return null;
     }
 }
