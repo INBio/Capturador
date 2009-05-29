@@ -725,8 +725,8 @@ public class newPerson extends AbstractPageBean {
 		person.setCountry((String) txt_country.getText());
 		person.setEmail((String) txt_email.getText());
 		person.setUrl((String) txt_url.getText());
-		person.setCreatedBy("roaguilar");
-		person.setLastModificationBy("roaguilar");
+		person.setCreatedBy(getSessionManager().getUser().getUserName());
+		person.setLastModificationBy(getSessionManager().getUser().getUserName());
 
         try {
             if (this.getadmin$person$PersonSessionBean().create(person)) {
