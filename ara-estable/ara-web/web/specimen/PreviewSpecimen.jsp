@@ -54,7 +54,7 @@
                             </h:panelGrid>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
-                    <!--<jsp:directive.include file="/footer.jspf"/>-->
+                    <jsp:directive.include file="/footer.jspf"/>
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>
