@@ -31,6 +31,10 @@
 							</p>
 							<hr />
 							<p>
+                                <webuijsf:staticText escape="false" text="#{resources.aboutAcknowledgements}" />
+                            </p>
+
+                            <p>
 								<webuijsf:staticText escape="false" text="#{resources.iconLicenseResume}" />
 							</p>
 						</webuijsf:panelLayout>
