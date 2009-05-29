@@ -641,6 +641,7 @@ public class PreviewSpecimen extends AbstractPageBean {
     }
 
     public String reloadButton_action() {
+        MessageBean.setSuccessMessageFromBundle("dwc_reports_success");
         this.getspecimen$SpecimenSessionBean().getSpecimenBean().reloadDarwinCoreTable();
         return null;
     }
