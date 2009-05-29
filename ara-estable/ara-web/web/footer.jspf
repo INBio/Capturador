@@ -19,7 +19,7 @@
 						<!--<a target="_self" href="http://www.gnu.org/licenses/gpl-3.0-standalone.html">GNU/GPL 3.0 License</a>-->
 						<webuijsf:label id="aguacate2" text=" - " />
 						<webuijsf:label id="text3" text="#{resources.footer_text3}">
-							<f:param value="2.1"/>
+							<f:param value="2.5"/>
 						</webuijsf:label>
 						<!-- - Ara version 2.1 -->
 					</span>
