@@ -737,7 +737,7 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
 "   VerbatimCoordinates,"+
 "   GeoreferenceSources,"+
 "   GeoreferenceVerificationStatus)"+
-" select ''||col.name ||':' || to_char(s.specimen_id, '000000000000') as GlobalUniqueIdentifier,"+
+" select ins.INSTITUTION_CODE ||':' || col.name ||':' || s.CATALOG_NUMBER  as GlobalUniqueIdentifier,"+
 " current_date as DateLastModified,"+
 " null as InstitutionCode,"+
 " col.name as CollectionCode ,"+
@@ -844,6 +844,7 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
 "  left outer join ara.identifier sid on (s.specimen_id = sid.specimen_id and sid.identification_sequence = 1 and sid.identifier_sequence = 1)"+
 "  left outer join ara.person perid on (perid.person_id = sid.identifier_person_id)"+
 "  left outer join ara.identification_type it on (i.identification_type_id = it.identification_type_id)"+
+"  left outer join ara.institution ins on (ins.institution_id = s.institution_id)"+
 "where specimen_category_id <> 4;";
         Query q1 = em.createNativeQuery("drop table darwin_core_1_4;");
         System.out.println(q1.executeUpdate()+" drop dwc1_4");
