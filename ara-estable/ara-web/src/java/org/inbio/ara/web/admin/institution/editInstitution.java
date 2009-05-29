@@ -424,6 +424,15 @@ public class editInstitution extends AbstractPageBean {
     public void setEnglishLink1(Hyperlink h) {
         this.englishLink1 = h;
     }
+    private TextField txt_code = new TextField();
+
+    public TextField getTxt_code() {
+        return txt_code;
+    }
+
+    public void setTxt_code(TextField tf) {
+        this.txt_code = tf;
+    }
     
     // </editor-fold>
     
@@ -502,6 +511,7 @@ public class editInstitution extends AbstractPageBean {
             this.txt_state.setText(tInstitution.getStateProvince());
             this.txt_telephone.setText(tInstitution.getTelephone());
             this.txt_url.setText(tInstitution.getUrl());
+            this.txt_code.setText(tInstitution.getInstitutionCode());
         }
     }
     
@@ -590,7 +600,8 @@ public class editInstitution extends AbstractPageBean {
         institution.setStateProvince((String)this.txt_state.getValue());
         institution.setStreetAddress((String)this.txt_address.getValue());
         institution.setTelephone((String)this.txt_telephone.getValue());
-        institution.setUrl((String)this.txt_url.getValue());        
+        institution.setUrl((String)this.txt_url.getValue());
+        institution.setInstitutionCode((String)this.txt_code.getValue());
         institution.setLastModificationBy(this.getSessionManager().getUser().getUserName());
         
         if (this.getadmin$institution$InstitutionSessionBean().update(institution)) {
