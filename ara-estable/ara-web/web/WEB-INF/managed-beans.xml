@@ -359,6 +359,16 @@
 		<managed-bean-class>org.inbio.ara.web.util.SelectionListBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+    <managed-bean>
+        <managed-bean-name>admin$localities$AdminGeographicLayersSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.admin.localities.AdminGeographicLayersSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+        <managed-bean>
+        <managed-bean-name>admin$localities$adminGeographicalLayers</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.admin.localities.adminGeographicalLayers</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 	<managed-bean>
 		<managed-bean-name>gathering$gatheringList</managed-bean-name>
 		<managed-bean-class>org.inbio.ara.web.gathering.gatheringList</managed-bean-class>

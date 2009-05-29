@@ -1471,6 +1471,12 @@
 			<to-view-id>/stage/ListStages.jsp</to-view-id>
 			<redirect/>
 		</navigation-case>
+        <navigation-case>
+			<from-outcome>adminGeographicalLayers</from-outcome>
+			<to-view-id>/admin/localities/adminGeographicalLayers.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+
 
         <!-- Seguridad -->
 		<navigation-case>
