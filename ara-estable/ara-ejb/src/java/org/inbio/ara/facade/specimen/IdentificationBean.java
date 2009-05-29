@@ -32,6 +32,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
@@ -94,9 +95,11 @@ public class IdentificationBean implements org.inbio.ara.facade.specimen.Identif
     public List getIdentificationByCollection(Long CollectionId) {
         Query q;
         try {
+            em.setFlushMode(FlushModeType.COMMIT);
             q = em.createQuery("Select object(o) from Identification as o where o.specimen.collection.id = " + CollectionId + " order by o.identificationPK.identificationSequence desc");
-            //em.createNativeQuery()
-            return q.getResultList();
+            List result = (List)q.getResultList();
+            em.setFlushMode(FlushModeType.AUTO);
+            return result;
         } catch(IllegalStateException ex1) {
             this.setMessage(ex1.getMessage());
             return null;
@@ -136,7 +139,7 @@ public class IdentificationBean implements org.inbio.ara.facade.specimen.Identif
                 historyErrorCount+= ", " + specimenList[i];
             }
         }
-        this.setMessage("Especímenes identificados: " + reIdentifiedCount + ". Errores de identificación: " + notIdentifiedCount + ". Especimenes no procesados: " + historyErrorCount);
+        this.setMessage("Especï¿½menes identificados: " + reIdentifiedCount + ". Errores de identificaciï¿½n: " + notIdentifiedCount + ". Especimenes no procesados: " + historyErrorCount);
         return true;
     }
     
@@ -179,30 +182,30 @@ public class IdentificationBean implements org.inbio.ara.facade.specimen.Identif
             // RA TEST
             //System.out.println("# de identificaciones actuales para el especimen " + specimenId + " : " + this.getIdentification(specimenId).size());
             for (int i=0; i<taxonList.length;i++) {
-                // Construir la llave primera de la identificación
+                // Construir la llave primera de la identificaciï¿½n
                 IdentificationPK pk = new IdentificationPK();
-                pk.setIdentificationSequence(1L+i); // Secuencia de identificación
+                pk.setIdentificationSequence(1L+i); // Secuencia de identificaciï¿½n
                 pk.setSpecimenId(specimenId);   // ID del especimen a identificar
-                pk.setInitialTimeStamp(new Date());   // Fecha del día de la identificación
+                pk.setInitialTimeStamp(new Date());   // Fecha del dï¿½a de la identificaciï¿½n
 
                 // Construir el objeto Identification
                 //IdentificationTest identification = new IdentificationTest();
                 Identification obj = new Identification(pk);
 
-                // Fecha de la identificación
+                // Fecha de la identificaciï¿½n
                 obj.setIdentificationDate(identification.getIdentificationDate());
-                // Tipo de identificación
+                // Tipo de identificaciï¿½n
                 if (identification.getIdentificationType()!=null) {
                     obj.setIdentificationType(em.find(IdentificationType.class,identification.getIdentificationType().getId()));
                 }
 
-                // Estado de la identificación
+                // Estado de la identificaciï¿½n
                 obj.setIdentificationStatus(em.find(IdentificationStatus.class,identification.getIdentificationStatus().getId()));
 
                 // Taxon
                 obj.setTaxon(em.find(Taxon.class,taxonList[i]));
 
-                // Validador de la identificación
+                // Validador de la identificaciï¿½n
                 if (identification.getValuerPerson()!=null) {
                     obj.setValuerPerson(em.find(Person.class,identification.getValuerPerson().getId()));
                 }
@@ -235,11 +238,11 @@ public class IdentificationBean implements org.inbio.ara.facade.specimen.Identif
                     }
                 }
                 
-                // Grabar la información
+                // Grabar la informaciï¿½n
                 //System.out.println("Identification a persistir: " + obj.getIdentificationPK().toString());
                 em.persist(obj);
                 
-                // Grabar la información del tipo en caso necesario
+                // Grabar la informaciï¿½n del tipo en caso necesario
                 if (typeSpecimenTypeId != null) {
                     TypeSpecimen typeSpecimen = new TypeSpecimen();
                     typeSpecimen.setIdentificationSequence(obj.getIdentificationPK().getIdentificationSequence());
@@ -282,18 +285,18 @@ public class IdentificationBean implements org.inbio.ara.facade.specimen.Identif
                             try {
                                 // Construir el objeto IdentificationHistory
                                 IdentificationHistory identificationHistory = new IdentificationHistory();
-                                // Fecha de la identificación
+                                // Fecha de la identificaciï¿½n
                                 identificationHistory.setIdentificationHistoryDate(tmp.getIdentificationDate());
 
-                                // Tipo de identificación
+                                // Tipo de identificaciï¿½n
                                 if (tmp.getIdentificationType()!=null) {
                                     identificationHistory.setIdentificationType(em.find(IdentificationType.class,tmp.getIdentificationType().getId()));
                                 }
 
-                                // Estado de la identificación
+                                // Estado de la identificaciï¿½n
                                 identificationHistory.setIdentificationStatus(em.find(IdentificationStatus.class,tmp.getIdentificationStatus().getId()));
 
-                                // Validador de la identificación
+                                // Validador de la identificaciï¿½n
                                 if (tmp.getValuerPerson()!=null) {
                                     identificationHistory.setValuerPerson(em.find(Person.class,tmp.getValuerPerson().getId()));
                                 }
@@ -310,10 +313,10 @@ public class IdentificationBean implements org.inbio.ara.facade.specimen.Identif
                                 identificationHistory.setSpecimen(em.find(Specimen.class,tmp.getIdentificationPK().getSpecimenId()));
                                 identificationHistory.setTaxon(em.find(Taxon.class,tmp.getTaxon().getTaxonId()));
                                 identificationHistory.setIdentificationSequence(tmp.getIdentificationPK().getIdentificationSequence());
-                                // Grabar la información
+                                // Grabar la informaciï¿½n
                                 em.persist(identificationHistory);
                                 
-                                // Histórico de Identificadores 
+                                // Histï¿½rico de Identificadores 
                                 if (tmp.getIdentifierList() != null) {
                                     if (tmp.getIdentifierList().size() > 0) {
                                         List<Identifier> identifierList = tmp.getIdentifierList();
@@ -353,11 +356,11 @@ public class IdentificationBean implements org.inbio.ara.facade.specimen.Identif
                 }
                 return true;
             } else {
-                this.setMessage("Número de especímen inválido: " + specimenId);
+                this.setMessage("Nï¿½mero de especï¿½men invï¿½lido: " + specimenId);
                 return false;
             }
         } else {
-            this.setMessage("Número de especímen inválido: parámetro nulo");
+            this.setMessage("Nï¿½mero de especï¿½men invï¿½lido: parï¿½metro nulo");
             return false;
         }
     }
@@ -370,7 +373,7 @@ public class IdentificationBean implements org.inbio.ara.facade.specimen.Identif
                 em.remove(identification);
                 return true;
             } else {
-                this.setMessage("No se encontró el registro indicado. " + this.getMessage());
+                this.setMessage("No se encontrï¿½ el registro indicado. " + this.getMessage());
                 return false;
             }
         } catch (IllegalStateException ex1) {
