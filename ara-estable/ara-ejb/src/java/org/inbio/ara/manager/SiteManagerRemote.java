@@ -20,6 +20,9 @@ package org.inbio.ara.manager;
 
 import java.util.List;
 import javax.ejb.Remote;
+import org.inbio.ara.dto.GeographicLayerDTO;
+import org.inbio.ara.dto.GeographicLayerValueDTO;
+import org.inbio.ara.persistence.gis.GeographicLayer;
 import org.inbio.ara.persistence.util.Country;
 import org.inbio.ara.persistence.util.Province;
 /**
@@ -35,6 +38,16 @@ public interface SiteManagerRemote {
 
     public List<Country> getAllCountries();
 
+    public GeographicLayerDTO getAllGeographicalLayer(Long geographicLayerId);
+
+    public GeographicLayerValueDTO getAllGeographicalLayerValueForGeographicLayerAndId(Long geographicLayerId, Long geographicLayerValueId);
+
+    public List<GeographicLayerDTO> getAllGeographicalLayers();
+
+    public List<GeographicLayerValueDTO> getAllGeographicalLayerValuesForGeographicLayer(Long geographicLayerId);
+
+    public List<GeographicLayerValueDTO> getAllGeographicalLayerValuesForGeographicLayerAndAncestor(Long geographicLayerId, Long ancestorGeographicValueId);
+
     public List<Province> getAllProvinces();
 
     public Country getCountry(Long countryId);
@@ -46,6 +59,8 @@ public interface SiteManagerRemote {
     public Province getProvinceForSite(Long siteId);
 
     public List<Province> getAllProvincesForContry(Long countryId);
+
+    public void saveOrUpdateGeographicLayerValue(GeographicLayerValueDTO geographicLayerValueDTO);
 
     public void saveOrUpdateGeoreferenceForSite(Long siteId, Long layerId, Long value);
 

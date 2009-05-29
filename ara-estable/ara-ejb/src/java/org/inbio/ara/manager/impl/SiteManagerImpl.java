@@ -17,13 +17,19 @@
  */
 package org.inbio.ara.manager.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import org.inbio.ara.dto.GeographicLayerDTO;
+import org.inbio.ara.dto.GeographicLayerValueDTO;
 import org.inbio.ara.eao.CountryLocalEAO;
+import org.inbio.ara.eao.GeographicLayerLocalEAO;
 import org.inbio.ara.eao.GeoreferencedSiteLocalEAO;
 import org.inbio.ara.eao.ProvinceLocalEAO;
+import org.inbio.ara.facade.gis.SiteRemote;
 import org.inbio.ara.manager.SiteManagerRemote;
+import org.inbio.ara.persistence.gis.GeographicLayer;
 import org.inbio.ara.persistence.gis.GeoreferencedSite;
 import org.inbio.ara.persistence.gis.GeoreferencedSitePK;
 import org.inbio.ara.persistence.util.Country;
@@ -46,6 +52,9 @@ public class SiteManagerImpl implements SiteManagerRemote {
     @EJB
     GeoreferencedSiteLocalEAO georeferencedSiteEAOImpl;
 
+    @EJB
+    GeographicLayerLocalEAO geographicLayerEAOImpl;
+
     @Override
     public List<Country> getAllCountries() {
 
@@ -61,6 +70,111 @@ public class SiteManagerImpl implements SiteManagerRemote {
     public List<Province> getAllProvincesForContry(Long countryId) {
         return provinceEAOImpl.listAllByContryId(countryId);
     }
+
+    @Override
+    public List<GeographicLayerDTO> getAllGeographicalLayers() {
+
+        List<GeographicLayer> glList = geographicLayerEAOImpl.findAll();
+        GeographicLayer ancestorGL;
+        List<GeographicLayerDTO> glDTOList = new ArrayList<GeographicLayerDTO>();
+        GeographicLayerDTO glDTO;
+
+        for(GeographicLayer gl: glList){
+            glDTO = new GeographicLayerDTO(gl.getId(), gl.getName(), gl.getDescription(), null, null);
+
+            if(gl.getId().equals(SiteManagerRemote.PROVINCE_LAYER)){
+                ancestorGL = (GeographicLayer) geographicLayerEAOImpl.findById(GeographicLayer.class, SiteManagerRemote.COUNTRY_LAYER);
+                glDTO.setAncestorKey(ancestorGL.getId());
+                glDTO.setAncestorName(ancestorGL.getName());
+            }
+
+            glDTOList.add(glDTO);
+        }
+
+        return glDTOList;
+        
+    }
+
+    @Override
+    public GeographicLayerDTO getAllGeographicalLayer(Long geographicLayerId) {
+        GeographicLayer gl = (GeographicLayer) geographicLayerEAOImpl.findById(GeographicLayer.class, geographicLayerId);
+        GeographicLayerDTO glDTO = new GeographicLayerDTO(gl.getId(), gl.getName(), gl.getDescription(), null, null);
+
+            if(geographicLayerId.equals(SiteManagerRemote.PROVINCE_LAYER)){
+                GeographicLayer ancestorGL = (GeographicLayer) geographicLayerEAOImpl.findById(GeographicLayer.class, SiteManagerRemote.COUNTRY_LAYER);
+                glDTO.setAncestorKey(ancestorGL.getId());
+                glDTO.setAncestorName(ancestorGL.getName());
+            }
+
+
+        return glDTO;
+    }
+
+    @Override
+    public GeographicLayerValueDTO getAllGeographicalLayerValueForGeographicLayerAndId(Long geographicLayerId, Long geographicLayerValueId) {
+
+        GeographicLayerValueDTO glvDTO = null;
+        Country c;
+
+        if(geographicLayerId.equals(SiteManagerRemote.COUNTRY_LAYER)){
+            c =  (Country) provinceEAOImpl.findById(Country.class, geographicLayerValueId);
+            glvDTO = new GeographicLayerValueDTO(SiteManagerRemote.COUNTRY_LAYER, c.getId(), c.getName(), null, null);
+        
+        } else if(geographicLayerId.equals(SiteManagerRemote.PROVINCE_LAYER)){
+            Province p = (Province) provinceEAOImpl.findById(Province.class, geographicLayerValueId);
+            c = (Country) countryEAOImpl.findById(Country.class, p.getCountry().getId());
+            glvDTO = new GeographicLayerValueDTO(SiteManagerRemote.PROVINCE_LAYER,p.getId(), p.getName(), c.getId(),c.getName());
+        }
+
+        return glvDTO;
+    }
+
+    @Override
+    public List<GeographicLayerValueDTO> getAllGeographicalLayerValuesForGeographicLayer(Long geographicLayerId) {
+
+        List<GeographicLayerValueDTO> glvDTOList= new ArrayList<GeographicLayerValueDTO>();
+        GeographicLayerValueDTO glvDTO;
+        
+        if(geographicLayerId.equals(SiteManagerRemote.COUNTRY_LAYER)){
+
+            for(Country c : countryEAOImpl.listAll()){
+                glvDTO = new GeographicLayerValueDTO(SiteManagerRemote.COUNTRY_LAYER,c.getId(), c.getName(), null, null);
+                glvDTOList.add(glvDTO);
+            }
+
+        } else if(geographicLayerId.equals(SiteManagerRemote.PROVINCE_LAYER)){
+
+            Country c;
+            for(Province p : provinceEAOImpl.listAll()){
+                c = (Country) countryEAOImpl.findById(Country.class, p.getCountry().getId());
+                glvDTO = new GeographicLayerValueDTO(SiteManagerRemote.PROVINCE_LAYER,p.getId(), p.getName(), c.getId(),c.getName());
+                glvDTOList.add(glvDTO);
+            }
+
+        } 
+
+        return glvDTOList;
+    }
+
+    @Override
+    public List<GeographicLayerValueDTO> getAllGeographicalLayerValuesForGeographicLayerAndAncestor(Long geographicLayerId, Long ancestorGeographicValueId) {
+        List<GeographicLayerValueDTO> glvDTOList= new ArrayList<GeographicLayerValueDTO>();
+        GeographicLayerValueDTO glvDTO;
+
+        if(geographicLayerId.equals(SiteManagerRemote.PROVINCE_LAYER)){
+
+            Country c;
+            for(Province p : provinceEAOImpl.listAllByContryId(ancestorGeographicValueId)){
+                c = (Country) countryEAOImpl.findById(Country.class, p.getCountry().getId());
+                glvDTO = new GeographicLayerValueDTO(SiteManagerRemote.PROVINCE_LAYER,p.getId(), p.getName(), c.getId(),c.getName());
+                glvDTOList.add(glvDTO);
+            }
+
+        }
+
+        return glvDTOList;
+    }
+
 
     @Override
     public Province getProvinceForSite(Long siteId) {
@@ -125,6 +239,56 @@ public class SiteManagerImpl implements SiteManagerRemote {
 
 
     @Override
+    public void saveOrUpdateGeographicLayerValue(GeographicLayerValueDTO geographicLayerValueDTO) {
+
+        Country c;
+
+        if(geographicLayerValueDTO.getGeographicLayerKey().equals(SiteManagerRemote.COUNTRY_LAYER)){
+
+            if(geographicLayerValueDTO.getGeographicLayerValueKey() == null){
+                System.out.println("new country");
+                c = new Country(geographicLayerValueDTO.getName());
+                c.setCreatedBy("ara-alambrado");
+                c.setLastModificationBy("ara-alambrado");
+                countryEAOImpl.create(c);
+
+            } else {
+                System.out.println("edit country");
+                c = (Country) countryEAOImpl.findById(Country.class, geographicLayerValueDTO.getGeographicLayerValueKey());
+                System.out.println(" country con Id>"+c.getId());
+                System.out.println(" country con Name>"+geographicLayerValueDTO.getName());
+                c.setName(geographicLayerValueDTO.getName());
+                c.setLastModificationBy("ara-alambrado");
+                countryEAOImpl.update(c);
+            }
+
+        } else if(geographicLayerValueDTO.getGeographicLayerKey().equals(SiteManagerRemote.PROVINCE_LAYER)){
+            Province p;
+            c = (Country) countryEAOImpl.findById(Country.class, geographicLayerValueDTO.getAncestorGeographicLayerValueKey());
+
+            if(geographicLayerValueDTO.getGeographicLayerValueKey() == null){
+                System.out.println("new province");
+                p = new Province();
+                p.setCountry(c);
+                p.setName(geographicLayerValueDTO.getName());
+                p.setCreatedBy("ara-alambrado");
+                p.setLastModificationBy("ara-alambrado");
+                provinceEAOImpl.create(p);
+
+            } else {
+                System.out.println("edit province");
+                p = (Province) provinceEAOImpl.findById(Province.class, geographicLayerValueDTO.getGeographicLayerValueKey());
+                p.setCountry(c);
+                p.setName(geographicLayerValueDTO.getName());
+                p.setLastModificationBy("ara-alambrado");
+                provinceEAOImpl.update(p);
+            }
+
+        }
+    }
+
+
+    @Override
     public void deleteGeoreferenceForSite(Long siteId, Long layerId) {
         //System.out.println("[saveOrUpdateGeoreferenceForSite] params> siteId["+siteId+"] layerId["+layerId+"] value["+value+"]");
         List<GeoreferencedSite> gsList = georeferencedSiteEAOImpl.findAllBySiteAndLayer(siteId,layerId);
@@ -156,7 +320,6 @@ public class SiteManagerImpl implements SiteManagerRemote {
     public Country getCountry(Long countryId) {
         return (Country) provinceEAOImpl.findById(Country.class, countryId);
     }
-
 
 
 

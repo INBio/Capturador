@@ -49,7 +49,7 @@ public class BaseEAOImpl implements BaseLocalEAO{
 
     @Override
 	public void update(Object entity) {
-        em.refresh(entity);
+        em.merge(entity);
         em.flush();
     }
 }
