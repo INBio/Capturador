@@ -153,7 +153,7 @@ public class AdminGeographicLayersSessionBean extends AbstractSessionBean {
 
     public void newGeographicLayerValue(){
         isEditingValue = true;
-        editingGeographicLayerValueDTO = new GeographicLayerValueDTO(selectedGeographicLayerDTO.getGeographicalLayerKey(),NEW_VALUE_ID, "nombre-alambrado", selectedFilterAncestorGeographicLayerId, "");
+        editingGeographicLayerValueDTO = new GeographicLayerValueDTO(selectedGeographicLayerDTO.getGeographicalLayerKey(),NEW_VALUE_ID, "", selectedFilterAncestorGeographicLayerId, "");
     }
 
     public void editGeographicLayerValue(){
