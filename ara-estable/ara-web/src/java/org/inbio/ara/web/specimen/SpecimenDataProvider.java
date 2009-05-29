@@ -44,7 +44,7 @@ public class SpecimenDataProvider extends ObjectListDataProvider {
     /** Creates a new instance of SpecimenDataProvider */
     public SpecimenDataProvider() {
         this.setObjectType(Specimen.class);
-        refreshDataList();
+        //refreshDataList();
     }
     
     public void refreshDataList() {
