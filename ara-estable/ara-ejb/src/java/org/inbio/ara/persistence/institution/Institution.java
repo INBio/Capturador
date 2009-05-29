@@ -59,6 +59,9 @@ public class Institution extends genericEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "institution_code", nullable = false)
+    private String institutionCode;
+
     @Column(name = "telephone")
     private String telephone;
 
@@ -359,6 +362,20 @@ public class Institution extends genericEntity {
 
     public void setPersonInstitutionSet(Set<PersonInstitution> personInstitutionSet) {
         this.personInstitutionSet = personInstitutionSet;
+    }
+
+    /**
+     * @return the institutionCode
+     */
+    public String getInstitutionCode() {
+        return institutionCode;
+    }
+
+    /**
+     * @param institutionCode the institutionCode to set
+     */
+    public void setInstitutionCode(String institutionCode) {
+        this.institutionCode = institutionCode;
     }
 
     /*public Set<SpeciesRecordInstitution> getSpeciesRecordInstitutionSet() {
