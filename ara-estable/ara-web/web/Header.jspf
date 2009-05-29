@@ -96,7 +96,7 @@
 										<webuijsf:hyperlink actionExpression="#{Header.menuModuleStages_action}" id="menuModuleStages" text="#{resources.menuModuleStages}" visible="false"/>
 									</li>
                                     <li>
-										<webuijsf:hyperlink actionExpression="#{Header.menuModuleGeographicalLayers_action}" id="menuModuleGeographicalLayers_action" text="#{resources.menuModuleGeographicalLayers_action}" visible="false"/>
+										<webuijsf:hyperlink actionExpression="#{Header.menuModuleGeographicalLayers_action}" id="menuModuleGeographicalLayers_action" text="#{resources.menuModuleGeographicalLayers}" visible="false"/>
 									</li>
 								</ul>
 							</li>
