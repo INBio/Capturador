@@ -33,6 +33,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
@@ -452,9 +453,12 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
 		return em.find(GatheringObservationDetail.class, id);
 	}
 
+    @Override
 	public List findAll() {
+        em.setFlushMode(FlushModeType.COMMIT);
 		Query q = em.createQuery("from Specimen as o");
 		this.specimenList = (List) q.getResultList();
+        em.setFlushMode(FlushModeType.AUTO);
 		return this.specimenList;
 	}
 
