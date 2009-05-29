@@ -29,7 +29,7 @@
 
 
                             <!-- Parte Superior -->
-                            <webuijsf:label id="label1" style="font-size: 24px; height: 28px; left: 24px; top: 120px; position: absolute; width: 334px" text="~Geographical Layers~"/>
+                            <webuijsf:label id="label1" style="font-size: 24px; height: 28px; left: 24px; top: 120px; position: absolute; width: 334px" text="#{resources.menuModuleGeographicalLayers}"/>
                             <webuijsf:dropDown id="geographicLayerDropDown"
                                     items="#{admin$localities$AdminGeographicLayersSessionBean.geographicLayers.options}"
                                     selected="#{admin$localities$AdminGeographicLayersSessionBean.selectedGeographicLayerDTO.geographicalLayerKey}"
@@ -38,7 +38,7 @@
                             <!-- Parte Superior -->
 
                             <!--Valorse para la capa seleccionada-->
-                            <webuijsf:label id="label2" style="font-size: 24px; height: 28px; left: 24px; top: 240px; position: absolute; width: 574px" text="~Valores para la Capa Seleccionada:"/>
+                            <webuijsf:label id="label2" style="font-size: 24px; height: 28px; left: 24px; top: 240px; position: absolute; width: 574px" text="#{resources.valuesForSelectedGeographicLayer}"/>
                             <webuijsf:dropDown id="geographicLayerValueDropDown"
                                 items="#{admin$localities$AdminGeographicLayersSessionBean.geographicLayerValues.options}"
                                 selected="#{admin$localities$AdminGeographicLayersSessionBean.selectedGeographicLayerValueDTO.geographicLayerValueKey}"
@@ -47,7 +47,7 @@
                             <!-- fin Valorse para la capa seleccionada-->
                             <!-- Filtro de valores seleccionados -->
                             <webuijsf:label id="label3" style="height: 28px; left: 275px; top: 288px; position: absolute"
-                                visible="#{admin$localities$AdminGeographicLayersSessionBean.hasAncestor}" text="~Filtrar por pais:~"/>
+                                visible="#{admin$localities$AdminGeographicLayersSessionBean.hasAncestor}" text="#{resources.filterByCountry}"/>
                             <webuijsf:dropDown id="filterAncestorGeographicLayerValueDropDown" visible="#{admin$localities$AdminGeographicLayersSessionBean.hasAncestor}"
                                 items="#{admin$localities$AdminGeographicLayersSessionBean.ancestorGeographicLayerValues.options}"
                                 selected="#{admin$localities$AdminGeographicLayersSessionBean.selectedFilterAncestorGeographicLayerId}"
