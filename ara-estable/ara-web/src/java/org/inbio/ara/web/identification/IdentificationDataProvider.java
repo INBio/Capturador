@@ -46,7 +46,7 @@ public class IdentificationDataProvider extends ObjectListDataProvider{
     /** Creates a new instance of IdentificationDataProvider */
     public IdentificationDataProvider() {
         this.setObjectType(Identification.class);
-        refreshList();
+        //refreshList();
     }
     
     public IdentificationDataProvider(Long collectionId) {
