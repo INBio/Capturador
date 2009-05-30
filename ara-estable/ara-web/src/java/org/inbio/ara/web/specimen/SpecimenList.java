@@ -15,12 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */ 
-/*
- * SpecimenList.java
- *
- * Created on 3 de julio de 2008, 02:58 PM
- * Copyright herson
- */
 package org.inbio.ara.web.specimen;
 
 import com.sun.data.provider.RowKey;
@@ -29,14 +23,11 @@ import com.sun.webui.jsf.component.Body;
 import com.sun.webui.jsf.component.Button;
 import com.sun.webui.jsf.component.Checkbox;
 import com.sun.webui.jsf.component.Form;
-import com.sun.webui.jsf.component.Head;
-import com.sun.webui.jsf.component.Html;
 import com.sun.webui.jsf.component.Hyperlink;
 import com.sun.webui.jsf.component.ImageComponent;
 import com.sun.webui.jsf.component.Label;
 import com.sun.webui.jsf.component.Link;
 import com.sun.webui.jsf.component.Page;
-import com.sun.webui.jsf.component.StaticText;
 import com.sun.webui.jsf.component.Table;
 import com.sun.webui.jsf.component.TableColumn;
 import com.sun.webui.jsf.component.TableRowGroup;
@@ -179,146 +170,6 @@ public class SpecimenList extends AbstractPageBean {
         this.defaultTableDataProvider = dtdp;
     }
 
-    private TableColumn tableColumn1 = new TableColumn();
-
-    public TableColumn getTableColumn1() {
-        return tableColumn1;
-    }
-
-    public void setTableColumn1(TableColumn tc) {
-        this.tableColumn1 = tc;
-    }
-
-    private TableColumn tableColumn2 = new TableColumn();
-
-    public TableColumn getTableColumn2() {
-        return tableColumn2;
-    }
-
-    public void setTableColumn2(TableColumn tc) {
-        this.tableColumn2 = tc;
-    }
-
-    private TableColumn tableColumn3 = new TableColumn();
-
-    public TableColumn getTableColumn3() {
-        return tableColumn3;
-    }
-
-    public void setTableColumn3(TableColumn tc) {
-        this.tableColumn3 = tc;
-    }
-
-    private TableColumn tableColumn4 = new TableColumn();
-
-    public TableColumn getTableColumn4() {
-        return tableColumn4;
-    }
-
-    public void setTableColumn4(TableColumn tc) {
-        this.tableColumn4 = tc;
-    }
-
-    private TableColumn tableColumn5 = new TableColumn();
-
-    public TableColumn getTableColumn5() {
-        return tableColumn5;
-    }
-
-    public void setTableColumn5(TableColumn tc) {
-        this.tableColumn5 = tc;
-    }
-
-    private TableColumn tableColumn6 = new TableColumn();
-
-    public TableColumn getTableColumn6() {
-        return tableColumn6;
-    }
-
-    public void setTableColumn6(TableColumn tc) {
-        this.tableColumn6 = tc;
-    }
-
-    private TableColumn tableColumn7 = new TableColumn();
-
-    public TableColumn getTableColumn7() {
-        return tableColumn7;
-    }
-
-    public void setTableColumn7(TableColumn tc) {
-        this.tableColumn7 = tc;
-    }
-
-    private TableColumn tableColumn8 = new TableColumn();
-
-    public TableColumn getTableColumn8() {
-        return tableColumn8;
-    }
-
-    public void setTableColumn8(TableColumn tc) {
-        this.tableColumn8 = tc;
-    }
-
-    private TableColumn tableColumn9 = new TableColumn();
-
-    public TableColumn getTableColumn9() {
-        return tableColumn9;
-    }
-
-    public void setTableColumn9(TableColumn tc) {
-        this.tableColumn9 = tc;
-    }
-
-    private TableColumn tableColumn10 = new TableColumn();
-
-    public TableColumn getTableColumn10() {
-        return tableColumn10;
-    }
-
-    public void setTableColumn10(TableColumn tc) {
-        this.tableColumn10 = tc;
-    }
-
-    private TableColumn tableColumn11 = new TableColumn();
-
-    public TableColumn getTableColumn11() {
-        return tableColumn11;
-    }
-
-    public void setTableColumn11(TableColumn tc) {
-        this.tableColumn11 = tc;
-    }
-
-    private TableColumn tableColumn12 = new TableColumn();
-
-    public TableColumn getTableColumn12() {
-        return tableColumn12;
-    }
-
-    public void setTableColumn12(TableColumn tc) {
-        this.tableColumn12 = tc;
-    }
-
-    private TableColumn tableColumn13 = new TableColumn();
-
-    public TableColumn getTableColumn13() {
-        return tableColumn13;
-    }
-
-    public void setTableColumn13(TableColumn tc) {
-        this.tableColumn13 = tc;
-    }
-
-    private TableColumn tableColumn14 = new TableColumn();
-
-    public TableColumn getTableColumn14() {
-        return tableColumn14;
-    }
-
-    public void setTableColumn14(TableColumn tc) {
-        this.tableColumn14 = tc;
-    }
-
     private Button btn_edit = new Button();
 
     public Button getBtn_edit() {
@@ -327,36 +178,6 @@ public class SpecimenList extends AbstractPageBean {
 
     public void setBtn_edit(Button b) {
         this.btn_edit = b;
-    }
-    
-    private Button btn_search = new Button();
-
-    public Button getBtn_search() {
-        return btn_search;
-    }
-
-    public void setBtn_search(Button b) {
-        this.btn_search = b;
-    }
-    
-    private Button btn_reload = new Button();
-
-    public Button getBtn_reload() {
-        return btn_reload;
-    }
-
-    public void setBtn_reload(Button b) {
-        this.btn_reload = b;
-    }
-
-    private Checkbox checkbox1 = new Checkbox();
-
-    public Checkbox getCheckbox1() {
-        return checkbox1;
-    }
-
-    public void setCheckbox1(Checkbox c) {
-        this.checkbox1 = c;
     }
 
     private HtmlMessages messageList1 = new HtmlMessages();

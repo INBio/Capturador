@@ -14,14 +14,6 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
-/*
- * SpecimenDataProvider.java
- *
- * Created on 6 de junio de 2008, 02:44 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 package org.inbio.ara.web.specimen;

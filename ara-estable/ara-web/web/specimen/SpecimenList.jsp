@@ -15,65 +15,65 @@
                             <webuijsf:label binding="#{specimen$SpecimenList.label1}" id="label1"
                                 style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 334px" text="#{resources.specimens}"/>
                             <webuijsf:table binding="#{specimen$SpecimenList.table1}" deselectMultipleButton="true" id="table1" paginateButton="true"
-                                paginationControls="true" selectMultipleButton="true" style="left: 18px; top: 72px; position: absolute" title="Specimens" width="864">
+                                paginationControls="true" selectMultipleButton="true" style="left: 18px; top: 72px; position: absolute" title="Specimens" width="1619">
                                 <f:facet name="actionsTop">
                                     <webuijsf:panelGroup id="groupPanel1">
                                         <webuijsf:button actionExpression="#{specimen$SpecimenList.btn_edit_action}" binding="#{specimen$SpecimenList.btn_edit}"
                                             id="btn_edit" text="#{resources.btnEdit}"/>
                                         <webuijsf:button actionExpression="#{specimen$SpecimenList.btn_search_action}"
-                                            binding="#{specimen$SpecimenList.btn_search}" id="btn_search" text="#{resources.btnSearch}"/>
+                                            id="btn_search" text="#{resources.btnSearch}"/>
                                         <webuijsf:button actionExpression="#{specimen$SpecimenList.btn_reload_action}"
-                                            binding="#{specimen$SpecimenList.btn_reload}" id="btn_reload" text="#{resources.btnUpdate}"/>
+                                            id="btn_reload" text="#{resources.btnUpdate}"/>
                                     </webuijsf:panelGroup>
                                 </f:facet>
                                 <webuijsf:tableRowGroup binding="#{specimen$SpecimenList.tableRowGroup1}" id="tableRowGroup1" rows="15"
                                     selected="#{currentRow.value['selected']}" sourceData="#{specimen$SpecimenSessionBean.specimenDataProvider}" sourceVar="currentRow">
                                     <!-- sourceData="#{specimen$SpecimenSessionBean.specimenDataProvider}" -->
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn1}" id="tableColumn1" selectId="checkbox1" width="1419">
-                                        <webuijsf:checkbox binding="#{specimen$SpecimenList.checkbox1}" id="checkbox1" selected="#{currentRow.value['selected']}"/>
+                                    <webuijsf:tableColumn id="tableColumn1" selectId="checkbox1" width="1419">
+                                        <webuijsf:checkbox id="checkbox1" selected="#{currentRow.value['selected']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn2}" headerText="#{resources.gath_obs_number}" id="tableColumn2">
-                                        <webuijsf:staticText id="staticText2" text="#{currentRow.value['gatheringObservationId']}"/>
+                                    <webuijsf:tableColumn headerText="#{resources.CatalogNumber}" id="tableColumn3" sort="catalogNumber">
+                                        <webuijsf:staticText id="staticText3" text="#{currentRow.value['catalogNumber']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn3}" headerText="#{resources.id}" id="tableColumn3" sort="id">
-                                        <webuijsf:staticText id="staticText3" text="#{currentRow.value['id']}"/>
+                                    <webuijsf:tableColumn headerText="#{resources.institutioncode}" id="tableColumn15" width="200" sort="institutionCode">
+                                        <webuijsf:staticText id="staticText14" text="#{currentRow.value['institutionCode']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn4}" headerText="#{resources.collection}" id="tableColumn4">
+                                    <webuijsf:tableColumn headerText="#{resources.collection}" id="tableColumn4">
                                         <webuijsf:staticText id="staticText1" text="#{currentRow.value['collectionName']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn5}" headerText="#{resources.category}" id="tableColumn5">
+                                    <webuijsf:tableColumn headerText="#{resources.category}" id="tableColumn5">
                                         <webuijsf:staticText id="staticText4" text="#{currentRow.value['specimenCategoryName']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn6}" headerText="#{resources.type}" id="tableColumn6">
+                                    <webuijsf:tableColumn headerText="#{resources.type}" id="tableColumn6">
                                         <webuijsf:staticText id="staticText5" text="#{currentRow.value['specimenTypeName']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn7}" headerText="#{resources.num_fragments}" id="tableColumn7">
+                                    <webuijsf:tableColumn headerText="#{resources.num_fragments}" id="tableColumn7">
                                         <webuijsf:staticText id="staticText6" text="#{currentRow.value['numberFragments']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn8}" headerText="#{resources.num_whole}" id="tableColumn8">
+                                    <webuijsf:tableColumn headerText="#{resources.num_whole}" id="tableColumn8">
                                         <webuijsf:staticText id="staticText7" text="#{currentRow.value['numberWhole']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn9}" headerText="#{resources.origin}" id="tableColumn9">
+                                    <webuijsf:tableColumn headerText="#{resources.origin}" id="tableColumn9">
                                         <webuijsf:staticText id="staticText8" text="#{currentRow.value['originName']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn10}" headerText="#{resources.preservation_medium}" id="tableColumn10">
+                                    <webuijsf:tableColumn headerText="#{resources.preservation_medium}" id="tableColumn10">
                                         <webuijsf:staticText id="staticText9" text="#{currentRow.value['preservationMediumName']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn11}" headerText="#{resources.substrate}" id="tableColumn11">
+                                    <webuijsf:tableColumn headerText="#{resources.substrate}" id="tableColumn11">
                                         <webuijsf:staticText id="staticText10" text="#{currentRow.value['substrateName']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn12}" headerText="#{resources.storage}" id="tableColumn12">
+                                    <webuijsf:tableColumn headerText="#{resources.storage}" id="tableColumn12">
                                         <webuijsf:staticText id="staticText11" text="#{currentRow.value['storageName']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn13}" headerText="#{resources.extraction_method}" id="tableColumn13">
+                                    <webuijsf:tableColumn headerText="#{resources.extraction_method}" id="tableColumn13">
                                         <webuijsf:staticText id="staticText12" text="#{currentRow.value['extractionMethodName']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn14}" headerText="#{resources.discarded}" id="tableColumn14">
+                                    <webuijsf:tableColumn headerText="#{resources.discarded}" id="tableColumn14">
                                         <webuijsf:staticText id="staticText13" text="#{currentRow.value['discarded']}"/>
                                     </webuijsf:tableColumn>
                                 </webuijsf:tableRowGroup>
                             </webuijsf:table>
-                            <webuijsf:tableColumn binding="#{specimen$SpecimenList.tableColumn2}" id="tableColumn2"/>
+                            <webuijsf:tableColumn id="tableColumn2"/>
                             <webuijsf:staticText id="staticText2"/>
                             <h:messages binding="#{specimen$SpecimenList.messageList1}" errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1"
                                 infoClass="infoMessage" style="left: 408px; top: 24px; position: absolute" warnClass="warnMessage"/>
