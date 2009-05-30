@@ -50,6 +50,7 @@ import org.inbio.ara.persistence.specimen.Substrate;
 import org.inbio.ara.persistence.collection.Collection;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
 import org.inbio.ara.persistence.gathering.GatheringObservationMethod;
+import org.inbio.ara.persistence.institution.Institution;
 import org.inbio.ara.persistence.person.Person;
 import org.inbio.ara.persistence.specimen.ExtractionType;
 import org.inbio.ara.persistence.specimen.Identification;
@@ -106,6 +107,7 @@ public class SpecimenIdentificationGeneratorBean implements SpecimenIdentificati
             specimen.setGatheringObservation(em.find(GatheringObservation.class,specimen.getGatheringObservation().getId()));
             specimen.setCollection(em.find(Collection.class,specimen.getCollection().getId()));
             specimen.setGatheringObservationMethod(em.find(GatheringObservationMethod.class,specimen.getGatheringObservationMethod().getId()));
+            specimen.setInstitution(em.find(Institution.class, specimen.getInstitution().getId()));
             // Luego las opcionales
             if (specimen.getSpecimenType() != null) {
                 specimen.setSpecimenType(em.find(SpecimenType.class,specimen.getSpecimenType().getId()));
@@ -138,6 +140,7 @@ public class SpecimenIdentificationGeneratorBean implements SpecimenIdentificati
             if(specimen.getExtractionType()!=null){
                 specimen.setExtractionType(em.find(ExtractionType.class,specimen.getExtractionType().getId()));
             }
+
             em.persist(specimen);
             specimen.postLoad();
             this.getSpecimenList().add(specimen);
@@ -320,13 +323,26 @@ public class SpecimenIdentificationGeneratorBean implements SpecimenIdentificati
             return false;
         }
     }
-    
+
+    /**
+     * Este metodo es el encargado de generar los especimenes.
+     * Itera tantas veces como la cantidad indicada por el usuario.
+     * Justo en este momento se asigna el Catalog Number a cada especimen
+     * generado.
+     *
+     * @param specimenGenParms
+     * @return boolean Si el proceso fue exitoso
+     */
+
     public boolean generate(SpecimenGenParms specimenGenParms) {
         setSpecimenGenParms(specimenGenParms);
         if (!(this.getSpecimenGenParms() == null)) {
             //printSpecimen(specimenGenParms.getSpecimen());
-            for (int i = 1; i<= this.specimenGenParms.getQuantity();i++) {
-                if (persist(specimenGenParms.getSpecimen())) {
+            for (int i = 0; i < this.specimenGenParms.getQuantity(); i++) {
+                Specimen specimenToPersist = specimenGenParms.getSpecimen();
+                specimenToPersist.setCatalogNumber(specimenGenParms.
+                        getInitialCatalogNumber() + i);
+                if (persist(specimenToPersist)) {
                     System.out.println("Especimen creado");
                 } else {
                     return false;
@@ -335,7 +351,7 @@ public class SpecimenIdentificationGeneratorBean implements SpecimenIdentificati
             }
             return true;
         } else {
-            this.setMessage("No se han definido los par�metros para el proceso de generaci�n;");
+            this.setMessage("No se han definido los parametros para el proceso de generacion;");
             return false;
         }
     }

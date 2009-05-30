@@ -42,4 +42,6 @@ public interface SpecimenLocalEAO extends BaseLocalEAO {
      */
     public List<Specimen> findAll();
 
+    public Specimen getSpecimenByCatalogNumber(Long catalogNumber);
+
 }

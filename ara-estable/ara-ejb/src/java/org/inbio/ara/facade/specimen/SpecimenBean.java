@@ -15,14 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*
- * SpecimenBean.java
- *
- * Created on December 30, 2007, 6:37 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
 package org.inbio.ara.facade.specimen;
 
 import java.math.BigDecimal;
@@ -96,6 +88,10 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
 		List ret = (List) q.getResultList();
 		return ret;
 	}
+
+    public Specimen getSpecimenByCatalogNumber(Long cn) {
+        return specimenEAO.getSpecimenByCatalogNumber(cn);
+    }
 
 	public Sex findSex(Long id) {
 		return em.find(Sex.class, id);
@@ -234,18 +230,18 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
 					em.merge(this.specimen);
 					updated = true;
 				} else {
-					System.out.println("El EM esta cerrado");
+					System.out.println("El EM esta cerrado.");
 				}
 			} catch (IllegalStateException ex1) {
-				System.err.println("89u0sasdfasdfawedfasdfasdfadsfasdfadfu0" + ex1.getMessage());
+				System.err.println(ex1.getMessage());
 				this.setMessage(ex1.getMessage());
 				return false;
 			} catch (IllegalArgumentException ex2) {
-				System.err.println("89u0sasdfasdfawedfasdfasdfadsfasdfadfu0" + ex2.getMessage());
+				System.err.println(ex2.getMessage());
 				this.setMessage(ex2.getMessage());
 				return false;
 			} catch (TransactionRequiredException ex3) {
-				System.err.println("89u0sasdfasdfawedfasdfasdfadsfasdfadfu0" + ex3.getMessage());
+				System.err.println(ex3.getMessage());
 				this.setMessage(ex3.getMessage());
 				return false;
 			}

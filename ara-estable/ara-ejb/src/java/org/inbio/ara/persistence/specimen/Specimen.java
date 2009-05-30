@@ -14,14 +14,6 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
-/*
- * Specimen.java
- *
- * Created on October 28, 2007, 10:40 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 package org.inbio.ara.persistence.specimen;
@@ -49,11 +41,11 @@ import org.inbio.ara.persistence.gathering.GatheringObservationDetail;
 import org.inbio.ara.persistence.gathering.GatheringObservationMethod;
 import org.inbio.ara.persistence.gathering.MorphologicalDescription;
 import org.inbio.ara.persistence.genericEntity;
+import org.inbio.ara.persistence.institution.Institution;
 
 /**
  * Entity class Specimen
  *
- * @author roaguilar
  */
 
 @Entity()
@@ -65,6 +57,13 @@ public class Specimen extends genericEntity {
     @GeneratedValue(strategy=GenerationType.TABLE,generator="specimen_gen")
     @Column(name = "specimen_id", nullable = false)
     private Long id;
+
+    @JoinColumn(name="institution_id", referencedColumnName="institution_id", nullable = false)
+    @ManyToOne
+    private Institution institution;
+
+    @Column(name = "catalog_number", nullable = false)
+    private Long catalogNumber;
 
     @JoinColumn(name="gathering_observation_detail_id", referencedColumnName="gathering_observation_detail_id")
     @ManyToOne()
@@ -522,5 +521,32 @@ public class Specimen extends genericEntity {
     public void setGatheringObservationMethodName(String gatheringObservationMethodName) {
         this.gatheringObservationMethodName = gatheringObservationMethodName;
     }
-    
+
+    /**
+     * @return the catalogNumber
+     */
+    public Long getCatalogNumber() {
+        return catalogNumber;
+    }
+
+    /**
+     * @param catalogNumber the catalogNumber to set
+     */
+    public void setCatalogNumber(Long catalogNumber) {
+        this.catalogNumber = catalogNumber;
+    }
+
+    /**
+     * @return the institution
+     */
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    /**
+     * @param institution the institution to set
+     */
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }    
 }

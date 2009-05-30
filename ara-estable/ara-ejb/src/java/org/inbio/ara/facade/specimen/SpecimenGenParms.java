@@ -14,14 +14,6 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
-/*
- * SpecimenGenParms.java
- *
- * Created on June 21, 2008, 12:36 PM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 package org.inbio.ara.facade.specimen;
@@ -38,6 +30,7 @@ import org.inbio.ara.persistence.collection.Collection;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
 import org.inbio.ara.persistence.gathering.GatheringObservationDetail;
 import org.inbio.ara.persistence.gathering.GatheringObservationMethod;
+import org.inbio.ara.persistence.institution.Institution;
 import org.inbio.ara.persistence.specimen.ExtractionType;
 import org.inbio.ara.persistence.specimen.LifeForm;
 import org.inbio.ara.persistence.specimen.LifeStage;
@@ -50,10 +43,7 @@ import org.inbio.ara.persistence.specimen.SpecimenType;
 import org.inbio.ara.persistence.specimen.StorageType;
 import org.inbio.ara.persistence.specimen.Substrate;
 
-/**
- *
- * @author roaguilar
- */
+
 public class SpecimenGenParms implements java.io.Serializable {
     
     private int quantity;
@@ -85,6 +75,8 @@ public class SpecimenGenParms implements java.io.Serializable {
     private Long identificationStatusId;
     private ExtractionType extractionType;
     private Date dateTime;
+    private Long initialCatalogNumber;
+    private Institution institution;
     
     
             
@@ -309,6 +301,7 @@ public class SpecimenGenParms implements java.io.Serializable {
         specimen.setCollection(this.getCollection());
         specimen.setDiscarded("0");
         specimen.setGatheringObservation(this.getGatheringObservation());
+        specimen.setInstitution(institution);
 
         if (useGatheringDetail) {
             specimen.setGatheringObservationDetail(this.getGatheringObservationDetail());
@@ -414,5 +407,35 @@ public class SpecimenGenParms implements java.io.Serializable {
 
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
+    }
+
+    /**
+     * @return the initialCatalogNumber
+     */
+    public Long getInitialCatalogNumber() {
+        return initialCatalogNumber;
+    }
+
+    /**
+     * @param initialCatalogNumber the initialCatalogNumber to set
+     */
+    public void setInitialCatalogNumber(Long initialCatalogNumber) {
+        this.initialCatalogNumber = initialCatalogNumber;
+    }
+
+    /**
+     * @return the institution
+     */
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    /**
+     * @param institution the institution to set
+     */
+    public void setInstitution(Long id) {
+        if (id != null) {
+            institution = lookupSelectionListManagerBean().getInstitution(id);
+        }
     }
 }

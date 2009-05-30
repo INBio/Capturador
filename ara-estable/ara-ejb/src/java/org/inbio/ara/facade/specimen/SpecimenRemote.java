@@ -134,4 +134,6 @@ public interface SpecimenRemote {
      * @param lifeStageSexDTO de este objecto solo necesita el lifeStageId, sexId y el quantity para crear el objeto
      */
     public void saveSpecimenLifeStageSex(Long specimenId, LifeStageSexDTO lifeStageSexDTO);
+
+    public org.inbio.ara.persistence.specimen.Specimen getSpecimenByCatalogNumber(java.lang.Long cn);
 }

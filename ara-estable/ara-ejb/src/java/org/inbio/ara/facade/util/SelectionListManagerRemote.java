@@ -23,6 +23,7 @@ import java.util.List;
 import javax.ejb.Remote;
 import org.inbio.ara.persistence.collection.Collection;
 import org.inbio.ara.persistence.collection.ListTable;
+import org.inbio.ara.persistence.institution.Institution;
 import org.inbio.ara.persistence.selectionListEntity;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionPK;
 
@@ -32,7 +33,7 @@ import org.inbio.ara.persistence.taxonomy.TaxonDescriptionPK;
  */
 @Remote
 public interface SelectionListManagerRemote {
-
+    Institution getInstitutionById(Long institutionId);
     com.sun.webui.jsf.model.Option[] getAudience();
 
     java.lang.Long[] getSelectedAudience(TaxonDescriptionPK pk);

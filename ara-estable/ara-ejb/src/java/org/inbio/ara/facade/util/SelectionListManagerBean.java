@@ -448,6 +448,10 @@ public class SelectionListManagerBean implements SelectionListManagerRemote, Sel
         return em.find(IdentificationType.class,identificationTypeId);
     }
 
+    public Institution getInstitutionById(Long institutionId) {
+        return em.find(Institution.class,institutionId);
+    }
+
     public Long[] getSelectedCollectors(Long gatheringObservationId) {
         Long[] selectedArray = new Long[]{};
         String hql;

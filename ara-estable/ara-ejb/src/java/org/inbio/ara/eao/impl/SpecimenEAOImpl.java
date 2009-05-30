@@ -54,4 +54,19 @@ public class SpecimenEAOImpl extends BaseEAOImpl implements SpecimenLocalEAO{
 		return q.getResultList();
     }
 
+    public Specimen getSpecimenByCatalogNumber(Long catalogNumber) {
+        try {
+            Query q = em.createQuery("from Specimen as s " +
+                    "where s.catalogNumber = :catalogNumber");
+            q.setParameter("catalogNumber", catalogNumber);
+            return (Specimen) q.getSingleResult();
+        } catch (javax.persistence.NoResultException e) {
+            System.err.println(e.toString());
+            return null;
+        } catch (javax.persistence.NonUniqueResultException e2) {
+            System.err.println(e2.toString());
+            return null;
+        }
+    }
+
 }
