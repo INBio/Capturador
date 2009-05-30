@@ -181,10 +181,11 @@ public class Specimen extends genericEntity {
     @Transient
     private String storageName;
     @Transient
-    private String extractionMethodName;
-    
+    private String extractionMethodName;    
     @Transient
     private String gatheringObservationMethodName;
+    @Transient
+    private String institutionCode;
 
     @PostLoad
     public void postLoad(){
@@ -207,7 +208,9 @@ public class Specimen extends genericEntity {
         if(this.extractionType != null)
             this.extractionMethodName = this.extractionType.getName();        
         if(this.gatheringObservationMethod != null)
-                this.gatheringObservationMethodName = this.gatheringObservationMethod.getName();
+            this.gatheringObservationMethodName = this.gatheringObservationMethod.getName();
+        if(this.institution != null)
+            this.institutionCode = this.institution.getInstitutionCode();
     }
     
     /** Creates a new instance of Specimen */
@@ -548,5 +551,19 @@ public class Specimen extends genericEntity {
      */
     public void setInstitution(Institution institution) {
         this.institution = institution;
-    }    
+    }
+
+    /**
+     * @return the institutionCode
+     */
+    public String getInstitutionCode() {
+        return institutionCode;
+    }
+
+    /**
+     * @param institutionCode the institutionCode to set
+     */
+    public void setInstitutionCode(String institutionCode) {
+        this.institutionCode = institutionCode;
+    }
 }
