@@ -6,7 +6,7 @@
             <webuijsf:html binding="#{admin$institution$newInstitution.html1}" id="html1">
                 <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:script  id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
+                    <webuijsf:script id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
                 </webuijsf:head>
                 <webuijsf:body binding="#{admin$institution$newInstitution.body1}" id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header.jspf"/>
@@ -14,7 +14,7 @@
                         <webuijsf:form binding="#{admin$institution$newInstitution.form1}" id="form1">
                             <webuijsf:label binding="#{admin$institution$newInstitution.label1}" id="label1"
                                 style="font-size: 24px; left: 48px; top: 24px; position: absolute; width: 286px" text="#{resources.new_institution}"/>
-                            <webuijsf:tabSet binding="#{admin$institution$newInstitution.institutionTabSet}" id="institutionTabSet" style="border: 1px solid gray; height: 334px; left: 48px; top: 72px; position: absolute; width: 678px">
+                            <webuijsf:tabSet binding="#{admin$institution$newInstitution.institutionTabSet}" id="institutionTabSet" style="border: 1px solid gray; height: 334px; left: 48px; top: 96px; position: absolute; width: 678px">
                                 <webuijsf:tab actionExpression="#{admin$institution$newInstitution.basicInfoTab_action}"
                                     binding="#{admin$institution$newInstitution.basicInfoTab}" id="basicInfoTab" text="#{resources.basic_information}">
                                     <webuijsf:panelLayout binding="#{admin$institution$newInstitution.layoutPanel1}" id="layoutPanel1" style="height: 334px; position: relative; width: 100%; -rave-layout: grid">
@@ -39,12 +39,15 @@
                                         <webuijsf:textField binding="#{admin$institution$newInstitution.txt_state}" id="txt_state" style="left: 144px; top: 144px; position: absolute"/>
                                         <webuijsf:textField binding="#{admin$institution$newInstitution.txt_city}" id="txt_city" style="left: 144px; top: 168px; position: absolute"/>
                                         <webuijsf:textArea binding="#{admin$institution$newInstitution.txt_address}" id="txt_address" style="height: 60px; left: 144px; top: 192px; position: absolute"/>
+                                        <webuijsf:textField binding="#{admin$institution$newInstitution.txt_code}" columns="10" id="txt_code" required="true" style="height: 24px; left: 528px; top: 24px; position: absolute; width: 70px"/>
                                         <webuijsf:staticText binding="#{admin$institution$newInstitution.staticText8}" id="staticText8"
-                                            style="font-family: 'Arial','Helvetica',sans-serif; font-weight: bold; left: 360px; top: 24px; position: absolute" text="#{resources.acronym}"/>
+                                            style="font-family: 'Arial','Helvetica',sans-serif; font-weight: bold; left: 360px; top: 48px; position: absolute" text="#{resources.acronym}"/>
+                                        <webuijsf:textField binding="#{admin$institution$newInstitution.txt_acronym}" id="txt_acronym" style="left: 456px; top: 48px; position: absolute"/>
                                         <webuijsf:staticText binding="#{admin$institution$newInstitution.staticText9}" id="staticText9"
-                                            style="font-family: 'Arial','Helvetica',sans-serif; font-weight: bold; left: 360px; top: 48px; position: absolute" text="#{resources.web_site}"/>
-                                        <webuijsf:textField binding="#{admin$institution$newInstitution.txt_acronym}" id="txt_acronym" style="left: 456px; top: 24px; position: absolute"/>
-                                        <webuijsf:textField binding="#{admin$institution$newInstitution.txt_url}" id="txt_url" style="left: 456px; top: 48px; position: absolute"/>
+                                            style="font-family: 'Arial','Helvetica',sans-serif; font-weight: bold; left: 360px; top: 72px; position: absolute" text="#{resources.web_site}"/>
+                                        <webuijsf:staticText id="label_code"
+                                            style="font-family: 'Arial','Helvetica',sans-serif; font-weight: bold; height: 24px; left: 360px; top: 24px; position: absolute; width: 166px" text="#{resources.institutioncode}"/>
+                                        <webuijsf:textField binding="#{admin$institution$newInstitution.txt_url}" id="txt_url" style="left: 456px; top: 72px; position: absolute"/>
                                         <webuijsf:button actionExpression="#{admin$institution$newInstitution.btn_save_action}"
                                             binding="#{admin$institution$newInstitution.btn_save}" id="btn_save"
                                             style="height: 30px; left: 48px; top: 264px; position: absolute; width: 79px" text="#{resources.btnSave}"/>

@@ -422,6 +422,15 @@ public class newInstitution extends AbstractPageBean {
     public void setEnglishLink1(Hyperlink h) {
         this.englishLink1 = h;
     }
+    private TextField txt_code = new TextField();
+
+    public TextField getTxt_code() {
+        return txt_code;
+    }
+
+    public void setTxt_code(TextField tf) {
+        this.txt_code = tf;
+    }
     
     // </editor-fold>
     
@@ -573,15 +582,16 @@ public class newInstitution extends AbstractPageBean {
         
         institution.setAcronym((String)this.txt_acronym.getValue());
         institution.setCity((String)this.txt_city.getValue());
-        institution.setCountry((String)this.txt_city.getValue());
+        institution.setCountry((String)this.txt_country.getValue());
         institution.setFax((String)this.txt_fax.getValue());
         institution.setName((String)this.txt_name.getValue());
         institution.setStateProvince((String)this.txt_state.getValue());
         institution.setStreetAddress((String)this.txt_address.getValue());
         institution.setTelephone((String)this.txt_telephone.getValue());
-        institution.setUrl((String)this.txt_url.getValue());        
-        institution.setCreatedBy("roaguilar");
-        institution.setLastModificationBy("roaguilar");
+        institution.setUrl((String)this.txt_url.getValue());
+        institution.setInstitutionCode((String)this.txt_code.getValue());
+        institution.setCreatedBy(getSessionManager().getUser().getUserName());
+        institution.setLastModificationBy(getSessionManager().getUser().getUserName());
     
         if (this.getadmin$institution$InstitutionSessionBean().create(institution)) {
             return "saveNewInstitution";
