@@ -15,12 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-/*
- * specimenGeneration.java
- *
- * Created on June 12, 2008, 5:36 PM
- * Copyright roaguilar
- */
 package org.inbio.ara.web.gathering;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
@@ -116,7 +110,7 @@ public class specimenGeneration extends AbstractPageBean {
     private void _init() throws Exception {
         longRangeValidator1.setMinimum(1);
         longRangeValidator1.setMaximum(10000);
-        dd_hourDefaultOptions.setOptions(new com.sun.webui.jsf.model.Option[] {new com.sun.webui.jsf.model.Option("0", "00"), new com.sun.webui.jsf.model.Option("1", "01"), new com.sun.webui.jsf.model.Option("2", "02"), new com.sun.webui.jsf.model.Option("3", "03"), new com.sun.webui.jsf.model.Option("4", "04"), new com.sun.webui.jsf.model.Option("5", "05"), new com.sun.webui.jsf.model.Option("6", "06"), new com.sun.webui.jsf.model.Option("7", "07"), new com.sun.webui.jsf.model.Option("8", "08"), new com.sun.webui.jsf.model.Option("09", "09"), new com.sun.webui.jsf.model.Option("10", "10"), new com.sun.webui.jsf.model.Option("11", "11"), new com.sun.webui.jsf.model.Option("12", "12"), new com.sun.webui.jsf.model.Option("13", "13"), new com.sun.webui.jsf.model.Option("14", "14"), new com.sun.webui.jsf.model.Option("15", "15"), new com.sun.webui.jsf.model.Option("16", "16"), new com.sun.webui.jsf.model.Option("17", "17"), new com.sun.webui.jsf.model.Option("18", "18"), new com.sun.webui.jsf.model.Option("19", "19"), new com.sun.webui.jsf.model.Option("20", "20"), new com.sun.webui.jsf.model.Option("21", "21"), new com.sun.webui.jsf.model.Option("22", "22"), new com.sun.webui.jsf.model.Option("23", "23"), new com.sun.webui.jsf.model.Option("24", "24")});
+        dd_hourDefaultOptions.setOptions(new com.sun.webui.jsf.model.Option[] {new com.sun.webui.jsf.model.Option("0", "00"), new com.sun.webui.jsf.model.Option("1", "01"), new com.sun.webui.jsf.model.Option("2", "02"), new com.sun.webui.jsf.model.Option("3", "03"), new com.sun.webui.jsf.model.Option("4", "04"), new com.sun.webui.jsf.model.Option("5", "05"), new com.sun.webui.jsf.model.Option("6", "06"), new com.sun.webui.jsf.model.Option("7", "07"), new com.sun.webui.jsf.model.Option("8", "08"), new com.sun.webui.jsf.model.Option("09", "09"), new com.sun.webui.jsf.model.Option("10", "10"), new com.sun.webui.jsf.model.Option("11", "11"), new com.sun.webui.jsf.model.Option("12", "12"), new com.sun.webui.jsf.model.Option("13", "13"), new com.sun.webui.jsf.model.Option("14", "14"), new com.sun.webui.jsf.model.Option("15", "15"), new com.sun.webui.jsf.model.Option("16", "16"), new com.sun.webui.jsf.model.Option("17", "17"), new com.sun.webui.jsf.model.Option("18", "18"), new com.sun.webui.jsf.model.Option("19", "19"), new com.sun.webui.jsf.model.Option("20", "20"), new com.sun.webui.jsf.model.Option("21", "21"), new com.sun.webui.jsf.model.Option("22", "22"), new com.sun.webui.jsf.model.Option("23", "23")});
         dd_minuteDefaultOptions.setOptions(new com.sun.webui.jsf.model.Option[] {new com.sun.webui.jsf.model.Option("0", "00"), new com.sun.webui.jsf.model.Option("1", "01"), new com.sun.webui.jsf.model.Option("2", "02"), new com.sun.webui.jsf.model.Option("3", "03"), new com.sun.webui.jsf.model.Option("4", "04"), new com.sun.webui.jsf.model.Option("5", "05"), new com.sun.webui.jsf.model.Option("6", "06"), new com.sun.webui.jsf.model.Option("7", "07"), new com.sun.webui.jsf.model.Option("8", "08"), new com.sun.webui.jsf.model.Option("9", "09"), new com.sun.webui.jsf.model.Option("10", "10"), new com.sun.webui.jsf.model.Option("11", "11"), new com.sun.webui.jsf.model.Option("12", "12"), new com.sun.webui.jsf.model.Option("13", "13"), new com.sun.webui.jsf.model.Option("14", "14"), new com.sun.webui.jsf.model.Option("15", "15"), new com.sun.webui.jsf.model.Option("16", "16"), new com.sun.webui.jsf.model.Option("17", "17"), new com.sun.webui.jsf.model.Option("18", "18"), new com.sun.webui.jsf.model.Option("19", "19"), new com.sun.webui.jsf.model.Option("20", "20"), new com.sun.webui.jsf.model.Option("21", "21"), new com.sun.webui.jsf.model.Option("22", "22"), new com.sun.webui.jsf.model.Option("23", "23"), new com.sun.webui.jsf.model.Option("24", "24"), new com.sun.webui.jsf.model.Option("25", "25"), new com.sun.webui.jsf.model.Option("26", "26"), new com.sun.webui.jsf.model.Option("27", "27"), new com.sun.webui.jsf.model.Option("28", "28"), new com.sun.webui.jsf.model.Option("29", "29"), new com.sun.webui.jsf.model.Option("30", "30"), new com.sun.webui.jsf.model.Option("31", "31"), new com.sun.webui.jsf.model.Option("32", "32"), new com.sun.webui.jsf.model.Option("33", "33"), new com.sun.webui.jsf.model.Option("34", "34"), new com.sun.webui.jsf.model.Option("35", "35"), new com.sun.webui.jsf.model.Option("36", "36"), new com.sun.webui.jsf.model.Option("37", "37"), new com.sun.webui.jsf.model.Option("38", "38"), new com.sun.webui.jsf.model.Option("39", "39"), new com.sun.webui.jsf.model.Option("40", "40"), new com.sun.webui.jsf.model.Option("41", "41"), new com.sun.webui.jsf.model.Option("42", "42"), new com.sun.webui.jsf.model.Option("43", "43"), new com.sun.webui.jsf.model.Option("44", "44"), new com.sun.webui.jsf.model.Option("45", "45"), new com.sun.webui.jsf.model.Option("46", "46"), new com.sun.webui.jsf.model.Option("47", "47"), new com.sun.webui.jsf.model.Option("48", "48"), new com.sun.webui.jsf.model.Option("49", "49"), new com.sun.webui.jsf.model.Option("50", "50"), new com.sun.webui.jsf.model.Option("51", "51"), new com.sun.webui.jsf.model.Option("52", "52"), new com.sun.webui.jsf.model.Option("53", "53"), new com.sun.webui.jsf.model.Option("54", "54"), new com.sun.webui.jsf.model.Option("55", "55"), new com.sun.webui.jsf.model.Option("56", "56"), new com.sun.webui.jsf.model.Option("57", "57"), new com.sun.webui.jsf.model.Option("58", "58"), new com.sun.webui.jsf.model.Option("59", "59")});
         ad_taxonList1.setWidth("480");
         ar_identifier1.setWidth("310");
@@ -951,6 +945,15 @@ public class specimenGeneration extends AbstractPageBean {
     public void setBtn_showSpecimenList(Button b) {
         this.btn_showSpecimenList = b;
     }
+    private TextField txt_initCatalogNumber = new TextField();
+
+    public TextField getTxt_initCatalogNumber() {
+        return txt_initCatalogNumber;
+    }
+
+    public void setTxt_initCatalogNumber(TextField tf) {
+        this.txt_initCatalogNumber = tf;
+    }
 
     // </editor-fold>
 
@@ -1034,7 +1037,7 @@ public class specimenGeneration extends AbstractPageBean {
             this.lst_lifeForm1.setRendered(true);
         }
 
-        /* Configuraciones de acuerdo a la categor�a de espec�men seleccionada */
+        /* Configuraciones de acuerdo a la categoria de especimen seleccionada */
         Long category = this.getgathering$SpecimenGenerationSessionBean().getSelectedSpecimenCategory();
         if (category != -1L) {
             if (category == 1L) {
@@ -1236,7 +1239,7 @@ public class specimenGeneration extends AbstractPageBean {
             this.getutil$MessageBean().addErrorMessage(SPECIMEN_ACCOUNT_REQUIRED);
             return false;
         } else {
-            // Validaci�n de tipo de dato
+            // Validacion de tipo de dato
             String value = txt_ssQuantity.getValue().toString();
             try {
                 Integer ssQuantity = Integer.parseInt(value);
@@ -1272,9 +1275,8 @@ public class specimenGeneration extends AbstractPageBean {
     }
 
     private void setGenerationParms() {
-
-        // Informaci�n obligatoria
-        // Recolecci�n / observaci�n
+        // Informacion obligatoria
+        // Recoleccion / observacion
         this.genParms.setGatheringObservation(this.getgathering$GatheringSessionBeanV2().getGatheringObservation());
 
         // Usuario
@@ -1289,14 +1291,14 @@ public class specimenGeneration extends AbstractPageBean {
             this.genParms.setGatheringObservationDetail(null);
         }
 
-        // Colecci�n biol�gica
+        // Coleccion biologica
         this.genParms.setCollection(this.getSessionManager().getCollection());
 
-        // M�todo de recolecci�n
+        // Metodo de recoleccion
         //this.genParms.setGatheringObservationMethod(this.getgathering$GatheringSessionBeanV2().getGatheringObservation())
         this.genParms.setGatheringObservationMethod(this.getgathering$SpecimenGenerationSessionBean().getSelectedGatheringMethod());
 
-        // Informaci�n opcional
+        // Informacion opcional
         // Tipo de almacenamiento
         if (this.getgathering$SpecimenGenerationSessionBean().getSelectedStorageType() != -1L) {
             this.genParms.setStorageType(this.getgathering$SpecimenGenerationSessionBean().getSelectedStorageType());
@@ -1312,14 +1314,19 @@ public class specimenGeneration extends AbstractPageBean {
             this.genParms.setOrigin(this.getgathering$SpecimenGenerationSessionBean().getSelectedOrigin());
         }
 
-        // Medio de preservaci�n
+        // Medio de preservacion
         if (this.getgathering$SpecimenGenerationSessionBean().getSelectedPreservationMedium() != -1L) {
             this.genParms.setPreservationMedium(this.getgathering$SpecimenGenerationSessionBean().getSelectedPreservationMedium());
         }
 
-        // Tipo de extracci�n
+        // Tipo de extraccion
         if (this.getgathering$SpecimenGenerationSessionBean().getSelectedExtractionMethod() != -1L) {
             this.genParms.setExtractionType(this.getgathering$SpecimenGenerationSessionBean().getSelectedExtractionMethod());
+        }
+
+        //Institucion
+        if (this.getgathering$SpecimenGenerationSessionBean().getSelectedInstitution() != -1L) {
+            this.genParms.setInstitution(this.getgathering$SpecimenGenerationSessionBean().getSelectedInstitution());
         }
 
         // Estadios / Sexos
@@ -1340,7 +1347,7 @@ public class specimenGeneration extends AbstractPageBean {
             }
         }
 
-        // N�mero de fragmentos
+        // Numero de fragmentos
         if (this.txt_numberFragment1.getValue() != null) {
             if (!this.txt_numberFragment1.getValue().toString().trim().equals("")) {
                 try {
@@ -1354,7 +1361,7 @@ public class specimenGeneration extends AbstractPageBean {
         this.genParms.setUseLifeForm(this.getSessionManager().useLifeForms());
         this.genParms.setUseGatheringDetail(this.getSessionManager().useGatheringDetail());
 
-        // Datos de la identificaci�n
+        // Datos de la identificacion
         // Agregar los datos solamente si hay taxones seleccionados
         if (this.getgathering$SpecimenGenerationSessionBean().getSelectedTaxon()!=null) {
             if (this.getgathering$SpecimenGenerationSessionBean().getSelectedTaxon().length > 0) {
@@ -1366,18 +1373,18 @@ public class specimenGeneration extends AbstractPageBean {
                         this.genParms.setIdentifierArray(this.getgathering$SpecimenGenerationSessionBean().getSelectedIdentifier());
                     }
                 }
-                // Fecha de la identificaci�n
+                // Fecha de la identificacion
                 this.genParms.setIdentificationDate(this.getCal_identificationDate1().getSelectedDate());
-                // Tipo de identificaci�n
+                // Tipo de identificacion
                 this.genParms.setIdentificationTypeId(this.getgathering$SpecimenGenerationSessionBean().getSelectedIdentificationType());
-                // Estado de la identificaci�n
+                // Estado de la identificacion
                 this.genParms.setIdentificationStatusId(this.getgathering$SpecimenGenerationSessionBean().getSelectedIdentificationStatus());
-                // Validador de la identificaci�n
+                // Validador de la identificacion
                 this.genParms.setValuerPersonId(this.getgathering$SpecimenGenerationSessionBean().getSelectedIdentificationValidator());
             }
         }
 
-        // Validaciones para la categor�a de especimen "Observaci�n"
+        // Validaciones para la categoria de especimen "Observacion"
         if (this.getgathering$SpecimenGenerationSessionBean().getSelectedSpecimenCategory().equals(1L) && this.getgathering$SpecimenGenerationSessionBean().getObservationDate() != null) {
             try {
                 //this.genParms.setDateTime(getgathering$SpecimenGenerationSessionBean().getObservationDate());
@@ -1403,6 +1410,8 @@ public class specimenGeneration extends AbstractPageBean {
                     this.getutil$MessageBean().addSuccessMessage(SPECIMEN_GENERATION_SUCCESS);
                     this.genParms = new SpecimenGenParms();
                     this.getgathering$SpecimenGenerationSessionBean().cleanParameters();
+                    this.txt_quantity1.setText("");
+                    this.txt_initCatalogNumber.setText("");
                     this.getgathering$GatheringSessionBeanV2().setEditMode(false);
                 } else {
                     this.getutil$MessageBean().addErrorMessage(SPECIMEN_GENERATION_FAILED + lookupSpecimenIdentificationGeneratorBean().getMessage());
@@ -1419,34 +1428,66 @@ public class specimenGeneration extends AbstractPageBean {
         Long specimenCategory;
 
         // Validaciones generales
-        // N�mero de espec�menes no nulo
+        // Numero de especimenes no nulo
         if (this.txt_quantity1.getValue() == null) {
-            this.getutil$MessageBean().addErrorMessage(SPECIMEN_AMOUNT_REQUIRED);
+            getutil$MessageBean().addErrorMessage(SPECIMEN_AMOUNT_REQUIRED);
             return false;
         }
-
-        // N�mero de espec�menes entero v�lido
+        // Numero de especimenes entero valido
         try {
             int quantity = Integer.parseInt(this.txt_quantity1.getValue().toString());
             if (quantity <= 0) {
-                this.getutil$MessageBean().addErrorMessage(SPECIMEN_AMOUNT_ZERO);
+                getutil$MessageBean().addErrorMessage(SPECIMEN_AMOUNT_ZERO);
                 return false;
             }
         } catch (NumberFormatException ex) {
             this.getutil$MessageBean().addErrorMessage(SPECIMEN_AMOUNT_INVALID_VALUE);
             return false;
         }
-
         // Cantidad de especimenes es valida, definir el valor
-        this.genParms.setQuantity(Integer.parseInt(this.txt_quantity1.getValue().toString()));
+        genParms.setQuantity(Integer.
+                parseInt(txt_quantity1.getValue().toString()));
 
-        // M�todo de colecta
+
+        //Valida que el rango dado por el desplazamiento "catalog_number" y la
+        //longitud "cantidad", no tenga especimenes ya asignados
+        if(this.txt_initCatalogNumber.getValue() == null) {
+            getutil$MessageBean().setErrorMessageFromBundle("catalog_num_required");
+            return false;
+        }
+        try {   //Verificacion del numero
+            Long catalogNumber =
+                    Long.parseLong(txt_initCatalogNumber.getValue().toString());
+            if(catalogNumber < 0L) {
+                getutil$MessageBean().
+                        setErrorMessageFromBundle("catalog_num_required");
+                return false;
+            }
+            for(Long i = catalogNumber;
+                i < (catalogNumber + genParms.getQuantity());  i++) {
+                if(getspecimen$SpecimenSessionBean().getSpecimenBean().
+                        getSpecimenByCatalogNumber(i) != null) {
+                    getutil$MessageBean().
+                            setErrorMessageFromBundle("wrong_catalog_number");
+                    return false;
+                }
+            }
+        } catch (NumberFormatException ex) {
+            getutil$MessageBean().getMessageFromBundle("catalog_num_required");
+            return false;
+        }
+        //Catalog Number valido: definir el valor en SpecimenGenParms
+        genParms.setInitialCatalogNumber(Long.
+                parseLong(txt_initCatalogNumber.getValue().toString()));
+
+        
+        // Metodo de colecta
         if (this.getgathering$SpecimenGenerationSessionBean().getSelectedGatheringMethod().equals(-1L)) {
             this.getutil$MessageBean().addErrorMessage(CHOOSE_METHOD);
             return false;
         }
 
-        // Categor�a de especimen
+        // Categoria de especimen
         if (this.getgathering$SpecimenGenerationSessionBean().getSelectedSpecimenCategory().equals(-1L)) {
             this.getutil$MessageBean().addErrorMessage(CHOOSE_CATEGORY);
             return false;
@@ -1540,7 +1581,7 @@ public class specimenGeneration extends AbstractPageBean {
                 }
             }
 
-            // N�mero de espec�menes no nulo
+            // N�mero de especimenes no nulo
             if (this.txt_numberWhole1.getValue() == null) {
                 this.getutil$MessageBean().addErrorMessage(SPECIMEN_AMOUNT_REQUIRED);
                 return false;
@@ -1561,7 +1602,7 @@ public class specimenGeneration extends AbstractPageBean {
             this.genParms.setNumberWhole(Long.parseLong(this.txt_numberWhole1.getValue().toString()));
         }
 
-        // Validaciones para la categor�a de especimen "Agrupados multitax�n"
+        // Validaciones para la categor�a de especimen "Agrupados multitaxon"
         if (specimenCategory.equals(4L)) {
             this.genParms.setUseMultipleLifeStageSex(true);
             // N�mero de espec�menes no nulo
@@ -1570,7 +1611,7 @@ public class specimenGeneration extends AbstractPageBean {
                 return false;
             }
 
-            // N�mero de enteros - entero v�lido
+            // Numero de enteros - entero valido
             try {
                 int wholeNumber = Integer.parseInt(this.txt_numberWhole1.getValue().toString());
                 if (wholeNumber <=0) {

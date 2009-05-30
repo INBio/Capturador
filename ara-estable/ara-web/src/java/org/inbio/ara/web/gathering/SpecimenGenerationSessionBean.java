@@ -85,6 +85,8 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     private Long selectedGatheringMethod = -1L;
     private Option[] extractionMethod;
     private Long selectedExtractionMethod = -1L;
+    private Option[] institution;
+    private Long selectedInstitution = 1L;
     private Date observationDate;
     private int hour;
     private int minute;
@@ -469,16 +471,17 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     }
     
     public void populateOptions() {
-        // Estas listas corresponden a la generaci�n de espec�menes
+        // Estas listas corresponden a la generacion de especimenes
         this.setSpecimenCategoryOption(this.getSelectionListBean().getSpecimenCategory());
         this.setSpecimenTypeOption(this.getSelectionListBean().getSpecimenType());
         this.setSubstrateOption(this.getSelectionListBean().getSubstrate());
         this.setGatheringMethods(this.getSelectionListBean().getGatheringObservationMethod());
         // this.setSelectedGatheringMethod(this.getSessionManager().getDefaultGatheringMethod());
         this.setExtractionMethod(this.getSelectionListBean().getExtractionType());
+        this.setInstitution(this.getSelectionListBean().getInstitution());
         
         if (this.selectedSpecimenCategory == 1L) {
-            // La categor�a de especimen es observaci�n, las siguientes listas se tornan nulas.
+            // La categoria de especimen es observacion, las siguientes listas se tornan nulas.
             this.setStorageTypeOption(new Option[]{});
             this.selectedStorageType = -1L;
             this.setOriginOption(new Option[]{});
@@ -492,11 +495,11 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
                 this.setPreservationMediumOption(this.getSelectionListBean().getPreservationMedium());
             }
         }
-        // Esta lista se define mediante un protocolo de colecci�n
+        // Esta lista se define mediante un protocolo de coleccion
         if (this.getSessionManager().useLifeForms()) {
             this.setLifeFormOption(this.getSelectionListBean().getLifeForm());
         }
-        // Estas listas corresponden a la generaci�n de identificaciones
+        // Estas listas corresponden a la generacion de identificaciones
         this.setLifeStageOption(this.getSelectionListBean().getLifeStage());
         this.setSexOption(this.getSelectionListBean().getSex());
         this.setTaxonomicalRangeOption(this.getSelectionListBean().getTaxonomicalRange());
@@ -567,6 +570,22 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     public void setSelectedExtractionMethod(Long selectedExtractionMethod) {
         this.selectedExtractionMethod = selectedExtractionMethod;
     }
+
+    public Option[] getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Option[] institution) {
+        this.institution = institution;
+    }
+
+    public Long getSelectedInstitution() {
+        return (institution == null) ? -1L : selectedInstitution;
+    }
+
+    public void setSelectedInstitution(Long selectedInstitution) {
+        this.selectedInstitution = selectedInstitution;
+    }
     
     public void cleanParameters() {
         specimenCategoryOption = null;
@@ -607,6 +626,8 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
         selectedGatheringMethod = -1L;
         extractionMethod = null;
         selectedExtractionMethod = -1L;
+        institution = null;
+        selectedInstitution = -1L;
     }
 
     public Date getObservationDate() {

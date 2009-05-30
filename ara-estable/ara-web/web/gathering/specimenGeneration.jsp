@@ -13,7 +13,7 @@
                     <webuijsf:panelLayout id="contenido" style="position: relative; -rave-layout: grid">
                         <webuijsf:form binding="#{gathering$specimenGeneration.form1}" id="form1">
                             <h:messages binding="#{gathering$specimenGeneration.messageList1}" errorClass="errorMessage" fatalClass="fatalMessage"
-                                id="messageList1" infoClass="infoMessage" style="left: 432px; top: 24px; position: absolute; width: 216px" warnClass="warnMessage"/>
+                                id="messageList1" infoClass="infoMessage" style="left: 400px; top: 24px; position: absolute; width: 216px" warnClass="warnMessage"/>
                             <webuijsf:label binding="#{gathering$specimenGeneration.label1}" id="label1"
                                 style="font-size: 24px; height: 22px; left: 24px; top: 24px; position: absolute; width: 358px" text="#{resources.sp_gen_and_identifications}"/>
                             <webuijsf:label binding="#{gathering$specimenGeneration.label2}" id="label2"
@@ -24,7 +24,7 @@
                             <webuijsf:button actionExpression="#{gathering$specimenGeneration.btn_generate_action}"
                                 binding="#{gathering$specimenGeneration.btn_generate}" id="btn_generate"
                                 style="height: 24px; left: 671px; top: 24px; position: absolute; width: 144px" text="#{resources.generate}"/>
-                            <webuijsf:panelLayout binding="#{gathering$specimenGeneration.lyt_basicOptions1}" id="lyt_basicOptions1" style="height: 238px; left: 24px; top: 144px; position: absolute; width: 934px; -rave-layout: grid">
+                            <webuijsf:panelLayout binding="#{gathering$specimenGeneration.lyt_basicOptions1}" id="lyt_basicOptions1" style="border-width: 1px; border-style: solid; height: 142px; left: 24px; top: 144px; position: absolute; width: 934px; -rave-layout: grid">
                                 <webuijsf:label binding="#{gathering$specimenGeneration.label_specimensQuantity}" id="label_specimensQuantity"
                                     style="left: 0px; top: 0px; position: absolute" text="#{resources.quantity}"/>
                                 <webuijsf:textField binding="#{gathering$specimenGeneration.txt_quantity1}" columns="7" id="txt_quantity1" maxLength="7" style="left: 168px; top: 0px; position: absolute; width: 71px"/>
@@ -45,6 +45,8 @@
                                 <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_origin1}" id="dd_origin1"
                                     items="#{gathering$SpecimenGenerationSessionBean.originOption}"
                                     selected="#{gathering$SpecimenGenerationSessionBean.selectedOrigin}" style="left: 168px; top: 96px; position: absolute"/>
+                                <webuijsf:label id="label_catalogNumber" style="left: 0px; top: 120px; position: absolute" text="#{resources.initial_catalog_number}"/>
+                                <webuijsf:textField binding="#{gathering$specimenGeneration.txt_initCatalogNumber}" columns="7" id="txt_initCatalogNumber" style="left: 168px; top: 120px; position: absolute"/>
                                 <webuijsf:label binding="#{gathering$specimenGeneration.label_preservationMedium}" id="label_preservationMedium"
                                     style="left: 360px; top: 0px; position: absolute" text="#{resources.preservation_medium}"/>
                                 <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_preservationMedium1}" id="dd_preservationMedium1"
@@ -64,24 +66,29 @@
                                     style="left: 360px; top: 72px; position: absolute" text="#{resources.extraction_method}"/>
                                 <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_extractionType}" id="dd_extractionType"
                                     items="#{gathering$SpecimenGenerationSessionBean.extractionMethod}"
-                                    selected="#{gathering$SpecimenGenerationSessionBean.selectedExtractionMethod}" style="left: 504px; top: 72px; position: absolute"/>
+                                    selected="#{gathering$SpecimenGenerationSessionBean.selectedExtractionMethod}"
+                                    style="left: 504px; top: 72px; position: absolute" valueChangeListenerExpression="#{gathering$specimenGeneration.dd_extractionType_processValueChange}"/>
                                 <webuijsf:label binding="#{gathering$specimenGeneration.label_gatheringMethod}" id="label_gatheringMethod"
                                     style="left: 0px; top: 24px; position: absolute" text="#{resources.gath_method}"/>
                                 <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_gatheringObservationMethod}" id="dd_gatheringObservationMethod"
                                     items="#{gathering$SpecimenGenerationSessionBean.gatheringMethods}"
                                     selected="#{gathering$SpecimenGenerationSessionBean.selectedGatheringMethod}" style="left: 168px; top: 24px; position: absolute"/>
+                                <webuijsf:label binding="#{gathering$specimenGeneration.label_certaintyLevel}" id="label_certaintyLevel"
+                                    style="left: 360px; top: 96px; position: absolute" text="#{resources.certainty_level}"/>
                                 <webuijsf:textField binding="#{gathering$specimenGeneration.txt_certaintyLevel1}" id="txt_certaintyLevel1" style="left: 504px; top: 96px; position: absolute"/>
+                                <webuijsf:label id="label_institution" style="left: 360px; top: 120px; position: absolute" text="#{resources.institution}"/>
+                                <webuijsf:dropDown id="dd_institution" items="#{gathering$SpecimenGenerationSessionBean.institution}"
+                                    selected="#{gathering$SpecimenGenerationSessionBean.selectedInstitution}"
+                                    style="position: absolute; left: 504px; top: 120px; height: 24px" width="48"/>
+                                <webuijsf:label binding="#{gathering$specimenGeneration.label_observationDate}" id="label_observationDate"
+                                    style="left: 672px; top: 0px; position: absolute" text="#{resources.date}"/>
                                 <webuijsf:calendar binding="#{gathering$specimenGeneration.cal_ObsDate1}" id="cal_ObsDate1"
                                     selectedDate="#{gathering$SpecimenGenerationSessionBean.observationDate}" style="left: 744px; top: 0px; position: absolute"/>
                                 <webuijsf:label binding="#{gathering$specimenGeneration.label_observationTime}" id="label_observationTime"
                                     style="left: 672px; top: 24px; position: absolute" text="#{resources.time}"/>
-                                <webuijsf:label binding="#{gathering$specimenGeneration.label_observationDate}" id="label_observationDate"
-                                    style="left: 672px; top: 0px; position: absolute" text="#{resources.date}"/>
-                                <webuijsf:label binding="#{gathering$specimenGeneration.label_certaintyLevel}" id="label_certaintyLevel"
-                                    style="left: 360px; top: 96px; position: absolute" text="#{resources.certainty_level}"/>
                                 <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_hour}" id="dd_hour"
                                     items="#{gathering$specimenGeneration.dd_hourDefaultOptions.options}"
-                                    selected="#{gathering$SpecimenGenerationSessionBean.hour}" style="left: 744px; top: 24px; position: absolute"/>
+                                    selected="#{gathering$SpecimenGenerationSessionBean.hour}" style="left: 768px; top: 24px; position: absolute"/>
                                 <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_minute}" id="dd_minute"
                                     items="#{gathering$specimenGeneration.dd_minuteDefaultOptions.options}"
                                     selected="#{gathering$SpecimenGenerationSessionBean.minute}" style="left: 864px; top: 24px; position: absolute"/>
@@ -89,7 +96,7 @@
                             <webuijsf:button actionExpression="#{gathering$specimenGeneration.btn_showSpecimenList_action}"
                                 binding="#{gathering$specimenGeneration.btn_showSpecimenList}" id="btn_showSpecimenList"
                                 style="height: 24px; left: 839px; top: 24px; position: absolute; width: 167px" text="#{resources.view_generated_specimens}"/>
-                            <webuijsf:panelLayout id="layoutPanel_specimenGenerationOption" panelLayout="flow" style="height: 430px; left: 24px; top: 264px; position: absolute; width: 766px">
+                            <webuijsf:panelLayout id="layoutPanel_specimenGenerationOption" panelLayout="flow" style="height: 430px; left: 24px; top: 312px; position: absolute; width: 766px">
                                 <webuijsf:tabSet id="tabSet_specimenGeneratorOption" selected="tab_Identification" style="width: 839px">
                                     <webuijsf:tab id="tab_Identification" tabIndex="1" text="#{resources.identification}">
                                         <webuijsf:panelLayout id="layoutPanel_Identification" style="height: 396px; position: relative; width: 792px; -rave-layout: grid">
