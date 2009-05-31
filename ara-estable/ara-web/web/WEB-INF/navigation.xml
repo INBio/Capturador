@@ -781,9 +781,21 @@
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
-
+    <navigation-rule>
+		<from-view-id>/gathering/SearchGathering.jsp</from-view-id>
+        <navigation-case>
+			<from-outcome>gath_obs_list</from-outcome>
+			<to-view-id>/gathering/gatheringList.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+    </navigation-rule>
 	<navigation-rule>
 		<from-view-id>/gathering/gatheringList.jsp</from-view-id>
+        <navigation-case>
+			<from-outcome>search</from-outcome>
+			<to-view-id>/gathering/SearchGathering.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
 		<navigation-case>
 			<from-outcome>newGathering</from-outcome>
 			<to-view-id>/gathering/GatheringNew.jsp</to-view-id>

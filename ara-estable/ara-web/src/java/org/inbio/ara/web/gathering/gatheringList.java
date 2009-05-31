@@ -353,14 +353,14 @@ public class gatheringList extends AbstractPageBean {
         this.btn_remove = b;
     }
 
-    private Button btn_new = new Button();
+    private Button btn_new1 = new Button();
 
-    public Button getBtn_new() {
-        return btn_new;
+    public Button getBtn_new1() {
+        return btn_new1;
     }
 
-    public void setBtn_new(Button b) {
-        this.btn_new = b;
+    public void setBtn_new1(Button b) {
+        this.btn_new1 = b;
     }
     
     // </editor-fold>
@@ -425,6 +425,7 @@ public class gatheringList extends AbstractPageBean {
      * this page.</p>
      */
     public void prerender() {
+        this.getgathering$GatheringSessionBeanV2().initDataProvider();
     }
     
     /**
@@ -574,11 +575,6 @@ public class gatheringList extends AbstractPageBean {
         }
     }
 
-    /*
-    public String btn_new_action() {
-        return "newGathering";
-    }
-     */
     public String btn_new_action() {
         if (this.getSessionManager().canAdd() != null) {
             return this.getSessionManager().canAdd();
@@ -588,11 +584,8 @@ public class gatheringList extends AbstractPageBean {
         }
     }    
 
-    public String btn_search_action() {
-        // TODO: Process the action. Return value is a navigation
-        // case name where null will return to the same page.
-        
-        return null;
+    public String btn_search_action() {        
+        return "search";
     }
 
 
@@ -675,13 +668,6 @@ public class gatheringList extends AbstractPageBean {
      */
     protected SpecimenSessionBean getspecimen$SpecimenSessionBean() {
         return (SpecimenSessionBean)getBean("specimen$SpecimenSessionBean");
-    }
-
-    public String btn_new1_action() {
-        // TODO: Process the action. Return value is a navigation
-        // case name where null will return to the same page.
-        
-        return null;
     }
 }
 

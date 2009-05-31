@@ -6,7 +6,7 @@
             <webuijsf:html binding="#{gathering$gatheringList.html1}" id="html1">
                 <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:script  id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
+                    <webuijsf:script id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
                 </webuijsf:head>
                 <webuijsf:body binding="#{gathering$gatheringList.body1}" id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header.jspf"/>
@@ -51,15 +51,11 @@
                                     </webuijsf:tableColumn>
                                 </webuijsf:tableRowGroup>
                                 <f:facet name="actionsTop">
-                                    <webuijsf:button actionExpression="#{gathering$gatheringList.btn_new_action}" binding="#{gathering$gatheringList.btn_new}"
-                                        id="btn_new" text="#{resources.btnNew}"/>
+                                    <webuijsf:panelGroup id="groupPanel1">
+                                        <webuijsf:button actionExpression="#{gathering$gatheringList.btn_new_action}" id="btn_new" text="#{resources.btnNew}"/>
+                                        <webuijsf:button actionExpression="#{gathering$gatheringList.btn_search_action}" id="btn_search" text="#{resources.btnSearch}"/>
+                                    </webuijsf:panelGroup>
                                 </f:facet>
-                                <!--
-							<f:facet name="actionsTop">
-								<webuijsf:button actionExpression="#{gathering$gatheringList.btn_search_action}" binding="#{gathering$gatheringList.btn_search}"
-									id="btn_search" text="#{resources.btnSearch}"/>
-							</f:facet>
-							-->
                             </webuijsf:table>
                         </webuijsf:form>
                     </webuijsf:panelLayout>

@@ -33,6 +33,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.inbio.ara.facade.gathering.GatheringRemote;
+import org.inbio.ara.facade.util.SearchManagerRemote;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
 import org.inbio.ara.persistence.gathering.GatheringObservationDetail;
 import org.inbio.ara.web.ApplicationBean1;
@@ -71,7 +72,7 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
     private Long[] selectedCollections;
     private boolean editMode = false;
     private GatheringDetailDataProvider gatheringDetailDataProvider = new GatheringDetailDataProvider();
-    
+    private boolean filtered = false; //Usada en la busqueda de recolecciones/observaciones
     /**
      * <p>Automatically managed component initialization.  <strong>WARNING:</strong>
      * This method is automatically generated, so any user-specified code inserted
@@ -447,6 +448,43 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
         collections = null;
         selectedCollections = null;
         gatheringDetailDataProvider = new GatheringDetailDataProvider();
+    }
+
+    private SearchManagerRemote lookupSearchManagerBean() {
+        try {
+            Context c = new InitialContext();
+            return (SearchManagerRemote) c.lookup("SearchManagerBean");
+        }
+        catch(NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public SearchManagerRemote getSearchManager() {
+        return this.lookupSearchManagerBean();
+    }
+
+    /**
+     * @return the filtered
+     */
+    public boolean isFiltered() {
+        return filtered;
+    }
+
+    /**
+     * @param filtered the filtered to set
+     */
+    public void setFiltered(boolean filtered) {
+        this.filtered = filtered;
+    }
+
+    public void initDataProvider() {
+        if (!filtered) {
+            this.gatheringDataProvider.clearObjectList();
+            this.gatheringDataProvider.refreshDataList(getSessionManager().
+                    getCollection().getId());
+        }
     }
     
 }
