@@ -14,12 +14,6 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
-/*
- * searchPerson.java
- *
- * Created on 4 de febrero de 2008, 09:46 AM
- * Copyright herson
  */
 package org.inbio.ara.web.admin.person;
 
@@ -618,56 +612,56 @@ public class searchPerson extends AbstractPageBean {
         }
         if(getFirstNameTF().getText() != null) {
             String first = getFirstNameTF().getText().toString();
-            if (!first.matches("[a-zA-Záéíóú�?É�?ÓÚñÑ -]*")) {
+            if (!first.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
                 message += BundleHelper.getDefaultBundleValue("first_name_error");
                 isValid = false;
             }
         }
         if(getLastNameTF().getText() != null) {
             String last = getLastNameTF().getText().toString();
-            if (!last.matches("[a-zA-Záéíóú�?É�?ÓÚñÑ -]*")) {
+            if (!last.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
                 message += BundleHelper.getDefaultBundleValue("last_name_error");
                 isValid = false;
             }
         }
         if(getSecondLastNameTF().getText() != null) {
             String second = getSecondLastNameTF().getText().toString();
-            if (!second.matches("[a-zA-Záéíóú�?É�?ÓÚñÑ -]*")) {
+            if (!second.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
                 message += BundleHelper.getDefaultBundleValue("second_name_error");
                 isValid = false;
             }
         }
         if(getInitialsTF().getText() != null) {
             String initials = getInitialsTF().getText().toString();
-            if (!initials.matches("[a-zA-Záéíóú�?É�?ÓÚñÑ. ]*")) {
+            if (!initials.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]*")) {
                 message += BundleHelper.getDefaultBundleValue("initials_error");
                 isValid = false;
             }
         }
         if(getOccupationTF().getText() != null) {
             String occupation = getOccupationTF().getText().toString();
-            if (!occupation.matches("[0-9a-zA-Záéíóú�?É�?ÓÚñÑ -]*")) {
+            if (!occupation.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
                 message += BundleHelper.getDefaultBundleValue("occupation_error");
                 isValid = false;
             }
         }
         if(getCityTF().getText() != null) {
             String city = getCityTF().getText().toString();
-            if (!city.matches("[0-9a-zA-Záéíóú�?É�?ÓÚñÑ -]*")) {
+            if (!city.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
                 message += BundleHelper.getDefaultBundleValue("city_error");
                 isValid = false;
             }
         }
         if(getStateNameTF().getText() != null) {
             String state = getStateNameTF().getText().toString();
-            if (!state.matches("[0-9a-zA-Záéíóú�?É�?ÓÚñÑ -]*")) {
+            if (!state.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
                 message += BundleHelper.getDefaultBundleValue("state_error");
                 isValid = false;
             }
         }
         if(getCountryTF().getText() != null) {
             String country = getCountryTF().getText().toString();
-            if (!country.matches("[0-9a-zA-Záéíóú�?É�?ÓÚñÑ -]*")) {
+            if (!country.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
                 message += BundleHelper.getDefaultBundleValue("country_error");
                 isValid = false;
             }
