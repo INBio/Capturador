@@ -66,4 +66,6 @@ public interface ShareEAOLocal extends BaseLocalEAO {
 
     public java.lang.Long getTaxonIdentificationIdAM(java.lang.Long sId, java.lang.Long iSequence);
 
+    public void truncateDwcSnapshot();
+
 }

@@ -100,6 +100,11 @@ public class ShareEAOBean extends BaseEAOImpl implements ShareEAOLocal{
         int result = q.executeUpdate();
         return result;
     }
+    @Override
+    public void truncateDwcSnapshot(){
+        Query q = em.createNativeQuery("truncate ara.dwc_snapshot;");
+        q.executeUpdate();
+    }
 
     //Method to dellete all entries from darwin core 14 table
     @Override

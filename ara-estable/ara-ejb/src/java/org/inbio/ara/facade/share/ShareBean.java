@@ -52,8 +52,7 @@ public class ShareBean implements ShareRemote, ShareLocal {
     public String makeDcwSnapshotAll(){
         try{
             //Delete all snapshot entries
-            int deleted = SEAOL.deleteAllDwcSnapshot();
-            System.out.println("Entradas eliminadas: "+deleted);
+            SEAOL.truncateDwcSnapshot();
 
             //Retrive information
             List<DarwinCore14> dwcInfo = SEAOL.retriveInformationDcwAll();
@@ -121,18 +120,17 @@ public class ShareBean implements ShareRemote, ShareLocal {
     public String makeDcwSnapshot(LinkedList<QueryNode> qnlist,LinkedList<String> elist, int validate){
         try{
             //Delete all snapshot entries
-            int deleted = SEAOL.deleteAllDwcSnapshot();
-            System.out.println("Entradas eliminadas: "+deleted);
+            SEAOL.truncateDwcSnapshot();
 
             //Make "Select" query
             String select = makeQueryString(qnlist,elist,validate);
-            System.out.println(select); //To check string
+            //System.out.println(select); //To check string
 
             //Retrive information
             List<DarwinCore14> dwcInfo = SEAOL.retriveInformationDcw(select);
-            System.out.println(dwcInfo.size()); //To check content
+            //System.out.println(dwcInfo.size()); //To check content
 
-            //Populate snapshot and persist the entries (objects)
+            //Populate snapshot and persist the entries (entities)
             for (DarwinCore14 dwcAux : dwcInfo){
                 DwcSnapshot snapshotEntry = new DwcSnapshot();
                 for(int i=0;i<elist.size();i++){                    
