@@ -21,13 +21,14 @@ import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.Calendar;
 import com.sun.webui.jsf.component.PageAlert;
 import com.sun.webui.jsf.component.TextField;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import javax.faces.FacesException;
 import org.inbio.ara.facade.util.SearchManagerRemote;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
 import org.inbio.ara.web.StringUtils;
-import org.inbio.ara.web.specimen.SpecimenSessionBean;
 import org.inbio.ara.web.util.BundleHelper;
 
 public class SearchGathering extends AbstractPageBean {
@@ -198,15 +199,20 @@ public class SearchGathering extends AbstractPageBean {
         }
         if (cal_init_date.getText() != null) {
             searchCriteria.put("table.initialDate = ",
-                        cal_init_date.getText().toString());
+            "'"+to_char_date(cal_init_date.getSelectedDate(), "yyyy-MM-dd")+"'");
         }
         if (cal_final_date.getText() != null) {
             searchCriteria.put("table.finalDate = ",
-                        cal_final_date.getText().toString());
+            "'"+to_char_date(cal_final_date.getSelectedDate(), "yyyy-MM-dd")+"'");
         }
         if (txt_resposible.getText() != null) {
+            String resp = txt_resposible.getText().toString().toLowerCase();
             searchCriteria.put("lower(table.responsiblePerson.firstName) like ",
-               "'%" + txt_resposible.getText().toString().toLowerCase() + "%'");
+               "'%" + resp + "%'" +
+               " or lower(table.responsiblePerson.lastName) like " +
+               "'%" + resp + "%'" +
+               " or lower(table.responsiblePerson.secondLastName) like " +
+               "'%" + resp + "%'");
         }
         if (txt_collection.getText() != null) {
             searchCriteria.put("lower(table.collection.name) like ",
@@ -243,12 +249,12 @@ public class SearchGathering extends AbstractPageBean {
             }
         }
         if (cal_init_date.getText() != null) {
-            String initial_date = cal_init_date.getText().toString();
-            System.out.println("Init Date " + initial_date);
+            Date d = new Date();
+            d = cal_init_date.getSelectedDate();
         }
         if (cal_final_date.getText() != null) {
-            String final_date = cal_final_date.getText().toString();
-            System.out.println("Final date " + final_date);
+            Date d = new Date();
+            d = cal_final_date.getSelectedDate();
         }
         if (txt_resposible.getText() != null) {
             String responsible = txt_resposible.getText().toString();
@@ -279,6 +285,14 @@ public class SearchGathering extends AbstractPageBean {
      */
     protected GatheringSessionBeanV2 getgathering$GatheringSessionBeanV2() {
         return (GatheringSessionBeanV2)getBean("gathering$GatheringSessionBeanV2");
+    }
+
+    private String to_char_date(Date date, String format) {
+        if(date != null){
+            SimpleDateFormat df = new SimpleDateFormat(format);
+            return df.format(date);
+        }
+        else return "";
     }
 
 }
