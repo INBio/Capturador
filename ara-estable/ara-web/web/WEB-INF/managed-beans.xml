@@ -621,4 +621,9 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <managed-bean-name>gathering$SearchGathering</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.gathering.SearchGathering</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>
