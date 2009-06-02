@@ -6,18 +6,19 @@
             <webuijsf:html binding="#{species$speciesList.html1}" id="html1">
                 <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:script  id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
+                    <webuijsf:script id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
                 </webuijsf:head>
                 <webuijsf:body binding="#{species$speciesList.body1}" id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header.jspf"/>
                     <webuijsf:panelLayout id="contenido" style="position: relative; -rave-layout: grid">
                         <webuijsf:form binding="#{species$speciesList.form1}" id="form1">
                             <webuijsf:table binding="#{species$speciesList.table1}" clearSortButton="true" id="table1" paginateButton="true"
-                                paginationControls="true" sortPanelToggleButton="true" style="left: 48px; top: 72px; position: absolute; width: 672px"
-                                title="#{resources.species_records}" width="672">
+                                paginationControls="true" sortPanelToggleButton="true" style="left: 48px; top: 96px; position: absolute"
+                                title="#{resources.species_records}" width="840">
                                 <webuijsf:tableRowGroup binding="#{species$speciesList.tableRowGroup1}" id="tableRowGroup1" rows="10"
                                     sourceData="#{species$SpeciesSessionBean.taxonDescriptionDataProvider}" sourceVar="currentRow">
-                                    <webuijsf:tableColumn binding="#{species$speciesList.tableColumn1}" headerText="#{resources.taxon_id}" id="tableColumn1" sort="taxonId">
+                                    <webuijsf:tableColumn binding="#{species$speciesList.tableColumn1}" headerText="#{resources.taxon_id}" id="tableColumn1"
+                                        sort="taxonId" width="798">
                                         <webuijsf:staticText binding="#{species$speciesList.staticText1}" id="staticText1" text="#{currentRow.value['taxonId']}"/>
                                     </webuijsf:tableColumn>
                                     <webuijsf:tableColumn binding="#{species$speciesList.tableColumn6}" headerText="#{resources.sequence}" id="tableColumn6" sort="sequence">
@@ -55,7 +56,8 @@
                                 </f:facet>
                             </webuijsf:table>
                             <h:messages binding="#{species$speciesList.messageList1}" errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1"
-                                infoClass="infoMessage" style="left: 384px; top: 24px; position: absolute" warnClass="warnMessage"/>
+                                infoClass="infoMessage" style="left: 408px; top: 24px; position: absolute" warnClass="warnMessage"/>
+                            <webuijsf:label id="label1" style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 334px" text="#{resources.species_records}"/>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
                     <jsp:directive.include file="/footer.jspf"/>
