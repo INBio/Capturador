@@ -4,10 +4,10 @@
     <f:view>
         <webuijsf:page binding="#{collectionSelect.page1}" id="page1">
             <webuijsf:html binding="#{collectionSelect.html1}" id="html1">
-	<webuijsf:head binding="#{Header_Login.head1}" id="head1">
-		<webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-		<webuijsf:script  id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
-	</webuijsf:head>
+                <webuijsf:head binding="#{Header_Login.head1}" id="head1">
+                    <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
+                    <webuijsf:script id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
+                </webuijsf:head>
                 <webuijsf:body binding="#{collectionSelect.body1}" id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header_Login.jspf"/>
                     <webuijsf:panelLayout id="contenido">
@@ -27,7 +27,7 @@
                             <webuijsf:staticText binding="#{collectionSelect.staticText2}" id="staticText2"
                                 style="font-weight: bold; left: 312px; top: 72px; position: absolute" text="#{resources.available_groups}"/>
                             <webuijsf:button actionExpression="#{collectionSelect.btn_continue_action}" binding="#{collectionSelect.btn_continue}"
-                                id="btn_continue" style="height: 24px; left: 239px; top: 312px; position: absolute; width: 71px" text="#{resources.continue}"/>
+                                id="btn_continue" style="height: 24px; left: 191px; top: 312px; position: absolute; width: 71px" text="#{resources.continue}"/>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
                     <jsp:directive.include file="/footer.jspf"/>
