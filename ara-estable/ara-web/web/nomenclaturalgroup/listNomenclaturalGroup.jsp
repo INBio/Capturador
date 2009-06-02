@@ -6,7 +6,7 @@
             <webuijsf:html binding="#{nomenclaturalgroup$listNomenclaturalGroup.html1}" id="html1">
                 <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:script  id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
+                    <webuijsf:script id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
                 </webuijsf:head>
                 <webuijsf:body binding="#{nomenclaturalgroup$listNomenclaturalGroup.body1}" id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header.jspf"/>
@@ -17,7 +17,7 @@
                             <h:messages binding="#{nomenclaturalgroup$listNomenclaturalGroup.messageList1}" errorClass="errorMessage" fatalClass="fatalMessage"
                                 id="messageList1" infoClass="infoMessage" style="left: 408px; top: 24px; position: absolute" warnClass="warnMessage"/>
                             <webuijsf:table binding="#{nomenclaturalgroup$listNomenclaturalGroup.table1}" clearSortButton="true" id="table1"
-                                paginateButton="true" paginationControls="true" style="left: 48px; top: 72px; position: absolute; width: 832px"
+                                paginateButton="true" paginationControls="true" style="left: 48px; top: 96px; position: absolute; width: 832px"
                                 title="#{resources.nomenclatural_groups}" width="832">
                                 <webuijsf:tableRowGroup binding="#{nomenclaturalgroup$listNomenclaturalGroup.tableRowGroup1}" id="tableRowGroup1" rows="10"
                                     sourceData="#{nomenclaturalgroup$NomenclaturalGroupSessionBean.nomenclaturalGroupDataProvider}" sourceVar="currentRow">
