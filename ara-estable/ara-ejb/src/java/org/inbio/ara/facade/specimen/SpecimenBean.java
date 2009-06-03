@@ -519,23 +519,23 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
 
         //Mandatory
         QueryNode qn = sll.getFirst();
-        jpqlQuery += "o." + qn.getDwcElement();
+        jpqlQuery += "lower(o." + qn.getDwcElement() + ")";
         jpqlQuery += " " + qn.getComparator() + " ";
         if (qn.getComparator().equals("like")) {
-            jpqlQuery += "'%" + qn.getUserEntry() + "%'";
+            jpqlQuery += "'%" + qn.getUserEntry().toLowerCase() + "%'";
         } else {
-            jpqlQuery += "'" + qn.getUserEntry() + "'";
+            jpqlQuery += "'" + qn.getUserEntry().toLowerCase() + "'";
         }
         //Optional
         for(int i = 1; i < sll.size(); i++) {
             qn = sll.get(i);
             jpqlQuery += " " + qn.getLogicalOperator() + " ";
-            jpqlQuery += "o." + qn.getDwcElement();
+            jpqlQuery += "lower(o." + qn.getDwcElement() + ")";
             jpqlQuery += " " + qn.getComparator() + " ";
-			if (qn.getComparator() == "like") {
-				jpqlQuery += "'%" + qn.getUserEntry() + "%'";
+			if (qn.getComparator().equals("like")) {
+				jpqlQuery += "'%" + qn.getUserEntry().toLowerCase() + "%'";
 			} else {
-				jpqlQuery += "'" + qn.getUserEntry() + "'";
+				jpqlQuery += "'" + qn.getUserEntry().toLowerCase() + "'";
 			}
         }
         /*
