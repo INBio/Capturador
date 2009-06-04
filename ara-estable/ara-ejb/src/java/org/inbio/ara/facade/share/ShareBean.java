@@ -251,23 +251,23 @@ public class ShareBean implements ShareRemote, ShareLocal {
             jpqlQuery = "from DarwinCore14 as dc where ";
             //Mandatory
             QueryNode qn = llqn.getFirst();
-            jpqlQuery += "dc." + qn.getDwcElement();
+            jpqlQuery += "lower(dc." + qn.getDwcElement()+")";
             jpqlQuery += " " + qn.getComparator() + " ";
             if (qn.getComparator().equals("like")) {
-                jpqlQuery += "'%" + qn.getUserEntry() + "%'";
+                jpqlQuery += "'%" + qn.getUserEntry().toLowerCase() + "%'";
             } else {
-                jpqlQuery += "'" + qn.getUserEntry() + "'";
+                jpqlQuery += "'" + qn.getUserEntry().toLowerCase() + "'";
             }
             //Optional
             for(int i = 1; i < llqn.size(); i++) {
                 qn = llqn.get(i);
                 jpqlQuery += " " + qn.getLogicalOperator() + " ";
-                jpqlQuery += "dc." + qn.getDwcElement();
+                jpqlQuery += "lower(dc." + qn.getDwcElement()+")";
                 jpqlQuery += " " + qn.getComparator() + " ";
                 if (qn.getComparator().equals("like")) {
-                    jpqlQuery += "'%" + qn.getUserEntry() + "%'";
+                    jpqlQuery += "'%" + qn.getUserEntry().toLowerCase() + "%'";
                 } else {
-                    jpqlQuery += "'" + qn.getUserEntry() + "'";
+                    jpqlQuery += "'" + qn.getUserEntry().toLowerCase() + "'";
                 }
             }
             return jpqlQuery;
