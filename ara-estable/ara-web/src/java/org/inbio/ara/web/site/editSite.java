@@ -24,19 +24,14 @@
 package org.inbio.ara.web.site;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
-import com.sun.webui.jsf.component.Body;
 import com.sun.webui.jsf.component.Button;
 import com.sun.webui.jsf.component.DropDown;
-import com.sun.webui.jsf.component.Form;
-import com.sun.webui.jsf.component.Head;
-import com.sun.webui.jsf.component.Html;
 import com.sun.webui.jsf.component.Label;
 import com.sun.webui.jsf.component.Link;
 import com.sun.webui.jsf.component.Page;
 import com.sun.webui.jsf.component.PanelLayout;
 import com.sun.webui.jsf.component.StaticText;
 import com.sun.webui.jsf.component.Tab;
-import com.sun.webui.jsf.component.TabSet;
 import com.sun.webui.jsf.component.Table;
 import com.sun.webui.jsf.component.TableColumn;
 import com.sun.webui.jsf.component.TableRowGroup;
@@ -96,6 +91,10 @@ public class editSite extends AbstractPageBean {
 	public static final String THREE_COORDINATES_REQUIRED = BundleHelper.getDefaultBundleValue("three_coordinates_required");
 	public static final String TWO_COORIDNATES_REQUIRED = BundleHelper.getDefaultBundleValue("two_cooridnates_required");
     public static final String ONE_COORIDNATE_REQUIRED = BundleHelper.getDefaultBundleValue("one_cooridnates_required");
+    private TextField txt_longitude_minutes = new TextField();
+    private TextField txt_longitude_seconds = new TextField();
+    private TextField txt_latitude_minutes = new TextField();
+    private TextField txt_latitude_seconds = new TextField();
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
     private int __placeholder;
     
@@ -168,24 +167,24 @@ public class editSite extends AbstractPageBean {
         this.layoutPanel1 = pl;
     }
 
-    private TextField txt_longitude = new TextField();
+    private TextField txt_longitude_degrees = new TextField();
 
-    public TextField getTxt_longitude() {
-        return txt_longitude;
+    public TextField getTxt_longitude_degrees() {
+        return txt_longitude_degrees;
     }
 
-    public void setTxt_longitude(TextField tf) {
-        this.txt_longitude = tf;
+    public void setTxt_longitude_degrees(TextField tf) {
+        this.txt_longitude_degrees = tf;
     }
 
-    private TextField txt_latitude = new TextField();
+    private TextField txt_latitude_degrees = new TextField();
 
-    public TextField getTxt_latitude() {
-        return txt_latitude;
+    public TextField getTxt_latitude_degrees() {
+        return txt_latitude_degrees;
     }
 
-    public void setTxt_latitude(TextField tf) {
-        this.txt_latitude = tf;
+    public void setTxt_latitude_degrees(TextField tf) {
+        this.txt_latitude_degrees = tf;
     }
 
     private Button btn_addCoordinate = new Button();
@@ -680,11 +679,11 @@ public class editSite extends AbstractPageBean {
     private boolean validateLongitude() {
         Float tmp;
         String coordinate;
-        if (this.txt_longitude.getValue() == null) {
+        if (this.txt_longitude_degrees.getValue() == null) {
             this.getutil$MessageBean().addErrorMessage(INVALID_LONGITUDE);
             return false;
         }        
-        coordinate = this.txt_longitude.getValue().toString();
+        coordinate = this.txt_longitude_degrees.getValue().toString();
         if (coordinate.length() <= 0) {
             this.getutil$MessageBean().addErrorMessage(INVALID_LONGITUDE);
             return false;
@@ -706,11 +705,11 @@ public class editSite extends AbstractPageBean {
     private boolean validateLatitude() {
         Float tmp;
         String coordinate;
-        if (this.txt_latitude.getValue() == null) {
+        if (this.txt_latitude_degrees.getValue() == null) {
             this.getutil$MessageBean().addErrorMessage(INVALID_LATITUDE);
             return false;
         }        
-        coordinate = this.txt_latitude.getValue().toString();
+        coordinate = this.txt_latitude_degrees.getValue().toString();
         if (coordinate.length() <= 0) {
             this.getutil$MessageBean().addErrorMessage(INVALID_LATITUDE);
             return false;
@@ -725,6 +724,29 @@ public class editSite extends AbstractPageBean {
             }
         } catch (NumberFormatException ex) {
             this.getutil$MessageBean().addErrorMessage(INVALID_LATITUDE);
+            return false;
+        }
+    }
+
+    //Validate minutes and seconds (MandS)
+    private boolean validateMandS(Object in) {
+        Float tmp;
+        String time;
+        if (in == null) {
+            MessageBean.setErrorMessageFromBundle("invalid_coor_ms");
+            return false;
+        }
+        time = in.toString();
+        try {
+            tmp = Float.parseFloat(time);
+            if ((tmp >= 0) & (tmp <= 59)) {
+                return true;
+            } else {
+                MessageBean.setErrorMessageFromBundle("invalid_coor_ms");
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            MessageBean.setErrorMessageFromBundle("invalid_coor_ms");
             return false;
         }
     }
@@ -747,19 +769,61 @@ public class editSite extends AbstractPageBean {
         }
         return true;
     }
+
+    //Method to translate from sexagecimal to decimal notation
+    public String translateCoor(String degrees,String minutes,String seconds){
+        Float d,m,s,result;
+        try{
+            //Get float values
+            d = Float.parseFloat(degrees);
+            m = Float.parseFloat(minutes);
+            s = Float.parseFloat(seconds);
+            result = Math.abs(d)+Math.abs((m*60)/3600)+Math.abs(s/3600);
+            if(d>=0)
+                return result.toString();
+            else{
+                result = result * -1;
+                return result.toString();
+            }
+        }
+        catch(NumberFormatException e){return "";}
+    }
     
     public String btn_addCoordinate_action() {
         if (canAddCoordinate()) {
+            Object lon_degrees = this.getTxt_longitude_degrees().getValue();
+            Object lon_minutes = this.getTxt_longitude_minutes().getValue();
+            Object lon_seconds = this.getTxt_longitude_seconds().getValue();
+            Object lat_degrees = this.getTxt_latitude_degrees().getValue();
+            Object lat_minutes = this.getTxt_latitude_minutes().getValue();
+            Object lat_seconds = this.getTxt_latitude_seconds().getValue();
             if (validateLongitude()) {
                 if (validateLatitude()) {
-                    SiteCoordinate coord = new SiteCoordinate();
-                    coord.setLongitude(getFloatValue(this.txt_longitude.getValue().toString()));
-                    coord.setLatitude(getFloatValue(this.txt_latitude.getValue().toString()));
-                     if (!this.getsite$SiteSessionBean().getCoordinateDataProvider().addElement(coord)) {
-                        this.getutil$MessageBean().addErrorMessage(DUPLICATED_COORDINATES);
-                        this.txt_longitude.setValue("");
-                        this.txt_latitude.setValue("");
-                     }
+                    //All data (degrees, minutes and seconds)
+                    if(validateMandS(lon_minutes) && validateMandS(lon_seconds) && validateMandS(lat_minutes) && validateMandS(lat_seconds)){
+                        //Translate from sexagecimal to decimal notation
+                        String lon_result,lat_result;
+                        lon_result = translateCoor(lon_degrees.toString(),lon_minutes.toString(),lon_seconds.toString());
+                        lat_result = translateCoor(lat_degrees.toString(),lat_minutes.toString(),lat_seconds.toString());
+                        SiteCoordinate coord = new SiteCoordinate();
+                        coord.setLongitude(getFloatValue(lon_result));
+                        coord.setLatitude(getFloatValue(lat_result));
+                         if (!this.getsite$SiteSessionBean().getCoordinateDataProvider().addElement(coord)) {
+                            this.getutil$MessageBean().addErrorMessage(DUPLICATED_COORDINATES);
+                        this.txt_longitude_degrees.setValue("");
+                        this.txt_longitude_minutes.setValue("0");
+                        this.txt_longitude_seconds.setValue("0");
+                        this.txt_latitude_degrees.setValue("");
+                        this.txt_latitude_minutes.setValue("0");
+                        this.txt_latitude_seconds.setValue("0");
+                         }
+                        this.txt_longitude_degrees.setValue("");
+                        this.txt_longitude_minutes.setValue("0");
+                        this.txt_longitude_seconds.setValue("0");
+                        this.txt_latitude_degrees.setValue("");
+                        this.txt_latitude_minutes.setValue("0");
+                        this.txt_latitude_seconds.setValue("0");
+                    }
                 }
             }
         }
@@ -882,6 +946,62 @@ public class editSite extends AbstractPageBean {
      */
     protected SpecimenSessionBean getspecimen$SpecimenSessionBean() {
         return (SpecimenSessionBean)getBean("specimen$SpecimenSessionBean");
+    }
+
+    /**
+     * @return the txt_longitude_minutes
+     */
+    public TextField getTxt_longitude_minutes() {
+        return txt_longitude_minutes;
+    }
+
+    /**
+     * @param txt_longitude_minutes the txt_longitude_minutes to set
+     */
+    public void setTxt_longitude_minutes(TextField txt_longitude_minutes) {
+        this.txt_longitude_minutes = txt_longitude_minutes;
+    }
+
+    /**
+     * @return the txt_longitude_seconds
+     */
+    public TextField getTxt_longitude_seconds() {
+        return txt_longitude_seconds;
+    }
+
+    /**
+     * @param txt_longitude_seconds the txt_longitude_seconds to set
+     */
+    public void setTxt_longitude_seconds(TextField txt_longitude_seconds) {
+        this.txt_longitude_seconds = txt_longitude_seconds;
+    }
+
+    /**
+     * @return the txt_latitude_minutes
+     */
+    public TextField getTxt_latitude_minutes() {
+        return txt_latitude_minutes;
+    }
+
+    /**
+     * @param txt_latitude_minutes the txt_latitude_minutes to set
+     */
+    public void setTxt_latitude_minutes(TextField txt_latitude_minutes) {
+        this.txt_latitude_minutes = txt_latitude_minutes;
+    }
+
+    /**
+     * @return the txt_latitude_seconds
+     */
+    public TextField getTxt_latitude_seconds() {
+        return txt_latitude_seconds;
+    }
+
+    /**
+     * @param txt_latitude_seconds the txt_latitude_seconds to set
+     */
+    public void setTxt_latitude_seconds(TextField txt_latitude_seconds) {
+        this.txt_latitude_seconds = txt_latitude_seconds;
     }
 }
 
