@@ -425,7 +425,7 @@ public class gatheringList extends AbstractPageBean {
      * this page.</p>
      */
     public void prerender() {
-        this.getgathering$GatheringSessionBeanV2().initDataProvider();
+        //this.getgathering$GatheringSessionBeanV2().initDataProvider();
     }
     
     /**
