@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 <jsp:root version="1.2" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:webuijsf="http://www.sun.com/webui/webuijsf">
     <jsp:directive.page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"/>
     <f:view>
@@ -39,7 +39,7 @@
                                 items="#{site$SiteSessionBean.originalProjection}" selected="#{site$SiteSessionBean.selectedOriginalProjection}" style="left: 216px; top: 240px; position: absolute"/>
                             <webuijsf:label binding="#{site$newSite.label9}" id="label9" style="left: 48px; top: 264px; position: absolute" text="#{resources.datum}"/>
                             <webuijsf:textField binding="#{site$newSite.txt_datum}" id="txt_datum" style="left: 216px; top: 264px; position: absolute" validatorExpression="#{util$ValidatorHelper.integerNumberFormatValidator}"/>
-                            <webuijsf:tabSet binding="#{site$newSite.tabSet1}" id="tabSet1" selected="tab1" style="border: 1px solid gray; height: 35px; left: 48px; top: 312px; position: absolute; width: 766px">
+                            <webuijsf:tabSet binding="#{site$newSite.tabSet1}" id="tabSet1" selected="tab2" style="border: 1px solid gray; height: 35px; left: 48px; top: 312px; position: absolute; width: 766px">
                                 <webuijsf:tab binding="#{site$newSite.tab1}" id="tab1" text="#{resources.coordinates}">
                                     <webuijsf:panelLayout binding="#{site$newSite.layoutPanel1}" id="layoutPanel1" style="border: 1px solid gray; height: 263px; position: relative; width: 100%; -rave-layout: grid">
                                         <webuijsf:label binding="#{site$newSite.label10}" id="label10"
