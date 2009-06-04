@@ -44,7 +44,7 @@ public class GatheringDataProvider extends ObjectListDataProvider{
     /** Creates a new instance of GatheringDataProvider */
     public GatheringDataProvider(Long collectionId) {
         this.setObjectType(GatheringObservation.class);
-        this.refreshDataList(collectionId);
+        // this.refreshDataList(collectionId);
     }
 
     public void refreshDataList(Long collectionId) {
