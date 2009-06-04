@@ -37,6 +37,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.inbio.ara.facade.gis.SiteRemote;
+import org.inbio.ara.facade.util.SearchManagerRemote;
 import org.inbio.ara.manager.SiteManagerRemote;
 import org.inbio.ara.persistence.gis.GeoreferencedSitePK;
 import org.inbio.ara.persistence.gis.Site;
@@ -73,6 +74,7 @@ public class SiteSessionBean extends AbstractSessionBean {
     private CoordinateDataProvider coordinateDataProvider = new CoordinateDataProvider();
     private Site site;
     private boolean editMode;
+    private boolean filtered;
     
     /**
      * <p>Automatically managed component initialization.  <strong>WARNING:</strong>
@@ -646,4 +648,39 @@ public class SiteSessionBean extends AbstractSessionBean {
         this.selectedProvinceId = selectedProvinceId;
     }
 
+    private SearchManagerRemote lookupSearchManagerBean() {
+        try {
+            Context c = new InitialContext();
+            return (SearchManagerRemote) c.lookup("SearchManagerBean");
+        }
+        catch(NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public SearchManagerRemote getSearchManager() {
+        return this.lookupSearchManagerBean();
+    }
+
+    /**
+     * @return the filtered
+     */
+    public boolean isFiltered() {
+        return filtered;
+    }
+
+    /**
+     * @param filtered the filtered to set
+     */
+    public void setFiltered(boolean filtered) {
+        this.filtered = filtered;
+    }
+
+    public void initDataProvider() {
+        if (!filtered) {
+            this.siteDataProvider.clearObjectList();
+            this.siteDataProvider.refreshList();
+        }
+    }
 }

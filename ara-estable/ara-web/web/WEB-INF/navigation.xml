@@ -950,7 +950,21 @@
 			<to-view-id>/welcomeV2.jsp</to-view-id>
 			<redirect/>
 		</navigation-case>
+        <navigation-case>
+			<from-outcome>search</from-outcome>
+			<to-view-id>/site/SearchSite.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
 	</navigation-rule>
+
+    <navigation-rule>
+		<from-view-id>/site/SearchSite.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>site_list</from-outcome>
+			<to-view-id>/site/listSite.jsp</to-view-id>
+			<redirect/>
+		</navigation-case>
+    </navigation-rule>
 
 	<navigation-rule>
 		<from-view-id>/site/newSite.jsp</from-view-id>

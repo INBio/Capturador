@@ -326,16 +326,6 @@ public class listSite extends AbstractPageBean {
         this.tableColumn7 = tc;
     }
 
-    private Button btn_new = new Button();
-
-    public Button getBtn_new() {
-        return btn_new;
-    }
-
-    public void setBtn_new(Button b) {
-        this.btn_new = b;
-    }
-
     private Button btn_edit = new Button();
 
     public Button getBtn_edit() {
@@ -419,7 +409,7 @@ public class listSite extends AbstractPageBean {
      * this page.</p>
      */
     public void prerender() {
-        this.getsite$SiteSessionBean().getSiteDataProvider().refreshList();
+        this.getsite$SiteSessionBean().initDataProvider();
     }
     
     /**
@@ -654,6 +644,10 @@ public class listSite extends AbstractPageBean {
      */
     protected SpecimenSessionBean getspecimen$SpecimenSessionBean() {
         return (SpecimenSessionBean)getBean("specimen$SpecimenSessionBean");
+    }
+
+    public String btn_search_action() {
+        return "search";
     }
 }
 

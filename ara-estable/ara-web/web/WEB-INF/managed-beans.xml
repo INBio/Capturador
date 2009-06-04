@@ -35,6 +35,12 @@
 
 <!-- Otros Módulos -->
 
+    <managed-bean>
+        <managed-bean-name>site$SearchSite</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.site.SearchSite</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
 	<!-- Managed Beans sin Refactoring -->
 	<managed-bean>
 		<managed-bean-name>SessionManager</managed-bean-name>
