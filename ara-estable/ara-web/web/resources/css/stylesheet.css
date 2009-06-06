@@ -58,6 +58,10 @@ caption.TblTtlTxt {
    background-image: none!important;
 }
 
+select {
+    height: 100%; width:200px;
+}
+
 table.TblLt .TblHdrTxt {
    background-image: none!important;
 }
