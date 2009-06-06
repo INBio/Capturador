@@ -6,7 +6,7 @@
             <webuijsf:html binding="#{gathering$generatedSpecimenList.html1}" id="html1">
                 <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:script  id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
+                    <webuijsf:script id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
                 </webuijsf:head>
                 <webuijsf:body binding="#{gathering$generatedSpecimenList.body1}" id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header.jspf"/>
@@ -44,12 +44,12 @@
                                 </webuijsf:tableRowGroup>
                             </webuijsf:table>
                             <webuijsf:label binding="#{gathering$generatedSpecimenList.label2}" id="label2" style="left: 48px; top: 120px; position: absolute" text="Recolección"/>
-                            <webuijsf:staticText binding="#{gathering$generatedSpecimenList.st_gatheringDesc}" id="st_gatheringDesc" style="height: 70px; left: 120px; top: 120px; position: absolute; width: 262px"/>
+                            <webuijsf:staticText binding="#{gathering$generatedSpecimenList.st_gatheringDesc}" id="st_gatheringDesc" style="height: 70px; left: 144px; top: 120px; position: absolute; width: 262px"/>
                             <webuijsf:label binding="#{gathering$generatedSpecimenList.label4}" id="label4" style="left: 48px; top: 96px; position: absolute" text="Colección"/>
-                            <webuijsf:staticText binding="#{gathering$generatedSpecimenList.st_collectionName}" id="st_collectionName" style="color: rgb(0, 153, 51); font-family: 'Arial','Helvetica',sans-serif; font-weight: bold; left: 120px; top: 96px; position: absolute"/>
+                            <webuijsf:staticText binding="#{gathering$generatedSpecimenList.st_collectionName}" id="st_collectionName" style="color: rgb(0, 153, 51); font-family: 'Arial','Helvetica',sans-serif; font-weight: bold; left: 144px; top: 96px; position: absolute"/>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
-					<jsp:directive.include file="/footer.jspf"/>
+                    <!--<jsp:directive.include file="/footer.jspf"/>-->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>
