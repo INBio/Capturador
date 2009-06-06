@@ -108,6 +108,7 @@ public class editGathering extends AbstractPageBean {
      */
     private void _init() throws Exception {
 		t_gatheringDetail.setStyle("left: 0px; top: 48px; position: absolute; width: 100%");
+        ar_Collectors.setWidth("790");
     }
     
     private Page page1 = new Page();
