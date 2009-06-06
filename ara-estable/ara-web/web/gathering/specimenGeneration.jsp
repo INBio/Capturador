@@ -102,7 +102,7 @@
                                 binding="#{gathering$specimenGeneration.btn_showSpecimenList}" id="btn_showSpecimenList"
                                 style="height: 24px; left: 647px; top: 72px; position: absolute; width: 192px" text="#{resources.view_generated_specimens}"/>
                             <webuijsf:panelLayout id="layoutPanel_specimenGenerationOption" panelLayout="flow" style="height: 430px; left: 24px; top: 336px; position: absolute; width: 886px">
-                                <webuijsf:tabSet id="tabSet_specimenGeneratorOption" selected="tab_lifeForm" style="border: 1px solid gray; width: 887px">
+                                <webuijsf:tabSet id="tabSet_specimenGeneratorOption" selected="tab_Identification" style="border: 1px solid gray; width: 887px">
                                     <webuijsf:tab id="tab_Identification" tabIndex="1" text="#{resources.identification}">
                                         <webuijsf:panelLayout id="layoutPanel_Identification" style="height: 529px; position: relative; width: 815px; -rave-layout: grid">
                                             <webuijsf:label binding="#{gathering$specimenGeneration.label_taxonomicalRange}" id="label_taxonomicalRange"
