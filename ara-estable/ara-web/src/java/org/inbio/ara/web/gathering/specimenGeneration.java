@@ -1631,13 +1631,13 @@ public class specimenGeneration extends AbstractPageBean {
             if (this.getgathering$SpecimenGenerationSessionBean().getSelectedTaxon().length > 0) {
                 // Fecha de identificaci�n
                 if (this.getCal_identificationDate1().getSelectedDate()==null) {
-                    this.getutil$MessageBean().addErrorMessage(EMPTY_DATE);
-                    return false;
+                   this.getutil$MessageBean().addErrorMessage(EMPTY_DATE);
+                   return false;
                 }
                 // Estado de la identificaci�n
                 if (this.getgathering$SpecimenGenerationSessionBean().getSelectedIdentificationStatus() == -1L) {
-                    this.getutil$MessageBean().addErrorMessage(EMPTY_STAGE);
-                    return false;
+                   this.getutil$MessageBean().addErrorMessage(EMPTY_STAGE);
+                   return false;
                 }
             }
         }
