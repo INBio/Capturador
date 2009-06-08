@@ -335,6 +335,9 @@ public class SpecimenIdentificationGeneratorBean implements SpecimenIdentificati
      */
 
     public boolean generate(SpecimenGenParms specimenGenParms) {
+        // Added by Mv
+        this.clearSpecimenList();
+
         setSpecimenGenParms(specimenGenParms);
         if (!(this.getSpecimenGenParms() == null)) {
             //printSpecimen(specimenGenParms.getSpecimen());
@@ -378,5 +381,11 @@ public class SpecimenIdentificationGeneratorBean implements SpecimenIdentificati
 
     public void setSpecimenList(List<Specimen> specimenList) {
         this.specimenList = specimenList;
+    }
+
+    // MV
+    // Esto es para prevenir errores en la concurrencia
+    public void clearSpecimenList() {
+        specimenList.clear();
     }
 }

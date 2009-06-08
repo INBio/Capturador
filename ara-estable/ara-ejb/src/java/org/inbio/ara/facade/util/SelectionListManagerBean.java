@@ -159,7 +159,7 @@ public class SelectionListManagerBean implements SelectionListManagerRemote, Sel
 
     public Option[] getSites() {
         Option[] optionArray = new Option[]{};
-        String jpql = "Select object(o) from Site as o order by o.name";
+        String jpql = "Select object(o) from Site as o order by o.description";
         List<Site> tList = query(jpql);
         if (tList.size() > 0) {
             optionArray = new Option[tList.size()];
@@ -1116,15 +1116,15 @@ public class SelectionListManagerBean implements SelectionListManagerRemote, Sel
     }
 
     public Option[] getSpecimenType(Long collectionId){
-        return this.getSelectionListOptionArray(collectionId, "specimen_type",true);
+        return this.getSelectionListOptionArray(collectionId, "specimen_type", false);
     }
 
     public Option[] getSubstrate(Long collectionId){
-        return this.getSelectionListOptionArray(collectionId, "substrate",true);
+        return this.getSelectionListOptionArray(collectionId, "substrate", true);
     }
 
     public Option[] getOrigin(Long collectionId){
-        return this.getSelectionListOptionArray(collectionId, "origin",true);
+        return this.getSelectionListOptionArray(collectionId, "origin", false);
     }
 
     public Option[] getStorageType(Long collectionId){
@@ -1132,7 +1132,7 @@ public class SelectionListManagerBean implements SelectionListManagerRemote, Sel
     }
 
     public Option[] getGatheringObservationMethod(Long collectionId){
-        return this.getSelectionListOptionArray(collectionId, "gathering_observation_method",true);
+        return this.getSelectionListOptionArray(collectionId, "gathering_observation_method", false);
     }
 
     public Option[] getLifeStage(Long collectionId){
@@ -1140,7 +1140,7 @@ public class SelectionListManagerBean implements SelectionListManagerRemote, Sel
     }
 
     public Option[] getTypeSpecimenType(Long collectionId){
-        return this.getSelectionListOptionArray(collectionId, "type_specimen_type",true);
+        return this.getSelectionListOptionArray(collectionId, "type_specimen_type", false);
     }
 
     public Option[] getExtractionType(Long collectionId){
@@ -1156,7 +1156,7 @@ public class SelectionListManagerBean implements SelectionListManagerRemote, Sel
     }
 
     public Option[] getSpecimenCategory(Long collectionId){
-        return this.getSelectionListOptionArray(collectionId, "specimen_category",true);
+        return this.getSelectionListOptionArray(collectionId, "specimen_category", false);
     }
 
     public Option[] getComponentPart(Long collectionId){
@@ -1299,7 +1299,7 @@ public class SelectionListManagerBean implements SelectionListManagerRemote, Sel
                 }
             } else {
                 optionArray = new Option[1];
-                optionArray[0] = new Option(-1L, "No hay datos.");
+                optionArray[0] = new Option(-1L, "No hay datos");
             }
         }
         return optionArray;
