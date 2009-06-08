@@ -307,7 +307,7 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     public void initDataProvider() {
         if (!isFiltered) {
             this.getSpecimenDataProvider().clearObjectList();
-            this.getSpecimenDataProvider().refreshDataList();
+            // this.getSpecimenDataProvider().refreshDataList();
         } 
     }
 

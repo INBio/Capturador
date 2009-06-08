@@ -220,6 +220,26 @@ public class SearchSpecimen extends AbstractPageBean {
         this.collectionTF = tf;
     }
 
+    private Label catalogNumberLabel = new Label();
+
+    public Label getCatalogNumberLabel() {
+        return catalogNumberLabel;
+    }
+
+    public void setCatalogNumberLabel(Label l) {
+        this.catalogNumberLabel = l;
+    }
+
+    private TextField catalogNumberTF = new TextField();
+
+    public TextField getCatalogNumberTF() {
+        return catalogNumberTF;
+    }
+
+    public void setCatalogNumberTF(TextField tf) {
+        this.catalogNumberTF = tf;
+    }
+
     private Button searchButton = new Button();
 
     public Button getSearchButton() {
@@ -557,6 +577,10 @@ public class SearchSpecimen extends AbstractPageBean {
         if(getGOIdTF().getText() != null) {
             searchCriteria.put("table.gatheringObservation.id = ",
                         getGOIdTF().getText().toString());
+        }
+        if(getCatalogNumberTF().getText() != null) {
+            searchCriteria.put("table.catalogNumber = ",
+                        getCatalogNumberTF().getText().toString());
         }
         if(getCollectionTF().getText() != null) {
             searchCriteria.put("lower(table.collection.name) like ", 
