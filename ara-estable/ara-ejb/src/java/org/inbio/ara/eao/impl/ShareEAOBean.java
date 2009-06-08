@@ -31,7 +31,12 @@ public class ShareEAOBean extends BaseEAOImpl implements ShareEAOLocal{
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method" or "Web Service > Add Operation")
 
-    //Method to retrive information from darwin core table to create Dwc snapshot
+    /**
+     * Method to retrive information from darwin core table to create Dwc snapshot
+     * @param q is the specific query to execute
+     * @return List of DarwinCore14 objects (depending on query "q")
+     * @deprecated 
+     */
     @Override
     public List<DarwinCore14> retriveInformationDcw(String q){
         em.setFlushMode(FlushModeType.COMMIT);
@@ -40,7 +45,11 @@ public class ShareEAOBean extends BaseEAOImpl implements ShareEAOLocal{
         em.setFlushMode(FlushModeType.AUTO);
         return result;
     }
-    //Method to retrive all information from darwin core table to create Dwc snapshot
+    /**
+     * Method to retrive all information from darwin core table to create Dwc snapshot
+     * @deprecated (Se trae la memoria la suelo)
+     * @return List of DarwinCore14 objects (All)
+     */
     @Override
     public List<DarwinCore14> retriveInformationDcwAll(){
         em.setFlushMode(FlushModeType.COMMIT);
@@ -49,7 +58,7 @@ public class ShareEAOBean extends BaseEAOImpl implements ShareEAOLocal{
         em.setFlushMode(FlushModeType.AUTO);
         return result;
     }
-    
+
     //Method to get a especific darwin core element
     @Override
 	public DwcElement getDwCElementById(BigDecimal id) {
