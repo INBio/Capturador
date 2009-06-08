@@ -199,16 +199,6 @@ public class generatedSpecimenList extends AbstractPageBean {
         this.tableRowGroup1 = trg;
     }
 
-    private DefaultTableDataProvider defaultTableDataProvider = new DefaultTableDataProvider();
-
-    public DefaultTableDataProvider getDefaultTableDataProvider() {
-        return defaultTableDataProvider;
-    }
-
-    public void setDefaultTableDataProvider(DefaultTableDataProvider dtdp) {
-        this.defaultTableDataProvider = dtdp;
-    }
-
     private TableColumn tableColumn4 = new TableColumn();
 
     public TableColumn getTableColumn4() {
@@ -227,46 +217,6 @@ public class generatedSpecimenList extends AbstractPageBean {
 
     public void setStaticText1(StaticText st) {
         this.staticText1 = st;
-    }
-
-    private TableColumn tableColumn5 = new TableColumn();
-
-    public TableColumn getTableColumn5() {
-        return tableColumn5;
-    }
-
-    public void setTableColumn5(TableColumn tc) {
-        this.tableColumn5 = tc;
-    }
-
-    private StaticText staticText2 = new StaticText();
-
-    public StaticText getStaticText2() {
-        return staticText2;
-    }
-
-    public void setStaticText2(StaticText st) {
-        this.staticText2 = st;
-    }
-
-    private TableColumn tableColumn6 = new TableColumn();
-
-    public TableColumn getTableColumn6() {
-        return tableColumn6;
-    }
-
-    public void setTableColumn6(TableColumn tc) {
-        this.tableColumn6 = tc;
-    }
-
-    private StaticText staticText3 = new StaticText();
-
-    public StaticText getStaticText3() {
-        return staticText3;
-    }
-
-    public void setStaticText3(StaticText st) {
-        this.staticText3 = st;
     }
 
     private Label label2 = new Label();
@@ -307,46 +257,6 @@ public class generatedSpecimenList extends AbstractPageBean {
 
     public void setStaticText5(StaticText st) {
         this.staticText5 = st;
-    }
-
-    private TableColumn tableColumn8 = new TableColumn();
-
-    public TableColumn getTableColumn8() {
-        return tableColumn8;
-    }
-
-    public void setTableColumn8(TableColumn tc) {
-        this.tableColumn8 = tc;
-    }
-
-    private StaticText staticText6 = new StaticText();
-
-    public StaticText getStaticText6() {
-        return staticText6;
-    }
-
-    public void setStaticText6(StaticText st) {
-        this.staticText6 = st;
-    }
-
-    private TableColumn tableColumn9 = new TableColumn();
-
-    public TableColumn getTableColumn9() {
-        return tableColumn9;
-    }
-
-    public void setTableColumn9(TableColumn tc) {
-        this.tableColumn9 = tc;
-    }
-
-    private StaticText staticText7 = new StaticText();
-
-    public StaticText getStaticText7() {
-        return staticText7;
-    }
-
-    public void setStaticText7(StaticText st) {
-        this.staticText7 = st;
     }
 
     private Label label4 = new Label();

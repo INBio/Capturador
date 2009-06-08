@@ -17,29 +17,22 @@
                             <webuijsf:tableColumn binding="#{gathering$generatedSpecimenList.tableColumn1}" id="tableColumn1"/>
                             <webuijsf:tableColumn binding="#{gathering$generatedSpecimenList.tableColumn2}" id="tableColumn2"/>
                             <webuijsf:tableColumn binding="#{gathering$generatedSpecimenList.tableColumn3}" id="tableColumn3"/>
-                            <webuijsf:table binding="#{gathering$generatedSpecimenList.table1}" id="table1"
-                                style="left: 48px; top: 216px; position: absolute; width: 750px" title="Table" width="750">
+                            <webuijsf:table binding="#{gathering$generatedSpecimenList.table1}" id="table1" style="left: 48px; top: 216px; position: absolute"
+                                title="Table" width="720">
                                 <webuijsf:tableRowGroup binding="#{gathering$generatedSpecimenList.tableRowGroup1}" id="tableRowGroup1" rows="10"
                                     sourceData="#{gathering$SpecimenGenerationSessionBean.generatedSpecimenDataProvider}" sourceVar="currentRow">
                                     <webuijsf:tableColumn binding="#{gathering$generatedSpecimenList.tableColumn4}" headerText="Id." id="tableColumn4" width="113">
                                         <webuijsf:staticText binding="#{gathering$generatedSpecimenList.staticText1}" id="staticText1" text="#{currentRow.value['id']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{gathering$generatedSpecimenList.tableColumn5}" headerText="Categoría" id="tableColumn5" width="117">
-                                        <webuijsf:staticText binding="#{gathering$generatedSpecimenList.staticText2}" id="staticText2" text="#{currentRow.value['specimenCategoryName']}"/>
+                                    <webuijsf:tableColumn headerText="Institución" id="tableColumn5" sort="institutionCode">
+                                        <webuijsf:staticText id="staticText2" text="#{currentRow.value['institutionCode']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{gathering$generatedSpecimenList.tableColumn6}" headerText="Tipo" id="tableColumn6">
-                                        <webuijsf:staticText binding="#{gathering$generatedSpecimenList.staticText3}" id="staticText3" text="#{currentRow.value['specimenTypeName']}"/>
+                                    <webuijsf:tableColumn headerText="Número de catálogo" id="tableColumn10" sort="catalogNumber">
+                                        <webuijsf:staticText id="staticText4" text="#{currentRow.value['catalogNumber']}"/>
                                     </webuijsf:tableColumn>
                                     <webuijsf:tableColumn binding="#{gathering$generatedSpecimenList.tableColumn7}" headerText="Método de colecta"
                                         id="tableColumn7" width="127">
                                         <webuijsf:staticText binding="#{gathering$generatedSpecimenList.staticText5}" id="staticText5" text="#{currentRow.value['gatheringObservationMethodName']}"/>
-                                    </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{gathering$generatedSpecimenList.tableColumn8}" headerText="Origen" id="tableColumn8">
-                                        <webuijsf:staticText binding="#{gathering$generatedSpecimenList.staticText6}" id="staticText6" text="#{currentRow.value['originName']}"/>
-                                    </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{gathering$generatedSpecimenList.tableColumn9}" headerText="Medio preserv."
-                                        id="tableColumn9" width="122">
-                                        <webuijsf:staticText binding="#{gathering$generatedSpecimenList.staticText7}" id="staticText7" text="#{currentRow.value['preservationMediumName']}"/>
                                     </webuijsf:tableColumn>
                                 </webuijsf:tableRowGroup>
                             </webuijsf:table>
