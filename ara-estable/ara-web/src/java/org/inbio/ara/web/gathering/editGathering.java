@@ -50,6 +50,7 @@ import com.sun.webui.jsf.model.DefaultTableDataProvider;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlMessages;
 import javax.faces.convert.LongConverter;
+import javax.faces.event.ValueChangeEvent;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
 import org.inbio.ara.web.ApplicationBean1;
 import org.inbio.ara.web.AraApplicationBean;
@@ -1273,6 +1274,9 @@ public class editGathering extends AbstractPageBean {
      */
     protected SpecimenSessionBean getspecimen$SpecimenSessionBean() {
         return (SpecimenSessionBean)getBean("specimen$SpecimenSessionBean");
+    }
+
+    public void dd_site_processValueChange(ValueChangeEvent event) {
     }
 }
 
