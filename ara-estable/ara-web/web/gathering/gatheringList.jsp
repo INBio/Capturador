@@ -16,11 +16,11 @@
                                         infoClass="infoMessage" style="left: 408px; top: 24px; position: absolute" warnClass="warnMessage"/>
                             <webuijsf:label binding="#{gathering$gatheringList.label1}" id="label1"
                                             style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 310px" text="#{resources.gatherings_observations}"/>
-                            <webuijsf:table binding="#{gathering$gatheringList.gatheringTable}" clearSortButton="true" id="gatheringTable" paginateButton="true"
-                                            paginationControls="true" sortPanelToggleButton="true" style="left: 48px; top: 72px; position: absolute; width: 856px"
+                            <webuijsf:table binding="#{gathering$gatheringList.gatheringTable}" clearSortButton="true" id="gatheringTable" paginateButton="false"
+                                            paginationControls="false" sortPanelToggleButton="true" style="left: 48px; top: 72px; position: absolute; width: 856px"
                                             title="#{resources.gatherings_observations}" width="856">
                                 <webuijsf:tableRowGroup binding="#{gathering$gatheringList.tableRowGroup1}" id="tableRowGroup1" rows="10"
-                                                        sourceData="#{gathering$GatheringSessionBeanV2.gatheringDataProvider}" sourceVar="currentRow">
+                                                sourceData="#{gathering$GatheringSessionBeanV2.pagination.dataProvider}" sourceVar="currentRow">
                                     <webuijsf:tableColumn binding="#{gathering$gatheringList.tableColumn1}" headerText="#{resources.id}" id="tableColumn1" sort="id">
                                         <webuijsf:staticText binding="#{gathering$gatheringList.staticText1}" id="staticText1" text="#{currentRow.value['id']}"/>
                                     </webuijsf:tableColumn>
@@ -43,7 +43,7 @@
                                                           id="tableColumn7" sort="collectionName">
                                         <webuijsf:staticText binding="#{gathering$gatheringList.staticText7}" id="staticText7" text="#{currentRow.value['collectionName']}"/>
                                     </webuijsf:tableColumn>
-                                    <webuijsf:tableColumn binding="#{gathering$gatheringList.tableColumn6}" headerText="#{resources.actions}" id="tableColumn6">
+                                    <webuijsf:tableColumn style="width:110px" binding="#{gathering$gatheringList.tableColumn6}" headerText="#{resources.actions}" id="tableColumn6">
                                         <webuijsf:button actionExpression="#{gathering$gatheringList.btn_edit_action}"
                                                          binding="#{gathering$gatheringList.btn_edit}" id="btn_edit" style="height: 24px; width: 47px" text="#{resources.btnEdit}"/>
                                         <webuijsf:button actionExpression="#{gathering$gatheringList.btn_remove_action}"
@@ -54,6 +54,18 @@
                                     <webuijsf:panelGroup id="groupPanel1">
                                         <webuijsf:button actionExpression="#{gathering$gatheringList.btn_new_action}" id="btn_new" text="#{resources.btnNew}"/>
                                         <webuijsf:button actionExpression="#{gathering$gatheringList.btn_search_action}" id="btn_search" text="#{resources.btnSearch}"/>
+
+                                         <webuijsf:panelGroup id="panelPaginacion" separator=" " style="margin-left:100px;">
+                                            <webuijsf:button actionExpression="#{gathering$GatheringSessionBeanV2.pagination.firstResults}" visible="#{gathering$GatheringSessionBeanV2.pagination.isVisiblePrevious}"
+                                                             id="btnFirst" text="primeros" />
+                                            <webuijsf:button actionExpression="#{gathering$GatheringSessionBeanV2.pagination.previousResults}" visible="#{gathering$GatheringSessionBeanV2.pagination.isVisiblePrevious}"
+                                                             id="btnNext" text="anteriores" />
+                                            <webuijsf:button actionExpression="#{gathering$GatheringSessionBeanV2.pagination.nextResults}" visible="#{gathering$GatheringSessionBeanV2.pagination.isVisibleNext}"
+                                                             id="btnPrevious" text="siguientes" />
+                                            <webuijsf:button actionExpression="#{gathering$GatheringSessionBeanV2.pagination.lastResults}" visible="#{gathering$GatheringSessionBeanV2.pagination.isVisibleNext}"
+                                                             id="btnLast" text="ultimos"/>
+                                        </webuijsf:panelGroup>
+
                                     </webuijsf:panelGroup>
                                 </f:facet>
                             </webuijsf:table>

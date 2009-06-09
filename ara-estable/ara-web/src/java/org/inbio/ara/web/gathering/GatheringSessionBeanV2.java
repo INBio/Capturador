@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 /*
  * GatheringSessionBeanV2.java
  *
@@ -26,8 +26,11 @@ package org.inbio.ara.web.gathering;
 import com.sun.data.provider.RowKey;
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import com.sun.webui.jsf.model.Option;
+import java.util.Hashtable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.faces.FacesException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -40,6 +43,7 @@ import org.inbio.ara.web.ApplicationBean1;
 import org.inbio.ara.web.AraApplicationBean;
 import org.inbio.ara.web.SessionManager;
 import org.inbio.ara.web.util.MessageBean;
+import org.inbio.ara.web.util.PaginationController;
 import org.inbio.ara.web.util.SelectionListBean;
 
 /**
@@ -53,7 +57,15 @@ import org.inbio.ara.web.util.SelectionListBean;
  * this class.</p>
  */
 public class GatheringSessionBeanV2 extends AbstractSessionBean {
+
+    @EJB
+    SearchManagerRemote searchManager;
+
+
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
+
+
+
     private int __placeholder;
     // private GatheringDataProvider gatheringDataProvider = new GatheringDataProvider(this.getSessionManager().getCollection().getId());
     private GatheringDataProvider gatheringDataProvider;
@@ -73,6 +85,11 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
     private boolean editMode = false;
     private GatheringDetailDataProvider gatheringDetailDataProvider = new GatheringDetailDataProvider();
     private boolean filtered = false; //Usada en la busqueda de recolecciones/observaciones
+
+    //paginacion de la tabla
+    private PaginationController pagination = null;
+    private Hashtable searchCriteria = null;
+
     /**
      * <p>Automatically managed component initialization.  <strong>WARNING:</strong>
      * This method is automatically generated, so any user-specified code inserted
@@ -82,13 +99,13 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
         gatheringDataProvider = new GatheringDataProvider(this.getSessionManager().getCollection().getId());
     }
     // </editor-fold>
-    
+
     /**
      * <p>Construct a new session data bean instance.</p>
      */
     public GatheringSessionBeanV2() {
     }
-    
+
     /**
      * <p>This method is called when this bean is initially added to
      * session scope.  Typically, this occurs as a result of evaluating
@@ -106,7 +123,7 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
         // Perform application initialization that must complete
         // *before* managed components are initialized
         // TODO - add your own initialiation code here
-        
+
         // <editor-fold defaultstate="collapsed" desc="Managed Component Initialization">
         // Initialize automatically managed components
         // *Note* - this logic should NOT be modified
@@ -114,15 +131,15 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
             _init();
         } catch (Exception e) {
             log("GatheringSessionBeanV2 Initialization Failure", e);
-            throw e instanceof FacesException ? (FacesException) e: new FacesException(e);
+            throw e instanceof FacesException ? (FacesException) e : new FacesException(e);
         }
-        
-        // </editor-fold>
-        // Perform application initialization that must complete
-        // *after* managed components are initialized
-        // TODO - add your own initialization code here
+
+    // </editor-fold>
+    // Perform application initialization that must complete
+    // *after* managed components are initialized
+    // TODO - add your own initialization code here
     }
-    
+
     /**
      * <p>This method is called when the session containing it is about to be
      * passivated.  Typically, this occurs in a distributed servlet container
@@ -135,7 +152,7 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
      */
     public void passivate() {
     }
-    
+
     /**
      * <p>This method is called when the session containing it was
      * reactivated.</p>
@@ -146,7 +163,7 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
      */
     public void activate() {
     }
-    
+
     /**
      * <p>This method is called when this bean is removed from
      * session scope.  Typically, this occurs as a result of
@@ -163,27 +180,28 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
      * <p>Return a reference to the scoped data bean.</p>
      */
     protected MessageBean getutil$MessageBean() {
-        return (MessageBean)getBean("util$MessageBean");
+        return (MessageBean) getBean("util$MessageBean");
     }
 
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */
     protected ApplicationBean1 getApplicationBean1() {
-        return (ApplicationBean1)getBean("ApplicationBean1");
+        return (ApplicationBean1) getBean("ApplicationBean1");
     }
 
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */
     protected AraApplicationBean getAraApplicationBean() {
-        return (AraApplicationBean)getBean("AraApplicationBean");
+        return (AraApplicationBean) getBean("AraApplicationBean");
     }
+
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */
     protected SessionManager getSessionManager() {
-        return (SessionManager)getBean("SessionManager");
+        return (SessionManager) getBean("SessionManager");
     }
 
     public GatheringDataProvider getGatheringDataProvider() {
@@ -254,9 +272,8 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
         try {
             Context c = new InitialContext();
             return (GatheringRemote) c.lookup("GatheringBean");
-        }
-        catch(NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
@@ -308,14 +325,14 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
     public void setSelectedCollections(Long[] selectedCollections) {
         this.selectedCollections = selectedCollections;
     }
-    
+
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */
     protected SelectionListBean getSelectionListBean() {
-        return (SelectionListBean)getBean("util$SelectionListBean");
+        return (SelectionListBean) getBean("util$SelectionListBean");
     }
-    
+
     public void populateList() {
         this.setSites(this.getSelectionListBean().getSite());
         this.setResponsiblePersons(this.getSelectionListBean().getGatheringResponsible());
@@ -324,17 +341,18 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
         this.setProjects(this.getSelectionListBean().getProject());
         this.setCollections(this.getSelectionListBean().getCollection());
         if (this.gatheringObservation != null) {
-            if(this.getSessionManager().useGatheringDetail()) {
+            if (this.getSessionManager().useGatheringDetail()) {
                 this.gatheringDetailDataProvider.refreshDataList(this.getGatheringObservation().getId(), this.getSessionManager().getCollection().getId());
             }
         }
     }
-    
+
     public boolean create(GatheringObservation newObj) {
         boolean created = false;
-        
+
         if (this.lookupGatheringBean().create(newObj, this.getSelectedCollectors(), this.selectedProjects, this.selectedCollections)) {
-            this.gatheringDataProvider.refreshDataList(this.getSessionManager().getCollection().getId());;
+            this.gatheringDataProvider.refreshDataList(this.getSessionManager().getCollection().getId());
+            ;
             this.gatheringObservation = this.lookupGatheringBean().getGathering();
             this.populateList();
             created = true;
@@ -344,30 +362,30 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
         }
         return created;
     }
-    
+
     public boolean update(GatheringObservation newObj) {
         boolean update = false;
-        
-        
+
+
         /*if (this.lookupGatheringBean().update(newObj, this.getSelectedCollectors(), this.selectedProjects, this.selectedCollections)) {
-            this.gatheringDataProvider.refreshDataList(this.getSessionManager().getCollection().getId());;
-            this.gatheringObservation = this.lookupGatheringBean().getGathering();
-            this.populateList();
-            update = true;
-            this.getutil$MessageBean().addSuccessMessage("El registro se modific� con �xito");
+        this.gatheringDataProvider.refreshDataList(this.getSessionManager().getCollection().getId());;
+        this.gatheringObservation = this.lookupGatheringBean().getGathering();
+        this.populateList();
+        update = true;
+        this.getutil$MessageBean().addSuccessMessage("El registro se modific� con �xito");
         } else {
-            this.getutil$MessageBean().addErrorMessage(this.lookupGatheringBean().getMessage());
+        this.getutil$MessageBean().addErrorMessage(this.lookupGatheringBean().getMessage());
         }*/
-        
+
         /*if (this.lookupGatheringBean().update(newObj)) {
-            this.lookupGatheringBean().updateAssociatedInformation(this.getSelectedCollectors(), this.selectedProjects, this.selectedCollections);
+        this.lookupGatheringBean().updateAssociatedInformation(this.getSelectedCollectors(), this.selectedProjects, this.selectedCollections);
          */
-        if (this.lookupGatheringBean().update(newObj, this.getSelectedCollectors(), this.selectedProjects, this.selectedCollections)) {        
+        if (this.lookupGatheringBean().update(newObj, this.getSelectedCollectors(), this.selectedProjects, this.selectedCollections)) {
             this.gatheringDataProvider.refreshDataList(this.getSessionManager().getCollection().getId());
             this.gatheringObservation = this.lookupGatheringBean().getGathering();
             this.populateList();
             update = true;
-            if (this.lookupGatheringBean().getMessage()!= null) {
+            if (this.lookupGatheringBean().getMessage() != null) {
                 this.getutil$MessageBean().addErrorMessage(this.lookupGatheringBean().getMessage());
             }
             this.getutil$MessageBean().addSuccessMessage("El registro se modific� con �xito");
@@ -376,7 +394,7 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
         }
         return update;
     }
-    
+
     public boolean createCollectors() {
         if (this.lookupGatheringBean().createCollectors(this.getSelectedCollectors())) {
             this.getutil$MessageBean().addSuccessMessage("Colectores creados.");
@@ -386,16 +404,16 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
             return false;
         }
     }
-    
-    public void setSelectedGathering(RowKey rowKey){
+
+    public void setSelectedGathering(RowKey rowKey) {
         if (rowKey != null) {
-            this.setGatheringObservation((GatheringObservation)this.getGatheringDataProvider().getObject(rowKey));
-            //this.gatheringDetailDataProvider = new GatheringDetailDataProvider(this.gatheringObservation.getId(), this.getSessionManager().getCollection().getId());
+            this.setGatheringObservation((GatheringObservation) this.getGatheringDataProvider().getObject(rowKey));
+        //this.gatheringDetailDataProvider = new GatheringDetailDataProvider(this.gatheringObservation.getId(), this.getSessionManager().getCollection().getId());
         } else {
             System.out.println("rowKey es nulo.");
         }
     }
-    
+
     public boolean delete() {
         boolean deleted = false;
         if (this.lookupGatheringBean().delete(this.getGatheringObservation().getId())) {
@@ -423,16 +441,16 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
     public void setGatherinDetailDataProvider(GatheringDetailDataProvider gatheringDetailDataProvider) {
         this.gatheringDetailDataProvider = gatheringDetailDataProvider;
     }
-    
+
     public GatheringObservationDetail getGatheringObservationDetail(RowKey rowkey) {
         if (rowkey != null) {
-            return (GatheringObservationDetail)this.gatheringDetailDataProvider.getObject(rowkey);
+            return (GatheringObservationDetail) this.gatheringDetailDataProvider.getObject(rowkey);
         } else {
             this.getutil$MessageBean().addErrorMessage("Rowkey es nulo");
             return null;
         }
     }
-    
+
     public void cleanParameters() {
         gatheringObservation = null;
         sites = null;
@@ -454,9 +472,8 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
         try {
             Context c = new InitialContext();
             return (SearchManagerRemote) c.lookup("SearchManagerBean");
-        }
-        catch(NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
@@ -480,11 +497,45 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
     }
 
     public void initDataProvider() {
-        if (!filtered) {
-            this.gatheringDataProvider.clearObjectList();
-            this.gatheringDataProvider.refreshDataList(getSessionManager().
-                    getCollection().getId());
+       pagination = new PaginationControllerImpl(searchManager.countResult(GatheringObservation.class, searchCriteria).intValue(), 10);
+    }
+
+    public Hashtable getSearchCriteria() {
+        return searchCriteria;
+    }
+
+    public void setSearchCriteria(Hashtable searchCriteria) {
+        this.searchCriteria = searchCriteria;
+    }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationController getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationController pagination) {
+        this.pagination = pagination;
+    }
+
+    private class PaginationControllerImpl extends PaginationController {
+
+        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
+            super(totalResults, resultsPerPage);
+            System.out.println("Total de resultados: "+totalResults + " resutlados por página: "+resultsPerPage);
+        }
+
+        @Override
+        public List getResults(int firstResult, int maxResults) {
+            System.out.println("Primer Resultado: "+firstResult + " resutlados por página: "+maxResults);
+            return searchManager.makePaginatedQuery(firstResult, maxResults, GatheringObservation.class, searchCriteria);
         }
     }
-    
 }
+
+
+   

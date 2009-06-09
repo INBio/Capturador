@@ -27,6 +27,7 @@
 package org.inbio.ara.facade.util;
 
 import java.util.Hashtable;
+import java.util.List;
 import javax.ejb.Remote;
 import org.inbio.ara.persistence.genericEntity;
 
@@ -39,5 +40,8 @@ public interface SearchManagerRemote {
     /**
      */
     <T extends genericEntity> java.util.List makeQuery(Class<T> clazz, Hashtable parameters);
+
+    public <T extends genericEntity> List makePaginatedQuery(int firstResult, int maxResults, Class<T> clazz, Hashtable parameters);
+    public <T extends genericEntity> Long countResult(Class<T> clazz, Hashtable parameters);
     
 }

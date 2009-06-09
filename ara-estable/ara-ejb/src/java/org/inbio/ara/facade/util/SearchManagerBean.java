@@ -53,6 +53,7 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
         setMessage("");
     }
 
+    @Override
     public <T extends genericEntity> List makeQuery(Class<T> clazz, Hashtable parameters) {
         StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table ");
         boolean firstClause = true;
@@ -81,6 +82,7 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
         return this.objectsList;
     }
 
+    @Override
     public <T extends genericEntity> List makePaginatedQuery(int firstResult, int maxResults, Class<T> clazz, Hashtable parameters) {
         StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table ");
         boolean firstClause = true;
@@ -94,6 +96,8 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
             query.append(value);
             firstClause = false;
         }
+
+        query.append(" order by table.id ");
 
         try {
             Query q = em.createQuery(query.toString());
@@ -110,10 +114,11 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
         }
         return this.objectsList;
     }
-
-    public <T extends genericEntity> Integer countResult(Class<T> clazz, Hashtable parameters) {
+    
+    @Override
+    public <T extends genericEntity> Long countResult(Class<T> clazz, Hashtable parameters) {
         StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table ");
-        Integer countResult = null;
+        Long countResult = null;
         boolean firstClause = true;
 
         Iterator iter = parameters.keySet().iterator();
@@ -129,7 +134,7 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
 
         try {
             Query q = em.createQuery(query.toString());
-            countResult = (Integer) q.getSingleResult();
+            countResult = (Long)q.getSingleResult();
         } catch (IllegalStateException ex1) {
 
             this.setMessage(ex1.getMessage());

@@ -117,7 +117,6 @@ public class SiteSessionBean extends AbstractSessionBean {
     }
 
 
-
     /**
      * Busca la provincia asignada en la base de datos para un sitio y se lo
      * asigna a la propiedad province de esta clase.

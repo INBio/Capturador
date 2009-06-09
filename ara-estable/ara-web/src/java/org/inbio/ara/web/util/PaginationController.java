@@ -60,6 +60,7 @@ public class PaginationController {
     public void nextResults() {
         actualPage = actualPage + resultsPerPage;
         System.out.println("Actual Page: " + actualPage);
+        System.out.println("Total Results: " + totalResults);
         setButtonsVisibility();
         this.dataProvider.setList(getResults(actualPage, resultsPerPage));
     }

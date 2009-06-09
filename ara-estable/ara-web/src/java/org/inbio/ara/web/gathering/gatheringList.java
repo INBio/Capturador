@@ -425,7 +425,8 @@ public class gatheringList extends AbstractPageBean {
      * this page.</p>
      */
     public void prerender() {
-        //this.getgathering$GatheringSessionBeanV2().initDataProvider();
+        if(this.getGatheringSessionBean().getPagination() == null)
+            this.getGatheringSessionBean().initDataProvider();
     }
     
     /**
@@ -565,9 +566,9 @@ public class gatheringList extends AbstractPageBean {
          */
         if (this.getSessionManager().canModify()!=null) {
             RowKey rowKey = this.tableRowGroup1.getRowKey();
-            this.getgathering$GatheringSessionBeanV2().setEditMode(false);
-            this.getgathering$GatheringSessionBeanV2().setSelectedGathering(rowKey);
-            this.getgathering$GatheringSessionBeanV2().populateList();
+            this.getGatheringSessionBean().setEditMode(false);
+            this.getGatheringSessionBean().setSelectedGathering(rowKey);
+            this.getGatheringSessionBean().populateList();
             return this.getSessionManager().canModify();
         } else {
             this.getutil$MessageBean().addCantModifyMessage();
@@ -592,7 +593,7 @@ public class gatheringList extends AbstractPageBean {
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */
-    protected GatheringSessionBeanV2 getgathering$GatheringSessionBeanV2() {
+    protected GatheringSessionBeanV2 getGatheringSessionBean() {
         return (GatheringSessionBeanV2)getBean("gathering$GatheringSessionBeanV2");
     }
 
@@ -605,8 +606,8 @@ public class gatheringList extends AbstractPageBean {
          */
         if (this.getSessionManager().canDelete() != null) {
             RowKey rowKey = this.tableRowGroup1.getRowKey();
-            this.getgathering$GatheringSessionBeanV2().setSelectedGathering(rowKey);
-            this.getgathering$GatheringSessionBeanV2().delete();
+            this.getGatheringSessionBean().setSelectedGathering(rowKey);
+            this.getGatheringSessionBean().delete();
             return null;
         } else {
             this.getutil$MessageBean().addCantDeleteMessage();

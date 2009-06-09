@@ -41,6 +41,7 @@ public class SearchGathering extends AbstractPageBean {
      */
     private void _init() throws Exception {
     }
+
     private TextField txt_identification = new TextField();
 
     public TextField getTxt_identification() {
@@ -219,12 +220,17 @@ public class SearchGathering extends AbstractPageBean {
                "'%" + txt_collection.getText().toString().toLowerCase() + "%'");
         }
 
-        SearchManagerRemote smr = getgathering$GatheringSessionBeanV2().getSearchManager();
+        GatheringSessionBeanV2 gsb = getGatheringSessionBean();
+        SearchManagerRemote smr = gsb.getSearchManager();
+
+        //  ---------------
+        gsb.setSearchCriteria(searchCriteria);
         List resultSet = smr.makeQuery(GatheringObservation.class, searchCriteria);
+        
         if (resultSet != null) {
-            getgathering$GatheringSessionBeanV2().setFiltered(true);
-            getgathering$GatheringSessionBeanV2().getGatheringDataProvider().clearObjectList();
-            getgathering$GatheringSessionBeanV2().getGatheringDataProvider().setList(resultSet);
+            getGatheringSessionBean().setFiltered(true);
+            getGatheringSessionBean().getGatheringDataProvider().clearObjectList();
+            getGatheringSessionBean().getGatheringDataProvider().setList(resultSet);
             return "gath_obs_list"; //back to the list
         }
 
@@ -283,7 +289,7 @@ public class SearchGathering extends AbstractPageBean {
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */
-    protected GatheringSessionBeanV2 getgathering$GatheringSessionBeanV2() {
+    protected GatheringSessionBeanV2 getGatheringSessionBean() {
         return (GatheringSessionBeanV2)getBean("gathering$GatheringSessionBeanV2");
     }
 
@@ -294,6 +300,7 @@ public class SearchGathering extends AbstractPageBean {
         }
         else return "";
     }
+
 
 }
 
