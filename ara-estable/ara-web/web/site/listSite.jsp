@@ -16,10 +16,20 @@
                                 infoClass="infoMessage" style="left: 456px; top: 24px; position: absolute" warnClass="warnMessage"/>
                             <webuijsf:label binding="#{site$listSite.label1}" id="label1"
                                 style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 358px" text="#{resources.sites}"/>
+                            <webuijsf:button actionExpression="#{site$SiteSessionBean.pagination.firstResults}" visible="#{site$SiteSessionBean.pagination.isVisiblePrevious}"
+                                id="btn_first" text="primeros" style="left: 40px; top: 72px; position: absolute"/>
+                            <webuijsf:button actionExpression="#{site$SiteSessionBean.pagination.previousResults}" visible="#{site$SiteSessionBean.pagination.isVisiblePrevious}"
+                                id="btn_next" text="anteriores" style="left: 140px; top: 72px; position: absolute"/>
+                            <webuijsf:button actionExpression="#{site$SiteSessionBean.pagination.nextResults}" visible="#{site$SiteSessionBean.pagination.isVisibleNext}"
+                                id="btn_previous" text="siguientes" style="left: 300px; top: 72px; position: absolute"/>
+                            <webuijsf:button actionExpression="#{site$SiteSessionBean.pagination.lastResults}" visible="#{site$SiteSessionBean.pagination.isVisibleNext}"
+                                id="btn_last" text="ultimos" style="left: 400px; top: 72px; position: absolute"/>
+
+
                             <webuijsf:table binding="#{site$listSite.table1}" clearSortButton="true" id="table1" paginateButton="true" paginationControls="true"
-                                sortPanelToggleButton="true" style="left: 48px; top: 72px; position: absolute" title="#{resources.locations}" width="864">
-                                <webuijsf:tableRowGroup binding="#{site$listSite.tableRowGroup1}" id="tableRowGroup1" rows="10"
-                                    sourceData="#{site$SiteSessionBean.siteDataProvider}" sourceVar="currentRow">
+                                sortPanelToggleButton="true" style="left: 48px; top: 100px; position: absolute" title="#{resources.locations}" width="864">
+                                    <webuijsf:tableRowGroup binding="#{site$listSite.tableRowGroup1}" id="tableRowGroup1" rows="#{site$SiteSessionBean.pagination.resultsPerPage}"
+                                    sourceData="#{site$SiteSessionBean.pagination.dataProvider}" sourceVar="currentRow">
                                     <webuijsf:tableColumn binding="#{site$listSite.tableColumn1}" headerText="#{resources.id}" id="tableColumn1" sort="id">
                                         <webuijsf:staticText binding="#{site$listSite.staticText1}" id="staticText1" text="#{currentRow.value['id']}"/>
                                     </webuijsf:tableColumn>
