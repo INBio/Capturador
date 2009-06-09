@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.inbio.ara.web.util;
 
 import com.sun.data.provider.impl.ObjectListDataProvider;
@@ -51,39 +50,45 @@ public class PaginationController {
     private boolean isVisiblePrevious;
     private boolean isVisibleNext;
 
-
-    public PaginationController(int totalResults, int resultsPerPage){
+    public PaginationController(int totalResults, int resultsPerPage) {
         this.totalResults = totalResults;
         this.resultsPerPage = resultsPerPage;
 
         firstResults();
     }
 
-
-    public void nextResults(){
+    public void nextResults() {
         actualPage = actualPage + resultsPerPage;
+        System.out.println("Actual Page: " + actualPage);
         setButtonsVisibility();
         this.dataProvider.setList(getResults(actualPage, resultsPerPage));
     }
 
-    public void firstResults(){
-        actualPage=0;
+    public void firstResults() {
+        actualPage = 0;
+        System.out.println("Actual Page: " + actualPage);
         setButtonsVisibility();
         this.dataProvider.setList(getResults(actualPage, resultsPerPage));
     }
 
-    public void previousResults(){
-        actualPage = actualPage - resultsPerPage;
-        setButtonsVisibility();
-        this.dataProvider.setList(getResults(actualPage, resultsPerPage));
+    public void previousResults() {
+        if (actualPage > 0) {
+            actualPage = actualPage - resultsPerPage;
+            System.out.println("Actual Page: " + actualPage);
+            setButtonsVisibility();
+            this.dataProvider.setList(getResults(actualPage, resultsPerPage));
+        }
     }
 
-    public void lastResults(){
-        actualPage= totalResults / resultsPerPage;
+    public void lastResults() {
 
-        if(actualPage * resultsPerPage < totalResults)
-            actualPage = actualPage +1;
+        actualPage = totalResults - resultsPerPage;
+        
+        if (actualPage + resultsPerPage < totalResults) {
+            actualPage = actualPage + resultsPerPage;
+        }
 
+        System.out.println("Actual Page: " + actualPage);
         setButtonsVisibility();
         this.dataProvider.setList(getResults(actualPage, resultsPerPage));
     }
@@ -91,20 +96,21 @@ public class PaginationController {
     /**
      * 
      */
-    private void setButtonsVisibility(){
+    private void setButtonsVisibility() {
 
-        if(actualPage != 0)
+        if (actualPage != 0) {
             isVisiblePrevious = true;
-        else
+        } else {
             isVisiblePrevious = false;
+        }
 
-        if(totalResults > actualPage + resultsPerPage)
+        if (totalResults > actualPage + resultsPerPage) {
             isVisibleNext = true;
-        else
+        } else {
             isVisibleNext = false;
+        }
 
     }
-
 
     /**
      * Estos metodos debe ser generado por la clase que implementa el PaginationController
@@ -112,11 +118,9 @@ public class PaginationController {
      * COMO ABSTRACT, ENTONCES DEBE SER SOBREESCRITO!.
      * @see SiteSessionBean
      */
-    public List getResults(int firstResult, int maxResults){
+    public List getResults(int firstResult, int maxResults) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-
 
     /**
      * @return the isVisiblePrevious
@@ -146,7 +150,6 @@ public class PaginationController {
         this.isVisibleNext = isVisibleNext;
     }
 
-
     /**
      * @return the dataProvider
      */
@@ -174,5 +177,4 @@ public class PaginationController {
     public void setResultsPerPage(int resultsPerPage) {
         this.resultsPerPage = resultsPerPage;
     }
-
 }

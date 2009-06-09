@@ -13,14 +13,14 @@
                     <webuijsf:panelLayout id="contenido" style="position: relative; -rave-layout: grid">
                         <webuijsf:form binding="#{gathering$gatheringList.form1}" id="form1">
                             <h:messages binding="#{gathering$gatheringList.messageList1}" errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1"
-                                infoClass="infoMessage" style="left: 408px; top: 24px; position: absolute" warnClass="warnMessage"/>
+                                        infoClass="infoMessage" style="left: 408px; top: 24px; position: absolute" warnClass="warnMessage"/>
                             <webuijsf:label binding="#{gathering$gatheringList.label1}" id="label1"
-                                style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 310px" text="#{resources.gatherings_observations}"/>
+                                            style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 310px" text="#{resources.gatherings_observations}"/>
                             <webuijsf:table binding="#{gathering$gatheringList.gatheringTable}" clearSortButton="true" id="gatheringTable" paginateButton="true"
-                                paginationControls="true" sortPanelToggleButton="true" style="left: 48px; top: 72px; position: absolute; width: 856px"
-                                title="#{resources.gatherings_observations}" width="856">
+                                            paginationControls="true" sortPanelToggleButton="true" style="left: 48px; top: 72px; position: absolute; width: 856px"
+                                            title="#{resources.gatherings_observations}" width="856">
                                 <webuijsf:tableRowGroup binding="#{gathering$gatheringList.tableRowGroup1}" id="tableRowGroup1" rows="10"
-                                    sourceData="#{gathering$GatheringSessionBeanV2.gatheringDataProvider}" sourceVar="currentRow">
+                                                        sourceData="#{gathering$GatheringSessionBeanV2.gatheringDataProvider}" sourceVar="currentRow">
                                     <webuijsf:tableColumn binding="#{gathering$gatheringList.tableColumn1}" headerText="#{resources.id}" id="tableColumn1" sort="id">
                                         <webuijsf:staticText binding="#{gathering$gatheringList.staticText1}" id="staticText1" text="#{currentRow.value['id']}"/>
                                     </webuijsf:tableColumn>
@@ -28,26 +28,26 @@
                                         <webuijsf:staticText binding="#{gathering$gatheringList.staticText2}" id="staticText2" text="#{currentRow.value['siteName']}"/>
                                     </webuijsf:tableColumn>
                                     <webuijsf:tableColumn binding="#{gathering$gatheringList.tableColumn3}" headerText="#{resources.initial_date}"
-                                        id="tableColumn3" sort="initialDate">
+                                                          id="tableColumn3" sort="initialDate">
                                         <webuijsf:staticText binding="#{gathering$gatheringList.staticText3}" id="staticText3" text="#{currentRow.value['initialDate']}"/>
                                     </webuijsf:tableColumn>
                                     <webuijsf:tableColumn binding="#{gathering$gatheringList.tableColumn4}" headerText="#{resources.final_date}"
-                                        id="tableColumn4" sort="finalDate">
+                                                          id="tableColumn4" sort="finalDate">
                                         <webuijsf:staticText binding="#{gathering$gatheringList.staticText4}" id="staticText4" text="#{currentRow.value['finalDate']}"/>
                                     </webuijsf:tableColumn>
                                     <webuijsf:tableColumn binding="#{gathering$gatheringList.tableColumn5}" headerText="#{resources.responsible}"
-                                        id="tableColumn5" sort="responsibleName">
+                                                          id="tableColumn5" sort="responsibleName">
                                         <webuijsf:staticText binding="#{gathering$gatheringList.staticText5}" id="staticText5" text="#{currentRow.value['responsibleName']}"/>
                                     </webuijsf:tableColumn>
                                     <webuijsf:tableColumn binding="#{gathering$gatheringList.tableColumn7}" headerText="#{resources.collection}"
-                                        id="tableColumn7" sort="collectionName">
+                                                          id="tableColumn7" sort="collectionName">
                                         <webuijsf:staticText binding="#{gathering$gatheringList.staticText7}" id="staticText7" text="#{currentRow.value['collectionName']}"/>
                                     </webuijsf:tableColumn>
                                     <webuijsf:tableColumn binding="#{gathering$gatheringList.tableColumn6}" headerText="#{resources.actions}" id="tableColumn6">
                                         <webuijsf:button actionExpression="#{gathering$gatheringList.btn_edit_action}"
-                                            binding="#{gathering$gatheringList.btn_edit}" id="btn_edit" style="height: 24px; width: 47px" text="#{resources.btnEdit}"/>
+                                                         binding="#{gathering$gatheringList.btn_edit}" id="btn_edit" style="height: 24px; width: 47px" text="#{resources.btnEdit}"/>
                                         <webuijsf:button actionExpression="#{gathering$gatheringList.btn_remove_action}"
-                                            binding="#{gathering$gatheringList.btn_remove}" id="btn_remove" style="height: 24px; width: 47px" text="#{resources.btnDelete}"/>
+                                                         binding="#{gathering$gatheringList.btn_remove}" id="btn_remove" style="height: 24px; width: 47px" text="#{resources.btnDelete}"/>
                                     </webuijsf:tableColumn>
                                 </webuijsf:tableRowGroup>
                                 <f:facet name="actionsTop">

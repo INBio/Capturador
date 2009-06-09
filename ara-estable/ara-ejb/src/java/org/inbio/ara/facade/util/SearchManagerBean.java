@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 /*
  * SearchManagerBean.java
  *
@@ -23,7 +23,6 @@
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
  */
-
 package org.inbio.ara.facade.util;
 
 import java.util.Hashtable;
@@ -41,7 +40,7 @@ import org.inbio.ara.persistence.genericEntity;
  */
 @Stateless
 public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemote {
-    
+
     /**
      * Persistence context object
      */
@@ -49,21 +48,15 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
     private EntityManager em;
     private List objectsList;
     private String message;
-    
-    
+
     public SearchManagerBean() {
         setMessage("");
     }
-    
-    
-    /**
-     *
-     *
-     */
+
     public <T extends genericEntity> List makeQuery(Class<T> clazz, Hashtable parameters) {
-        StringBuffer query = new StringBuffer("FROM "+clazz.getName()+" table ");
+        StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table ");
         boolean firstClause = true;
-        
+
         Iterator iter = parameters.keySet().iterator();
         while (iter.hasNext()) {
             query.append(firstClause ? "WHERE " : " AND ");
@@ -73,12 +66,12 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
             query.append(value);
             firstClause = false;
         }
-        System.out.println("////////////////////////////");
-        System.out.println(query);
+
         try {
             Query q = em.createQuery(query.toString());
-            this.objectsList = (List)q.getResultList();
-        } catch(IllegalStateException ex1) {
+            this.objectsList = (List) q.getResultList();
+        } catch (IllegalStateException ex1) {
+
             this.setMessage(ex1.getMessage());
             return null;
         } catch (IllegalArgumentException ex2) {
@@ -86,6 +79,66 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
             return null;
         }
         return this.objectsList;
+    }
+
+    public <T extends genericEntity> List makePaginatedQuery(int firstResult, int maxResults, Class<T> clazz, Hashtable parameters) {
+        StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table ");
+        boolean firstClause = true;
+
+        Iterator iter = parameters.keySet().iterator();
+        while (iter.hasNext()) {
+            query.append(firstClause ? "WHERE " : " AND ");
+            String name = (String) iter.next();
+            query.append(name);
+            String value = (String) parameters.get(name);
+            query.append(value);
+            firstClause = false;
+        }
+
+        try {
+            Query q = em.createQuery(query.toString());
+            q.setFirstResult(firstResult);
+            q.setMaxResults(maxResults);
+            this.objectsList = (List) q.getResultList();
+        } catch (IllegalStateException ex1) {
+
+            this.setMessage(ex1.getMessage());
+            return null;
+        } catch (IllegalArgumentException ex2) {
+            this.setMessage(ex2.getMessage());
+            return null;
+        }
+        return this.objectsList;
+    }
+
+    public <T extends genericEntity> Integer countResult(Class<T> clazz, Hashtable parameters) {
+        StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table ");
+        Integer countResult = null;
+        boolean firstClause = true;
+
+        Iterator iter = parameters.keySet().iterator();
+        while (iter.hasNext()) {
+            query.append(firstClause ? "WHERE " : " AND ");
+            String name = (String) iter.next();
+            query.append(name);
+            String value = (String) parameters.get(name);
+            query.append(value);
+            firstClause = false;
+        }
+        query.insert(0, "SELECT COUNT(table.id)  ");
+
+        try {
+            Query q = em.createQuery(query.toString());
+            countResult = (Integer) q.getSingleResult();
+        } catch (IllegalStateException ex1) {
+
+            this.setMessage(ex1.getMessage());
+            return null;
+        } catch (IllegalArgumentException ex2) {
+            this.setMessage(ex2.getMessage());
+            return null;
+        }
+        return countResult;
     }
 
     public String getMessage() {

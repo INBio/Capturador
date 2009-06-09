@@ -687,9 +687,8 @@ public class SiteSessionBean extends AbstractSessionBean {
 
     public void initDataProvider() {
         if (!filtered) {
-
             pagination = new PaginationControllerImpl(siteManager.getAllSitesCount().intValue(), 10);
-
+           
             //this.siteDataProvider.clearObjectList();
             //this.sitesCount = siteManager.getAllSitesCount().intValue();
             //this.getSiteDataProvider().setList(siteManager.getSitesPaginated(0, 5));

@@ -33,7 +33,7 @@ public class SiteEAOImpl extends BaseEAOImpl implements SiteLocalEAO{
 
     @Override
     public List<Site> findAllPaginated(int firstResult, int maxResults) {
-        Query q = em .createQuery("select s from Site as s order by s.creationDate desc");
+        Query q = em .createQuery("select s from Site as s order by s.id");
         q.setFirstResult(firstResult);
         q.setMaxResults(maxResults);
         return q.getResultList();
