@@ -409,7 +409,8 @@ public class listSite extends AbstractPageBean {
      * this page.</p>
      */
     public void prerender() {
-        this.getsite$SiteSessionBean().initDataProvider();
+        if(this.getsite$SiteSessionBean().getPagination() == null)
+            this.getsite$SiteSessionBean().initDataProvider();
     }
     
     /**
