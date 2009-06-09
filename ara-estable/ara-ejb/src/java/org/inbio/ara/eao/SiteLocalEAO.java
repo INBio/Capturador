@@ -31,6 +31,8 @@ public interface SiteLocalEAO extends BaseLocalEAO {
 
     public List<Site> findAllPaginated(int firstResult, int maxResults);
 
+    public Long totalSitesCount();
+
 
     
 

@@ -40,5 +40,11 @@ public class SiteEAOImpl extends BaseEAOImpl implements SiteLocalEAO{
 
     }
 
+    @Override
+    public Long totalSitesCount() {
+        Query q = em .createQuery("select count(s.id) from Site as s");
+        return (Long)q.getSingleResult();
+    }
+
 
 }
