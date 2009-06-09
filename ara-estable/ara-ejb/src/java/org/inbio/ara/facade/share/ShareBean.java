@@ -1,6 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* Ara - capture species and specimen data
+ *
+ * Copyright (C) 2009  INBio ( Instituto Nacional de Biodiversidad )
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.facade.share;
@@ -48,189 +61,211 @@ public class ShareBean implements ShareRemote, ShareLocal {
     Long UNO = new Long(1);
     Long DOS = new Long(2);
 
+    /**
+     * Metodo para generar los snapshots de darein core con toda la info y todos los campos
+     * Dura demaciado generando los snapshots
+     * @deprecated
+     */
     @Override
     public String makeDcwSnapshotAll(){
+        Calendar calendar = new GregorianCalendar();
+        System.out.println(calendar.getTime());
         try{
             //Delete all snapshot entries
             SEAOL.truncateDwcSnapshot();
-
             //Retrive information
-            List<DarwinCore14> dwcInfo = SEAOL.retriveInformationDcwAll();
-            System.out.println(dwcInfo.size()); //To check content
-
-            for (DarwinCore14 dwcAux : dwcInfo){
-                DwcSnapshot snapshotEntry = new DwcSnapshot();
-                snapshotEntry.setGlobaluniqueidentifier(dwcAux.getGlobaluniqueidentifier());
-                snapshotEntry.setDatelastmodified(dwcAux.getDatelastmodified());
-                snapshotEntry.setInstitutioncode(dwcAux.getInstitutioncode());
-                snapshotEntry.setCollectioncode(dwcAux.getCollectioncode());
-                snapshotEntry.setCatalognumber(dwcAux.getCatalognumber());
-                snapshotEntry.setScientificname(dwcAux.getScientificname());
-                snapshotEntry.setBasisofrecord(dwcAux.getBasisofrecord());
-                snapshotEntry.setInformationwithheld(dwcAux.getInformationwithheld());
-                snapshotEntry.setPhylum(dwcAux.getPhylum());
-                snapshotEntry.setHighertaxon(dwcAux.getHighertaxon());
-                snapshotEntry.setKingdom(dwcAux.getKingdom());
-                snapshotEntry.setClass1(dwcAux.getClass1());
-                snapshotEntry.setOrders(dwcAux.getOrders());
-                snapshotEntry.setFamily(dwcAux.getFamily());
-                snapshotEntry.setGenus(dwcAux.getGenus());
-                snapshotEntry.setSpecificepithet(dwcAux.getSpecificepithet());
-                snapshotEntry.setInfraspecificepithet(dwcAux.getInfraspecificepithet());
-                snapshotEntry.setInfraspecificrank(dwcAux.getInfraspecificrank());
-                snapshotEntry.setAuthoryearofscientificname(dwcAux.getAuthoryearofscientificname());
-                snapshotEntry.setNomenclaturalcode(dwcAux.getNomenclaturalcode());
-                snapshotEntry.setIdentificationqualifier(dwcAux.getIdentificationqualifier());
-                snapshotEntry.setCollectingmethod(dwcAux.getCollectingmethod());
-                snapshotEntry.setValiddistributionflag(dwcAux.getValiddistributionflag());
-                snapshotEntry.setCollector(dwcAux.getCollector());
-                snapshotEntry.setEarliestdatecollected(dwcAux.getEarliestdatecollected());
-                snapshotEntry.setLatestdatecollected(dwcAux.getLatestdatecollected());
-                snapshotEntry.setDayofyear(dwcAux.getDayofyear());
-                snapshotEntry.setHighergeography(dwcAux.getHighergeography());
-                snapshotEntry.setContinent(dwcAux.getContinent());
-                snapshotEntry.setWaterbody(dwcAux.getWaterbody());
-                snapshotEntry.setIslandgroup(dwcAux.getIslandgroup());
-                snapshotEntry.setIsland(dwcAux.getIsland());
-                snapshotEntry.setCountry(dwcAux.getCountry());
-                snapshotEntry.setStateprovince(dwcAux.getStateprovince());
-                snapshotEntry.setCounty(dwcAux.getCounty());
-                snapshotEntry.setLocality(dwcAux.getLocality());
-                snapshotEntry.setMinimumelevationinmeters(dwcAux.getMinimumelevationinmeters());
-                snapshotEntry.setMaximumelevationinmeters(dwcAux.getMaximumelevationinmeters());
-                snapshotEntry.setMinimumdepthinmeters(dwcAux.getMinimumdepthinmeters());
-                snapshotEntry.setMaximumdepthinmeters(dwcAux.getMaximumdepthinmeters());
-                snapshotEntry.setSex(dwcAux.getSex());
-                snapshotEntry.setLifestage(dwcAux.getLifestage());
-                snapshotEntry.setRemarks(dwcAux.getRemarks());
-                snapshotEntry.setAttributes(dwcAux.getAttributes());
-                snapshotEntry.setImageurl(dwcAux.getImageurl());
-                snapshotEntry.setRelatedinformation(dwcAux.getRelatedinformation());
-                SEAOL.create(snapshotEntry);
+            int totalDwc = SEAOL.findTotalDwc().intValue();
+            int firstDwc = 0; //Marca a partir de cual entidad traer el resultado
+            int maxDwc = 1000; //Traer bloques de 1000 entidades
+            //Generate snapshot
+            while(firstDwc<totalDwc){
+                List<DarwinCore14> dwcInfo = SEAOL.retriveInformationDcwPaginated(firstDwc, maxDwc);
+                for(DarwinCore14 dwcAux : dwcInfo){
+                    DwcSnapshot snapshotEntry = new DwcSnapshot();
+                    snapshotEntry.setGlobaluniqueidentifier(dwcAux.getGlobaluniqueidentifier());
+                    snapshotEntry.setDatelastmodified(dwcAux.getDatelastmodified());
+                    snapshotEntry.setInstitutioncode(dwcAux.getInstitutioncode());
+                    snapshotEntry.setCollectioncode(dwcAux.getCollectioncode());
+                    snapshotEntry.setCatalognumber(dwcAux.getCatalognumber());
+                    snapshotEntry.setScientificname(dwcAux.getScientificname());
+                    snapshotEntry.setBasisofrecord(dwcAux.getBasisofrecord());
+                    snapshotEntry.setInformationwithheld(dwcAux.getInformationwithheld());
+                    snapshotEntry.setPhylum(dwcAux.getPhylum());
+                    snapshotEntry.setHighertaxon(dwcAux.getHighertaxon());
+                    snapshotEntry.setKingdom(dwcAux.getKingdom());
+                    snapshotEntry.setClass1(dwcAux.getClass1());
+                    snapshotEntry.setOrders(dwcAux.getOrders());
+                    snapshotEntry.setFamily(dwcAux.getFamily());
+                    snapshotEntry.setGenus(dwcAux.getGenus());
+                    snapshotEntry.setSpecificepithet(dwcAux.getSpecificepithet());
+                    snapshotEntry.setInfraspecificepithet(dwcAux.getInfraspecificepithet());
+                    snapshotEntry.setInfraspecificrank(dwcAux.getInfraspecificrank());
+                    snapshotEntry.setAuthoryearofscientificname(dwcAux.getAuthoryearofscientificname());
+                    snapshotEntry.setNomenclaturalcode(dwcAux.getNomenclaturalcode());
+                    snapshotEntry.setIdentificationqualifier(dwcAux.getIdentificationqualifier());
+                    snapshotEntry.setCollectingmethod(dwcAux.getCollectingmethod());
+                    snapshotEntry.setValiddistributionflag(dwcAux.getValiddistributionflag());
+                    snapshotEntry.setCollector(dwcAux.getCollector());
+                    snapshotEntry.setEarliestdatecollected(dwcAux.getEarliestdatecollected());
+                    snapshotEntry.setLatestdatecollected(dwcAux.getLatestdatecollected());
+                    snapshotEntry.setDayofyear(dwcAux.getDayofyear());
+                    snapshotEntry.setHighergeography(dwcAux.getHighergeography());
+                    snapshotEntry.setContinent(dwcAux.getContinent());
+                    snapshotEntry.setWaterbody(dwcAux.getWaterbody());
+                    snapshotEntry.setIslandgroup(dwcAux.getIslandgroup());
+                    snapshotEntry.setIsland(dwcAux.getIsland());
+                    snapshotEntry.setCountry(dwcAux.getCountry());
+                    snapshotEntry.setStateprovince(dwcAux.getStateprovince());
+                    snapshotEntry.setCounty(dwcAux.getCounty());
+                    snapshotEntry.setLocality(dwcAux.getLocality());
+                    snapshotEntry.setMinimumelevationinmeters(dwcAux.getMinimumelevationinmeters());
+                    snapshotEntry.setMaximumelevationinmeters(dwcAux.getMaximumelevationinmeters());
+                    snapshotEntry.setMinimumdepthinmeters(dwcAux.getMinimumdepthinmeters());
+                    snapshotEntry.setMaximumdepthinmeters(dwcAux.getMaximumdepthinmeters());
+                    snapshotEntry.setSex(dwcAux.getSex());
+                    snapshotEntry.setLifestage(dwcAux.getLifestage());
+                    snapshotEntry.setRemarks(dwcAux.getRemarks());
+                    snapshotEntry.setAttributes(dwcAux.getAttributes());
+                    snapshotEntry.setImageurl(dwcAux.getImageurl());
+                    snapshotEntry.setRelatedinformation(dwcAux.getRelatedinformation());
+                    try{
+                        SEAOL.create(snapshotEntry);}
+                    catch(Exception e){System.out.println(e.toString());}
+                }
+                System.out.println(firstDwc);
+                firstDwc += maxDwc;
             }
+            System.out.println(calendar.getTime());
             return "success";
         }
-        catch(Exception e){
-            System.out.println(e);
-            return "fail";
-        }
+        catch(Exception e){ System.out.println(e); return "fail";}
     }
-    
+
+    /**
+     * Metodo para generar los snapshots de darein core con cierta info y ciertos campos
+     * Dura demaciado generando los snapshots
+     * @deprecated
+     */
     @Override
     public String makeDcwSnapshot(LinkedList<QueryNode> qnlist,LinkedList<String> elist, int validate){
         try{
             //Delete all snapshot entries
             SEAOL.truncateDwcSnapshot();
-
             //Make "Select" query
             String select = makeQueryString(qnlist,elist,validate);
-            //System.out.println(select); //To check string
-
+            //Bounds
+            int firstDwc = 0; //Marca a partir de cual entidad traer el resultado
+            int maxDwc = 100; //Traer bloques de 100 entidades
             //Retrive information
-            List<DarwinCore14> dwcInfo = SEAOL.retriveInformationDcw(select);
-            //System.out.println(dwcInfo.size()); //To check content
-
-            //Populate snapshot and persist the entries (entities)
-            for (DarwinCore14 dwcAux : dwcInfo){
-                DwcSnapshot snapshotEntry = new DwcSnapshot();
-                for(int i=0;i<elist.size();i++){                    
-                    String value = elist.get(i);
-                    if(value.equals("globaluniqueidentifier"))
-                        snapshotEntry.setGlobaluniqueidentifier(dwcAux.getGlobaluniqueidentifier());
-                    else if(value.equals("datelastmodified"))
-                        snapshotEntry.setDatelastmodified(dwcAux.getDatelastmodified());
-                    else if(value.equals("institutioncode"))
-                        snapshotEntry.setInstitutioncode(dwcAux.getInstitutioncode());
-                    else if(value.equals("collectioncode"))
-                        snapshotEntry.setCollectioncode(dwcAux.getCollectioncode());
-                    else if(value.equals("catalognumber"))
-                        snapshotEntry.setCatalognumber(dwcAux.getCatalognumber());
-                    else if(value.equals("scientificname"))
-                        snapshotEntry.setScientificname(dwcAux.getScientificname());
-                    else if(value.equals("basisofrecord"))
-                        snapshotEntry.setBasisofrecord(dwcAux.getBasisofrecord());
-                    else if(value.equals("informationwithheld"))
-                        snapshotEntry.setInformationwithheld(dwcAux.getInformationwithheld());
-                    else if(value.equals("phylum"))
-                        snapshotEntry.setPhylum(dwcAux.getPhylum());
-                    else if(value.equals("highertaxon"))
-                        snapshotEntry.setHighertaxon(dwcAux.getHighertaxon());
-                    else if(value.equals("kingdom"))
-                        snapshotEntry.setKingdom(dwcAux.getKingdom());
-                    else if(value.equals("class1"))
-                        snapshotEntry.setClass1(dwcAux.getClass1());
-                    else if(value.equals("orders"))
-                        snapshotEntry.setOrders(dwcAux.getOrders());
-                    else if(value.equals("family"))
-                        snapshotEntry.setFamily(dwcAux.getFamily());
-                    else if(value.equals("genus"))
-                        snapshotEntry.setGenus(dwcAux.getGenus());
-                    else if(value.equals("specificepithet"))
-                        snapshotEntry.setSpecificepithet(dwcAux.getSpecificepithet());
-                    else if(value.equals("infraspecificepithet"))
-                        snapshotEntry.setInfraspecificepithet(dwcAux.getInfraspecificepithet());
-                    else if(value.equals("infraspecificrank"))
-                        snapshotEntry.setInfraspecificrank(dwcAux.getInfraspecificrank());
-                    else if(value.equals("authoryearofscientificname"))
-                        snapshotEntry.setAuthoryearofscientificname(dwcAux.getAuthoryearofscientificname());
-                    else if(value.equals("nomenclaturalcode"))
-                        snapshotEntry.setNomenclaturalcode(dwcAux.getNomenclaturalcode());
-                    else if(value.equals("identificationqualifier"))
-                        snapshotEntry.setIdentificationqualifier(dwcAux.getIdentificationqualifier());
-                    else if(value.equals("collectingmethod"))
-                        snapshotEntry.setCollectingmethod(dwcAux.getCollectingmethod());
-                    else if(value.equals("validdistributionflag"))
-                        snapshotEntry.setValiddistributionflag(dwcAux.getValiddistributionflag());
-                    else if(value.equals("collector"))
-                        snapshotEntry.setCollector(dwcAux.getCollector());
-                    else if(value.equals("earliestdatecollected"))
-                        snapshotEntry.setEarliestdatecollected(dwcAux.getEarliestdatecollected());
-                    else if(value.equals("latestdatecollected"))
-                        snapshotEntry.setLatestdatecollected(dwcAux.getLatestdatecollected());
-                    else if(value.equals("dayofyear"))
-                        snapshotEntry.setDayofyear(dwcAux.getDayofyear());
-                    else if(value.equals("highergeography"))
-                        snapshotEntry.setHighergeography(dwcAux.getHighergeography());
-                    else if(value.equals("continent"))
-                        snapshotEntry.setContinent(dwcAux.getContinent());
-                    else if(value.equals("waterbody"))
-                        snapshotEntry.setWaterbody(dwcAux.getWaterbody());
-                    else if(value.equals("islandgroup"))
-                        snapshotEntry.setIslandgroup(dwcAux.getIslandgroup());
-                    else if(value.equals("island"))
-                        snapshotEntry.setIsland(dwcAux.getIsland());
-                    else if(value.equals("country"))
-                        snapshotEntry.setCountry(dwcAux.getCountry());
-                    else if(value.equals("stateprovince"))
-                        snapshotEntry.setStateprovince(dwcAux.getStateprovince());
-                    else if(value.equals("county"))
-                        snapshotEntry.setCounty(dwcAux.getCounty());
-                    else if(value.equals("locality"))
-                        snapshotEntry.setLocality(dwcAux.getLocality());
-                    else if(value.equals("minimumelevationinmeters"))
-                        snapshotEntry.setMinimumelevationinmeters(dwcAux.getMinimumelevationinmeters());
-                    else if(value.equals("maximumelevationinmeters"))
-                        snapshotEntry.setMaximumelevationinmeters(dwcAux.getMaximumelevationinmeters());
-                    else if(value.equals("minimumdepthinmeters"))
-                        snapshotEntry.setMinimumdepthinmeters(dwcAux.getMinimumdepthinmeters());
-                    else if(value.equals("maximumdepthinmeters"))
-                        snapshotEntry.setMaximumdepthinmeters(dwcAux.getMaximumdepthinmeters());
-                    else if(value.equals("sex"))
-                        snapshotEntry.setSex(dwcAux.getSex());
-                    else if(value.equals("lifestage"))
-                        snapshotEntry.setLifestage(dwcAux.getLifestage());
-                    else if(value.equals("remarks"))
-                        snapshotEntry.setRemarks(dwcAux.getRemarks());
-                    else if(value.equals("attributes"))
-                        snapshotEntry.setAttributes(dwcAux.getAttributes());
-                    else if(value.equals("imageurl"))
-                        snapshotEntry.setImageurl(dwcAux.getImageurl());
-                    else if(value.equals("relatedinformation"))
-                        snapshotEntry.setRelatedinformation(dwcAux.getRelatedinformation());
-                }
-                    //Persist the new entity
-                    SEAOL.create(snapshotEntry);
-            } // Ending of "for"
+            List<DarwinCore14> dwcInfo = SEAOL.retriveInformationDcwPaginatedQ(firstDwc, maxDwc, select);
+            while(!dwcInfo.isEmpty()){
+                for (DarwinCore14 dwcAux : dwcInfo){
+                    DwcSnapshot snapshotEntry = new DwcSnapshot();
+                    for(int i=0;i<elist.size();i++){
+                        String value = elist.get(i);
+                        if(value.equals("globaluniqueidentifier"))
+                            snapshotEntry.setGlobaluniqueidentifier(dwcAux.getGlobaluniqueidentifier());
+                        else if(value.equals("datelastmodified"))
+                            snapshotEntry.setDatelastmodified(dwcAux.getDatelastmodified());
+                        else if(value.equals("institutioncode"))
+                            snapshotEntry.setInstitutioncode(dwcAux.getInstitutioncode());
+                        else if(value.equals("collectioncode"))
+                            snapshotEntry.setCollectioncode(dwcAux.getCollectioncode());
+                        else if(value.equals("catalognumber"))
+                            snapshotEntry.setCatalognumber(dwcAux.getCatalognumber());
+                        else if(value.equals("scientificname"))
+                            snapshotEntry.setScientificname(dwcAux.getScientificname());
+                        else if(value.equals("basisofrecord"))
+                            snapshotEntry.setBasisofrecord(dwcAux.getBasisofrecord());
+                        else if(value.equals("informationwithheld"))
+                            snapshotEntry.setInformationwithheld(dwcAux.getInformationwithheld());
+                        else if(value.equals("phylum"))
+                            snapshotEntry.setPhylum(dwcAux.getPhylum());
+                        else if(value.equals("highertaxon"))
+                            snapshotEntry.setHighertaxon(dwcAux.getHighertaxon());
+                        else if(value.equals("kingdom"))
+                            snapshotEntry.setKingdom(dwcAux.getKingdom());
+                        else if(value.equals("class1"))
+                            snapshotEntry.setClass1(dwcAux.getClass1());
+                        else if(value.equals("orders"))
+                            snapshotEntry.setOrders(dwcAux.getOrders());
+                        else if(value.equals("family"))
+                            snapshotEntry.setFamily(dwcAux.getFamily());
+                        else if(value.equals("genus"))
+                            snapshotEntry.setGenus(dwcAux.getGenus());
+                        else if(value.equals("specificepithet"))
+                            snapshotEntry.setSpecificepithet(dwcAux.getSpecificepithet());
+                        else if(value.equals("infraspecificepithet"))
+                            snapshotEntry.setInfraspecificepithet(dwcAux.getInfraspecificepithet());
+                        else if(value.equals("infraspecificrank"))
+                            snapshotEntry.setInfraspecificrank(dwcAux.getInfraspecificrank());
+                        else if(value.equals("authoryearofscientificname"))
+                            snapshotEntry.setAuthoryearofscientificname(dwcAux.getAuthoryearofscientificname());
+                        else if(value.equals("nomenclaturalcode"))
+                            snapshotEntry.setNomenclaturalcode(dwcAux.getNomenclaturalcode());
+                        else if(value.equals("identificationqualifier"))
+                            snapshotEntry.setIdentificationqualifier(dwcAux.getIdentificationqualifier());
+                        else if(value.equals("collectingmethod"))
+                            snapshotEntry.setCollectingmethod(dwcAux.getCollectingmethod());
+                        else if(value.equals("validdistributionflag"))
+                            snapshotEntry.setValiddistributionflag(dwcAux.getValiddistributionflag());
+                        else if(value.equals("collector"))
+                            snapshotEntry.setCollector(dwcAux.getCollector());
+                        else if(value.equals("earliestdatecollected"))
+                            snapshotEntry.setEarliestdatecollected(dwcAux.getEarliestdatecollected());
+                        else if(value.equals("latestdatecollected"))
+                            snapshotEntry.setLatestdatecollected(dwcAux.getLatestdatecollected());
+                        else if(value.equals("dayofyear"))
+                            snapshotEntry.setDayofyear(dwcAux.getDayofyear());
+                        else if(value.equals("highergeography"))
+                            snapshotEntry.setHighergeography(dwcAux.getHighergeography());
+                        else if(value.equals("continent"))
+                            snapshotEntry.setContinent(dwcAux.getContinent());
+                        else if(value.equals("waterbody"))
+                            snapshotEntry.setWaterbody(dwcAux.getWaterbody());
+                        else if(value.equals("islandgroup"))
+                            snapshotEntry.setIslandgroup(dwcAux.getIslandgroup());
+                        else if(value.equals("island"))
+                            snapshotEntry.setIsland(dwcAux.getIsland());
+                        else if(value.equals("country"))
+                            snapshotEntry.setCountry(dwcAux.getCountry());
+                        else if(value.equals("stateprovince"))
+                            snapshotEntry.setStateprovince(dwcAux.getStateprovince());
+                        else if(value.equals("county"))
+                            snapshotEntry.setCounty(dwcAux.getCounty());
+                        else if(value.equals("locality"))
+                            snapshotEntry.setLocality(dwcAux.getLocality());
+                        else if(value.equals("minimumelevationinmeters"))
+                            snapshotEntry.setMinimumelevationinmeters(dwcAux.getMinimumelevationinmeters());
+                        else if(value.equals("maximumelevationinmeters"))
+                            snapshotEntry.setMaximumelevationinmeters(dwcAux.getMaximumelevationinmeters());
+                        else if(value.equals("minimumdepthinmeters"))
+                            snapshotEntry.setMinimumdepthinmeters(dwcAux.getMinimumdepthinmeters());
+                        else if(value.equals("maximumdepthinmeters"))
+                            snapshotEntry.setMaximumdepthinmeters(dwcAux.getMaximumdepthinmeters());
+                        else if(value.equals("sex"))
+                            snapshotEntry.setSex(dwcAux.getSex());
+                        else if(value.equals("lifestage"))
+                            snapshotEntry.setLifestage(dwcAux.getLifestage());
+                        else if(value.equals("remarks"))
+                            snapshotEntry.setRemarks(dwcAux.getRemarks());
+                        else if(value.equals("attributes"))
+                            snapshotEntry.setAttributes(dwcAux.getAttributes());
+                        else if(value.equals("imageurl"))
+                            snapshotEntry.setImageurl(dwcAux.getImageurl());
+                        else if(value.equals("relatedinformation"))
+                            snapshotEntry.setRelatedinformation(dwcAux.getRelatedinformation());
+                    }
+                        //Persist the new entity
+                    try{
+                        SEAOL.create(snapshotEntry);
+                    }
+                    catch(Exception e){System.out.println(e);}
+                } // Ending of "for"
+                //Get the new ones
+                firstDwc += maxDwc;
+                dwcInfo = SEAOL.retriveInformationDcwPaginatedQ(firstDwc, maxDwc, select);
+            }
             return "success";
         }
         catch(Exception e){
@@ -270,7 +305,7 @@ public class ShareBean implements ShareRemote, ShareLocal {
                     jpqlQuery += "'" + qn.getUserEntry().toLowerCase() + "'";
                 }
             }
-            return jpqlQuery;
+            return jpqlQuery+" order by dc.globaluniqueidentifier";
         }
 	}
 
