@@ -47,6 +47,7 @@ import org.inbio.ara.web.ApplicationBean1;
 import org.inbio.ara.web.AraApplicationBean;
 import org.inbio.ara.web.SessionManager;
 import org.inbio.ara.web.util.MessageBean;
+import org.inbio.ara.web.util.PaginationController;
 import org.inbio.ara.web.util.SelectionListBean;
 
 /**
@@ -63,6 +64,10 @@ public class SiteSessionBean extends AbstractSessionBean {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
     private int __placeholder;
     private SiteDataProvider siteDataProvider = new SiteDataProvider();
+
+    private int sitesCount;
+
+
     private Option[] featureTypeOption;
     private Option[] projectionOption;
     private Option[] siteCalculationMethod;
@@ -100,6 +105,9 @@ public class SiteSessionBean extends AbstractSessionBean {
     private Long selectedProvinceId = null;
 
     private Long INVALID_VALUE_ID = new Long(-1);
+
+    //paginacion de la tabla
+    private PaginationController pagination = null;
 
 
     /**
@@ -679,8 +687,53 @@ public class SiteSessionBean extends AbstractSessionBean {
 
     public void initDataProvider() {
         if (!filtered) {
-            this.siteDataProvider.clearObjectList();
-            this.siteDataProvider.refreshList();
+
+            pagination = new PaginationControllerImpl(siteManager.getAllSitesCount().intValue(), 10);
+
+            //this.siteDataProvider.clearObjectList();
+            //this.sitesCount = siteManager.getAllSitesCount().intValue();
+            //this.getSiteDataProvider().setList(siteManager.getSitesPaginated(0, 5));
+            //this.siteDataProvider.refreshList();
+        }
+    }
+
+    /**
+     * @return the sitesCount
+     */
+    public int getSitesCount() {
+        return sitesCount;
+    }
+
+    /**
+     * @param sitesCount the sitesCount to set
+     */
+    public void setSitesCount(int sitesCount) {
+        this.sitesCount = sitesCount;
+    }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationController getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationController pagination) {
+        this.pagination = pagination;
+    }
+
+    private class PaginationControllerImpl extends PaginationController {
+
+        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
+            super(siteManager.getAllSitesCount().intValue(), 10);
+        }
+
+        @Override
+        public List getResults(int firstResult, int maxResults) {
+            return siteManager.getSitesPaginated(firstResult, maxResults);
         }
     }
 }
