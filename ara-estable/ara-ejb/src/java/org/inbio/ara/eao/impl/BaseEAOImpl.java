@@ -52,4 +52,10 @@ public class BaseEAOImpl implements BaseLocalEAO{
         em.merge(entity);
         em.flush();
     }
+
+    //Falta probar si este metodo funciona
+    /*
+      Query q = em .createQuery("select c from Country as c");
+        return q.getResultList();
+     */
 }
