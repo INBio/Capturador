@@ -22,7 +22,7 @@ import java.util.List;
 import javax.ejb.Remote;
 import org.inbio.ara.dto.GeographicLayerDTO;
 import org.inbio.ara.dto.GeographicLayerValueDTO;
-import org.inbio.ara.persistence.gis.GeographicLayer;
+import org.inbio.ara.persistence.gis.Site;
 import org.inbio.ara.persistence.util.Country;
 import org.inbio.ara.persistence.util.Province;
 /**
@@ -68,4 +68,12 @@ public interface SiteManagerRemote {
 
     public void deleteForSite(Long siteId);
 
+    /**
+     * @param firstResult a partir de cual fila comenzara a devolver (la primera fila es la 0)
+     * @param maxResults cantidad de elementos a devolver (pueden ser menos)
+     * @return
+     */
+    public List<Site> getSitesPaginated(int firstResult, int maxResults);
+
+    public Integer getAllSitesCount();
 }

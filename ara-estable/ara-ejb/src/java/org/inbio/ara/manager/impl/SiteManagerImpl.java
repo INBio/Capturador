@@ -27,11 +27,13 @@ import org.inbio.ara.eao.CountryLocalEAO;
 import org.inbio.ara.eao.GeographicLayerLocalEAO;
 import org.inbio.ara.eao.GeoreferencedSiteLocalEAO;
 import org.inbio.ara.eao.ProvinceLocalEAO;
+import org.inbio.ara.eao.SiteLocalEAO;
 import org.inbio.ara.facade.gis.SiteRemote;
 import org.inbio.ara.manager.SiteManagerRemote;
 import org.inbio.ara.persistence.gis.GeographicLayer;
 import org.inbio.ara.persistence.gis.GeoreferencedSite;
 import org.inbio.ara.persistence.gis.GeoreferencedSitePK;
+import org.inbio.ara.persistence.gis.Site;
 import org.inbio.ara.persistence.util.Country;
 import org.inbio.ara.persistence.util.Province;
 
@@ -54,6 +56,9 @@ public class SiteManagerImpl implements SiteManagerRemote {
 
     @EJB
     GeographicLayerLocalEAO geographicLayerEAOImpl;
+
+    @EJB
+    SiteLocalEAO siteEAOImpl;
 
     @Override
     public List<Country> getAllCountries() {
@@ -319,6 +324,16 @@ public class SiteManagerImpl implements SiteManagerRemote {
     @Override
     public Country getCountry(Long countryId) {
         return (Country) provinceEAOImpl.findById(Country.class, countryId);
+    }
+
+    @Override
+    public List<Site> getSitesPaginated(int firstResult, int maxResults) {
+        return siteEAOImpl.findAllPaginated(firstResult, maxResults);
+    }
+
+    @Override
+    public Integer getAllSitesCount() {
+        return new Integer(siteEAOImpl.totalSitesCount().toString());
     }
 
 
