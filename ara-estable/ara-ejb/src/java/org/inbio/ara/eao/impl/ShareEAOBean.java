@@ -1,6 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* Ara - capture species and specimen data
+ *
+ * Copyright (C) 2009  INBio ( Instituto Nacional de Biodiversidad )
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.eao.impl;
@@ -57,6 +70,53 @@ public class ShareEAOBean extends BaseEAOImpl implements ShareEAOLocal{
 		List result = (List)query.getResultList();
         em.setFlushMode(FlushModeType.AUTO);
         return result;
+    }
+
+    /**
+     * Method to retrive all information from darwin core table to create Dwc snapshot
+     * @param firstResult a partir de cual elemento traer
+     * @param maxResults total de elementos a traer
+     * @return Lista de entidades DarwinCore14
+     */
+    @Override
+    public List<DarwinCore14> retriveInformationDcwPaginated(int firstResult, int maxResults) {
+        em.setFlushMode(FlushModeType.COMMIT);
+        Query q = em .createQuery("from DarwinCore14 as d order by d.globaluniqueidentifier");
+        q.setFirstResult(firstResult);
+        q.setMaxResults(maxResults);
+        List result = (List)q.getResultList();
+        em.setFlushMode(FlushModeType.AUTO);
+        return result;
+    }
+
+    /**
+     * Method to retrive specific information from darwin core table to create Dwc snapshot
+     * @param firstResult a partir de cual elemento traer
+     * @param maxResults total de elementos a traer
+     * @return Lista de entidades DarwinCore14
+     */
+    @Override
+    public List<DarwinCore14> retriveInformationDcwPaginatedQ(int firstResult, int maxResults,String query) {
+        em.setFlushMode(FlushModeType.COMMIT);
+        Query q = em .createQuery(query);
+        q.setFirstResult(firstResult);
+        q.setMaxResults(maxResults);
+        List result = (List)q.getResultList();
+        em.setFlushMode(FlushModeType.AUTO);
+        return result;
+    }
+
+    /**
+     * To get the number of DarwinCore14 entities that exists on data base
+     * @return an int that represent tha quantity of DarwinCore14 entities
+     */
+    @Override
+    public Long findTotalDwc() {
+        em.setFlushMode(FlushModeType.COMMIT);
+        Query query = em.createQuery ("SELECT COUNT (dwc) FROM DarwinCore14 dwc");
+        Long num = (Long)query.getSingleResult();
+        em.setFlushMode(FlushModeType.AUTO);
+        return num;
     }
 
     //Method to get a especific darwin core element
