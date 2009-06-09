@@ -68,4 +68,10 @@ public interface ShareEAOLocal extends BaseLocalEAO {
 
     public void truncateDwcSnapshot();
 
+    public java.util.List<org.inbio.ara.persistence.specimen.DarwinCore14> retriveInformationDcwPaginated(int firstResult, int maxResults);
+
+    public java.lang.Long findTotalDwc();
+
+    public java.util.List<org.inbio.ara.persistence.specimen.DarwinCore14> retriveInformationDcwPaginatedQ(int firstResult, int maxResults, java.lang.String query);
+
 }
