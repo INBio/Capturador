@@ -13,9 +13,9 @@
                     <webuijsf:panelLayout id="contenido" style="position: relative; -rave-layout: grid">
                         <webuijsf:form binding="#{specimen$SearchSpecimen.form1}" id="form1">
                             <webuijsf:label binding="#{specimen$SearchSpecimen.label1}" id="label1"
-                                style="font-size: 24px; height: 46px; left: 48px; top: 24px; position: absolute; width: 502px" text="#{resources.search_label}"/>
+                                style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 502px" text="#{resources.search_label}"/>
                             <webuijsf:pageAlert binding="#{specimen$SearchSpecimen.searchAlert}" id="searchAlert" rendered="false" style="height: 72px; left: 216px; top: 120px; position: absolute; width: 528px"/>
-                            <webuijsf:panelLayout binding="#{specimen$SearchSpecimen.layoutPanel1}" id="layoutPanel1" style="border: 2px groove black; height: 232px; left: 48px; top: 100px; position: absolute; width: 500px; -rave-layout: grid">
+                            <webuijsf:panelLayout binding="#{specimen$SearchSpecimen.layoutPanel1}" id="layoutPanel1" style="border: 2px groove black; height: 212px; left: 48px; top: 72px; position: absolute; width: 500px; -rave-layout: grid">
                                 <webuijsf:label binding="#{specimen$SearchSpecimen.idLabel}" id="idLabel" style="left: 24px; top: 24px; position: absolute" text="#{resources.id}"/>
                                 <webuijsf:textField binding="#{specimen$SearchSpecimen.idTF}" id="idTF" style="left: 240px; top: 24px; position: absolute; width: 70px"/>
                                 <webuijsf:label binding="#{specimen$SearchSpecimen.GOIdLabel}" id="GOIdLabel" style="left: 24px; top: 48px; position: absolute" text="#{resources.gath_obs_number}"/>
@@ -30,7 +30,8 @@
                                 <webuijsf:button actionExpression="#{specimen$SearchSpecimen.searchButton_action}"
                                     binding="#{specimen$SearchSpecimen.searchButton}" id="searchButton"
                                     style="height: 24px; left: 143px; top: 168px; position: absolute; width: 72px" text="#{resources.btnSearch}"/>
-                                <webuijsf:label binding="#{specimen$SearchSpecimen.catalogNumberLabel}" id="catalogNumberLabel" style="left: 24px; top: 72px; position: absolute" text="#{resources.CatalogNumber}"/>
+                                <webuijsf:label binding="#{specimen$SearchSpecimen.catalogNumberLabel}" id="catalogNumberLabel"
+                                    style="left: 24px; top: 72px; position: absolute" text="#{resources.CatalogNumber}"/>
                             </webuijsf:panelLayout>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
