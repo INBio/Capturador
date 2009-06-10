@@ -428,7 +428,6 @@ public class gatheringList extends AbstractPageBean {
         if(this.getGatheringSessionBean().getPagination() == null){
             this.getGatheringSessionBean().initDataProvider();
         }
-        this.getGatheringSessionBean().getPagination().firstResults();
     }
     
     /**
