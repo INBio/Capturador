@@ -407,7 +407,7 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
 
     public void setSelectedGathering(RowKey rowKey) {
         if (rowKey != null) {
-            this.setGatheringObservation((GatheringObservation) this.getGatheringDataProvider().getObject(rowKey));
+            this.setGatheringObservation((GatheringObservation) this.pagination.getDataProvider().getObject(rowKey));
         //this.gatheringDetailDataProvider = new GatheringDetailDataProvider(this.gatheringObservation.getId(), this.getSessionManager().getCollection().getId());
         } else {
             System.out.println("rowKey es nulo.");
