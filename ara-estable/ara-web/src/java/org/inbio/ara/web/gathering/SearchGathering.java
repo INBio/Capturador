@@ -222,12 +222,17 @@ public class SearchGathering extends AbstractPageBean {
 
         GatheringSessionBeanV2 gsb = getGatheringSessionBean();
         SearchManagerRemote smr = gsb.getSearchManager();
-
-        //  ---------------
         gsb.setSearchCriteria(searchCriteria);
 
         if(gsb.getPagination() != null)
             gsb.getPagination().firstResults();
+
+        Long resultSet = smr.countResult(GatheringObservation.class, searchCriteria);
+        if (resultSet != null || resultSet != 0) {
+            getGatheringSessionBean().setFiltered(true);
+            return "gath_obs_list";
+        }
+        return null;
 
         /*
         List resultSet = smr.makeQuery(GatheringObservation.class, searchCriteria);
@@ -238,8 +243,8 @@ public class SearchGathering extends AbstractPageBean {
             getGatheringSessionBean().getGatheringDataProvider().setList(resultSet);
             return "gath_obs_list"; //back to the list
         }
-        */
-        return null;
+        
+        return null;*/
     }
 
     private boolean isValidInput() {
