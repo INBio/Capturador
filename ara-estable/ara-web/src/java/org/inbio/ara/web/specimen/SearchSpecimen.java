@@ -590,14 +590,18 @@ public class SearchSpecimen extends AbstractPageBean {
             searchCriteria.put("lower(table.gatheringObservation.responsiblePerson.lastName) like ", 
             "'%" + getCollectorObserverTF().getText().toString().toLowerCase() + "%'");
         }
-        
-        SearchManagerRemote smr = getspecimen$SpecimenSessionBean().getSearchManager();
-        List resultSet = smr.makeQuery(Specimen.class, searchCriteria);
-        if (resultSet != null) {
+
+        SpecimenSessionBean esb = this.getspecimen$SpecimenSessionBean();
+        SearchManagerRemote smr = esb.getSearchManager();
+        esb.setSearchCriteria(searchCriteria);
+
+        if(esb.getPagination() != null){
+            esb.getPagination().firstResults();
+        }
+        Long resultSet = smr.countResult(Specimen.class, searchCriteria);
+        if (resultSet != null || resultSet != 0) {
             getspecimen$SpecimenSessionBean().setIsFiltered(true);
-            getspecimen$SpecimenSessionBean().getSpecimenDataProvider().clearObjectList();
-            getspecimen$SpecimenSessionBean().getSpecimenDataProvider().setList(resultSet);
-            return "specimen_list"; //back to the list
+            return "specimen_list";
         }
         return null;
     }
