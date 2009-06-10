@@ -656,7 +656,7 @@ public class PreviewSpecimen extends AbstractPageBean {
      * @return the mb
      */
     public MessageBean getMb() {
-        return mb;
+        return mb;  
     }
 
     /**
