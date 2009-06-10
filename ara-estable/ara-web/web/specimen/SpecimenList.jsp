@@ -14,18 +14,28 @@
                         <webuijsf:form binding="#{specimen$SpecimenList.form1}" id="form1">
                             <webuijsf:label binding="#{specimen$SpecimenList.label1}" id="label1"
                                 style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 334px" text="#{resources.specimens}"/>
-                            <webuijsf:table binding="#{specimen$SpecimenList.table1}" deselectMultipleButton="true" id="table1" paginateButton="true"
-                                paginationControls="true" selectMultipleButton="true" style="left: 48px; top: 72px; position: absolute" title="Specimens" width="1560">
+                            <webuijsf:table binding="#{specimen$SpecimenList.specimenTable}" clearSortButton="true" id="specimenTable"
+                                sortPanelToggleButton="true" style="left: 48px; top: 72px; position: absolute" title="Specimens" width="864">
                                 <f:facet name="actionsTop">
                                     <webuijsf:panelGroup id="groupPanel1">
                                         <webuijsf:button actionExpression="#{specimen$SpecimenList.btn_edit_action}" binding="#{specimen$SpecimenList.btn_edit}"
                                             id="btn_edit" text="#{resources.btnEdit}"/>
                                         <webuijsf:button actionExpression="#{specimen$SpecimenList.btn_search_action}" id="btn_search" text="#{resources.btnSearch}"/>
-                                        <webuijsf:button actionExpression="#{specimen$SpecimenList.btn_reload_action}" id="btn_reload" text="#{resources.btnUpdate}"/>
+                                        <!--<webuijsf:button actionExpression="#{specimen$SpecimenList.btn_reload_action}" id="btn_reload" text="#{resources.btnUpdate}"/>-->
+                                        <webuijsf:panelGroup id="panelPaginacion" separator=" " style="margin-left:100px;">
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.firstResults}" id="btnFirst"
+                                                text="primeros" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.previousResults}" id="btnNext"
+                                                text="anteriores" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.nextResults}" id="btnPrevious"
+                                                text="siguientes" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.lastResults}" id="btnLast"
+                                                text="ultimos" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
+                                        </webuijsf:panelGroup>
                                     </webuijsf:panelGroup>
                                 </f:facet>
                                 <webuijsf:tableRowGroup binding="#{specimen$SpecimenList.tableRowGroup1}" id="tableRowGroup1" rows="15"
-                                    selected="#{currentRow.value['selected']}" sourceData="#{specimen$SpecimenSessionBean.specimenDataProvider}" sourceVar="currentRow">
+                                    selected="#{currentRow.value['selected']}" sourceData="#{specimen$SpecimenSessionBean.pagination.dataProvider}" sourceVar="currentRow">
                                     <!-- sourceData="#{specimen$SpecimenSessionBean.specimenDataProvider}" -->
                                     <webuijsf:tableColumn id="tableColumn1" selectId="checkbox1" width="1419">
                                         <webuijsf:checkbox id="checkbox1" selected="#{currentRow.value['selected']}"/>
