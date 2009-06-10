@@ -19,8 +19,12 @@
 
 
 
-                            <webuijsf:table binding="#{site$listSite.table1}" clearSortButton="true" id="table1" paginateButton="true" paginationControls="true"
-                                            sortPanelToggleButton="true" style="left: 48px; top: 100px; position: absolute" title="#{resources.locations}" width="864">
+                            <webuijsf:table binding="#{site$listSite.table1}" 
+                            clearSortButton="true"
+                            id="table1"
+                            paginateButton="true"
+                            paginationControls="true"
+                            sortPanelToggleButton="true" style="left: 48px; top: 100px; position: absolute" title="#{resources.locations}" width="864">
                                 <webuijsf:tableRowGroup binding="#{site$listSite.tableRowGroup1}" id="tableRowGroup1" rows="#{site$SiteSessionBean.pagination.resultsPerPage}"
                                                         sourceData="#{site$SiteSessionBean.pagination.dataProvider}" sourceVar="currentRow">
                                     <webuijsf:tableColumn binding="#{site$listSite.tableColumn1}" headerText="#{resources.id}" id="tableColumn1" sort="id">

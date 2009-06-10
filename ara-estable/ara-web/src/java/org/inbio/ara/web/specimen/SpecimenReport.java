@@ -146,9 +146,10 @@ public class SpecimenReport extends AbstractPageBean {
     @Override
     public void prerender() {
         this.tableRowGroup1.getChildren().clear();
-        this.getspecimen$SpecimenSessionBean().initDwCDataProvider();
-        //List columns = this.getspecimen$SpecimenSessionBean().getDwcElementsList();
 
+        if(this.getspecimen$SpecimenSessionBean().getPagination() == null)
+            this.getspecimen$SpecimenSessionBean().initDwCDataProvider();
+        
         Object[] columns = this.getspecimen$SpecimenSessionBean().getDwcSelectedElements();
         for (Object object : columns) {
             TableColumn  col = new TableColumn();

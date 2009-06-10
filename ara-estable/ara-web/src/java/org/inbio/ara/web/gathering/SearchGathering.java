@@ -225,6 +225,11 @@ public class SearchGathering extends AbstractPageBean {
 
         //  ---------------
         gsb.setSearchCriteria(searchCriteria);
+
+        if(gsb.getPagination() != null)
+            gsb.getPagination().firstResults();
+
+        /*
         List resultSet = smr.makeQuery(GatheringObservation.class, searchCriteria);
         
         if (resultSet != null) {
@@ -233,7 +238,7 @@ public class SearchGathering extends AbstractPageBean {
             getGatheringSessionBean().getGatheringDataProvider().setList(resultSet);
             return "gath_obs_list"; //back to the list
         }
-
+        */
         return null;
     }
 

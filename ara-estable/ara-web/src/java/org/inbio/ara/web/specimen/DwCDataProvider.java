@@ -22,7 +22,6 @@ public class DwCDataProvider extends ObjectListDataProvider {
     /** Creates a new instance of InstitutionDataProvider */
     public DwCDataProvider() {
         this.setObjectType(DarwinCore14.class);
-        // refreshDataList();
     }
 
     public void refreshDataList() {

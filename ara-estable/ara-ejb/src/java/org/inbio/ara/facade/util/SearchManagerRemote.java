@@ -41,7 +41,8 @@ public interface SearchManagerRemote {
      */
     <T extends genericEntity> java.util.List makeQuery(Class<T> clazz, Hashtable parameters);
 
-    public <T extends genericEntity> List makePaginatedQuery(int firstResult, int maxResults, Class<T> clazz, Hashtable parameters);
-    public <T extends genericEntity> Long countResult(Class<T> clazz, Hashtable parameters);
-    
+    public <T> List makePaginatedQuery(int firstResult, int maxResults, Class<T> clazz, Hashtable parameters);
+    public <T> Long countResult(Class<T> clazz, Hashtable parameters);
+    public <T> List makePaginatedQuery4Reports(int firstResult, int maxResults, Class<T> clazz, Hashtable parameters);
+    public <T> Long countResult4Reports (Class<T> clazz, Hashtable parameters);
 }

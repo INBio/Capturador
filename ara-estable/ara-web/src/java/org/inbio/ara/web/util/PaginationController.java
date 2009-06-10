@@ -42,7 +42,7 @@ public class PaginationController {
     private ObjectListDataProvider dataProvider = new ObjectListDataProvider();
 
     //main values for this controller
-    private int totalResults = -1;
+    protected int totalResults = -1;
     private int actualPage = -1;       //pagina =0 es la primera
     private int resultsPerPage = -1;
 

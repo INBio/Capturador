@@ -463,4 +463,12 @@ public class ShareEAOBean extends BaseEAOImpl implements ShareEAOLocal{
         catch(Exception e){em.setFlushMode(FlushModeType.AUTO);return null;}
     }
 
+
+    @Override
+    public Long countQueryElements(String jpqlQuery){
+
+        Query q = em.createQuery(jpqlQuery);
+        Long ret = (Long) q.getSingleResult();
+        return ret;
+    }
 }

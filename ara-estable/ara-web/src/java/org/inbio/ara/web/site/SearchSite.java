@@ -244,6 +244,7 @@ public class SearchSite extends AbstractPageBean {
         }
 
         SearchManagerRemote smr = getsite$SiteSessionBean().getSearchManager();
+        getsite$SiteSessionBean().setPagination(null);
         List resultSet = smr.makeQuery(Site.class, searchCriteria);
         if (resultSet != null) {
             getsite$SiteSessionBean().setFiltered(true);

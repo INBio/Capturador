@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 /*
  * SpecimenSessionBean.java
  *
@@ -40,6 +40,7 @@ import org.inbio.ara.facade.collection.CollectionRemote;
 import org.inbio.ara.facade.gathering.GatheringRemote;
 import org.inbio.ara.facade.specimen.SpecimenRemote;
 import org.inbio.ara.facade.util.SearchManagerRemote;
+import org.inbio.ara.manager.GatheringManagerRemote;
 import org.inbio.ara.persistence.specimen.DwcCategory;
 import org.inbio.ara.persistence.specimen.DwcElement;
 import org.inbio.ara.persistence.specimen.Specimen;
@@ -48,6 +49,7 @@ import org.inbio.ara.web.ApplicationBean1;
 import org.inbio.ara.web.AraApplicationBean;
 import org.inbio.ara.web.util.BundleHelper;
 import org.inbio.ara.web.util.MessageBean;
+import org.inbio.ara.web.util.PaginationController;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -61,9 +63,12 @@ import org.inbio.ara.web.util.MessageBean;
  */
 public class SpecimenSessionBean extends AbstractSessionBean {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
+
     private int __placeholder;
     public SpecimenDataProvider specimenDataProvider = new SpecimenDataProvider();
     private DwCDataProvider dwcDataProvider = new DwCDataProvider();
+    //paginacion de la tabla
+    private PaginationController pagination = null;
 
     /**
      * <p>Automatically managed component initialization.  <strong>WARNING:</strong>
@@ -81,8 +86,6 @@ public class SpecimenSessionBean extends AbstractSessionBean {
 
     //Binding values for PreviewSpecimen.jsp
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
-
-
     private boolean dwcFiltered = false; //usada para el reporte de especimenes
     //private Option[] dwcArray;
     private Object[] dwcSelectedElements;
@@ -90,6 +93,10 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     // </editor-fold>
     @EJB
     private SpecimenRemote specimenBean;
+
+    @EJB
+    private GatheringManagerRemote gatheringManager;
+
     /**
      * <p>Construct a new session data bean instance.</p>
      */
@@ -97,7 +104,7 @@ public class SpecimenSessionBean extends AbstractSessionBean {
         //this.currentSpecimen = this.getSpecimenBean().find(1L);
         this.setSpecimenList(new ArrayList<Specimen>());
     }
-    
+
     /**
      * <p>This method is called when this bean is initially added to
      * session scope.  Typically, this occurs as a result of evaluating
@@ -115,7 +122,7 @@ public class SpecimenSessionBean extends AbstractSessionBean {
         // Perform application initialization that must complete
         // *before* managed components are initialized
         // TODO - add your own initialiation code here
-        
+
         // <editor-fold defaultstate="collapsed" desc="Managed Component Initialization">
         // Initialize automatically managed components
         // *Note* - this logic should NOT be modified
@@ -123,15 +130,15 @@ public class SpecimenSessionBean extends AbstractSessionBean {
             _init();
         } catch (Exception e) {
             log("SpecimenSessionBean Initialization Failure", e);
-            throw e instanceof FacesException ? (FacesException) e: new FacesException(e);
+            throw e instanceof FacesException ? (FacesException) e : new FacesException(e);
         }
-        
-        // </editor-fold>
-        // Perform application initialization that must complete
-        // *after* managed components are initialized
-        // TODO - add your own initialization code here
+
+    // </editor-fold>
+    // Perform application initialization that must complete
+    // *after* managed components are initialized
+    // TODO - add your own initialization code here
     }
-    
+
     /**
      * <p>This method is called when the session containing it is about to be
      * passivated.  Typically, this occurs in a distributed servlet container
@@ -144,7 +151,7 @@ public class SpecimenSessionBean extends AbstractSessionBean {
      */
     public void passivate() {
     }
-    
+
     /**
      * <p>This method is called when the session containing it was
      * reactivated.</p>
@@ -155,7 +162,7 @@ public class SpecimenSessionBean extends AbstractSessionBean {
      */
     public void activate() {
     }
-    
+
     /**
      * <p>This method is called when this bean is removed from
      * session scope.  Typically, this occurs as a result of
@@ -168,7 +175,6 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     public void destroy() {
     }
 
-    
     public Specimen getCurrentSpecimen() {
         return currentSpecimen;
     }
@@ -176,7 +182,7 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     public void setCurrentSpecimen(Specimen currentSpecimen) {
         this.currentSpecimen = currentSpecimen;
     }
-    
+
     public void setCurrentSpecimen(RowKey rowKey) {
         this.currentSpecimen = (Specimen) specimenDataProvider.getObject(rowKey);
     }
@@ -185,30 +191,29 @@ public class SpecimenSessionBean extends AbstractSessionBean {
      * <p>Return a reference to the scoped data bean.</p>
      */
     protected AraApplicationBean getAraApplicationBean() {
-        return (AraApplicationBean)getBean("AraApplicationBean");
+        return (AraApplicationBean) getBean("AraApplicationBean");
     }
 
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */
     protected MessageBean getutil$MessageBean() {
-        return (MessageBean)getBean("util$MessageBean");
+        return (MessageBean) getBean("util$MessageBean");
     }
 
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */
     protected ApplicationBean1 getApplicationBean1() {
-        return (ApplicationBean1)getBean("ApplicationBean1");
+        return (ApplicationBean1) getBean("ApplicationBean1");
     }
 
     private SpecimenRemote lookupSpecimenBean() {
         try {
             Context c = new InitialContext();
             return (SpecimenRemote) c.lookup("SpecimenBean");
-        }
-        catch(NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
@@ -220,14 +225,13 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     public void setSpecimenBean(SpecimenRemote specimenBean) {
         this.specimenBean = specimenBean;
     }
-    
+
     private CollectionRemote lookupCollectionBean() {
         try {
             Context c = new InitialContext();
             return (CollectionRemote) c.lookup("CollectionBean");
-        }
-        catch(NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
@@ -235,7 +239,7 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     public CollectionRemote getCollectionBean() {
         return lookupCollectionBean();
     }
-    
+
     public SpecimenDataProvider getSpecimenDataProvider() {
         return specimenDataProvider;
     }
@@ -243,10 +247,10 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     public void setSpecimenDataProvider(SpecimenDataProvider specimenDataProvider) {
         this.specimenDataProvider = specimenDataProvider;
     }
-    
-    public void setSelectedSpecimens(RowKey[] rowKeySet){
+
+    public void setSelectedSpecimens(RowKey[] rowKeySet) {
         for (int i = 0; i < rowKeySet.length; i++) {
-            specimenList.add((Specimen)specimenDataProvider.getObject(rowKeySet[i]));
+            specimenList.add((Specimen) specimenDataProvider.getObject(rowKeySet[i]));
         }
     }
 
@@ -265,7 +269,7 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     public void setSpecimenList(ArrayList<Specimen> specimenList) {
         this.specimenList = specimenList;
     }
-    
+
     public GatheringRemote getGatheringBean() {
         return lookupGatheringBean();
     }
@@ -274,9 +278,8 @@ public class SpecimenSessionBean extends AbstractSessionBean {
         try {
             Context c = new InitialContext();
             return (GatheringRemote) c.lookup("GatheringBean");
-        }
-        catch(NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
@@ -285,13 +288,12 @@ public class SpecimenSessionBean extends AbstractSessionBean {
         try {
             Context c = new InitialContext();
             return (SearchManagerRemote) c.lookup("SearchManagerBean");
-        }
-        catch(NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
-    
+
     public SearchManagerRemote getSearchManager() {
         return this.lookupSearchManagerBean();
     }
@@ -303,35 +305,34 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     public void setIsFiltered(boolean isFiltered) {
         this.isFiltered = isFiltered;
     }
-    
+
     public void initDataProvider() {
         if (!isFiltered) {
             this.getSpecimenDataProvider().clearObjectList();
-            // this.getSpecimenDataProvider().refreshDataList();
-        } 
+        // this.getSpecimenDataProvider().refreshDataList();
+        }
     }
 
     public Option[] findDwCElements() {
         /*if (dwcElementsList.size() > 0) {
-            Option[] optionArray = new Option[dwcElementsList.size()];
-            int i=0;
-            for (DwcElement tmp : dwcElementsList) {
-                //TODO: internacionalizar el string q viene en el objeto
-                //q es el nombre de la columna en la tabla dwc1.4
-                optionArray[i] = new Option(tmp.getElementId(), tmp.getElementKeyword());
-                i++;
-            }
-            dwcArray = optionArray;
-            return optionArray;
+        Option[] optionArray = new Option[dwcElementsList.size()];
+        int i=0;
+        for (DwcElement tmp : dwcElementsList) {
+        //TODO: internacionalizar el string q viene en el objeto
+        //q es el nombre de la columna en la tabla dwc1.4
+        optionArray[i] = new Option(tmp.getElementId(), tmp.getElementKeyword());
+        i++;
+        }
+        dwcArray = optionArray;
+        return optionArray;
         }
         return null;*/
-        List<DwcElement> dwcElements =  getSpecimenBean().getDwCElements();
+        List<DwcElement> dwcElements = getSpecimenBean().getDwCElements();
         Option[] dwcElementOptions = new Option[dwcElements.size()];
         int i = 0;
         for (DwcElement dwcElement : dwcElements) {
             dwcElementOptions[i] = new Option(dwcElement.getElementId(),
-                    BundleHelper.getDefaultBundleValue(dwcElement.
-                        getElementKeyword()));
+                                              BundleHelper.getDefaultBundleValue(dwcElement.getElementKeyword()));
             i++;
         }
         return dwcElementOptions;
@@ -339,10 +340,10 @@ public class SpecimenSessionBean extends AbstractSessionBean {
 
     public Option[] findDwCCategories() {
         List<DwcCategory> dwcCategoriesList;
-        dwcCategoriesList =  getSpecimenBean().getDwCCategories();
-        if(dwcCategoriesList.size() > 0) {
+        dwcCategoriesList = getSpecimenBean().getDwCCategories();
+        if (dwcCategoriesList.size() > 0) {
             Option[] optionArray = new Option[dwcCategoriesList.size()];
-            int i=0;
+            int i = 0;
             for (DwcCategory tmp : dwcCategoriesList) {
                 optionArray[i] = new Option(tmp.getCategoryId(), tmp.toString());
                 i++;
@@ -352,36 +353,30 @@ public class SpecimenSessionBean extends AbstractSessionBean {
         return null;
     }
 
- 
-
     /**
      * @return the dwcElementsList
      */
-   // public List getDwcElementsList() {
-   //     return dwcElementsList;
-   // }
-
+    // public List getDwcElementsList() {
+    //     return dwcElementsList;
+    // }
     /**
      * @param dwcElementsList the dwcElementsList to set
      */
     //public void setDwcElementsList(List dwcElementsList) {
-   //     this.dwcElementsList = dwcElementsList;
-   // }
-
+    //     this.dwcElementsList = dwcElementsList;
+    // }
     /**
      * @return the dwcArray
      */
 //    public Option[] getDwcArray() {
 //        return dwcArray;
 //    }
-
     /**
      * @param dwcArray the dwcArray to set
      */
 //    public void setDwcArray(Option[] dwcArray) {
 //        this.dwcArray = dwcArray;
 //    }
-
     /**
      * @return the queryList
      */
@@ -425,12 +420,12 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     }
 
     public void initDwCDataProvider() {
+
         if (!dwcFiltered) {
-            this.dwcDataProvider.clearObjectList();
-            this.dwcDataProvider.refreshDataList();
+            pagination = new PaginationControllerImpl(gatheringManager.countAllDwC().intValue(), 10);
+            
         } else {
-            List result = this.getSpecimenBean().makeQuery(this.queryList);
-            this.dwcDataProvider.setList(result);
+            pagination = new PaginationControllerImpl(gatheringManager.countQueryElements(this.queryList).intValue(), 10);
         }
     }
 
@@ -447,5 +442,30 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     public void setDwcSelectedElements(Object[] dwcSelectedElements) {
         this.dwcSelectedElements = dwcSelectedElements;
     }
-    // </editor-fold>
+
+    public PaginationController getPagination() {
+        return pagination;
+    }
+
+    public void setPagination(PaginationController pagination) {
+        this.pagination = pagination;
+    }
+
+    private class PaginationControllerImpl extends PaginationController {
+
+        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
+            super(totalResults, resultsPerPage);
+        }
+
+        @Override
+        public List getResults(int firstResult, int maxResults) {
+            if (!dwcFiltered) {
+                System.out.println("ConteoA: -------> " + this.totalResults);
+                return specimenBean.findAllDwCPaginated(firstResult, maxResults);
+            } else {
+                System.out.println("ConteoB: -------> " + this.totalResults);
+                return specimenBean.makePaginatedQuery(queryList, firstResult, maxResults);
+            }
+        }
+    }
 }

@@ -74,4 +74,5 @@ public interface ShareEAOLocal extends BaseLocalEAO {
 
     public java.util.List<org.inbio.ara.persistence.specimen.DarwinCore14> retriveInformationDcwPaginatedQ(int firstResult, int maxResults, java.lang.String query);
 
+    public Long countQueryElements(String query);
 }

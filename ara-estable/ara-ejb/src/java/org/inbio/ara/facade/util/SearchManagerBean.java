@@ -83,7 +83,7 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
     }
 
     @Override
-    public <T extends genericEntity> List makePaginatedQuery(int firstResult, int maxResults, Class<T> clazz, Hashtable parameters) {
+    public <T> List makePaginatedQuery(int firstResult, int maxResults, Class<T> clazz, Hashtable parameters) {
         StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table ");
         boolean firstClause = true;
 
@@ -116,7 +116,7 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
     }
     
     @Override
-    public <T extends genericEntity> Long countResult(Class<T> clazz, Hashtable parameters) {
+    public <T> Long countResult(Class<T> clazz, Hashtable parameters) {
         StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table ");
         Long countResult = null;
         boolean firstClause = true;
@@ -131,6 +131,39 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
             firstClause = false;
         }
         query.insert(0, "SELECT COUNT(table.id)  ");
+              
+        try {
+            Query q = em.createQuery(query.toString());
+            countResult = (Long)q.getSingleResult();
+        } catch (IllegalStateException ex1) {
+
+            this.setMessage(ex1.getMessage());
+            return null;
+        } catch (IllegalArgumentException ex2) {
+            this.setMessage(ex2.getMessage());
+            return null;
+        }
+        return countResult;
+    }
+
+    @Override
+    public <T> Long countResult4Reports (Class<T> clazz, Hashtable parameters) {
+        StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table WHERE");
+        Long countResult = null;
+        boolean firstClause = true;
+
+        Iterator iter = parameters.keySet().iterator();
+        while (iter.hasNext()) {
+
+            String name = (String) iter.next();
+            query.append(name);
+            String value = (String) parameters.get(name);
+            query.append(value);
+            firstClause = false;
+        }
+
+        query.insert(0, "SELECT COUNT(table.id)  ");
+        System.out.println("##################################################################" + query.toString());
 
         try {
             Query q = em.createQuery(query.toString());
@@ -145,6 +178,39 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
         }
         return countResult;
     }
+
+     @Override
+    public <T> List makePaginatedQuery4Reports(int firstResult, int maxResults, Class<T> clazz, Hashtable parameters) {
+        StringBuffer query = new StringBuffer("FROM " + clazz.getName() + "  as table WHERE ");
+        boolean firstClause = true;
+
+        Iterator iter = parameters.keySet().iterator();
+        while (iter.hasNext()) {
+            String name = (String) iter.next();
+            query.append(name);
+            String value = (String) parameters.get(name);
+            query.append(value);
+            firstClause = false;
+        }
+
+        query.append(" order by table.id ");
+
+        try {
+            Query q = em.createQuery(query.toString());
+            q.setFirstResult(firstResult);
+            q.setMaxResults(maxResults);
+            this.objectsList = (List) q.getResultList();
+        } catch (IllegalStateException ex1) {
+
+            this.setMessage(ex1.getMessage());
+            return null;
+        } catch (IllegalArgumentException ex2) {
+            this.setMessage(ex2.getMessage());
+            return null;
+        }
+        return this.objectsList;
+    }
+
 
     public String getMessage() {
         return message;

@@ -92,6 +92,8 @@ public interface SpecimenRemote {
     List<DwcElement> categoryElements(BigDecimal catId);
     List<DwcCategory> getDwCCategories();
     List makeQuery(LinkedList<QueryNode> sll);
+    List makePaginatedQuery(LinkedList<QueryNode> sll, int first, int amount);
+    
 	DwcElement getDwCElementById(BigDecimal id);
 
     /**
@@ -136,4 +138,6 @@ public interface SpecimenRemote {
     public void saveSpecimenLifeStageSex(Long specimenId, LifeStageSexDTO lifeStageSexDTO);
 
     public org.inbio.ara.persistence.specimen.Specimen getSpecimenByCatalogNumber(java.lang.Long cn);
+
+    public List findAllDwCPaginated(int first, int amount);
 }
