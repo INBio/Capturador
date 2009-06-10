@@ -140,14 +140,14 @@ public class SpecimenList extends AbstractPageBean {
         this.label1 = l;
     }
 
-    private Table table1 = new Table();
+    private Table specimenTable = new Table();
 
-    public Table getTable1() {
-        return table1;
+    public Table getSpecimenTable() {
+        return specimenTable;
     }
 
-    public void setTable1(Table t) {
-        this.table1 = t;
+    public void setSpecimenTable(Table t) {
+        this.specimenTable = t;
     }
 
     private TableRowGroup tableRowGroup1 = new TableRowGroup();
@@ -261,8 +261,11 @@ public class SpecimenList extends AbstractPageBean {
      * this method to allocate resources that will be required for rendering
      * this page.</p>
      */
+    @Override
     public void prerender() {
-        getspecimen$SpecimenSessionBean().initDataProvider();
+        if(this.getspecimen$SpecimenSessionBean().getPagination() == null){
+            this.getspecimen$SpecimenSessionBean().initDataProvider();
+        }
     }
     
     /**
