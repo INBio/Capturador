@@ -15,7 +15,7 @@
                             <webuijsf:label binding="#{specimen$SearchSpecimen.label1}" id="label1"
                                 style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 502px" text="#{resources.search_label}"/>
                             <webuijsf:pageAlert binding="#{specimen$SearchSpecimen.searchAlert}" id="searchAlert" rendered="false" style="height: 72px; left: 216px; top: 120px; position: absolute; width: 528px"/>
-                            <webuijsf:panelLayout binding="#{specimen$SearchSpecimen.layoutPanel1}" id="layoutPanel1" style="border: 2px groove black; height: 212px; left: 48px; top: 72px; position: absolute; width: 500px; -rave-layout: grid">
+                            <webuijsf:panelLayout binding="#{specimen$SearchSpecimen.layoutPanel1}" id="layoutPanel1" style="border: 2px groove black; height: 212px; left: 48px; top: 72px; position: absolute; width: 428px; -rave-layout: grid">
                                 <webuijsf:label binding="#{specimen$SearchSpecimen.idLabel}" id="idLabel" style="left: 24px; top: 24px; position: absolute" text="#{resources.id}"/>
                                 <webuijsf:textField binding="#{specimen$SearchSpecimen.idTF}" id="idTF" style="left: 240px; top: 24px; position: absolute; width: 70px"/>
                                 <webuijsf:label binding="#{specimen$SearchSpecimen.GOIdLabel}" id="GOIdLabel" style="left: 24px; top: 48px; position: absolute" text="#{resources.gath_obs_number}"/>
@@ -23,10 +23,10 @@
                                 <webuijsf:textField binding="#{specimen$SearchSpecimen.catalogNumberTF}" id="catalogNumberTF" style="left: 240px; top: 72px; position: absolute; width: 70px"/>
                                 <webuijsf:label binding="#{specimen$SearchSpecimen.collectionLabel}" id="collectionLabel"
                                     style="left: 24px; top: 96px; position: absolute" text="#{resources.collection}"/>
-                                <webuijsf:textField binding="#{specimen$SearchSpecimen.collectionTF}" id="collectionTF" style="left: 240px; top: 96px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{specimen$SearchSpecimen.collectionTF}" id="collectionTF" style="left: 240px; top: 96px; position: absolute; width: 70px"/>
                                 <webuijsf:label binding="#{specimen$SearchSpecimen.collectorObserverLabel}" id="collectorObserverLabel"
                                     style="left: 24px; top: 120px; position: absolute" text="#{resources.collector_observer}"/>
-                                <webuijsf:textField binding="#{specimen$SearchSpecimen.collectorObserverTF}" id="collectorObserverTF" style="left: 240px; top: 120px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{specimen$SearchSpecimen.collectorObserverTF}" id="collectorObserverTF" style="left: 240px; top: 120px; position: absolute; width: 70px"/>
                                 <webuijsf:button actionExpression="#{specimen$SearchSpecimen.searchButton_action}"
                                     binding="#{specimen$SearchSpecimen.searchButton}" id="searchButton"
                                     style="height: 24px; left: 143px; top: 168px; position: absolute; width: 72px" text="#{resources.btnSearch}"/>
