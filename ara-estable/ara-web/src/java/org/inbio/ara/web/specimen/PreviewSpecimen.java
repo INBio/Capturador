@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.inbio.ara.web.specimen;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
@@ -66,7 +65,6 @@ import org.inbio.ara.web.util.BundleHelper;
  * @version Created on 20/03/2009, 12:08:12 PM
  * @author herson
  */
-
 public class PreviewSpecimen extends AbstractPageBean {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
@@ -94,7 +92,6 @@ public class PreviewSpecimen extends AbstractPageBean {
     public static final int COMPARATOR_CLMN = 2;
     public static final int INPUT_CLMN = 3;
     private MessageBean mb;
-
     Option[] comparator = {
         new Option(1, "Igual a"),
         new Option(2, "Similar a")
@@ -112,7 +109,6 @@ public class PreviewSpecimen extends AbstractPageBean {
     public void setAddRemoveList1(AddRemove ar) {
         this.addRemoveList1 = ar;
     }
-
     private MultipleSelectOptionsList addRemoveList1DefaultOptions = new MultipleSelectOptionsList();
 
     public MultipleSelectOptionsList getAddRemoveList1DefaultOptions() {
@@ -131,6 +127,7 @@ public class PreviewSpecimen extends AbstractPageBean {
     public void setPageAlert1(PageAlert pa) {
         this.pageAlert1 = pa;
     }
+
     /**
      * <p>Construct a new Page bean instance.</p>
      */
@@ -164,13 +161,13 @@ public class PreviewSpecimen extends AbstractPageBean {
             _init();
         } catch (Exception e) {
             log("PreviewSpecimen Initialization Failure", e);
-            throw e instanceof FacesException ? (FacesException) e: new FacesException(e);
+            throw e instanceof FacesException ? (FacesException) e : new FacesException(e);
         }
 
-        // </editor-fold>
-        // Perform application initialization that must complete
-        // *after* managed components are initialized
-        // TODO - add your own initialization code here
+    // </editor-fold>
+    // Perform application initialization that must complete
+    // *after* managed components are initialized
+    // TODO - add your own initialization code here
     }
 
     /**
@@ -196,15 +193,15 @@ public class PreviewSpecimen extends AbstractPageBean {
     public void prerender() {
         this.filtersPanel.getChildren().clear();
         LinkedList<QueryNode> sessionQueryList =
-                getspecimen$SpecimenSessionBean().getQueryList();
-        if(sessionQueryList.size() == 0) {
+                              getspecimen$SpecimenSessionBean().getQueryList();
+        if (sessionQueryList.size() == 0) {
             QueryNode qn = createQueryNode();
             sessionQueryList.add(qn);
         }
         drawFirstFilterRow(sessionQueryList.getFirst());
 
-        if(sessionQueryList.size() > 1) {
-            for (int i=1; i<sessionQueryList.size(); i++) {
+        if (sessionQueryList.size() > 1) {
+            for (int i = 1; i < sessionQueryList.size(); i++) {
                 QueryNode queryNode = sessionQueryList.get(i);
                 drawExtraFilterRows(queryNode, i);
             }
@@ -296,7 +293,6 @@ public class PreviewSpecimen extends AbstractPageBean {
     protected SelectionListSessionBean getadmin$selectionlist$SelectionListSessionBean() {
         return (SelectionListSessionBean) getBean("admin$selectionlist$SelectionListSessionBean");
     }
-
 
     /**
      * <p>Return a reference to the scoped data bean.</p>
@@ -464,7 +460,7 @@ public class PreviewSpecimen extends AbstractPageBean {
         QueryNode qn = createQueryNode();
         saveInputInfo();
         LinkedList<QueryNode> sessionQueryList =
-                getspecimen$SpecimenSessionBean().getQueryList();
+                              getspecimen$SpecimenSessionBean().getQueryList();
         sessionQueryList.add(qn);
 
         return null;
@@ -472,9 +468,9 @@ public class PreviewSpecimen extends AbstractPageBean {
 
     private QueryNode createQueryNode() {
         DwcElement e = this.getspecimen$SpecimenSessionBean().getSpecimenBean().
-                getDwCElementById(new BigDecimal(1)); //default value
-        return new QueryNode("or", 2,e.getElementKeyword(), e.getElementId(),
-                            "like", 2, "");
+            getDwCElementById(new BigDecimal(1)); //default value
+        return new QueryNode("or", 2, e.getElementKeyword(), e.getElementId(),
+                             "like", 2, "");
     }
 
     private DropDown createComparatorDropDown() {
@@ -492,7 +488,7 @@ public class PreviewSpecimen extends AbstractPageBean {
     private void drawExtraFilterRows(QueryNode qn, int row) {
         //Logical operators  ******************
         DropDown logicalOperatorsDD = createLogicalOperatorsDD();
-        logicalOperatorsDD.setId("logicalOperator-"+row);
+        logicalOperatorsDD.setId("logicalOperator-" + row);
         logicalOperatorsDD.setSelected(qn.getLogicalOperatorId());
         this.filtersPanel.getChildren().add(logicalOperatorsDD);
 
@@ -506,14 +502,14 @@ public class PreviewSpecimen extends AbstractPageBean {
         ExpressionFactory expressionFactory = this.getApplication().getExpressionFactory();
         ELContext elContext = FacesContext.getCurrentInstance().getELContext();
         MethodExpression actionMethod = expressionFactory.createMethodExpression(elContext,
-            "#{specimen$PreviewSpecimen.deleteClickHandler}", String.class, new Class[]{});
+                                                                                 "#{specimen$PreviewSpecimen.deleteClickHandler}", String.class, new Class[]{});
 
         MethodExpression listenerMethod = expressionFactory.createMethodExpression(elContext,
-            "#{specimen$PreviewSpecimen.deleteClickHandler}",
-            null, new Class[]{ActionEvent.class});
+                                                                                   "#{specimen$PreviewSpecimen.deleteClickHandler}",
+                                                                                   null, new Class[]{ActionEvent.class});
 
         Hyperlink deleteLink = new Hyperlink();
-        deleteLink.setId("deleteLink-"+row);
+        deleteLink.setId("deleteLink-" + row);
         deleteLink.setText(BundleHelper.getDefaultBundleValue("delete"));
 
         deleteLink.setActionExpression(actionMethod);
@@ -555,14 +551,13 @@ public class PreviewSpecimen extends AbstractPageBean {
         return dd;
     }
 
-    private ArrayList<Option> getDwCElementsInOptionForm(){
+    private ArrayList<Option> getDwCElementsInOptionForm() {
         ArrayList<Option> dwcElements = new ArrayList();
         List<DwcElement> rawElements = this.getspecimen$SpecimenSessionBean().
-                getSpecimenBean().getDwCElements();
+            getSpecimenBean().getDwCElements();
         for (DwcElement dwcElement : rawElements) {
-            dwcElements.add (new Option(dwcElement.getElementId(),
-                    BundleHelper.getDefaultBundleValue(dwcElement.
-                        getElementKeyword())));
+            dwcElements.add(new Option(dwcElement.getElementId(),
+                                       BundleHelper.getDefaultBundleValue(dwcElement.getElementKeyword())));
         }
         return dwcElements;
     }
@@ -573,74 +568,85 @@ public class PreviewSpecimen extends AbstractPageBean {
 
     public void deleteClickHandler(ActionEvent ae) {
         saveInputInfo();
-        String deleteLink = ((Hyperlink)ae.getComponent()).getId();
+        String deleteLink = ((Hyperlink) ae.getComponent()).getId();
         String[] partsId = deleteLink.split("-");
         int index = Integer.parseInt(partsId[1]);
         getspecimen$SpecimenSessionBean().getQueryList().remove(index);
     }
 
     public String searchButton_action() {
+
+        boolean filtered = false;
+
         LinkedList<QueryNode> sessionQueryList =
-                            getspecimen$SpecimenSessionBean().getQueryList();
-        saveInputInfo();
+                              getspecimen$SpecimenSessionBean().getQueryList();
+        filtered = saveInputInfo();
         //Print
         for (QueryNode queryNode : sessionQueryList) {
             queryNode.printNode();
         }
         //If columns weren't selected
         Object[] columns =
-                    getspecimen$SpecimenSessionBean().getDwcSelectedElements();
-        if(columns == null) {
+                 getspecimen$SpecimenSessionBean().getDwcSelectedElements();
+        if (columns == null) {
             MessageBean.setErrorMessageFromBundle("select_columns_error");
             return null;
         }
-        this.getspecimen$SpecimenSessionBean().setFiltered(true);
+        this.getspecimen$SpecimenSessionBean().setFiltered(filtered);
         return "report";
     }
 
-    private void saveInputInfo() {
+    private boolean saveInputInfo() {
+
+        boolean result = false;
+
         LinkedList<QueryNode> sessionQueryList =
-                            getspecimen$SpecimenSessionBean().getQueryList();
+                              getspecimen$SpecimenSessionBean().getQueryList();
         List<UIComponent> panelChildren = filtersPanel.getChildren();
-        int filterRows = panelChildren.size()/FILTER_COLUMNS;
+        int filterRows = panelChildren.size() / FILTER_COLUMNS;
         //the first filter (mandatory)
         QueryNode qn = sessionQueryList.getFirst();
-        saveInfoCommonWidgets(qn, 0);
+        if (saveInfoCommonWidgets(qn, 0)) {
+            result = true;
+        }
 
         //...other filters (optional)
-        for(int i = 1; i < filterRows; i++) {
-            int offset = i*FILTER_COLUMNS;
+        for (int i = 1; i < filterRows; i++) {
+            int offset = i * FILTER_COLUMNS;
             qn = sessionQueryList.get(i);
             //Logical operator
-            int log_op_value = ((Integer)((DropDown)panelChildren.
-                            get(offset+LOG_OP_CLMN)).getSelected()).intValue();
+            int log_op_value = ((Integer) ((DropDown) panelChildren.get(offset + LOG_OP_CLMN)).getSelected()).intValue();
             qn.setLogicalOperatorId(log_op_value);
-            qn.setLogicalOperator((log_op_value == 1)?"and":"or");
+            qn.setLogicalOperator((log_op_value == 1) ? "and" : "or");
             //CommonWidgets
             saveInfoCommonWidgets(qn, offset);
         }
+
+        return result;
     }
 
-    private void saveInfoCommonWidgets(QueryNode qn, int offset) {
+    private boolean saveInfoCommonWidgets(QueryNode qn, int offset) {
         List<UIComponent> panelChildren = filtersPanel.getChildren();
         //DwCElement
-        BigDecimal bd = (BigDecimal)((DropDown)panelChildren.
-                            get(offset+DWC_CLMN)).getSelected();
+        BigDecimal bd = (BigDecimal) ((DropDown) panelChildren.get(offset + DWC_CLMN)).getSelected();
         qn.setDwcElementId(bd);
         qn.setDwcElement(getspecimen$SpecimenSessionBean().getSpecimenBean().
-                            getDwCElementById(bd).getElementKeyword());
+            getDwCElementById(bd).getElementKeyword());
         //Comparator
-        int comparatorValue = ((Integer)((DropDown)panelChildren.
-                            get(offset+COMPARATOR_CLMN)).getSelected()).intValue();
+        int comparatorValue = ((Integer) ((DropDown) panelChildren.get(offset + COMPARATOR_CLMN)).getSelected()).intValue();
         qn.setComparatorId(comparatorValue);
-        qn.setComparator((comparatorValue == 1)?"=":"like");
+        qn.setComparator((comparatorValue == 1) ? "=" : "like");
         //Input
-        String inputValue = ((TextField)panelChildren.
-                            get(offset+INPUT_CLMN)).getText().toString();
+        String inputValue = ((TextField) panelChildren.get(offset + INPUT_CLMN)).getText().toString();
         qn.setUserEntry(inputValue);
+
+        if (inputValue != null && !inputValue.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
-    public String reloadButton_action() {        
+    public String reloadButton_action() {
         this.getspecimen$SpecimenSessionBean().getSpecimenBean().reloadDarwinCoreTable();
         MessageBean.setSuccessMessageFromBundle("dwc_reports_success");
         return null;
