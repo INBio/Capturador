@@ -315,7 +315,7 @@ public class SpecimenSessionBean extends AbstractSessionBean {
 
     public void initDataProvider() {
         //if (!isFiltered) {
-            pagination = new PaginationControllerImpl(searchManager.countResult(Specimen.class,getSearchCriteria()).intValue(), 10);
+            pagination = new PaginationControllerImpl(searchManager.countResult(Specimen.class,getSearchCriteria()).intValue(), 20);
         //}
     }
 
