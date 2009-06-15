@@ -57,13 +57,13 @@
 
                                          <webuijsf:panelGroup id="panelPaginacion" separator=" " style="margin-left:100px;">
                                             <webuijsf:button actionExpression="#{gathering$GatheringSessionBeanV2.pagination.firstResults}" visible="#{gathering$GatheringSessionBeanV2.pagination.isVisiblePrevious}"
-                                                             id="btnFirst" text="primeros" />
+                                                             id="btnFirst" text="#{resources.pagination_first}" />
                                             <webuijsf:button actionExpression="#{gathering$GatheringSessionBeanV2.pagination.previousResults}" visible="#{gathering$GatheringSessionBeanV2.pagination.isVisiblePrevious}"
-                                                             id="btnNext" text="anteriores" />
+                                                             id="btnNext" text="#{resources.pagination_previous}" />
                                             <webuijsf:button actionExpression="#{gathering$GatheringSessionBeanV2.pagination.nextResults}" visible="#{gathering$GatheringSessionBeanV2.pagination.isVisibleNext}"
-                                                             id="btnPrevious" text="siguientes" />
+                                                             id="btnPrevious" text="#{resources.pagination_next}" />
                                             <webuijsf:button actionExpression="#{gathering$GatheringSessionBeanV2.pagination.lastResults}" visible="#{gathering$GatheringSessionBeanV2.pagination.isVisibleNext}"
-                                                             id="btnLast" text="ultimos"/>
+                                                             id="btnLast" text="#{resources.pagination_last}"/>
                                         </webuijsf:panelGroup>
 
                                     </webuijsf:panelGroup>
