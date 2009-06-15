@@ -554,7 +554,7 @@ public class SiteSessionBean extends AbstractSessionBean {
     }
     
     public void setSite(RowKey rowKey) {
-        this.site = (Site)this.getSiteDataProvider().getObject(rowKey);
+        this.site = (Site)this.pagination.getDataProvider().getObject(rowKey);
         this.selectedFeatureType = this.site.getFeatureType().getId();
         this.selectedOriginalProjection = this.site.getOriginalProjection().getId();
         this.selectedProjection = this.site.getBaseProjection().getId();
