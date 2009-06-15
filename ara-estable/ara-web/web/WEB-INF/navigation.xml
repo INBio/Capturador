@@ -928,7 +928,7 @@
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>back</from-outcome>
-			<to-view-id></to-view-id>
+			<to-view-id>SearchGathering.jsp</to-view-id>            
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
