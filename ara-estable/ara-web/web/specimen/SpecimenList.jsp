@@ -24,13 +24,13 @@
                                         <!--<webuijsf:button actionExpression="#{specimen$SpecimenList.btn_reload_action}" id="btn_reload" text="#{resources.btnUpdate}"/>-->
                                         <webuijsf:panelGroup id="panelPaginacion" separator=" " style="margin-left:100px;">
                                             <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.firstResults}" id="btnFirst"
-                                                text="primeros" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
+                                                text="#{resources.pagination_first}" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
                                             <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.previousResults}" id="btnNext"
-                                                text="anteriores" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
+                                                text="#{resources.pagination_previous}" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
                                             <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.nextResults}" id="btnPrevious"
-                                                text="siguientes" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
+                                                text="#{resources.pagination_next}" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
                                             <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.lastResults}" id="btnLast"
-                                                text="ultimos" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
+                                                text="#{resources.pagination_last}" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
                                         </webuijsf:panelGroup>
                                     </webuijsf:panelGroup>
                                 </f:facet>
