@@ -27,7 +27,7 @@
                             <webuijsf:staticText binding="#{collectionSelect.staticText2}" id="staticText2"
                                 style="font-weight: bold; left: 312px; top: 72px; position: absolute" text="#{resources.available_groups}"/>
                             <webuijsf:button actionExpression="#{collectionSelect.btn_continue_action}" binding="#{collectionSelect.btn_continue}"
-                                id="btn_continue" style="height: 24px; left: 191px; top: 312px; position: absolute; width: 71px" text="#{resources.continue}"/>
+                                id="btn_continue" style="height: 24px; left: 239px; top: 312px; position: absolute; width: 71px" text="#{resources.continue}"/>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
                     <jsp:directive.include file="/footer.jspf"/>
