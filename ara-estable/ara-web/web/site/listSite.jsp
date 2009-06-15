@@ -59,13 +59,13 @@
 
                                         <webuijsf:panelGroup separator=" " style="margin-left:100px;">
                                             <webuijsf:button actionExpression="#{site$SiteSessionBean.pagination.firstResults}" visible="#{site$SiteSessionBean.pagination.isVisiblePrevious}"
-                                                             id="btnFirst" text="primeros" />
+                                                             id="btnFirst" text="#{resources.pagination_first}" />
                                             <webuijsf:button actionExpression="#{site$SiteSessionBean.pagination.previousResults}" visible="#{site$SiteSessionBean.pagination.isVisiblePrevious}"
-                                                             id="btnNext" text="anteriores" />
+                                                             id="btnNext" text="#{resources.pagination_previous}" />
                                             <webuijsf:button actionExpression="#{site$SiteSessionBean.pagination.nextResults}" visible="#{site$SiteSessionBean.pagination.isVisibleNext}"
-                                                             id="btnPrevious" text="siguientes" />
+                                                             id="btnPrevious" text="#{resources.pagination_next}" />
                                             <webuijsf:button actionExpression="#{site$SiteSessionBean.pagination.lastResults}" visible="#{site$SiteSessionBean.pagination.isVisibleNext}"
-                                                             id="btnLast" text="ultimos"/>
+                                                             id="btnLast" text="#{resources.pagination_last}"/>
                                         </webuijsf:panelGroup>
 
 
