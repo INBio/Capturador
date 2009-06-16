@@ -28,6 +28,7 @@ import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,6 +98,9 @@ public class SiteSessionBean extends AbstractSessionBean {
     @EJB
     private SiteManagerRemote siteManager;
 
+    @EJB
+    private SearchManagerRemote searchManager;
+
     /** Datos del DropDown de Paises**/
     private SingleSelectOptionsList countriesDropDownData = new SingleSelectOptionsList();
     /** Datos del DropDown de Provincias**/
@@ -108,6 +112,7 @@ public class SiteSessionBean extends AbstractSessionBean {
 
     //paginacion de la tabla
     private PaginationController pagination = null;
+    private Hashtable searchCriteria = null;
 
 
     /**
@@ -540,16 +545,19 @@ public class SiteSessionBean extends AbstractSessionBean {
         this.site = site;
     }
     
-    public void delete(RowKey rowKey) {
+    public boolean delete(RowKey rowKey) {
         if (rowKey != null) {
-            Site site = (Site)this.getSiteDataProvider().getObject(rowKey);
+            Site site = (Site)this.getPagination().getDataProvider().getObject(rowKey);
             if (this.lookupSiteBean().delete(site.getId())) {
-                this.getutil$MessageBean().addSuccessMessage("Registro borrado con �xito");
+                this.getutil$MessageBean().addSuccessMessage("Registro borrado con éxito");
+                return true;
             } else {
                 this.getutil$MessageBean().addSuccessMessage("Error al borrar el registro: " + lookupSiteBean().getMessage());
+                return false;
             }                    
         } else {
             System.out.println("rowKey es nulo.");
+            return false;
         }
     }
     
@@ -685,14 +693,9 @@ public class SiteSessionBean extends AbstractSessionBean {
     }
 
     public void initDataProvider() {
-        if (!filtered) {
-            pagination = new PaginationControllerImpl(siteManager.getAllSitesCount().intValue(), 10);
-           
-            //this.siteDataProvider.clearObjectList();
-            //this.sitesCount = siteManager.getAllSitesCount().intValue();
-            //this.getSiteDataProvider().setList(siteManager.getSitesPaginated(0, 5));
-            //this.siteDataProvider.refreshList();
-        }
+        //if (!filtered) {
+            pagination = new PaginationControllerImpl(getSearchManager().countResult(Site.class,getSearchCriteria()).intValue(), 10);
+        //}
     }
 
     /**
@@ -723,15 +726,36 @@ public class SiteSessionBean extends AbstractSessionBean {
         this.pagination = pagination;
     }
 
+    /**
+     * @return the searchCriteria
+     */
+    public Hashtable getSearchCriteria() {
+        return searchCriteria;
+    }
+
+    /**
+     * @param searchCriteria the searchCriteria to set
+     */
+    public void setSearchCriteria(Hashtable searchCriteria) {
+        this.searchCriteria = searchCriteria;
+    }
+
+    /**
+     * @param searchManager the searchManager to set
+     */
+    public void setSearchManager(SearchManagerRemote searchManager) {
+        this.searchManager = searchManager;
+    }
+
     private class PaginationControllerImpl extends PaginationController {
 
         public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(siteManager.getAllSitesCount().intValue(), 10);
+            super(totalResults, resultsPerPage);
         }
 
         @Override
         public List getResults(int firstResult, int maxResults) {
-            return siteManager.getSitesPaginated(firstResult, maxResults);
+            return searchManager.makePaginatedQuery(firstResult, maxResults, Site.class,getSearchCriteria());
         }
     }
 }
