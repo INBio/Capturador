@@ -23,20 +23,19 @@
                                         <webuijsf:button actionExpression="#{specimen$SpecimenList.btn_search_action}" id="btn_search" text="#{resources.btnSearch}"/>
                                         <!--<webuijsf:button actionExpression="#{specimen$SpecimenList.btn_reload_action}" id="btn_reload" text="#{resources.btnUpdate}"/>-->
                                         <webuijsf:panelGroup id="panelPaginacion" separator=" " style="margin-left:100px;">
-                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.firstResults}" id="btnFirst"
-                                                text="#{resources.pagination_first}" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
-                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.previousResults}" id="btnNext"
-                                                text="#{resources.pagination_previous}" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
-                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.nextResults}" id="btnPrevious"
-                                                text="#{resources.pagination_next}" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
-                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.lastResults}" id="btnLast"
-                                                text="#{resources.pagination_last}" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.paginationInventory.firstResults}" id="btnFirst"
+                                                text="#{resources.pagination_first}" visible="#{specimen$SpecimenSessionBean.paginationInventory.isVisiblePrevious}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.paginationInventory.previousResults}" id="btnNext"
+                                                text="#{resources.pagination_previous}" visible="#{specimen$SpecimenSessionBean.paginationInventory.isVisiblePrevious}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.paginationInventory.nextResults}" id="btnPrevious"
+                                                text="#{resources.pagination_next}" visible="#{specimen$SpecimenSessionBean.paginationInventory.isVisibleNext}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.paginationInventory.lastResults}" id="btnLast"
+                                                text="#{resources.pagination_last}" visible="#{specimen$SpecimenSessionBean.paginationInventory.isVisibleNext}"/>
                                         </webuijsf:panelGroup>
                                     </webuijsf:panelGroup>
                                 </f:facet>
-                                <webuijsf:tableRowGroup binding="#{specimen$SpecimenList.tableRowGroup1}" id="tableRowGroup1" rows="15"
-                                    selected="#{currentRow.value['selected']}" sourceData="#{specimen$SpecimenSessionBean.pagination.dataProvider}" sourceVar="currentRow">
-                                    <!-- sourceData="#{specimen$SpecimenSessionBean.specimenDataProvider}" -->
+                                <webuijsf:tableRowGroup binding="#{specimen$SpecimenList.tableRowGroup1}" id="tableRowGroup1" rows="20"
+                                    selected="#{currentRow.value['selected']}" sourceData="#{specimen$SpecimenSessionBean.paginationInventory.dataProvider}" sourceVar="currentRow">                                    
                                     <webuijsf:tableColumn id="tableColumn1" selectId="checkbox1" width="1419">
                                         <webuijsf:checkbox id="checkbox1" selected="#{currentRow.value['selected']}"/>
                                     </webuijsf:tableColumn>
