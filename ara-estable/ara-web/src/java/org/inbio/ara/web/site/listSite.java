@@ -408,9 +408,10 @@ public class listSite extends AbstractPageBean {
      * this method to allocate resources that will be required for rendering
      * this page.</p>
      */
-    public void prerender() {
-        if(this.getsite$SiteSessionBean().getPagination() == null)
+    public void prerender() {        
+        if(this.getsite$SiteSessionBean().getPagination() == null){
             this.getsite$SiteSessionBean().initDataProvider();
+        }
     }
     
     /**
