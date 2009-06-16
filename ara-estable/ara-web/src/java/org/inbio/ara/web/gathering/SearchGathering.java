@@ -225,7 +225,7 @@ public class SearchGathering extends AbstractPageBean {
         gsb.setSearchCriteria(searchCriteria);
 
         if(gsb.getPagination() != null)
-            gsb.getPagination().firstResults();
+            gsb.setPagination(null);
 
         Long resultSet = smr.countResult(GatheringObservation.class, searchCriteria);
         if (resultSet != null || resultSet != 0) {
