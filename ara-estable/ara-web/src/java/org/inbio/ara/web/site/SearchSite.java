@@ -243,14 +243,16 @@ public class SearchSite extends AbstractPageBean {
             searchCriteria.put("table.siteCalculationMethod.id = ", dd_determinationMethod.getValue());
         }
 
-        SearchManagerRemote smr = getsite$SiteSessionBean().getSearchManager();
-        getsite$SiteSessionBean().setPagination(null);
-        List resultSet = smr.makeQuery(Site.class, searchCriteria);
-        if (resultSet != null) {
-            getsite$SiteSessionBean().setFiltered(true);
-            getsite$SiteSessionBean().getSiteDataProvider().clearObjectList();
-            getsite$SiteSessionBean().getSiteDataProvider().setList(resultSet);
-            return "site_list"; //back to the list
+        SiteSessionBean ssb = this.getsite$SiteSessionBean();
+        SearchManagerRemote smr = ssb.getSearchManager();
+        ssb.setSearchCriteria(searchCriteria);
+        if(ssb.getPagination() != null){
+            ssb.setPagination(null);//Deja listo el data provider para la siguiente consulta
+        }
+        Long resultSet = smr.countResult(Site.class, searchCriteria);
+        if(resultSet != null || resultSet != 0){
+            ssb.setFiltered(true);
+            return "site_list";
         }
 
         return null;
