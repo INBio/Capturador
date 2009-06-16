@@ -6,7 +6,7 @@
             <webuijsf:html binding="#{admin$person$searchPerson.html1}" id="html1">
                 <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:script  id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
+                    <webuijsf:script id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
                 </webuijsf:head>
                 <webuijsf:body binding="#{admin$person$searchPerson.body1}" id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header.jspf"/>
@@ -15,8 +15,8 @@
                             <webuijsf:label binding="#{admin$person$searchPerson.label1}" id="label1"
                                 style="font-size: 24px; left: 48px; top: 24px; position: absolute; width: 310px" text="#{resources.search_label}"/>
                             <webuijsf:panelLayout binding="#{admin$person$searchPerson.layoutPanel1}" id="layoutPanel1" style="border: 2px groove black; height: 308px; left: 48px; top: 72px; position: absolute; width: 428px; -rave-layout: grid">
-                                <webuijsf:label binding="#{admin$person$searchPerson.label2}" id="label2" style="left: 24px; top: 48px; position: absolute" text="#{resources.id}"/>
-                                <webuijsf:label binding="#{admin$person$searchPerson.label3}" id="label3" style="left: 24px; top: 24px; position: absolute" text="#{resources.name}"/>
+                                <webuijsf:label binding="#{admin$person$searchPerson.label2}" id="label2" style="left: 24px; top: 24px; position: absolute" text="#{resources.id}"/>
+                                <webuijsf:label binding="#{admin$person$searchPerson.label3}" id="label3" style="left: 24px; top: 48px; position: absolute" text="#{resources.name}"/>
                                 <webuijsf:label binding="#{admin$person$searchPerson.label4}" id="label4" style="left: 24px; top: 72px; position: absolute" text="#{resources.last}"/>
                                 <webuijsf:label binding="#{admin$person$searchPerson.label9}" id="label9" style="left: 24px; top: 96px; position: absolute" text="#{resources.second}"/>
                                 <webuijsf:label binding="#{admin$person$searchPerson.label5}" id="label5" style="left: 24px; top: 120px; position: absolute" text="#{resources.initials}"/>
@@ -24,8 +24,8 @@
                                 <webuijsf:label binding="#{admin$person$searchPerson.label10}" id="label10" style="left: 24px; top: 168px; position: absolute" text="#{resources.city}"/>
                                 <webuijsf:label binding="#{admin$person$searchPerson.label11}" id="label11" style="left: 24px; top: 192px; position: absolute" text="#{resources.state}"/>
                                 <webuijsf:label binding="#{admin$person$searchPerson.label12}" id="label12" style="left: 24px; top: 216px; position: absolute" text="#{resources.country}"/>
-                                <webuijsf:textField binding="#{admin$person$searchPerson.personIdTF}" id="personIdTF" style="left: 192px; top: 48px; position: absolute; width: 215px"/>
-                                <webuijsf:textField binding="#{admin$person$searchPerson.firstNameTF}" id="firstNameTF" style="left: 192px; top: 24px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{admin$person$searchPerson.personIdTF}" id="personIdTF" style="left: 192px; top: 24px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{admin$person$searchPerson.firstNameTF}" id="firstNameTF" style="left: 192px; top: 48px; position: absolute; width: 215px"/>
                                 <webuijsf:textField binding="#{admin$person$searchPerson.lastNameTF}" id="lastNameTF" style="left: 192px; top: 72px; position: absolute; width: 215px"/>
                                 <webuijsf:textField binding="#{admin$person$searchPerson.secondLastNameTF}" id="secondLastNameTF" style="left: 192px; top: 96px; position: absolute; width: 215px"/>
                                 <webuijsf:textField binding="#{admin$person$searchPerson.initialsTF}" id="initialsTF" style="left: 192px; top: 120px; position: absolute; width: 215px"/>
