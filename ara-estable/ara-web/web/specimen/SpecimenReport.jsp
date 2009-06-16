@@ -17,37 +17,27 @@
                     <jsp:directive.include file="/Header.jspf"/>
                     <webuijsf:panelLayout id="contenido">
                         <webuijsf:form id="form1">
-                            <webuijsf:table augmentTitle="false" 
-                            binding="#{specimen$SpecimenReport.table1}"
-                            id="table1"
-                            paginationControls="false"
-                            style="height: 53px; left: 24px; top: 96px; position: absolute; width: 408px"
-                            title="#{resources.specimen_report}" width="408">
+                            <webuijsf:table augmentTitle="false" binding="#{specimen$SpecimenReport.table1}" id="table1" paginationControls="false"
+                                style="height: 53px; left: 48px; top: 72px; position: absolute" title="#{resources.specimen_report}" width="600">
                                 <webuijsf:tableRowGroup binding="#{specimen$SpecimenReport.tableRowGroup1}" id="tableRowGroup1" rows="10"
-                                                        sourceData="#{specimen$SpecimenSessionBean.pagination.dataProvider}" sourceVar="currentRow"/>
-                                
-
+                                    sourceData="#{specimen$SpecimenSessionBean.pagination.dataProvider}" sourceVar="currentRow"/>
                                 <f:facet name="actionsTop">
                                     <webuijsf:panelGroup id="groupPanel1">
-
                                         <webuijsf:panelGroup separator=" " style="aling:center;">
-                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.firstResults}" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"
-                                                             id="btnFirst" text="primeros" />
-                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.previousResults}" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"
-                                                             id="btnNext" text="anteriores" />
-                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.nextResults}" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"
-                                                             id="btnPrevious" text="siguientes" />
-                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.lastResults}" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"
-                                                             id="btnLast" text="ultimos"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.firstResults}" id="btnFirst"
+                                                text="#{resources.pagination_first}" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.previousResults}" id="btnNext"
+                                                text="#{resources.pagination_previous}" visible="#{specimen$SpecimenSessionBean.pagination.isVisiblePrevious}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.nextResults}" id="btnPrevious"
+                                                text="#{resources.pagination_next}" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
+                                            <webuijsf:button actionExpression="#{specimen$SpecimenSessionBean.pagination.lastResults}" id="btnLast"
+                                                text="#{resources.pagination_last}" visible="#{specimen$SpecimenSessionBean.pagination.isVisibleNext}"/>
                                         </webuijsf:panelGroup>
-
-
                                     </webuijsf:panelGroup>
                                 </f:facet>
-
-
                             </webuijsf:table>
                         </webuijsf:form>
+                        <webuijsf:label id="labelReportes" style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 454px" text="#{resources.specimen_report}"/>
                     </webuijsf:panelLayout>
                     <jsp:directive.include file="/footer.jspf"/>
                 </webuijsf:body>
