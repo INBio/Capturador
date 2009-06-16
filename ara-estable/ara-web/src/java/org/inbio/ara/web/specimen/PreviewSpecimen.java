@@ -577,6 +577,8 @@ public class PreviewSpecimen extends AbstractPageBean {
     public String searchButton_action() {
 
         boolean filtered = false;
+        //La siguiente bandera necesita estar desabilitada durante los reportes
+        getspecimen$SpecimenSessionBean().setIsSpecimenInventory(false);
 
         LinkedList<QueryNode> sessionQueryList =
                               getspecimen$SpecimenSessionBean().getQueryList();
@@ -593,6 +595,12 @@ public class PreviewSpecimen extends AbstractPageBean {
             return null;
         }
         this.getspecimen$SpecimenSessionBean().setFiltered(filtered);
+
+        //Dejar listo el data provider para la siguiente consulta
+        if(this.getspecimen$SpecimenSessionBean().getPagination() != null){
+            this.getspecimen$SpecimenSessionBean().setPagination(null);
+        }
+
         return "report";
     }
 

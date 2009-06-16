@@ -595,12 +595,12 @@ public class SearchSpecimen extends AbstractPageBean {
         SearchManagerRemote smr = esb.getSearchManager();
         esb.setSearchCriteria(searchCriteria);
 
-        if(esb.getPagination() != null){
-            esb.getPagination().firstResults();
+        if(esb.getPaginationInventory() != null){
+            esb.setPaginationInventory(null); //Deja listo el data provider para la siguiente consulta
         }
         Long resultSet = smr.countResult(Specimen.class, searchCriteria);
         if (resultSet != null || resultSet != 0) {
-            getspecimen$SpecimenSessionBean().setIsFiltered(true);
+            getspecimen$SpecimenSessionBean().setIsSpecimenInventory(true);
             return "specimen_list";
         }
         return null;
