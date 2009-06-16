@@ -612,21 +612,21 @@ public class searchPerson extends AbstractPageBean {
         }
         if(getFirstNameTF().getText() != null) {
             String first = getFirstNameTF().getText().toString();
-            if (!first.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
+            if (!first.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ. -]*")) {
                 message += BundleHelper.getDefaultBundleValue("first_name_error");
                 isValid = false;
             }
         }
         if(getLastNameTF().getText() != null) {
             String last = getLastNameTF().getText().toString();
-            if (!last.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
+            if (!last.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ. -]*")) {
                 message += BundleHelper.getDefaultBundleValue("last_name_error");
                 isValid = false;
             }
         }
         if(getSecondLastNameTF().getText() != null) {
             String second = getSecondLastNameTF().getText().toString();
-            if (!second.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
+            if (!second.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ. -]*")) {
                 message += BundleHelper.getDefaultBundleValue("second_name_error");
                 isValid = false;
             }
@@ -640,28 +640,28 @@ public class searchPerson extends AbstractPageBean {
         }
         if(getOccupationTF().getText() != null) {
             String occupation = getOccupationTF().getText().toString();
-            if (!occupation.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
+            if (!occupation.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ. -]*")) {
                 message += BundleHelper.getDefaultBundleValue("occupation_error");
                 isValid = false;
             }
         }
         if(getCityTF().getText() != null) {
             String city = getCityTF().getText().toString();
-            if (!city.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
+            if (!city.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ. -]*")) {
                 message += BundleHelper.getDefaultBundleValue("city_error");
                 isValid = false;
             }
         }
         if(getStateNameTF().getText() != null) {
             String state = getStateNameTF().getText().toString();
-            if (!state.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
+            if (!state.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ. -]*")) {
                 message += BundleHelper.getDefaultBundleValue("state_error");
                 isValid = false;
             }
         }
         if(getCountryTF().getText() != null) {
             String country = getCountryTF().getText().toString();
-            if (!country.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ -]*")) {
+            if (!country.matches("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ. -]*")) {
                 message += BundleHelper.getDefaultBundleValue("country_error");
                 isValid = false;
             }
