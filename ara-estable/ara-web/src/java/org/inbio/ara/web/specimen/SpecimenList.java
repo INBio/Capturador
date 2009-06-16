@@ -263,9 +263,8 @@ public class SpecimenList extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        if(this.getspecimen$SpecimenSessionBean().getPagination() == null){
+        if(this.getspecimen$SpecimenSessionBean().getPaginationInventory() == null)
             this.getspecimen$SpecimenSessionBean().initDataProvider();
-        }
     }
     
     /**
@@ -442,8 +441,9 @@ public class SpecimenList extends AbstractPageBean {
     
     public String btn_reload_action() {
         getspecimen$SpecimenSessionBean().setIsFiltered(false);
-        getspecimen$SpecimenSessionBean().getSpecimenDataProvider().clearObjectList();
-        getspecimen$SpecimenSessionBean().getSpecimenDataProvider().refreshDataList();
+        getspecimen$SpecimenSessionBean().getPaginationInventory().getDataProvider().clearObjectList();
+        //getspecimen$SpecimenSessionBean().getSpecimenDataProvider().clearObjectList();
+        //getspecimen$SpecimenSessionBean().getSpecimenDataProvider().refreshDataList();
         return null;
     }
 
