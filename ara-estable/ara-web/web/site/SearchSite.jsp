@@ -28,18 +28,19 @@
                             <webuijsf:label id="label" style="font-size: 24px; left: 48px; top: 24px; position: absolute; width: 310px" text="#{resources.searchLocation}"/>
                             <webuijsf:panelLayout id="layoutPanel1" panelLayout="flow" style="border: 2px groove black; height: 236px; left: 48px; top: 72px; position: absolute; width: 428px; -rave-layout: grid">
                                 <webuijsf:label id="label_identification" style="left: 24px; top: 24px; position: absolute" text="#{resources.identification}"/>
-                                <webuijsf:textField binding="#{site$SearchSite.txt_identification}" id="txt_identification" style="left: 192px; top: 24px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{site$SearchSite.txt_identification}" id="txt_identification" style="left: 192px; top: 24px; position: absolute; width: 147px"/>
                                 <webuijsf:label id="label_description" style="left: 24px; top: 48px; position: absolute" text="#{resources.description}"/>
-                                <webuijsf:textField binding="#{site$SearchSite.txt_description}" id="txt_description" style="left: 192px; top: 48px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{site$SearchSite.txt_description}" id="txt_description" style="left: 192px; top: 48px; position: absolute; width: 147px"/>
                                 <webuijsf:label id="label_type" style="left: 24px; top: 72px; position: absolute" text="#{resources.type}"/>
                                 <webuijsf:dropDown binding="#{site$SearchSite.dd_type}" disabled="true" id="dd_type"
-                                    items="#{site$SiteSessionBean.featureTypeOption}" style="left: 192px; top: 72px; position: absolute" valueChangeListenerExpression="#{site$SearchSite.dd_type_processValueChange}"/>
+                                    items="#{site$SiteSessionBean.featureTypeOption}" style="left: 192px; top: 72px; position: absolute"
+                                    valueChangeListenerExpression="#{site$SearchSite.dd_type_processValueChange}" width="155px"/>
                                 <webuijsf:label id="label_baseProjection" style="left: 24px; top: 96px; position: absolute" text="#{resources.base_proyection}"/>
                                 <webuijsf:dropDown binding="#{site$SearchSite.dd_baseProjection}" disabled="true" id="dd_baseProjection"
-                                    items="#{site$SiteSessionBean.projectionOption}" style="left: 192px; top: 96px; position: absolute"/>
+                                    items="#{site$SiteSessionBean.projectionOption}" style="left: 192px; top: 96px; position: absolute" width="155px"/>
                                 <webuijsf:label id="label_determinationMethod" style="left: 24px; top: 120px; position: absolute" text="#{resources.determination_method}"/>
                                 <webuijsf:dropDown binding="#{site$SearchSite.dd_determinationMethod}" disabled="true" id="dd_determinationMethod"
-                                    items="#{site$SiteSessionBean.siteCalculationMethod}" style="left: 192px; top: 120px; position: absolute"/>
+                                    items="#{site$SiteSessionBean.siteCalculationMethod}" style="left: 192px; top: 120px; position: absolute" width="155px"/>
                                 <webuijsf:button actionExpression="#{site$SearchSite.searchButton_action}" id="searchButton"
                                     style="height: 24px; left: 167px; top: 192px; position: absolute; width: 72px" text="#{resources.btnSearch}"/>
                             </webuijsf:panelLayout>
