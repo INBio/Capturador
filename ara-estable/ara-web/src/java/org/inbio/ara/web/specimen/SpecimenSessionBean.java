@@ -485,7 +485,6 @@ public class SpecimenSessionBean extends AbstractSessionBean {
         public List getResults(int firstResult, int maxResults) {
             if(isIsSpecimenInventory()){
                 System.out.println("Primer Resultado: "+firstResult + " resutlados por página: "+maxResults);
-                System.out.println("hola***********////////////---------------");
                 return searchManager.makePaginatedQuery(firstResult, maxResults, Specimen.class,getSearchCriteria());
             }
             else if(!isFiltered()) {
