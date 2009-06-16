@@ -1448,7 +1448,7 @@
         <!-- Menu Informacion Geografica-->
 		<navigation-case>
 			<from-outcome>listSite</from-outcome>
-			<to-view-id>/site/listSite.jsp</to-view-id>
+			<to-view-id>/site/SearchSite.jsp</to-view-id>
 			<redirect/>
 		</navigation-case>
 
