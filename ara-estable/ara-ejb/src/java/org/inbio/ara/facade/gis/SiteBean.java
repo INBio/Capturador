@@ -96,18 +96,19 @@ public class SiteBean implements SiteRemote, SiteLocal {
         return persist(site, coordinateList,georeferencedSitesPKs);
     }
     
+    @Override
     public boolean delete(Long siteId) {
+        //TODO: drop cascade de identificaciones al borrar sitios
         if (this.canDeleteSite(siteId)) {
             try {
                 Site site = em.find(Site.class,siteId);
                 if (site != null) {
-
                     //borra lo que haya en georeferencedSite
                     siteManager.deleteForSite(site.getId());
                     em.remove(site);
                     return true;
                 } else {
-                    this.setMessage("Id de sitio inv�lido");
+                    this.setMessage("Id de sitio inválido");
                     return false;
                 }
             } catch (IllegalStateException ex1) {
@@ -118,7 +119,7 @@ public class SiteBean implements SiteRemote, SiteLocal {
                 return false;
             }
         } else {
-            this.setMessage("El sitio no puede ser borrado pues est� siendo referenciado en " + this.getGatheringObservationCountBySite(siteId) + " recolecciones/observaciones.");
+            this.setMessage("El sitio no puede ser borrado pues está siendo referenciado en " + this.getGatheringObservationCountBySite(siteId) + " recolecciones/observaciones.");
             return false;
         }
     }
