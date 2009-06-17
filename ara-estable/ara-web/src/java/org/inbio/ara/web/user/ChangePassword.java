@@ -126,6 +126,10 @@ public class ChangePassword extends AbstractPageBean {
 
 		this.fullNameTextField.setText(user.getFullName());
 		this.userNameTextField.setText(user.getUserName());
+
+        this.currentPasswordTextField.setText("");
+        this.newPasswordTextField.setText("");
+        this.confirmNewPasswordTextField.setText("");
 	}
 
 	/**
@@ -140,18 +144,24 @@ public class ChangePassword extends AbstractPageBean {
 	}
 
 	public String saveAction() {
-		String newPassword = (String) this.newPasswordTextField.getText();
+        String newPassword = (String) this.newPasswordTextField.getText();
 		String confirmNewPassword = (String) this.confirmNewPasswordTextField.getText();
-		String currentPassword = (String) currentPasswordTextField.getText();
+		String currentPassword = (String) this.currentPasswordTextField.getText();
 
+        //Validate if user fill the blanks
+        if(newPassword.equals("")||confirmNewPassword.equals("")||currentPassword.equals("")){
+            this.userAlert1.setType(MessageBean.getMessageFromBundle("warning"));
+			this.userAlert1.setSummary(MessageBean.getMessageFromBundle("incomplete_fields"));
+            return null;
+        }
 		UserSessionBean usb = this.getUserSessionBean();
-
 		if (!confirmNewPassword.equals(newPassword)) {
 			this.userAlert1.setType(MessageBean.getMessageFromBundle("warning"));
 			this.userAlert1.setSummary(MessageBean.getMessageFromBundle("new_password_dont_match"));
 			return null;
-		} else {
-
+		} 
+        else
+        {
 			if (usb.verifyPassword(currentPassword)) {
 				usb.updatePassword(newPassword);
 				return "changePassword";
