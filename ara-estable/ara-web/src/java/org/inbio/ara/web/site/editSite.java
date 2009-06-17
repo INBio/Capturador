@@ -905,7 +905,7 @@ public class editSite extends AbstractPageBean {
 //        }
 
         if (this.getsite$SiteSessionBean().getSelectedFeatureType().equals(1L)) {
-            if (this.getsite$SiteSessionBean().getCoordinateDataProvider().getList().size()!=1) {
+            if (this.getsite$SiteSessionBean().getCoordinateDataProvider().getList().size()>1) {
                 this.getutil$MessageBean().addErrorMessage(ONE_COORIDNATE_REQUIRED);
                 return false;
             }
