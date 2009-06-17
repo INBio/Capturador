@@ -937,10 +937,10 @@ public class newSite extends AbstractPageBean {
             return false;
         }
 
-        if (this.getsite$SiteSessionBean().getCoordinateDataProvider().getList().size()<=0) {
+        /* if (this.getsite$SiteSessionBean().getCoordinateDataProvider().getList().size()<=0) {
             this.getutil$MessageBean().addErrorMessage(EMPTY_COORIDNATES);
             return false;
-        }
+        } */
         
         if (this.getsite$SiteSessionBean().getSelectedFeatureType().equals(3L)) {
             if (this.getsite$SiteSessionBean().getCoordinateDataProvider().getList().size()<2) {

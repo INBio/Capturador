@@ -899,10 +899,10 @@ public class editSite extends AbstractPageBean {
             return false;
         }
 
-        if (this.getsite$SiteSessionBean().getCoordinateDataProvider().getList().size()<=0) {
-            this.getutil$MessageBean().addErrorMessage(EMPTY_COORIDNATES);
-            return false;
-        }
+//        if (this.getsite$SiteSessionBean().getCoordinateDataProvider().getList().size()<=0) {
+//            this.getutil$MessageBean().addErrorMessage(EMPTY_COORIDNATES);
+//            return false;
+//        }
 
         if (this.getsite$SiteSessionBean().getSelectedFeatureType().equals(1L)) {
             if (this.getsite$SiteSessionBean().getCoordinateDataProvider().getList().size()!=1) {
