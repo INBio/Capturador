@@ -88,7 +88,7 @@
                                 <webuijsf:label binding="#{gathering$specimenGeneration.label_observationDate}" id="label_observationDate"
                                     style="height: 29px; left: 624px; top: 24px; position: absolute" text="#{resources.date}"/>
                                 <webuijsf:calendar binding="#{gathering$specimenGeneration.cal_ObsDate1}" id="cal_ObsDate1"
-                                    selectedDate="#{gathering$SpecimenGenerationSessionBean.observationDate}" style="left: 690px; top: 24px; position: absolute"/>
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" selectedDate="#{gathering$SpecimenGenerationSessionBean.observationDate}" style="left: 690px; top: 24px; position: absolute"/>
                                 <webuijsf:label binding="#{gathering$specimenGeneration.label_observationTime}" id="label_observationTime"
                                     style="left: 624px; top: 48px; position: absolute" text="#{resources.time}"/>
                                 <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_hour}" id="dd_hour"
@@ -139,7 +139,7 @@
                                             <webuijsf:label binding="#{gathering$specimenGeneration.label_Taxa}" id="label_Taxa"
                                                 style="left: 24px; top: 120px; position: absolute" text="Taxones"/>
                                             <webuijsf:calendar binding="#{gathering$specimenGeneration.cal_identificationDate1}" dateFormatPattern="dd/MM/yyyy"
-                                                dateFormatPatternHelp="dd/MM/yyyy" id="cal_identificationDate1" style="left: 614px; top: 24px; position: absolute; text-align: left"/>
+                                                maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" dateFormatPatternHelp="dd/MM/yyyy" id="cal_identificationDate1" style="left: 614px; top: 24px; position: absolute; text-align: left"/>
                                             <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_validator1}" id="dd_validator1"
                                                 items="#{gathering$SpecimenGenerationSessionBean.identificationValidatorOption}"
                                                 selected="#{gathering$SpecimenGenerationSessionBean.selectedIdentificationValidator}" style="left: 192px; top: 72px; position: absolute"/>

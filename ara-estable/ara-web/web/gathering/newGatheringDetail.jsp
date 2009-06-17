@@ -35,7 +35,7 @@
                                 <webuijsf:textArea binding="#{gathering$newGatheringDetail.txt_morphologicalDescription}" id="txt_morphologicalDescription" style="height: 143px; left: 168px; top: 24px; position: absolute; width: 431px"/>
                                 <webuijsf:label binding="#{gathering$newGatheringDetail.label5}" id="label5" style="left: 0px; top: 120px; position: absolute" text="#{resources.description_date}"/>
                                 <webuijsf:calendar binding="#{gathering$newGatheringDetail.cal_descDate}" dateFormatPattern="dd-MM-yyyy"
-                                    dateFormatPatternHelp="dd-MM-aaaa&#xa;" id="cal_descDate" style="left: 168px; top: 120px; position: absolute"/>
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" dateFormatPatternHelp="dd-MM-aaaa&#xa;" id="cal_descDate" style="left: 168px; top: 120px; position: absolute"/>
                                 <webuijsf:label binding="#{gathering$newGatheringDetail.label6}" id="label6" style="left: 0px; top: 168px; position: absolute" text="Descriptor"/>
                                 <webuijsf:dropDown binding="#{gathering$newGatheringDetail.dd_descriptor}" id="dd_descriptor"
                                     items="#{gathering$GatheringDetailSessionBean.descriptors}"

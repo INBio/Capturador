@@ -28,9 +28,9 @@
                                     id="dd_site" items="#{gathering$GatheringSessionBeanV2.sites}" selected="#{gathering$GatheringSessionBeanV2.selectedSite}"
                                     style="left: 144px; top: 48px; position: absolute; width: 200px" width="178px"/>
                                 <webuijsf:calendar binding="#{gathering$editGathering.cal_initialDate}" dateFormatPattern="dd/MM/yyyy"
-                                    dateFormatPatternHelp="dd/mm/yyyy" id="cal_initialDate" style="left: 134px; top: 72px; position: absolute"/>
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" dateFormatPatternHelp="dd/mm/yyyy" id="cal_initialDate" style="left: 134px; top: 72px; position: absolute"/>
                                 <webuijsf:calendar binding="#{gathering$editGathering.cal_finalDate}" dateFormatPattern="dd/MM/yyyy"
-                                    dateFormatPatternHelp="dd/mm/yyyy" id="cal_finalDate" style="left: 415px; top: 72px; position: absolute"/>
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" dateFormatPatternHelp="dd/mm/yyyy" id="cal_finalDate" style="left: 415px; top: 72px; position: absolute"/>
                                 <webuijsf:dropDown binding="#{gathering$editGathering.dd_responsiblePerson}"
                                     converter="#{gathering$GatheringNew.longConverter1}" id="dd_responsiblePerson"
                                     items="#{gathering$GatheringSessionBeanV2.responsiblePersons}"

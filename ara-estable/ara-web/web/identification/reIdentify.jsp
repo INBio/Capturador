@@ -108,7 +108,7 @@
                                             <webuijsf:label binding="#{identification$reIdentify.label7}" id="label7"
                                                 style="left: 24px; top: 144px; position: absolute" text="#{resources.taxons}"/>
                                             <webuijsf:calendar binding="#{identification$reIdentify.cal_identificationDate1}" dateFormatPattern="dd/MM/yyyy"
-                                                dateFormatPatternHelp="dd/MM/yyyy" id="cal_identificationDate1"
+                                                maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" dateFormatPatternHelp="dd/MM/yyyy" id="cal_identificationDate1"
                                                 selectedDate="#{identification$IdentificationSessionBean.identificationDate}"
                                                 style="left: 168px; top: 24px; position: absolute" valueChangeListenerExpression="#{identification$reIdentify.cal_identificationDate1_processValueChange}"/>
                                             <webuijsf:label binding="#{identification$reIdentify.label8}" id="label8"

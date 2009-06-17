@@ -31,7 +31,7 @@
                                 id="dd_referenceType" items="#{references$NewReference.referenceTypeOptions}" label="" required="true" style="left: 168px; top: 264px; position: absolute"/>
                             <webuijsf:button actionExpression="#{references$NewReference.btn_save_action}" binding="#{references$NewReference.btn_save}"
                                 id="btn_save" style="height: 23px; left: 47px; top: 312px; position: absolute; width: 70px" text="#{resources.btnSave}"/>
-                            <webuijsf:calendar binding="#{references$NewReference.cldr_publicationDate}" dateFormatPattern="dd/MM/yyyy"
+                            <webuijsf:calendar binding="#{references$NewReference.cldr_publicationDate}" dateFormatPattern="dd/MM/yyyy" maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}"
                                 id="cldr_publicationDate" style="left: 168px; top: 216px; position: absolute"/>
                         </webuijsf:form>
                     </webuijsf:panelLayout>

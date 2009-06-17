@@ -74,7 +74,7 @@
 																		maxLength="6" style="left: 456px; top: 24px; position: absolute; width: 71px"/>
 													<webuijsf:label binding="#{gathering$specimenGenerationV2.label13}" id="label13"
 																	style="left: 24px; top: 72px; position: absolute" text="#{resources.category}"/>
-													<webuijsf:calendar binding="#{gathering$specimenGenerationV2.cal_ObsDate}" id="cal_ObsDate" style="left: 456px; top: 96px; position: absolute"/>
+													<webuijsf:calendar binding="#{gathering$specimenGenerationV2.cal_ObsDate}" id="cal_ObsDate" style="left: 456px; top: 96px; position: absolute" maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" />
 													<webuijsf:label binding="#{gathering$specimenGenerationV2.label14}" id="label14"
 																	style="left: 24px; top: 144px; position: absolute" text="#{resources.preservation_medium}"/>
 													<webuijsf:dropDown binding="#{gathering$specimenGenerationV2.dd_origin}" id="dd_origin"
@@ -192,7 +192,7 @@
 																	   id="dd_identificationType" items="#{identification$IdentificationSessionBean.identificationTypeOption}"
 																	   selected="#{identification$IdentificationSessionBean.selectedIdentificationType}"
 																	   style="left: 144px; top: 144px; position: absolute" valueChangeListenerExpression="#{gathering$specimenGenerationV2.dd_identificationType1_processValueChange}"/>
-													<webuijsf:calendar binding="#{gathering$specimenGenerationV2.cal_identificationDate}"
+													<webuijsf:calendar binding="#{gathering$specimenGenerationV2.cal_identificationDate}" maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" 
 																	   dateFormatPattern="dd/MM/yyyy" dateFormatPatternHelp="dd/MM/yyyy" id="cal_identificationDate"
 																	   selectedDate="#{identification$IdentificationSessionBean.identificationDate}"
 																	   style="left: 24px; top: 48px; position: absolute" valueChangeListenerExpression="#{gathering$specimenGenerationV2.cal_identificationDate1_processValueChange}"/>

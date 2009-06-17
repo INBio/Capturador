@@ -27,9 +27,9 @@
                                 <webuijsf:dropDown binding="#{gathering$GatheringNew.dd_site}" id="dd_site" items="#{gathering$GatheringSessionBeanV2.sites}"
                                     selected="#{gathering$GatheringSessionBeanV2.selectedSite}" style="left: 144px; top: 24px; position: absolute; width: 200px" width="200px"/>
                                 <webuijsf:calendar binding="#{gathering$GatheringNew.cal_initialDate}" dateFormatPattern="dd/MM/yyyy"
-                                    dateFormatPatternHelp="dd/mm/yyyy" id="cal_initialDate" style="left: 134px; top: 48px; position: absolute"/>
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" dateFormatPatternHelp="dd/mm/yyyy" id="cal_initialDate" style="left: 134px; top: 48px; position: absolute"/>
                                 <webuijsf:calendar binding="#{gathering$GatheringNew.cal_finalDate}" dateFormatPattern="dd/MM/yyyy"
-                                    dateFormatPatternHelp="dd/mm/yyyy" id="cal_finalDate" style="left: 436px; top: 48px; position: absolute"/>
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" dateFormatPatternHelp="dd/mm/yyyy" id="cal_finalDate" style="left: 436px; top: 48px; position: absolute"/>
                                 <webuijsf:dropDown binding="#{gathering$GatheringNew.dd_responsiblePerson}" id="dd_responsiblePerson"
                                     items="#{gathering$GatheringSessionBeanV2.responsiblePersons}"
                                     selected="#{gathering$GatheringSessionBeanV2.selectedResponsiblePerson}"

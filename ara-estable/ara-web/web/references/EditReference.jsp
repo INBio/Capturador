@@ -28,7 +28,7 @@
                             <webuijsf:button actionExpression="#{references$EditReference.btn_save_action}" binding="#{references$EditReference.btn_save}"
                                 id="btn_save" style="height: 24px; left: 359px; top: 240px; position: absolute; width: 70px" text="#{resources.btnSave}"/>
                             <webuijsf:textField binding="#{references$EditReference.txt_identifier}" id="txt_identifier" label="" required="true" style="left: 168px; top: 192px; position: absolute; width: 360px"/>
-                            <webuijsf:calendar binding="#{references$EditReference.cldr_publicationDate}" dateFormatPattern="dd/MM/yyyy"
+                            <webuijsf:calendar binding="#{references$EditReference.cldr_publicationDate}" dateFormatPattern="dd/MM/yyyy" maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}"
                                 id="cldr_publicationDate" style="left: 168px; top: 216px; position: absolute"/>
                             <webuijsf:dropDown binding="#{references$EditReference.dd_referenceType}" converter="#{references$EditReference.longConverter1}"
                                 id="dd_referenceType" items="#{references$ReferenceSessionBean.referenceTypeOptions}" label="" required="true"

@@ -31,7 +31,8 @@
                                 <webuijsf:textField binding="#{identification$SearchIdentification.txt_sequence}" id="txt_sequence"
                                     style="left: 192px; top: 72px; position: absolute; width: 215px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputSequence}"/>
                                 <webuijsf:label id="label_identificationDate" style="left: 24px; top: 96px; position: absolute" text="#{resources.identification_date}"/>
-                                <webuijsf:calendar binding="#{identification$SearchIdentification.cal_identificationDate}" id="cal_identificationDate" style="position: absolute; left: 183px; top: 96px; width: 144px; height: 24px"/>
+                                <webuijsf:calendar binding="#{identification$SearchIdentification.cal_identificationDate}" id="cal_identificationDate"
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" style="position: absolute; left: 183px; top: 96px; width: 144px; height: 24px"/>
                                 <webuijsf:label id="label_identifier" style="left: 24px; top: 120px; position: absolute" text="#{resources.identifier}"/>
                                 <webuijsf:textField binding="#{identification$SearchIdentification.txt_identifier}" id="txt_identifier"
                                     style="left: 192px; top: 120px; position: absolute; width: 215px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputIdentifier}"/>

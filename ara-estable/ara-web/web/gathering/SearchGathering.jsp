@@ -25,9 +25,9 @@
                                 <webuijsf:label id="label_locality" style="left: 24px; top: 48px; position: absolute" text="#{resources.locality}"/>
                                 <webuijsf:textField binding="#{gathering$SearchGathering.txt_locality}" id="txt_locality" style="left: 202px; top: 48px; position: absolute; width: 215px"/>
                                 <webuijsf:label id="label_init_date" style="left: 24px; top: 72px; position: absolute" text="#{resources.initial_date}"/>
-                                <webuijsf:calendar binding="#{gathering$SearchGathering.cal_init_date}" dateFormatPattern="dd/MM/yyyy" id="cal_init_date" style="height: 24px; left: 192px; top: 72px; position: absolute; width: 144px"/>
+                                <webuijsf:calendar binding="#{gathering$SearchGathering.cal_init_date}" dateFormatPattern="dd/MM/yyyy" id="cal_init_date" style="height: 24px; left: 192px; top: 72px; position: absolute; width: 144px" maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" />
                                 <webuijsf:label id="label_final_date" style="left: 24px; top: 96px; position: absolute" text="#{resources.final_date}"/>
-                                <webuijsf:calendar binding="#{gathering$SearchGathering.cal_final_date}" dateFormatPattern="dd/MM/yyyy" id="cal_final_date" style="height: 24px; left: 192px; top: 96px; position: absolute; width: 168px"/>
+                                <webuijsf:calendar binding="#{gathering$SearchGathering.cal_final_date}" dateFormatPattern="dd/MM/yyyy" id="cal_final_date" style="height: 24px; left: 192px; top: 96px; position: absolute; width: 168px" maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" />
                                 <webuijsf:label id="label_responsible" style="left: 24px; top: 120px; position: absolute" text="#{resources.responsible}"/>
                                 <webuijsf:textField binding="#{gathering$SearchGathering.txt_resposible}" id="txt_resposible" style="left: 202px; top: 120px; position: absolute; width: 215px"/>
                                 <webuijsf:label id="label_collection" style="left: 24px; top: 144px; position: absolute" text="#{resources.collection}"/>
