@@ -584,7 +584,6 @@ public class listSite extends AbstractPageBean {
     }
 
     public String btn_new_action() {
-        //return "newSite";
         if (this.getSessionManager().canAdd() != null) {
             return this.getSessionManager().canAdd();
         } else {
@@ -594,12 +593,6 @@ public class listSite extends AbstractPageBean {
     }
 
     public String btn_edit_action() {
-        /*
-        this.getsite$SiteSessionBean().setEditMode(false);
-        this.getsite$SiteSessionBean().setSite(this.tableRowGroup1.getRowKey());
-        this.getsite$SiteSessionBean().populateList();
-        return "editSite";
-         */
         if (this.getSessionManager().canModify()!=null) {
             this.getsite$SiteSessionBean().setEditMode(false);
             this.getsite$SiteSessionBean().setSite(this.tableRowGroup1.getRowKey());
@@ -612,14 +605,13 @@ public class listSite extends AbstractPageBean {
     }
 
     public String btn_remove_action() {
-        /*
-        RowKey rowKey = this.tableRowGroup1.getRowKey();
-        this.getsite$SiteSessionBean().delete(rowKey);
-        return null;
-         */
         if (this.getSessionManager().canDelete() != null) {
             RowKey rowKey = this.tableRowGroup1.getRowKey();
-            this.getsite$SiteSessionBean().delete(rowKey);
+            boolean result = this.getsite$SiteSessionBean().delete(rowKey);
+            if(result){ //Si el borrado en la base de datos es realizado con exito
+                //Refrescar los datos del list del paginationDataProvider
+                this.getsite$SiteSessionBean().getPagination().refreshList();
+            }
             return null;
         } else {
             this.getutil$MessageBean().addCantDeleteMessage();
