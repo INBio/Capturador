@@ -14,7 +14,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */ 
+ */
 /*
  * ApplicationBean1.java
  *
@@ -24,6 +24,7 @@
 package org.inbio.ara.web;
 
 import com.sun.rave.web.ui.appbase.AbstractApplicationBean;
+import java.util.Date;
 import javax.faces.FacesException;
 
 /**
@@ -38,8 +39,11 @@ import javax.faces.FacesException;
  */
 public class ApplicationBean1 extends AbstractApplicationBean {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
+
     private int __placeholder;
-    
+    private Date minDate;
+    private Date todayDate;
+
     /**
      * <p>Automatically managed component initialization.  <strong>WARNING:</strong>
      * This method is automatically generated, so any user-specified code inserted
@@ -48,13 +52,15 @@ public class ApplicationBean1 extends AbstractApplicationBean {
     private void _init() throws Exception {
     }
     // </editor-fold>
-    
+
     /**
      * <p>Construct a new application data bean instance.</p>
      */
     public ApplicationBean1() {
+        minDate = new Date("1500/01/01");
+        todayDate = new Date();
     }
-    
+
     /**
      * <p>This method is called when this bean is initially added to
      * application scope.  Typically, this occurs as a result of evaluating
@@ -73,7 +79,7 @@ public class ApplicationBean1 extends AbstractApplicationBean {
         // Perform application initialization that must complete
         // *before* managed components are initialized
         // TODO - add your own initialiation code here
-        
+
         // <editor-fold defaultstate="collapsed" desc="Managed Component Initialization">
         // Initialize automatically managed components
         // *Note* - this logic should NOT be modified
@@ -81,15 +87,15 @@ public class ApplicationBean1 extends AbstractApplicationBean {
             _init();
         } catch (Exception e) {
             log("ApplicationBean1 Initialization Failure", e);
-            throw e instanceof FacesException ? (FacesException) e: new FacesException(e);
+            throw e instanceof FacesException ? (FacesException) e : new FacesException(e);
         }
-        
-        // </editor-fold>
-        // Perform application initialization that must complete
-        // *after* managed components are initialized
-        // TODO - add your own initialization code here
+
+    // </editor-fold>
+    // Perform application initialization that must complete
+    // *after* managed components are initialized
+    // TODO - add your own initialization code here
     }
-    
+
     /**
      * <p>This method is called when this bean is removed from
      * application scope.  Typically, this occurs as a result of
@@ -101,7 +107,7 @@ public class ApplicationBean1 extends AbstractApplicationBean {
      */
     public void destroy() {
     }
-    
+
     /**
      * <p>Return an appropriate character encoding based on the
      * <code>Locale</code> defined for the current JavaServer Faces
@@ -113,5 +119,33 @@ public class ApplicationBean1 extends AbstractApplicationBean {
      */
     public String getLocaleCharacterEncoding() {
         return super.getLocaleCharacterEncoding();
+    }
+
+    /**
+     * @return the minDate
+     */
+    public Date getMinDate() {
+        return minDate;
+    }
+
+    /**
+     * @param minDate the minDate to set
+     */
+    public void setMinDate(Date minDate) {
+        this.minDate = minDate;
+    }
+
+    /**
+     * @return the todayDate
+     */
+    public Date getTodayDate() {
+        return todayDate;
+    }
+
+    /**
+     * @param todayDate the todayDate to set
+     */
+    public void setTodayDate(Date todayDate) {
+        this.todayDate = todayDate;
     }
 }
