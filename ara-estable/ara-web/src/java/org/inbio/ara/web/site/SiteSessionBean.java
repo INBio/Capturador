@@ -552,7 +552,7 @@ public class SiteSessionBean extends AbstractSessionBean {
                 this.getutil$MessageBean().addSuccessMessage("Registro borrado con éxito");
                 return true;
             } else {
-                this.getutil$MessageBean().addSuccessMessage("Error al borrar el registro: " + lookupSiteBean().getMessage());
+                this.getutil$MessageBean().addSuccessMessage(lookupSiteBean().getMessage());
                 return false;
             }                    
         } else {
