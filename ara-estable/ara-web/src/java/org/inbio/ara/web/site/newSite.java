@@ -803,6 +803,7 @@ public class newSite extends AbstractPageBean {
                 site.setPrecision(Long.parseLong(this.txt_precision.getValue().toString()));
             }
             if (this.getsite$SiteSessionBean().create(site)) {
+                this.getsite$SiteSessionBean().getPagination().refreshList();
                 return "saveNewSite";
             } else {
                 return null;
