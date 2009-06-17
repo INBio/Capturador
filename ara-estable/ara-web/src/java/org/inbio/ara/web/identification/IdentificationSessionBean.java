@@ -27,10 +27,19 @@ import com.sun.data.provider.RowKey;
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import com.sun.webui.jsf.model.Option;
 import java.util.Date;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.faces.FacesException;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import org.inbio.ara.facade.specimen.IdentificationRemote;
 import org.inbio.ara.facade.specimen.SpecimenGenParms;
 import org.inbio.ara.facade.specimen.SpecimenRemote;
+import org.inbio.ara.facade.util.SearchManagerRemote;
 import org.inbio.ara.persistence.specimen.Identification;
 import org.inbio.ara.persistence.specimen.Specimen;
 import org.inbio.ara.web.ApplicationBean1;
@@ -38,6 +47,7 @@ import org.inbio.ara.web.AraApplicationBean;
 import org.inbio.ara.web.SessionManager;
 import org.inbio.ara.web.gathering.LifeStageSimpleDataProvider;
 import org.inbio.ara.web.util.MessageBean;
+import org.inbio.ara.web.util.PaginationController;
 import org.inbio.ara.web.util.SelectionListBean;
 
 /**
@@ -53,7 +63,7 @@ import org.inbio.ara.web.util.SelectionListBean;
 public class IdentificationSessionBean extends AbstractSessionBean {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
     private int __placeholder;
-    private IdentificationDataProvider identificationDataProvider = new IdentificationDataProvider(this.getSessionManager().getCollection().getId());
+    // private IdentificationDataProvider identificationDataProvider = new IdentificationDataProvider(this.getSessionManager().getCollection().getId());
     private IdentificationDataProvider currentIdentificationDataProvider;
     private Option[] lifeStageOption;
     private Long selectedLifeStage = -1L;
@@ -90,6 +100,13 @@ public class IdentificationSessionBean extends AbstractSessionBean {
     
     private IdentificationFilteredDataProvider identificationFilteredDataProvider = new IdentificationFilteredDataProvider();
     private LifeStageSexFilteredDataProvider lifeStageSexFilteredDataProvider = new LifeStageSexFilteredDataProvider();
+
+    @EJB
+    private SearchManagerRemote searchManager;
+    //paginacion de la tabla
+    private PaginationController pagination = null;
+    private Hashtable searchCriteria = null;
+
     /**
      * <p>Automatically managed component initialization.  <strong>WARNING:</strong>
      * This method is automatically generated, so any user-specified code inserted
@@ -197,13 +214,13 @@ public class IdentificationSessionBean extends AbstractSessionBean {
         return (ApplicationBean1)getBean("ApplicationBean1");
     }
 
-    public IdentificationDataProvider getIdentificationDataProvider() {
-        return identificationDataProvider;
-    }
-
-    public void setIdentificationDataProvider(IdentificationDataProvider identificationDataProvider) {
-        this.identificationDataProvider = identificationDataProvider;
-    }
+//    public IdentificationDataProvider getIdentificationDataProvider() {
+//        return identificationDataProvider;
+//    }
+//
+//    public void setIdentificationDataProvider(IdentificationDataProvider identificationDataProvider) {
+//        this.identificationDataProvider = identificationDataProvider;
+//    }
 
     public IdentificationDataProvider getCurrentIdentificationDataProvider() {
         return currentIdentificationDataProvider;
@@ -629,17 +646,23 @@ public class IdentificationSessionBean extends AbstractSessionBean {
     }
     
     public void cleanSpecimenList() {
-        this.specimenList = new Option[]{};
-        this.selectedSpecimenId = 0L;
-        this.gatheringObservationSummary = "";
-        this.currentSpecimenCategory = null;
-        this.currentSpecimenCategoryName = "";
+        specimenList = new Option[]{};
+        selectedSpecimenId = 0L;
+        gatheringObservationSummary = "";
+        currentSpecimenCategory = null;
+        currentSpecimenCategoryName = "";
         initDataProviders();
     }
     
     public void initDataProviders() {
-        this.identificationFilteredDataProvider = new IdentificationFilteredDataProvider();
-        this.lifeStageSexFilteredDataProvider = new LifeStageSexFilteredDataProvider();
+        //*identificationFilteredDataProvider = new IdentificationFilteredDataProvider();
+        //*lifeStageSexFilteredDataProvider = new LifeStageSexFilteredDataProvider();
+    }
+
+    public void initDataProvider() {
+        pagination = new PaginationControllerImpl(searchManager.
+                countResult(Identification.class,
+                getSearchCriteria()).intValue(), 10);
     }
     
     public boolean reIdentify() {
@@ -659,12 +682,13 @@ public class IdentificationSessionBean extends AbstractSessionBean {
         //    this.getutil$MessageBean().addErrorMessage("Nulo");
         // }
         
-        if (this.lookupIdentificationBean().reIdentify(this.createIdentificationEntity(), this.getSpecimenListArray(), this.getSelectedTaxon(), this.getSelectedIdentifier(), this.lifeStageSexSimpleDataProvider.getList(), typeSpecimenTypeId, institutionId)) {
+/*        if (this.lookupIdentificationBean().reIdentify(this.createIdentificationEntity(), this.getSpecimenListArray(), this.getSelectedTaxon(), this.getSelectedIdentifier(), this.lifeStageSexSimpleDataProvider.getList(), typeSpecimenTypeId, institutionId)) {
             this.getutil$MessageBean().addSuccessMessage("Especimenes reidentificados");
             this.getutil$MessageBean().addErrorMessage(lookupIdentificationBean().getMessage());
         } else {
             this.getutil$MessageBean().addErrorMessage(lookupIdentificationBean().getMessage());
         }
+ */
         return true;
     }
     
@@ -784,30 +808,30 @@ public class IdentificationSessionBean extends AbstractSessionBean {
         selectedIdentificationValidator = -1L;
         identifierOption = null;
         selectedIdentifier = null;
-        lifeStageSexSimpleDataProvider = new LifeStageSimpleDataProvider();
-        currentlifeStageSexSimpleDataProvider  = null;
+//*        lifeStageSexSimpleDataProvider = new LifeStageSimpleDataProvider();
+//*        currentlifeStageSexSimpleDataProvider  = null;
         specimenList = null;
         gatheringObservationSummary = "";
         selectedSpecimenId = 0L;
         identificationDate = null;
-        identificationFilteredDataProvider = new IdentificationFilteredDataProvider();
-        lifeStageSexFilteredDataProvider = new LifeStageSexFilteredDataProvider();
+        //*identificationFilteredDataProvider = new IdentificationFilteredDataProvider();
+        //*lifeStageSexFilteredDataProvider = new LifeStageSexFilteredDataProvider();
         setDataEntryError("n");
         setCurrentSpecimenCategory(null);
         setCurrentSpecimenCategoryName("");
     }
     
     public void delete(RowKey rowKey) {
-        if (rowKey != null) {
-            Identification identification = (Identification)this.getIdentificationDataProvider().getObject(rowKey);
-            if (this.lookupIdentificationBean().delete(identification.getIdentificationPK())) {
-                this.getutil$MessageBean().addSuccessMessage("Registro borrado con �xito");
-            } else {
-                this.getutil$MessageBean().addSuccessMessage("Error al borrar el registro: " + lookupIdentificationBean().getMessage());
-            }                    
-        } else {
-            System.out.println("rowKey es nulo.");
-        }
+//        if (rowKey != null) {
+//            Identification identification = (Identification)this.getIdentificationDataProvider().getObject(rowKey);
+//            if (this.lookupIdentificationBean().delete(identification.getIdentificationPK())) {
+//                this.getutil$MessageBean().addSuccessMessage("Registro borrado con �xito");
+//            } else {
+//                this.getutil$MessageBean().addSuccessMessage("Error al borrar el registro: " + lookupIdentificationBean().getMessage());
+//            }
+//        } else {
+//            System.out.println("rowKey es nulo.");
+//        }
     }
 
     public String getDataEntryError() {
@@ -878,5 +902,52 @@ public class IdentificationSessionBean extends AbstractSessionBean {
 
     public void setSelectedInstitution(Long selectedInstitution) {
         this.selectedInstitution = selectedInstitution;
+    }
+
+    /**
+     * @return the searchManager
+     */
+    public SearchManagerRemote getSearchManager() {
+        return searchManager;
+    }
+
+    /**
+     * @return the searchCriteria
+     */
+    public Hashtable getSearchCriteria() {
+        return searchCriteria;
+    }
+
+    /**
+     * @param searchCriteria the searchCriteria to set
+     */
+    public void setSearchCriteria(Hashtable searchCriteria) {
+        this.searchCriteria = searchCriteria;
+    }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationController getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationController pagination) {
+        this.pagination = pagination;
+    }
+
+    private class PaginationControllerImpl extends PaginationController {
+        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
+            super(totalResults, resultsPerPage);
+        }
+
+        @Override
+        public List getResults(int firstResult, int maxResults) {
+            return searchManager.makePaginatedQuery(firstResult, maxResults, 
+                    Identification.class, searchCriteria);
+        }
     }
 }

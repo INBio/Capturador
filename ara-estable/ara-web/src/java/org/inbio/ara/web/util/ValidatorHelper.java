@@ -19,6 +19,7 @@
 package org.inbio.ara.web.util;
 
 import com.sun.rave.web.ui.appbase.AbstractApplicationBean;
+import com.sun.webui.jsf.component.TextField;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Matcher;
@@ -96,6 +97,95 @@ public class ValidatorHelper extends AbstractApplicationBean {
 			throw new ValidatorException(new FacesMessage(BundleHelper.getDefaultBundleValue("errWrongTelephone")));
 		}
 	}
+
+/*******************************************************************************
+ * Number input validation. This method is private because it is called by other
+ * speciallized methods below for each type of input.
+ * @param context
+ * @param txtField
+ * @param value
+ ******************************************************************************/
+    private void validateTextFieldInputNumber(FacesContext context,
+                        UIComponent txtField, Object value) throws Exception {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher matcher = pattern.matcher((String)value);
+        if(!matcher.matches()) {
+            throw new Exception();
+        }
+    }
+
+    public void validateTextFieldInputId(FacesContext context,
+                                        UIComponent txtField, Object value) {
+        try{
+            validateTextFieldInputNumber(context, txtField, value);
+        } catch (Exception e) {
+            throw new ValidatorException(new FacesMessage(BundleHelper.
+                                            getDefaultBundleValue("id_error")));
+        }
+    }
+
+    public void validateTextFieldInputSequence(FacesContext context,
+                                        UIComponent txtField, Object value) {
+        try{
+            validateTextFieldInputNumber(context, txtField, value);
+        } catch (Exception e) {
+            throw new ValidatorException(new FacesMessage(BundleHelper.
+                                    getDefaultBundleValue("sequence_error")));
+        }
+    }
+
+    public void validateTextFieldInputType(FacesContext context,
+                                        UIComponent txtField, Object value) {
+        try{
+            validateTextFieldInputNumber(context, txtField, value);
+        } catch (Exception e) {
+            throw new ValidatorException(new FacesMessage(BundleHelper.
+                                getDefaultBundleValue("type_language_error")));
+        }
+    }
+/*******************************************************************************
+ *******************************************************************************
+ ******************************************************************************/
+
+/*******************************************************************************
+ * String input validation. This method is private because it is called by other
+ * speciallized methods below for each type of input.
+ * @param context
+ * @param txtField
+ * @param value
+ ******************************************************************************/
+    private void validateTextFieldInputString(FacesContext context,
+                        UIComponent txtField, Object value) throws Exception {
+        Pattern pattern = Pattern.compile("[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ. -]*");
+        Matcher matcher = pattern.matcher((String)value);
+        if(!matcher.matches()) {
+            throw new Exception();
+        }
+    }
+
+    public void validateTextFieldInputTaxon(FacesContext context,
+                                        UIComponent txtField, Object value) {
+        try{
+            validateTextFieldInputString(context, txtField, value);
+        } catch (Exception e) {
+            throw new ValidatorException(new FacesMessage(BundleHelper.
+                                getDefaultBundleValue("error_taxon_field")));
+        }
+    }
+
+    public void validateTextFieldInputIdentifier(FacesContext context,
+                                        UIComponent txtField, Object value) {
+        try{
+            validateTextFieldInputString(context, txtField, value);
+        } catch (Exception e) {
+            throw new ValidatorException(new FacesMessage(BundleHelper.
+                            getDefaultBundleValue("error_identifier_field")));
+        }
+    }
+
+/*******************************************************************************
+ *******************************************************************************
+ ******************************************************************************/
 
     /**
      * <p>This method is called when this bean is initially added to

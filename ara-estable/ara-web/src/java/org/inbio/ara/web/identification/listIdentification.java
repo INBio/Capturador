@@ -266,16 +266,6 @@ public class listIdentification extends AbstractPageBean {
         this.staticText3 = st;
     }
 
-    private Button btn_reIdentify = new Button();
-
-    public Button getBtn_reIdentify() {
-        return btn_reIdentify;
-    }
-
-    public void setBtn_reIdentify(Button b) {
-        this.btn_reIdentify = b;
-    }
-
     private TableColumn tableColumn4 = new TableColumn();
 
     public TableColumn getTableColumn4() {
@@ -438,7 +428,9 @@ public class listIdentification extends AbstractPageBean {
      * this page.</p>
      */
     public void prerender() {
-        this.getidentification$IdentificationSessionBean().getIdentificationDataProvider().refreshList();
+        //this.getidentification$IdentificationSessionBean().getIdentificationDataProvider().refreshList();
+        if(this.getidentification$IdentificationSessionBean().getPagination() == null)
+            this.getidentification$IdentificationSessionBean().initDataProvider();
     }
     
     /**
@@ -655,5 +647,10 @@ public class listIdentification extends AbstractPageBean {
      */
     protected SpecimenSessionBean getspecimen$SpecimenSessionBean() {
         return (SpecimenSessionBean)getBean("specimen$SpecimenSessionBean");
+    }
+
+
+    public String btn_search_action() {
+        return "searchIdentification";
     }
 }
