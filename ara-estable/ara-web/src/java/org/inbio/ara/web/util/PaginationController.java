@@ -57,6 +57,10 @@ public class PaginationController {
         firstResults();
     }
 
+    public void refreshList(){
+        this.dataProvider.setList(getResults(actualPage, resultsPerPage));
+    }
+
     public void nextResults() {
         actualPage = actualPage + resultsPerPage;
         System.out.println("Actual Page: " + actualPage);
