@@ -1,6 +1,6 @@
 /* Ara - capture species and specimen data
  * 
- * Copyright (C) 2009  INBio ( Instituto Naciona de Biodiversidad )
+ * Copyright (C) 2009  INBio ( Instituto Nacional de Biodiversidad )
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,19 +96,26 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
             query.append(value);
             firstClause = false;
         }
-
-        query.append(" order by table.id ");
+        
+        if(clazz.getSimpleName().equals("Identification")){
+            System.out.println("Identification******************");
+            query.append(" order by table.identificationPK.specimenId) ");
+            System.out.println(query);
+        } else
+            query.append(" order by table.id ");
 
         try {
             Query q = em.createQuery(query.toString());
             q.setFirstResult(firstResult);
             q.setMaxResults(maxResults);
             this.objectsList = (List) q.getResultList();
+            System.out.println("------->"+this.objectsList.size());
         } catch (IllegalStateException ex1) {
-
+            ex1.printStackTrace();
             this.setMessage(ex1.getMessage());
             return null;
         } catch (IllegalArgumentException ex2) {
+            ex2.printStackTrace();
             this.setMessage(ex2.getMessage());
             return null;
         }
@@ -130,16 +137,24 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
             query.append(value);
             firstClause = false;
         }
-        query.insert(0, "SELECT COUNT(table.id)  ");
+        if(clazz.getSimpleName().equals("Identification")){
+            System.out.println("Identification******************");
+            query.insert(0, "SELECT COUNT(table.identificationPK.specimenId) ");
+            System.out.println(query);
+        }
+        else
+            query.insert(0, "SELECT COUNT(table.id) ");
               
         try {
+            System.out.println(query.toString() + "QQQQQQQQQQQQ");
             Query q = em.createQuery(query.toString());
             countResult = (Long)q.getSingleResult();
         } catch (IllegalStateException ex1) {
-
+            ex1.printStackTrace();
             this.setMessage(ex1.getMessage());
             return null;
         } catch (IllegalArgumentException ex2) {
+            ex2.printStackTrace();
             this.setMessage(ex2.getMessage());
             return null;
         }
@@ -162,17 +177,25 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
             firstClause = false;
         }
 
-        query.insert(0, "SELECT COUNT(table.id)  ");
+        if(clazz.getSimpleName().equals("Identification")){
+            System.out.println("Identification******************");
+            query.insert(0, "SELECT COUNT(table.identificationPK.specimenId) ");
+            System.out.println(query);
+        }
+        else
+            query.insert(0, "SELECT COUNT(table.id)  ");
         System.out.println("##################################################################" + query.toString());
 
         try {
+            System.out.println(query.toString() + "QQQQQQQQQQQQ");
             Query q = em.createQuery(query.toString());
             countResult = (Long)q.getSingleResult();
         } catch (IllegalStateException ex1) {
-
+            ex1.printStackTrace();
             this.setMessage(ex1.getMessage());
             return null;
         } catch (IllegalArgumentException ex2) {
+            ex2.printStackTrace();
             this.setMessage(ex2.getMessage());
             return null;
         }
@@ -193,18 +216,25 @@ public class SearchManagerBean implements SearchManagerLocal, SearchManagerRemot
             firstClause = false;
         }
 
-        query.append(" order by table.id ");
+        if(clazz.getSimpleName().equals("Identification")){
+            System.out.println("Identification******************");
+            query.append(" order by table.identificationPK.specimenId) ");
+            System.out.println(query);
+        } else
+            query.append(" order by table.id ");
 
         try {
+            System.out.println(query.toString() + "QQQQQQQQQQQQ");
             Query q = em.createQuery(query.toString());
             q.setFirstResult(firstResult);
             q.setMaxResults(maxResults);
             this.objectsList = (List) q.getResultList();
         } catch (IllegalStateException ex1) {
-
+            ex1.printStackTrace();
             this.setMessage(ex1.getMessage());
             return null;
         } catch (IllegalArgumentException ex2) {
+            ex2.printStackTrace();
             this.setMessage(ex2.getMessage());
             return null;
         }
