@@ -75,7 +75,7 @@
                                 items="#{nomenclaturalgroup$editNomenclaturalGroup.dd_commonNameDefaultOptions.options}" label="#{resources.common_name}" style="left: 384px; top: 96px; position: absolute"/>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
-                    <!--<jsp:directive.include file="/footer.jspf"/>-->
+                    <jsp:directive.include file="/footer.jspf"/>
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>
