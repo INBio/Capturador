@@ -206,13 +206,14 @@ public class SiteSessionBean extends AbstractSessionBean {
      * @return
      */
     public List<GeoreferencedSitePK> getGeoreferencedSitePKListForCreate(){
+    	System.out.println("dentro de getGeoreferencedSitePKListForCreate");
         List<GeoreferencedSitePK> gsPKs = new ArrayList<GeoreferencedSitePK>();
 
         if (!getSelectedProvinceId().equals(INVALID_VALUE_ID))
             gsPKs.add(new GeoreferencedSitePK(null,SiteManagerRemote.PROVINCE_LAYER ,selectedProvinceId));
 
         if (!getSelectedCountryId().equals(INVALID_VALUE_ID))
-            gsPKs.add(new GeoreferencedSitePK(null,SiteManagerRemote.PROVINCE_LAYER ,selectedCountryId));
+            gsPKs.add(new GeoreferencedSitePK(null,SiteManagerRemote.COUNTRY_LAYER ,selectedCountryId));
 
         return gsPKs;
     }
