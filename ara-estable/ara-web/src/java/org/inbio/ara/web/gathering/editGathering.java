@@ -1099,55 +1099,51 @@ public class editGathering extends AbstractPageBean {
         
         Long minElevation, maxElevation, minDepth, maxDepth;
         
-        if (!this.txt_minElevation.getValue().equals("0")) {
+        if (!(this.txt_minElevation.getValue() == null)) {
             try {
-                //tmp = Float.parseFloat(coordinate);
                 minElevation = Long.parseLong(this.txt_minElevation.getValue().toString());
             } catch (NumberFormatException ex) {
                 this.getutil$MessageBean().addErrorMessage(MAXIMUN_ELEVATION_INVALID_VALUE);
                 return false;
             }
         } else {
-            minElevation = Long.parseLong(this.txt_minElevation.getValue().toString());
+            minElevation = null;
         }
         
-	if (!this.txt_maxElevation.getValue().equals("0")) {
+        if (!(this.txt_maxElevation.getValue() == null)) {
             try {
-                //tmp = Float.parseFloat(coordinate);
                 maxElevation = Long.parseLong(this.txt_maxElevation.getValue().toString());
             } catch (NumberFormatException ex) {
                 this.getutil$MessageBean().addErrorMessage(MAXIMUN_ELEVATION_INVALID_VALUE);
                 return false;
             }
         } else {
-            maxElevation = Long.parseLong(this.txt_maxElevation.getValue().toString());
+            maxElevation = null;
         }
         
-        if (!this.txt_minDepth.getValue().equals("0")) {
+        if (!(this.txt_minDepth.getValue() == null)) {
             try {
-                //tmp = Float.parseFloat(coordinate);
                 minDepth = Long.parseLong(this.txt_minDepth.getValue().toString());
             } catch (NumberFormatException ex) {
                 this.getutil$MessageBean().addErrorMessage(MININUM_DEEP_INVALID_VALUE);
                 return false;
             }
         } else {
-            minDepth = Long.parseLong(this.txt_minDepth.getValue().toString());
+            minDepth = null;
         }
         
-        if (!this.txt_maxDept.getValue().equals("0")) {
+        if (!(this.txt_maxDept.getValue() == null)) {
             try {
-                //tmp = Float.parseFloat(coordinate);
                 maxDepth = Long.parseLong(this.txt_maxDept.getValue().toString());
             } catch (NumberFormatException ex) {
                 this.getutil$MessageBean().addErrorMessage(MAXIMUN_DEEP_INVALID_VALUE);
                 return false;
             }
         } else {
-            maxDepth = Long.parseLong(this.txt_maxDept.getValue().toString());
+            maxDepth = null;
         }
         
-        if (!this.txt_Gradient.getValue().equals("0")) {
+        if (!(this.txt_Gradient.getValue() == null)) {
             try {
                 //tmp = Float.parseFloat(coordinate);
                 Long tmp = Long.parseLong(this.txt_Gradient.getValue().toString());
@@ -1157,29 +1153,34 @@ public class editGathering extends AbstractPageBean {
             }
         }
         	
-        if (maxDepth.equals(0L)) {
+        /* if (maxDepth.equals(0L)) {
             if (minDepth > 0L) {
                 maxDepth = minDepth;
                 this.txt_maxDept.setValue(maxDepth);
             }
-        }
+        } */
         
-        if (maxElevation.equals(0L)) {
+        /* if (maxElevation.equals(0L)) {
             if (minElevation >0L) {
                 maxElevation = minElevation;
                 this.txt_maxElevation.setValue(maxElevation);
             }
-        }
+        } */
         
-        if (maxDepth < minDepth) {
-            this.getutil$MessageBean().addErrorMessage(MINIMUN_DEEP_HIGHER_THAN_MAXIMUN);
-            return false;
+        if (!(minDepth == null && maxDepth == null)) {
+            if (maxDepth < minDepth) {
+                this.getutil$MessageBean().addErrorMessage(MINIMUN_DEEP_HIGHER_THAN_MAXIMUN);
+                return false;
+            }
         }
-        
-        if (maxElevation < minElevation) {
-            this.getutil$MessageBean().addErrorMessage(MINIMUN_ELEVATION_HIGHER_THAN_MAXIMUN);
-            return false;
+
+        if (!(minElevation == null && maxElevation == null)) {
+            if (maxElevation < minElevation) {
+                this.getutil$MessageBean().addErrorMessage(MINIMUN_ELEVATION_HIGHER_THAN_MAXIMUN);
+                return false;
+            }
         }
+
         return true;
     }
 
