@@ -1,6 +1,6 @@
 /* Ara - capture species and specimen data
  * 
- * Copyright (C) 2009  INBio ( Instituto Naciona de Biodiversidad )
+ * Copyright (C) 2009  INBio ( Instituto Nacional de Biodiversidad )
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

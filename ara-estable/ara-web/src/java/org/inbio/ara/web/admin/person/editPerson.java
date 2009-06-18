@@ -836,8 +836,8 @@ public class editPerson extends AbstractPageBean {
         person.setCountry((String)txt_country1.getText());
         person.setEmail((String)txt_email1.getText());
         person.setUrl((String)txt_url1.getText());
-        person.setCreatedBy("roaguilar");
-        person.setLastModificationBy("roaguilar");
+        person.setCreatedBy(getSessionManager().getUser().getUserName());
+        person.setLastModificationBy(getSessionManager().getUser().getUserName());
         this.setSelectedProfilesString(this.addRemove_profile1.getValueAsStringArray(getFacesContext()));
         this.setSelectedInstitutionsString(this.addRemove_institution1.getValueAsStringArray(getFacesContext()));
         

@@ -423,7 +423,7 @@ public class listPerson extends AbstractPageBean {
      * acquired during execution of an event handler).</p>
      */
     public void destroy() {
-		this.getadmin$person$PersonSessionBean().getPersonDataProvider().refreshDataList();
+		//this.getadmin$person$PersonSessionBean().getPersonDataProvider().refreshDataList();
     }
 
     /**
@@ -453,6 +453,7 @@ public class listPerson extends AbstractPageBean {
 	public String btn_showAll_action() {
 
 		this.getadmin$person$PersonSessionBean().personDataProvider.refreshDataList();
+        this.getadmin$person$PersonSessionBean().setIsFiltered(false);
 
 		return null;
 	}

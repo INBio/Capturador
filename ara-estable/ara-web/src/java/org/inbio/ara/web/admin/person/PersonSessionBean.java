@@ -1,6 +1,6 @@
 /* Ara - capture species and specimen data
  * 
- * Copyright (C) 2009  INBio ( Instituto Naciona de Biodiversidad )
+ * Copyright (C) 2009  INBio ( Instituto Nacional de Biodiversidad )
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ import org.inbio.ara.web.util.MessageBean;
 public class PersonSessionBean extends AbstractSessionBean {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
     private int __placeholder;
-    public PersonDataProvider personDataProvider = new PersonDataProvider();
+    public PersonDataProvider personDataProvider;
     private String ejbMessage;
     private Person person;
 
@@ -85,6 +85,7 @@ public class PersonSessionBean extends AbstractSessionBean {
      * <p>Construct a new session data bean instance.</p>
      */
     public PersonSessionBean() {
+         personDataProvider = new PersonDataProvider();
     }
     
     /**
