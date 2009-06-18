@@ -16,7 +16,7 @@
                         <table align="center" style="margin-top: 50px;" width="60%">
                             <tbody>
                                 <tr>
-                                    <td align="CENTER">
+                                    <td align="center">
                                         <webuijsf:label binding="#{login.lb_title}" id="lb_title" text="#{resources.enter_system}"/>
                                         <webuijsf:form binding="#{login.form1}" id="form1" style="border-style: solid; border-color: rgb(216, 241, 139); text-align: center; vertical-align: middle; width: 258px">
                                             <h:panelGrid columns="1" id="gridPanel1" width="261">
@@ -29,7 +29,7 @@
                                         </webuijsf:form>
                                     </td>
                                 </tr>
-                                <tr><td align="CENTER"><img src="resources/images/inb-iabin.gif" width="350" height="82" alt="inb-iabin"/>
+                                <tr><td align="center"><img src="resources/images/inb-iabin.gif" width="350" height="82" alt="inb-iabin"/>
                                 </td></tr>
                             </tbody>
                         </table>
