@@ -21,7 +21,7 @@
                             <webuijsf:textField binding="#{nomenclaturalgroup$newNomenclaturalGroup.txt_name}" columns="28" id="txt_name" style="left: 144px; top: 96px; position: absolute"/>
                             <webuijsf:label binding="#{nomenclaturalgroup$newNomenclaturalGroup.label3}" id="label3"
                                 style="left: 48px; top: 120px; position: absolute" text="#{resources.description}"/>
-                            <webuijsf:textArea binding="#{nomenclaturalgroup$newNomenclaturalGroup.txt_description}" columns="25" id="txt_description" style="height: 48px; left: 144px; top: 120px; position: absolute; width: 160px"/>
+                            <webuijsf:textArea binding="#{nomenclaturalgroup$newNomenclaturalGroup.txt_description}" columns="25" id="txt_description" style="height: 48px; left: 144px; top: 120px; position: absolute; width: 200px"/>
                             <webuijsf:label binding="#{nomenclaturalgroup$newNomenclaturalGroup.label4}" id="label4"
                                 style="left: 48px; top: 192px; position: absolute" text="#{resources.colection}"/>
                             <webuijsf:dropDown binding="#{nomenclaturalgroup$newNomenclaturalGroup.dd_collection}" id="dd_collection"
@@ -37,7 +37,7 @@
                                 style="left: 144px; top: 216px; position: absolute" width="170"/>
                             <webuijsf:label binding="#{nomenclaturalgroup$newNomenclaturalGroup.label6}" id="label6"
                                 style="left: 48px; top: 240px; position: absolute" text="#{resources.notes}"/>
-                            <webuijsf:textArea binding="#{nomenclaturalgroup$newNomenclaturalGroup.txt_notes}" columns="25" id="txt_notes" style="height: 48px; left: 144px; top: 240px; position: absolute; width: 160px"/>
+                            <webuijsf:textArea binding="#{nomenclaturalgroup$newNomenclaturalGroup.txt_notes}" columns="25" id="txt_notes" style="height: 48px; left: 144px; top: 240px; position: absolute; width: 200px"/>
                             <webuijsf:tabSet binding="#{nomenclaturalgroup$newNomenclaturalGroup.tabSet1}" id="tabSet1" selected="tab_taxon" style="border: 1px solid gray; height: 36px; left: 48px; top: 312px; position: absolute; width: 646px">
                                 <webuijsf:tab binding="#{nomenclaturalgroup$newNomenclaturalGroup.tab_taxon}" id="tab_taxon" text="#{resources.taxons}">
                                     <webuijsf:panelLayout binding="#{nomenclaturalgroup$newNomenclaturalGroup.layoutPanel1}" id="layoutPanel1" style="border: 1px solid gray; height: 274px; position: relative; width: 645px; -rave-layout: grid">
@@ -68,7 +68,7 @@
                                 items="#{nomenclaturalgroup$newNomenclaturalGroup.dd_commonNameDefaultOptions.options}" label="#{resources.common_name}" style="left: 384px; top: 96px; position: absolute"/>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
-                    <jsp:directive.include file="/footer.jspf"/>
+                    <!--<jsp:directive.include file="/footer.jspf"/>-->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>
