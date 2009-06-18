@@ -38,7 +38,7 @@ public class ProvinceEAOImpl extends BaseEAOImpl implements ProvinceLocalEAO{
      */
     public List<Province> listAll(){
 
-        Query q = em .createQuery("select p from Province as p");
+        Query q = em .createQuery("select p from Province as p order by c.name asc");
         return q.getResultList();
     }
 
@@ -46,7 +46,8 @@ public class ProvinceEAOImpl extends BaseEAOImpl implements ProvinceLocalEAO{
     public List<Province> listAllByContryId(Long countryId) {
         Query q = em .createQuery("select p"
                 + " from Province as p"
-                + " where p.country.id = :countryId");
+                + " where p.country.id = :countryId"
+                + " order by p.name");
         q.setParameter("countryId", countryId);
         return q.getResultList();
     }
