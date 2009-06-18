@@ -1,6 +1,6 @@
 /* Ara - capture species and specimen data
  * 
- * Copyright (C) 2009  INBio ( Instituto Naciona de Biodiversidad )
+ * Copyright (C) 2009  INBio ( Instituto Nacional de Biodiversidad )
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,15 +27,12 @@
 package org.inbio.ara.web.admin.person;
 
 import com.sun.data.provider.impl.ObjectListDataProvider;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.inbio.ara.facade.person.PersonRemote;
-import org.inbio.ara.facade.species.TaxonDescriptionRemote;
-import org.inbio.ara.facade.util.SearchManagerRemote;
 import org.inbio.ara.persistence.person.Person;
 
 /**
