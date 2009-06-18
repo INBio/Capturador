@@ -38,7 +38,7 @@ public class CountryEAOImpl extends BaseEAOImpl implements CountryLocalEAO{
      */
     public List<Country> listAll(){
 
-        Query q = em .createQuery("select c from Country as c");
+        Query q = em .createQuery("select c from Country as c order by c.name asc");
         return q.getResultList();
     }
 
