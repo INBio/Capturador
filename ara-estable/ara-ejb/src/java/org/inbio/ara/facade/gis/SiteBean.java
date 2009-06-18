@@ -200,7 +200,9 @@ public class SiteBean implements SiteRemote, SiteLocal {
                     }
                     System.out.println("en el SiteBean.java> siteId="+site.getId());
                     if(georeferencedSitesPKs!=null){
+                    	System.out.println("georeferencedSitesPKs!=null");
                         for(GeoreferencedSitePK gsPK : georeferencedSitesPKs){
+                        	System.out.println(gsPK.toString());
                             siteManager.saveOrUpdateGeoreferenceForSite(site.getId(), gsPK.getGeographicLayerId(), gsPK.getGeographicSiteId());
                         //saveOrUpdateGeoreferenceForSite()
                         }
