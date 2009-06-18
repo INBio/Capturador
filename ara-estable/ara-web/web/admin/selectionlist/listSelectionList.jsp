@@ -34,9 +34,7 @@
                                 <webuijsf:dropDown id="selectionListDropDown"
                                     items="#{admin$selectionlist$SelectionListSessionBean.selectionListDropDownData.options}"
                                     selected="#{admin$selectionlist$SelectionListSessionBean.selectionListDropDownData.selectedValue}"
-                                    style="left: 24px; top: 168px; position: absolute" valueChangeListenerExpression="#{admin$selectionlist$listSelectionList.selectionListDropDown_processValueChange}"/>
-                                <webuijsf:button actionExpression="#{admin$selectionlist$listSelectionList.selectionListChangeHandler}"
-                                    id="btn_updateSelectionListValues" style="left: 432px; top: 168px; position: absolute" text="#{resources.btnUpdate}"/>
+                                    style="left: 24px; top: 168px; position: absolute" actionExpression="#{admin$selectionlist$listSelectionList.selectionListChangeHandler}" submitForm="true"/>
                             <!-- valores de la lista de selecciones -->
                             <webuijsf:panelLayout id="selectionListValuesPanel" visible="#{admin$selectionlist$listSelectionList.showSelectionListValuePanel}">
                                 <!-- valueChangeListenerExpression="#{admin$selectionlist$listSelectionList.radioButtonGroup1_processValueChange}"  -->
