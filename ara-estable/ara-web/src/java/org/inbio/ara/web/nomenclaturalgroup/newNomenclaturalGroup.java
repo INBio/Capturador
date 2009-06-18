@@ -96,6 +96,7 @@ public class newNomenclaturalGroup extends AbstractPageBean {
      */
     private void _init() throws Exception {
         dd_commonNameDefaultOptions.setOptions(new com.sun.webui.jsf.model.Option[] {new com.sun.webui.jsf.model.Option("y", "Si"), new com.sun.webui.jsf.model.Option("n", "No")});
+        adr_region.setWidth("598");
     }
     
     private Page page1 = new Page();
