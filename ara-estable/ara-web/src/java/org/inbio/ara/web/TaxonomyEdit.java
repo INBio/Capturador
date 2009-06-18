@@ -1,6 +1,6 @@
 /* Ara - capture species and specimen data
  * 
- * Copyright (C) 2009  INBio ( Instituto Naciona de Biodiversidad )
+ * Copyright (C) 2009  INBio ( Instituto Nacional de Biodiversidad )
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -434,15 +434,18 @@ public class TaxonomyEdit extends AbstractPageBean {
                         if (!newDominiumId.equals(currentDominiumId)) {
                             currentDominiumId = newDominiumId;
                             TreeNode dominiumNode = new TreeNode();
-                            dominiumNode.setId("dom" + newDominiumId.toString());
+                            String id = "dom" + newDominiumId.toString();
+                            dominiumNode.setId(id);
                             dominiumNode.setText((String) names[2] + " " + DOMINIUM);
                             dominiumNode.setActionExpression(actionMethod);
                             dominiumNode.setVisible(true);
                             dominiumNode.setExpanded(true);
                             System.out.println("Acabo de expander el dominio");
 
-                            dominiumChildren.add(dominiumNode);
-                            kingdomChildren = dominiumNode.getChildren();
+                            if(!isAlreadyInList(dominiumChildren, id)) {
+                                dominiumChildren.add(dominiumNode);
+                                kingdomChildren = dominiumNode.getChildren();
+                            }
                         }
                     }
                     
@@ -453,16 +456,19 @@ public class TaxonomyEdit extends AbstractPageBean {
 
                         if (!newKingdomId.equals(currentKingdomId)) {
                             // Create a new kingdom node
+                            String id = "kin" + newKingdomId.toString();
                             currentKingdomId = newKingdomId;
                             TreeNode kingdomNode = new TreeNode();
-                            kingdomNode.setId("kin" + newKingdomId.toString());
+                            kingdomNode.setId(id);
                             kingdomNode.setText((String) names[2]  + " " + KINGDOM);
                             kingdomNode.setActionExpression(actionMethod);
                             kingdomNode.setVisible(true);
                             kingdomNode.setExpanded(true);
 
-                            kingdomChildren.add(kingdomNode);
-                            phylumChildren = kingdomNode.getChildren();
+                            if(!isAlreadyInList(kingdomChildren, id)) {
+                                kingdomChildren.add(kingdomNode);
+                                phylumChildren = kingdomNode.getChildren();
+                            }
                         }
                     }
                     
@@ -472,16 +478,19 @@ public class TaxonomyEdit extends AbstractPageBean {
 
                         if (!newPhylumId.equals(currentPhylumId)) {
                             // Create a new phylum node
+                            String id = "phy" + newPhylumId.toString();
                             currentPhylumId = newPhylumId;
                             TreeNode phylumNode = new TreeNode();
-                            phylumNode.setId("phy" + newPhylumId.toString());
+                            phylumNode.setId(id);
                             phylumNode.setText((String) names[2] + " " + FILUM);
                             phylumNode.setActionExpression(actionMethod);
                             phylumNode.setVisible(true);
                             phylumNode.setExpanded(true);
 
-                            phylumChildren.add(phylumNode);        
-                            classChildren = phylumNode.getChildren();
+                            if(!isAlreadyInList(phylumChildren, id)) {
+                                phylumChildren.add(phylumNode);
+                                classChildren = phylumNode.getChildren();
+                            }
                         }      
                     }
                     
@@ -491,15 +500,18 @@ public class TaxonomyEdit extends AbstractPageBean {
 
                         if (!newClassId.equals(currentClassId)) {
                             // Create a new class node
+                            String id = "cla" + newClassId.toString();
                             currentClassId = newClassId;
                             TreeNode classNode = new TreeNode();
-                            classNode.setId("cla" + newClassId.toString());
+                            classNode.setId(id);
                             classNode.setText((String) names[2] + " " + CLASS);
                             classNode.setActionExpression(actionMethod);
                             classNode.setExpanded(true);
 
-                            classChildren.add(classNode);
-                            orderChildren = classNode.getChildren();
+                            if(!isAlreadyInList(classChildren, id)) {
+                                classChildren.add(classNode);
+                                orderChildren = classNode.getChildren();
+                            }
                         }
                     }                    
                     
@@ -509,15 +521,18 @@ public class TaxonomyEdit extends AbstractPageBean {
 
                         if (!newOrderId.equals(currentOrderId)) {
                             // Create a new order node
+                            String id = "ord" + newOrderId.toString();
                             currentOrderId = newOrderId;
                             TreeNode orderNode = new TreeNode();
-                            orderNode.setId("ord" + newOrderId.toString());
+                            orderNode.setId(id);
                             orderNode.setText((String) names[2] + " " + ORDER);
                             orderNode.setActionExpression(actionMethod);
                             orderNode.setExpanded(true);
 
-                            orderChildren.add(orderNode);
-                            familyChildren = orderNode.getChildren();
+                            if(!isAlreadyInList(orderChildren, id)) {
+                                orderChildren.add(orderNode);
+                                familyChildren = orderNode.getChildren();
+                            }
                         }                       
                     } 
                     
@@ -527,15 +542,18 @@ public class TaxonomyEdit extends AbstractPageBean {
 
                         if (!newFamilyId.equals(currentFamilyId)) {
                             // Create a new Family node
+                            String id = "fam" + newFamilyId.toString();
                             currentFamilyId = newFamilyId;
                             TreeNode familyNode = new TreeNode();
-                            familyNode.setId("fam" + newFamilyId.toString());
+                            familyNode.setId(id);
                             familyNode.setText((String) names[2] + " " + FAMILY);
                             familyNode.setActionExpression(actionMethod);
                             familyNode.setExpanded(true);
 
-                            familyChildren.add(familyNode);
-                            genusChildren = familyNode.getChildren();
+                            if(!isAlreadyInList(familyChildren, id)) {
+                                familyChildren.add(familyNode);
+                                genusChildren = familyNode.getChildren();
+                            }
                         } 
                     }                    
                     
@@ -545,15 +563,18 @@ public class TaxonomyEdit extends AbstractPageBean {
 
                         if (!newGenusId.equals(currentGenusId)) {
                             // Create a new Genus node
+                            String id = "gen" + newGenusId.toString();
                             currentGenusId = newGenusId;
                             TreeNode genusNode = new TreeNode();
-                            genusNode.setId("gen" + newGenusId.toString());
+                            genusNode.setId(id);
                             genusNode.setText((String) names[2] + " " + GENUS);
                             genusNode.setActionExpression(actionMethod);
                             genusNode.setExpanded(true);
 
-                            genusChildren.add(genusNode);
-                            speciesChildren = genusNode.getChildren();
+                            if(!isAlreadyInList(genusChildren, id)) {
+                                genusChildren.add(genusNode);
+                                speciesChildren = genusNode.getChildren();
+                            }
                         } 
                     }                    
                     
@@ -563,13 +584,16 @@ public class TaxonomyEdit extends AbstractPageBean {
                         
                         if (!newSpeciesId.equals(currentSpeciesId)) {
                             // Create a new Species node
+                            String id = "spe" + newSpeciesId.toString();
                             currentSpeciesId = newSpeciesId;
                             TreeNode speciesNode = new TreeNode();
-                            speciesNode.setId("spe" + newSpeciesId.toString());
+                            speciesNode.setId(id);
                             speciesNode.setText((String) names[2] + " " + SPECIE);
                             speciesNode.setActionExpression(actionMethod);
 
-                            speciesChildren.add(speciesNode);
+                            if(!isAlreadyInList(speciesChildren, id)) {
+                                speciesChildren.add(speciesNode);
+                            }
                         }
                     }                    
                     
@@ -644,7 +668,7 @@ public class TaxonomyEdit extends AbstractPageBean {
         button2.setText(DELETE);
         
         if (lookupTaxonServiceBean().getChildCount(taxonId) == 0) {
-            button2.setText(DELETE  + selectedTaxon.getDefaultName());
+            button2.setText(DELETE + " " + selectedTaxon.getDefaultName());
             button2.setDisabled(false);
         } else {
             button2.setDisabled(true);
@@ -1205,5 +1229,17 @@ public class TaxonomyEdit extends AbstractPageBean {
      */
     public void setCollectionManager(CollectionRemote collectionManager) {
         this.collectionManager = collectionManager;
+    }
+
+    private boolean isAlreadyInList(List<TreeNode> taxonChildren, String id) {
+        //System.out.println(id + " is already? ");
+        for (TreeNode treeNode : taxonChildren) {
+            if(treeNode.getId().equals(id)){
+                //System.out.println("YES");
+                return true;
+            }
+        }
+        //System.out.println("NO");
+        return false;
     }
 }
