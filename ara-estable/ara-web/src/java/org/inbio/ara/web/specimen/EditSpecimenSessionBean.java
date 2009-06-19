@@ -115,8 +115,19 @@ public class EditSpecimenSessionBean extends AbstractSessionBean {
     /**
      *
      */
-    void saveActualLifeStageSexDTO() {
-        this.specimenBean.saveSpecimenLifeStageSex(this.getspecimen$SpecimenSessionBean().getCurrentSpecimen().getId(), this.actualLifeStageSexDTO);
+    boolean saveActualLifeStageSexDTO() {
+        Long sex = actualLifeStageSexDTO.getSexKey();
+        Long lifestage = actualLifeStageSexDTO.getLifeStageKey();
+        System.out.println("************************"+sex+"**********************"+lifestage);
+        //Validate if sex and lifestage are null or not
+        if(sex.equals(new Long(-1))||lifestage.equals(new Long(-1))){
+            return false;
+        }
+        else{
+            this.specimenBean.saveSpecimenLifeStageSex(this.getspecimen$SpecimenSessionBean().getCurrentSpecimen().getId(), this.actualLifeStageSexDTO);
+            return true;
+        }
+
     }
 
     /**

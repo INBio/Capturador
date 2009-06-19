@@ -884,8 +884,12 @@ public class EditSpecimen extends AbstractPageBean {
 	public String btn_addStadiumSex1_action() {
 
 		if (this.canAddLifeStageSex()) {
-            this.getEditSpecimenSessionBean().saveActualLifeStageSexDTO();
-            MessageBean.setSuccessMessageFromBundle(SUCCESS_KEY);
+            boolean result = this.getEditSpecimenSessionBean().saveActualLifeStageSexDTO();
+            if(result){
+                MessageBean.setSuccessMessageFromBundle(SUCCESS_KEY);
+            }
+            else
+                MessageBean.setErrorMessageFromBundle("error_add_sex_lifestage");
 		}
 		return null;
 	}
