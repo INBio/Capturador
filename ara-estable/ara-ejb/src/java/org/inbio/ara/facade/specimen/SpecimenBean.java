@@ -968,6 +968,7 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
      * @param specimenId
      * @param lifeStageSexDTO
      */
+    @Override
     public void saveSpecimenLifeStageSex(Long specimenId, LifeStageSexDTO lifeStageSexDTO) {
         SpecimenLifeStageSexPK slssPK = new SpecimenLifeStageSexPK(specimenId, lifeStageSexDTO.getLifeStageKey(), lifeStageSexDTO.getSexKey());
         SpecimenLifeStageSex slss = new SpecimenLifeStageSex(slssPK);
