@@ -21,7 +21,7 @@
                                 style="height: 72px; left: 300px; top: 0px; position: absolute; width: 528px" warnClass="warnMessage"/>
                             <webuijsf:label id="label" style="font-size: 24px; left: 48px; top: 24px; position: absolute; width: 310px" text="#{resources.searchIdentifications}"/>
                             <webuijsf:panelLayout id="layoutPanel1" panelLayout="flow"
-                                    style="border: 2px groove black; height: 236px; left: 48px; top: 72px; position: absolute; width: 404px; -rave-layout: grid">O
+                                    style="border: 2px groove black; height: 236px; left: 48px; top: 72px; position: absolute; width: 404px; -rave-layout: grid">
                                 <webuijsf:label
                                     id="label_specimenId" style="left: 24px; top: 24px; position: absolute" text="#{resources.specimen_id}"/>
                                 <webuijsf:textField binding="#{identification$SearchIdentification.txt_specimenId}" id="txt_specimenId"
