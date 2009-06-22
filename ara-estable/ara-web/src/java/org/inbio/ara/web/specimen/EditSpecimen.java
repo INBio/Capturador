@@ -104,6 +104,8 @@ public class EditSpecimen extends AbstractPageBean {
 	private void _init() throws Exception {
 	}
 
+    private TextField instituionCodeInput = new TextField();
+
 	private TextField gathSeqInput = new TextField();
 
 	public TextField getGathSeqInput() {
@@ -492,8 +494,10 @@ public class EditSpecimen extends AbstractPageBean {
 
 		this.gathSeqInput.setText(s.getGatheringObservation().getId());
 
-		this.barCodeInput.setText(s.getId());
+		this.barCodeInput.setText(s.getCatalogNumber());
 
+        this.instituionCodeInput.setText(s.getInstitutionCode());
+        
 		//this.categoryDDDefaultOptions.setOptions(this.getutil$SelectionListBean().getOptions(SpecimenCategory.class));
 		this.categoryDD.setSelected((s.getSpecimenCategory() != null) ? s.getSpecimenCategory().getId() : 0L);
 
@@ -954,4 +958,18 @@ public class EditSpecimen extends AbstractPageBean {
         this.getEditSpecimenSessionBean().setActualLifeStageSexDTO(lssDTO);
         this.getEditSpecimenSessionBean().deleteActualLifeStageSexDTO();
 	}
+
+    /**
+     * @return the instituionCodeInput
+     */
+    public TextField getInstituionCodeInput() {
+        return instituionCodeInput;
+    }
+
+    /**
+     * @param instituionCodeInput the instituionCodeInput to set
+     */
+    public void setInstituionCodeInput(TextField instituionCodeInput) {
+        this.instituionCodeInput = instituionCodeInput;
+    }
 }
