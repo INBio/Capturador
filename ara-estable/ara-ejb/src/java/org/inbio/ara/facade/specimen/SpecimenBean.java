@@ -785,7 +785,7 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
                               " current_date as DateLastModified," +
                               " null as InstitutionCode," +
                               " col.name as CollectionCode ," +
-                              " to_char(s.specimen_id, '000000000000') as CatalogNumber," +
+                              " to_char(s.CATALOG_NUMBER, '000000000000') as CatalogNumber," +
                               " s.specimen_id as CatalogNumberNumeric ," +
                               " t.default_name as ScientificName," +
                               " '' as BasisOfRecord," +
