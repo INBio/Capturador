@@ -1344,10 +1344,10 @@
 		</navigation-case>
 	</navigation-rule>
     <navigation-rule>
-		<from-view-id>/specimen/PreviewSpecimenV2.jsp</from-view-id>
+		<from-view-id>/specimen/SpecimenReport.jsp</from-view-id>
 		<navigation-case>
-			<from-outcome>report</from-outcome>
-			<to-view-id>/specimen/SpecimenReport.jsp</to-view-id>
+			<from-outcome>back</from-outcome>
+			<to-view-id>/specimen/PreviewSpecimen.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 
