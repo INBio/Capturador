@@ -33,7 +33,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.inbio.ara.facade.specimen.SpecimenIdentificationGeneratorRemote;
+import org.inbio.ara.facade.specimen.SpecimenRemote;
 import org.inbio.ara.persistence.specimen.Specimen;
+
 
 /**
  *
@@ -46,14 +48,26 @@ public class GeneratedSpecimenDataProvider extends ObjectListDataProvider{
         this.setObjectType(Specimen.class);
     }
     
-    public void refreshList() {
-        this.setList(this.lookupSpecimenIdentificationGeneratorBean().getSpecimenList());
+    public void refreshList(Long GatheringObservationId) {
+        // this.setList(this.lookupSpecimenIdentificationGeneratorBean().getSpecimenList());
+        this.setList(this.lookupSpecimenBean().findByGatheringObservationId( GatheringObservationId ));
     }
 
     private SpecimenIdentificationGeneratorRemote lookupSpecimenIdentificationGeneratorBean() {
         try {
             Context c = new InitialContext();
             return (SpecimenIdentificationGeneratorRemote) c.lookup("SpecimenIdentificationGeneratorBean");
+        }
+        catch(NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private SpecimenRemote lookupSpecimenBean() {
+        try {
+            Context c = new InitialContext();
+            return (SpecimenRemote) c.lookup("SpecimenBean");
         }
         catch(NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE,"exception caught" ,ne);
