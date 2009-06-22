@@ -381,7 +381,7 @@ public class GatheringSessionBeanV2 extends AbstractSessionBean {
         this.lookupGatheringBean().updateAssociatedInformation(this.getSelectedCollectors(), this.selectedProjects, this.selectedCollections);
          */
         if (this.lookupGatheringBean().update(newObj, this.getSelectedCollectors(), this.selectedProjects, this.selectedCollections)) {
-            this.gatheringDataProvider.refreshDataList(this.getSessionManager().getCollection().getId());
+            // this.gatheringDataProvider.refreshDataList(this.getSessionManager().getCollection().getId());
             this.gatheringObservation = this.lookupGatheringBean().getGathering();
             this.populateList();
             update = true;
