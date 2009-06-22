@@ -86,8 +86,8 @@
                             infoClass="infoMessage" style="left: 288px; top: 24px; position: absolute" warnClass="warnMessage"/>
                         <webuijsf:button actionExpression="#{specimen$EditSpecimen.btn_save_action}"
                             id="btn_update" primary="true" style="height: 24px; left: 23px; top: 504px; position: absolute; width: 96px" text="#{resources.btnUpdate}"/>
-                        <webuijsf:button actionExpression="#{specimen$EditSpecimen.btn_cancel_action}"
-                            id="btn_cancel" style="height: 24px; left: 143px; top: 504px; position: absolute; width: 72px" text="#{resources.btnBack}"/>
+                        <!--<webuijsf:button actionExpression="#{specimen$EditSpecimen.btn_cancel_action}"
+                            id="btn_cancel" style="height: 24px; left: 143px; top: 504px; position: absolute; width: 72px" text="#{resources.btnBack}"/>-->
                         <webuijsf:tabSet id="tabSet1" selected="tab1"
                             style="height: 286px; left: 24px; top: 432px; position: absolute; width: 790px" visible="false">
                             <webuijsf:tab id="tab1" text="estadios y sexos">
