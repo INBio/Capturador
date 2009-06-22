@@ -470,6 +470,21 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
         return this.specimenList;
     }
 
+    public List findByGatheringObservationId(Long gatheringObservationId) {
+        Query q;
+        try {
+            q = em.createQuery("Select object(o) from Specimen as o where o.gatheringObservation.id = " + gatheringObservationId + " order by o.catalogNumber asc");
+            //em.createNativeQuery()
+            return q.getResultList();
+        } catch(IllegalStateException ex1) {
+            this.setMessage(ex1.getMessage());
+            return null;
+        } catch (IllegalArgumentException ex2) {
+            this.setMessage(ex2.getMessage());
+            return null;
+        }
+    }
+
     public LifeStage findLifeStage(Long aLong) {
         return em.find(LifeStage.class, aLong);
     }

@@ -140,4 +140,6 @@ public interface SpecimenRemote {
     public org.inbio.ara.persistence.specimen.Specimen getSpecimenByCatalogNumber(java.lang.Long cn);
 
     public List findAllDwCPaginated(int first, int amount);
+
+    public List findByGatheringObservationId(Long gatheringObservationId);
 }
