@@ -17,11 +17,11 @@
                         <webuijsf:panelLayout id="layoutPanel1" style="height: 214px; left: 24px; top: 72px; position: absolute; width: 910px; -rave-layout: grid">
                             <webuijsf:label id="gathSeqLabel" requiredIndicator="true"
                             style="height: 23px; left: 24px; top: 24px; position: absolute; width: 165px" text="#{resources.gath_obs_number}"/>
-                            <webuijsf:textField binding="#{specimen$EditSpecimen.gathSeqInput}" columns="18" id="gathSeqInput"
+                            <webuijsf:textField binding="#{specimen$EditSpecimen.gathSeqInput}" columns="27" id="gathSeqInput"
                                 style="left: 216px; top: 24px; position: absolute; width: 70px" validatorExpression="#{specimen$EditSpecimen.longRangeValidator2.validate}"/>
                             <webuijsf:label id="barCodeLabel" requiredIndicator="true"
                                 style="height: 22px; left: 24px; top: 0px; position: absolute; width: 165px" text="#{resources.catalognumber}"/>
-                            <webuijsf:textField binding="#{specimen$EditSpecimen.barCodeInput}" columns="18" disabled="true" id="barCodeInput"
+                            <webuijsf:textField binding="#{specimen$EditSpecimen.barCodeInput}" columns="27" disabled="true" id="barCodeInput"
                                 style="left: 216px; top: 0px; position: absolute; width: 70px" validatorExpression="#{specimen$EditSpecimen.longRangeValidator1.validate}"/>
                             <webuijsf:label id="categoryLabel" requiredIndicator="true"
                                 style="height: 23px; left: 24px; top: 96px; position: absolute; width: 165px" text="#{resources.category}"/>
@@ -44,9 +44,9 @@
                                 items="#{specimen$EditSpecimen.gathObsMethodDDDefaultOptions.options}"
                                 style="left: 216px; top: 144px; position: absolute; width: 118px" width="118"/>
                             <webuijsf:label id="instutionCode" requiredIndicator="true"
-                            style="left: 24px; top: 192px; position: absolute; width: 165px" text="#{resources.institutioncode}"/>
-                            <webuijsf:textField binding="#{specimen$EditSpecimen.instituionCodeInput}" columns="18" id="instutionCodeInput"
-                                style="left: 216px; top: 192px; position: absolute; width: 70px" />
+                            style="left: 24px; top: 180px; position: absolute; width: 165px" text="#{resources.institutioncode}"/>
+                            <webuijsf:textField binding="#{specimen$EditSpecimen.instituionCodeInput}" columns="27" id="instutionCodeInput"
+                                style="left: 216px; top: 180px; position: absolute; width: 70px" />
                             <webuijsf:label for="typeDD" id="typeLabel"
                                 style="left: 24px; top: 120px; position: absolute; width: 165px" text="#{resources.type}"/>
                             <webuijsf:dropDown binding="#{specimen$EditSpecimenSessionBean.typeDD}" id="typeDD"
@@ -79,17 +79,17 @@
                                 selected="#{specimen$EditSpecimen.discardedRadioButtonDefaultOptions.selectedValue}" style="height: 47px; left: 672px; top: 168px; position: absolute; width: 167px"/>
                             <webuijsf:label for="numWholeInput" id="numWholeLabel"
                                 style="left: 504px; top: 0px; position: absolute; width: 141px" text="#{resources.num_whole}"/>
-                            <webuijsf:textField binding="#{specimen$EditSpecimen.numWholeInput}" columns="18" id="numWholeInput"
+                            <webuijsf:textField binding="#{specimen$EditSpecimen.numWholeInput}" columns="27" id="numWholeInput"
                                 style="left: 672px; top: 0px; position: absolute; width: 70px" validatorExpression="#{specimen$EditSpecimen.longRangeValidator3.validate}"/>
                             <webuijsf:label for="numFragmentsInput" id="numFragmentsLabel"
                                 style="left: 504px; top: 48px; position: absolute; width: 141px" text="#{resources.num_fragments}"/>
-                            <webuijsf:textField binding="#{specimen$EditSpecimen.numFragmentsInput}" columns="18" id="numFragmentsInput"
+                            <webuijsf:textField binding="#{specimen$EditSpecimen.numFragmentsInput}" columns="27" id="numFragmentsInput"
                                 style="left: 672px; top: 48px; position: absolute; width: 70px" validatorExpression="#{specimen$EditSpecimen.longRangeValidator4.validate}"/>
                         </webuijsf:panelLayout>
                         <h:messages  errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1"
                             infoClass="infoMessage" style="left: 288px; top: 24px; position: absolute" warnClass="warnMessage"/>
                         <webuijsf:button actionExpression="#{specimen$EditSpecimen.btn_save_action}"
-                            id="btn_update" primary="true" style="height: 24px; left: 23px; top: 504px; position: absolute; width: 96px" text="#{resources.btnUpdate}"/>
+                            id="btn_update" primary="true" style="height: 24px; left: 23px; top: 490px; position: absolute; width: 96px" text="#{resources.btnUpdate}"/>
                         <!--<webuijsf:button actionExpression="#{specimen$EditSpecimen.btn_cancel_action}"
                             id="btn_cancel" style="height: 24px; left: 143px; top: 504px; position: absolute; width: 72px" text="#{resources.btnBack}"/>-->
                         <webuijsf:tabSet id="tabSet1" selected="tab1"
@@ -97,7 +97,7 @@
                             <webuijsf:tab id="tab1" text="estadios y sexos">
                                 <webuijsf:panelLayout id="layoutPanel2" style="height: 225px; position: relative; width: 765px; -rave-layout: grid">
                                     <webuijsf:table augmentTitle="false" binding="#{specimen$EditSpecimen.table1}" id="table1"
-                                        style="position: absolute; left: 48px; top: 24px; height: 168px" title="estadios y sexos" width="360">
+                                        style="left: 48px; top: 24px;position: absolute;width: 240px" title="estadios y sexos" width="240">
                                         <webuijsf:tableRowGroup binding="#{specimen$EditSpecimen.tableRowGroup1}" id="tableRowGroup1" rows="10"
                                             sourceData="#{specimen$EditSpecimen.defaultTableDataProvider}" sourceVar="currentRow">
                                             <webuijsf:tableColumn  headerText="Estadios" id="tableColumn1" sort="column1">
