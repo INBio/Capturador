@@ -361,7 +361,7 @@ public class generatedSpecimenList extends AbstractPageBean {
             desc += ", " + this.getgathering$GatheringSessionBeanV2().getGatheringObservation().getFirstCollectorObserverName();
         }
         this.st_gatheringDesc.setValue(desc);
-        this.getgathering$SpecimenGenerationSessionBean().getGeneratedSpecimenDataProvider().refreshList();
+        this.getgathering$SpecimenGenerationSessionBean().getGeneratedSpecimenDataProvider().refreshList(  getgathering$GatheringSessionBeanV2().getGatheringObservation().getId()  );
     }
     
     /**
