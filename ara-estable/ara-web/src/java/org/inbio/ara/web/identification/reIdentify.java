@@ -113,6 +113,8 @@ public class reIdentify extends AbstractPageBean {
 	 */
 	private void _init() throws Exception {
 		radioButtonGroup1DefaultOptions.setOptions(new com.sun.webui.jsf.model.Option[]{new com.sun.webui.jsf.model.Option("searchByTaxon", "Tax\u00f3n"), new com.sun.webui.jsf.model.Option("searchByGathering", "Recolecci\u00f3n"), new com.sun.webui.jsf.model.Option("searchByGatheringDetail", "Detalle de recolecci\u00f3n")});
+        t_stadiumSex1.setWidth("384");
+        t_stadiumSex1.setStyle("height: 42px; left: 312px; top: 48px; position: absolute");
 	}
 	private Page page1 = new Page();
 
@@ -1340,22 +1342,28 @@ public class reIdentify extends AbstractPageBean {
 		}
 		 */
 
+        //Validar si no hay ningun especimen seleccionado (current specimen)
+        if(this.getidentification$IdentificationSessionBean().getCurrentSpecimenCategory() == null){
+            MessageBean.setErrorMessageFromBundle("error_reidentify_lifestage_sex_table");
+            return false;
+        }
+
 		if ((this.getidentification$IdentificationSessionBean().getLifeStageSexSimpleDataProvider().getList().size() == 1) & (this.getidentification$IdentificationSessionBean().getCurrentSpecimenCategory().equals(2L))) {
-			this.getutil$MessageBean().addErrorMessage(ADD_ELEMENT_FAILED);
+			MessageBean.addErrorMessage(ADD_ELEMENT_FAILED);
 			return false;
 		}
 
 		if (this.getidentification$IdentificationSessionBean().getSelectedLifeStage() == -1L) {
-			this.getutil$MessageBean().addErrorMessage(CHOOSE_STAGE);
+			MessageBean.addErrorMessage(CHOOSE_STAGE);
 			return false;
 		}
 		if (this.getidentification$IdentificationSessionBean().getSelectedSex() == -1L) {
-			this.getutil$MessageBean().addErrorMessage(CHOOSE_SEX);
+			MessageBean.addErrorMessage(CHOOSE_SEX);
 			return false;
 		}
 
 		if (this.txt_ssQuantity1.getValue() == null) {
-			this.getutil$MessageBean().addErrorMessage(SPECIMEN_ACCOUNT_REQUIRED);
+			MessageBean.addErrorMessage(SPECIMEN_ACCOUNT_REQUIRED);
 			return false;
 		} else {
 			// Validaci�n de tipo de dato
@@ -1365,15 +1373,15 @@ public class reIdentify extends AbstractPageBean {
 				try {
 					Integer ssQuantity = Integer.parseInt(value);
 					if ((ssQuantity < 1) | (ssQuantity > 10000)) {
-						this.getutil$MessageBean().addErrorMessage(STAGE_AMOUNT_OUT_OF_RANGE);
+						MessageBean.addErrorMessage(STAGE_AMOUNT_OUT_OF_RANGE);
 						return false;
 					}
 				} catch (NumberFormatException ex) {
-					this.getutil$MessageBean().addErrorMessage(STAGE_AMOUNT_NOT_NUMERIC);
+					MessageBean.addErrorMessage(STAGE_AMOUNT_NOT_NUMERIC);
 					return false;
 				}
 			} else {
-				this.getutil$MessageBean().addErrorMessage(STAGE_AMOUNT_NOT_NUMERIC);
+				MessageBean.addErrorMessage(STAGE_AMOUNT_NOT_NUMERIC);
 				return false;
 			}
 		}
