@@ -29,7 +29,7 @@
                                 <webuijsf:textField binding="#{specimen$SearchSpecimen.collectorObserverTF}" id="collectorObserverTF" style="left: 240px; top: 120px; position: absolute; width: 70px"/>
                                 <webuijsf:button actionExpression="#{specimen$SearchSpecimen.searchButton_action}"
                                     binding="#{specimen$SearchSpecimen.searchButton}" id="searchButton"
-                                    style="height: 24px; left: 143px; top: 168px; position: absolute; width: 72px" text="#{resources.btnSearch}"/>
+                                    style="height: 24px; left: 239px; top: 168px; position: absolute; width: 72px" text="#{resources.btnSearch}"/>
                                 <webuijsf:label binding="#{specimen$SearchSpecimen.catalogNumberLabel}" id="catalogNumberLabel"
                                     style="left: 24px; top: 72px; position: absolute" text="#{resources.CatalogNumber}"/>
                             </webuijsf:panelLayout>

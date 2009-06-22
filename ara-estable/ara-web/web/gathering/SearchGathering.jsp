@@ -19,21 +19,23 @@
                         <webuijsf:form id="form1">
                             <webuijsf:pageAlert binding="#{gathering$SearchGathering.searchAlert}" id="searchAlert" rendered="false" style="height: 72px; left: 300px; top: 0px; position: absolute; width: 528px"/>
                             <webuijsf:label id="label1" style="font-size: 24px; left: 48px; top: 24px; position: absolute; width: 310px" text="#{resources.searchGatherings}"/>
-                            <webuijsf:panelLayout id="layoutPanel1" style="border: 2px groove black; height: 236px; left: 48px; top: 72px; position: absolute; width: 428px; -rave-layout: grid">
+                            <webuijsf:panelLayout id="layoutPanel1" style="border: 2px groove black; height: 236px; left: 48px; top: 72px; position: absolute; width: 404px; -rave-layout: grid">
                                 <webuijsf:label id="label_identification" style="left: 24px; top: 24px; position: absolute" text="#{resources.identification}"/>
-                                <webuijsf:textField binding="#{gathering$SearchGathering.txt_identification}" id="txt_identification" style="left: 202px; top: 24px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{gathering$SearchGathering.txt_identification}" id="txt_identification" style="left: 202px; top: 24px; position: absolute; width: 200px"/>
                                 <webuijsf:label id="label_locality" style="left: 24px; top: 48px; position: absolute" text="#{resources.locality}"/>
-                                <webuijsf:textField binding="#{gathering$SearchGathering.txt_locality}" id="txt_locality" style="left: 202px; top: 48px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{gathering$SearchGathering.txt_locality}" id="txt_locality" style="left: 202px; top: 48px; position: absolute; width: 200px"/>
                                 <webuijsf:label id="label_init_date" style="left: 24px; top: 72px; position: absolute" text="#{resources.initial_date}"/>
-                                <webuijsf:calendar binding="#{gathering$SearchGathering.cal_init_date}" dateFormatPattern="dd/MM/yyyy" id="cal_init_date" style="height: 24px; left: 192px; top: 72px; position: absolute; width: 144px" maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" />
+                                <webuijsf:calendar binding="#{gathering$SearchGathering.cal_init_date}" dateFormatPattern="dd/MM/yyyy" id="cal_init_date"
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" style="height: 24px; left: 192px; top: 72px; position: absolute; width: 144px"/>
                                 <webuijsf:label id="label_final_date" style="left: 24px; top: 96px; position: absolute" text="#{resources.final_date}"/>
-                                <webuijsf:calendar binding="#{gathering$SearchGathering.cal_final_date}" dateFormatPattern="dd/MM/yyyy" id="cal_final_date" style="height: 24px; left: 192px; top: 96px; position: absolute; width: 168px" maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" />
+                                <webuijsf:calendar binding="#{gathering$SearchGathering.cal_final_date}" dateFormatPattern="dd/MM/yyyy" id="cal_final_date"
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" style="height: 24px; left: 192px; top: 96px; position: absolute; width: 168px"/>
                                 <webuijsf:label id="label_responsible" style="left: 24px; top: 120px; position: absolute" text="#{resources.responsible}"/>
-                                <webuijsf:textField binding="#{gathering$SearchGathering.txt_resposible}" id="txt_resposible" style="left: 202px; top: 120px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{gathering$SearchGathering.txt_resposible}" id="txt_resposible" style="left: 202px; top: 120px; position: absolute; width: 200px"/>
                                 <webuijsf:label id="label_collection" style="left: 24px; top: 144px; position: absolute" text="#{resources.collection}"/>
-                                <webuijsf:textField binding="#{gathering$SearchGathering.txt_collection}" id="txt_collection" style="left: 202px; top: 144px; position: absolute; width: 215px"/>
+                                <webuijsf:textField binding="#{gathering$SearchGathering.txt_collection}" id="txt_collection" style="left: 202px; top: 144px; position: absolute; width: 200px"/>
                                 <webuijsf:button actionExpression="#{gathering$SearchGathering.searchButton_action}" id="searchButton1"
-                                    style="height: 24px; left: 167px; top: 192px; position: absolute; width: 72px" text="#{resources.btnSearch}"/>
+                                    style="height: 24px; left: 201px; top: 192px; position: absolute; width: 72px" text="#{resources.btnSearch}"/>
                             </webuijsf:panelLayout>
                         </webuijsf:form>
                     </webuijsf:panelLayout>

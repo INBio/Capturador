@@ -20,27 +20,29 @@
                             <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1" infoClass="infoMessage"
                                 style="height: 72px; left: 300px; top: 0px; position: absolute; width: 528px" warnClass="warnMessage"/>
                             <webuijsf:label id="label" style="font-size: 24px; left: 48px; top: 24px; position: absolute; width: 310px" text="#{resources.searchIdentifications}"/>
-                            <webuijsf:panelLayout id="layoutPanel1" panelLayout="flow" style="border: 2px groove black; height: 260px; left: 48px; top: 72px; position: absolute; width: 428px; -rave-layout: grid">
-                                <webuijsf:label id="label_specimenId" style="left: 24px; top: 24px; position: absolute" text="#{resources.specimen_id}"/>
+                            <webuijsf:panelLayout id="layoutPanel1" panelLayout="flow"
+                                    style="border: 2px groove black; height: 236px; left: 48px; top: 72px; position: absolute; width: 404px; -rave-layout: grid">O
+                                <webuijsf:label
+                                    id="label_specimenId" style="left: 24px; top: 24px; position: absolute" text="#{resources.specimen_id}"/>
                                 <webuijsf:textField binding="#{identification$SearchIdentification.txt_specimenId}" id="txt_specimenId"
-                                    style="left: 192px; top: 24px; position: absolute; width: 215px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputId}"/>
+                                    style="left: 192px; top: 24px; position: absolute; width: 210px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputId}"/>
                                 <webuijsf:label id="label_taxon" style="left: 24px; top: 48px; position: absolute" text="#{resources.taxon}"/>
                                 <webuijsf:textField binding="#{identification$SearchIdentification.txt_taxon}" id="txt_taxon"
-                                    style="left: 192px; top: 48px; position: absolute; width: 215px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputTaxon}"/>
+                                    style="left: 192px; top: 48px; position: absolute; width: 210px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputTaxon}"/>
                                 <webuijsf:label id="label_sequence" style="left: 24px; top: 72px; position: absolute" text="#{resources.sequence}"/>
                                 <webuijsf:textField binding="#{identification$SearchIdentification.txt_sequence}" id="txt_sequence"
-                                    style="left: 192px; top: 72px; position: absolute; width: 215px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputSequence}"/>
+                                    style="left: 192px; top: 72px; position: absolute; width: 210px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputSequence}"/>
                                 <webuijsf:label id="label_identificationDate" style="left: 24px; top: 96px; position: absolute" text="#{resources.identification_date}"/>
                                 <webuijsf:calendar binding="#{identification$SearchIdentification.cal_identificationDate}" id="cal_identificationDate"
-                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" style="position: absolute; left: 183px; top: 96px; width: 144px; height: 24px"/>
+                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" style="position: absolute; left: 182px; top: 96px; width: 143px; height: 24px"/>
                                 <webuijsf:label id="label_identifier" style="left: 24px; top: 120px; position: absolute" text="#{resources.identifier}"/>
                                 <webuijsf:textField binding="#{identification$SearchIdentification.txt_identifier}" id="txt_identifier"
-                                    style="left: 192px; top: 120px; position: absolute; width: 215px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputIdentifier}"/>
+                                    style="left: 192px; top: 120px; position: absolute; width: 210px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputIdentifier}"/>
                                 <webuijsf:label id="label_type" style="left: 24px; top: 144px; position: absolute" text="#{resources.type}"/>
                                 <webuijsf:textField binding="#{identification$SearchIdentification.txt_type}" id="txt_type"
-                                    style="left: 192px; top: 144px; position: absolute; width: 215px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputTaxon}"/>
+                                    style="left: 192px; top: 144px; position: absolute; width: 210px" validatorExpression="#{identification$SearchIdentification.validatorHelper.validateTextFieldInputTaxon}"/>
                                 <webuijsf:button actionExpression="#{identification$SearchIdentification.searchButton_action}" id="searchButton1"
-                                    style="height: 24px; left: 167px; top: 216px; position: absolute; width: 72px" text="#{resources.btnSearch}"/>
+                                    style="height: 24px; left: 191px; top: 192px; position: absolute; width: 72px" text="#{resources.btnSearch}"/>
                             </webuijsf:panelLayout>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
