@@ -16,14 +16,14 @@
                                 style="font-size: 24px; height: 22px; left: 48px; top: 24px; position: absolute; width: 310px" text="#{resources.re_identify}"/>
                             <h:messages binding="#{identification$reIdentify.messageList1}" errorClass="errorMessage" fatalClass="fatalMessage"
                                 id="messageList1" infoClass="infoMessage" style="left: 384px; top: 24px; position: absolute" warnClass="warnMessage"/>
-                            <webuijsf:textField binding="#{identification$reIdentify.txt_specimenId}" id="txt_specimenId"
+                            <webuijsf:textField binding="#{identification$reIdentify.txt_specimenId}" columns="25" id="txt_specimenId"
                                 style="left: 48px; top: 96px; position: absolute; width: 120px" valueChangeListenerExpression="#{identification$reIdentify.txt_specimenId_processValueChange}"/>
                             <webuijsf:listbox binding="#{identification$reIdentify.lst_specimen}" converter="#{identification$reIdentify.longConverter1}"
                                 id="lst_specimen" items="#{identification$IdentificationSessionBean.specimenList}" labelLevel="3" labelOnTop="true"
                                 onChange="webuijsf.suntheme.common.timeoutSubmitForm(this.form, 'lst_specimen');"
                                 selected="#{identification$IdentificationSessionBean.selectedSpecimenId}"
-                                style="height: 192px; left: 48px; top: 168px; position: absolute; width: 118px" valueChangeListenerExpression="#{identification$reIdentify.lst_specimen_processValueChange}"/>
-                            <webuijsf:tabSet binding="#{identification$reIdentify.tab_Identification}" id="tab_Identification" selected="tab_identification" style="border: 1px solid gray; height: 454px; left: 192px; top: 144px; position: absolute; width: 718px">
+                                style="height: 192px; left: 48px; top: 168px; position: absolute; width: 150px" valueChangeListenerExpression="#{identification$reIdentify.lst_specimen_processValueChange}"/>
+                            <webuijsf:tabSet binding="#{identification$reIdentify.tab_Identification}" id="tab_Identification" selected="tab_identification" style="border: 1px solid gray; height: 454px; left: 264px; top: 144px; position: absolute; width: 718px">
                                 <webuijsf:tab binding="#{identification$reIdentify.tab_actualInformation}" id="tab_actualInformation" text="Información actual de especímen seleccionado">
                                     <webuijsf:label binding="#{identification$reIdentify.label14}" id="label14"
                                         style="left: 24px; top: 48px; position: absolute" text="ID. Especimen"/>
@@ -67,7 +67,7 @@
                                     <webuijsf:label binding="#{identification$reIdentify.label15}" id="label15"
                                         style="left: 24px; top: 96px; position: absolute" text="#{resources.recolection}"/>
                                     <webuijsf:table binding="#{identification$reIdentify.t_stadiumSex2}" id="t_stadiumSex2" paginateButton="true"
-                                        paginationControls="true" style="height: 42px; left: 24px; top: 408px; position: absolute"
+                                        paginationControls="true" style="height: 42px; left: 24px; top: 312px; position: absolute; width: 671px"
                                         title="#{resouces.current_sex_and_stages}" width="671">
                                         <webuijsf:tableRowGroup binding="#{identification$reIdentify.tableRowGroup3}" id="tableRowGroup3" rows="4"
                                             sourceData="#{identification$IdentificationSessionBean.lifeStageSexFilteredDataProvider}" sourceVar="currentRow">
@@ -108,7 +108,8 @@
                                             <webuijsf:label binding="#{identification$reIdentify.label7}" id="label7"
                                                 style="left: 24px; top: 144px; position: absolute" text="#{resources.taxons}"/>
                                             <webuijsf:calendar binding="#{identification$reIdentify.cal_identificationDate1}" dateFormatPattern="dd/MM/yyyy"
-                                                maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" dateFormatPatternHelp="dd/MM/yyyy" id="cal_identificationDate1"
+                                                dateFormatPatternHelp="dd/MM/yyyy" id="cal_identificationDate1" maxDate="#{ApplicationBean1.todayDate}"
+                                                minDate="#{ApplicationBean1.minDate}"
                                                 selectedDate="#{identification$IdentificationSessionBean.identificationDate}"
                                                 style="left: 168px; top: 24px; position: absolute" valueChangeListenerExpression="#{identification$reIdentify.cal_identificationDate1_processValueChange}"/>
                                             <webuijsf:label binding="#{identification$reIdentify.label8}" id="label8"
@@ -156,8 +157,8 @@
                                     <webuijsf:tab binding="#{identification$reIdentify.tab_lifeStageSex}" id="tab_lifeStageSex" text="#{resources.sex_and_stages}">
                                         <webuijsf:panelLayout binding="#{identification$reIdentify.layoutPanel1}" id="layoutPanel1" style="height: 3px; position: relative; width: 100%; -rave-layout: grid">
                                             <webuijsf:table binding="#{identification$reIdentify.t_stadiumSex1}" id="t_stadiumSex1" paginateButton="true"
-                                                paginationControls="true" style="height: 42px; left: 216px; top: 48px; position: absolute; width: 203px"
-                                                title="#{resouces.selected}" width="203">
+                                                paginationControls="true" style="height: 42px; left: 312px; top: 96px; position: absolute; width: 384px"
+                                                title="#{resouces.selected}" width="384">
                                                 <webuijsf:tableRowGroup binding="#{identification$reIdentify.tableRowGroup1}" id="tableRowGroup1" rows="8"
                                                     sourceData="#{identification$IdentificationSessionBean.lifeStageSexSimpleDataProvider}" sourceVar="currentRow">
                                                     <webuijsf:tableColumn binding="#{identification$reIdentify.tableColumn1}" headerText="#{resources.stage}"
@@ -181,22 +182,22 @@
                                             <webuijsf:dropDown binding="#{identification$reIdentify.dd_stadium1}" id="dd_stadium1"
                                                 items="#{identification$IdentificationSessionBean.lifeStageOption}"
                                                 selected="#{identification$IdentificationSessionBean.selectedLifeStage}"
-                                                style="left: 96px; top: 48px; position: absolute" valueChangeListenerExpression="#{identification$reIdentify.dd_stadium1_processValueChange}"/>
+                                                style="left: 96px; top: 96px; position: absolute" valueChangeListenerExpression="#{identification$reIdentify.dd_stadium1_processValueChange}"/>
                                             <webuijsf:dropDown binding="#{identification$reIdentify.dd_sex1}" id="dd_sex1"
                                                 items="#{identification$IdentificationSessionBean.sexOption}"
                                                 selected="#{identification$IdentificationSessionBean.selectedSex}"
-                                                style="left: 96px; top: 72px; position: absolute" valueChangeListenerExpression="#{identification$reIdentify.dd_sex1_processValueChange}"/>
+                                                style="left: 96px; top: 120px; position: absolute" valueChangeListenerExpression="#{identification$reIdentify.dd_sex1_processValueChange}"/>
                                             <webuijsf:label binding="#{identification$reIdentify.label2}" id="label2"
-                                                style="left: 24px; top: 96px; position: absolute" text="#{resources.quantity}"/>
+                                                style="left: 24px; top: 144px; position: absolute" text="#{resources.quantity}"/>
                                             <webuijsf:label binding="#{identification$reIdentify.label3}" id="label3"
-                                                style="left: 24px; top: 48px; position: absolute" text="#{resources.stage}"/>
+                                                style="left: 24px; top: 96px; position: absolute" text="#{resources.stage}"/>
                                             <webuijsf:label binding="#{identification$reIdentify.label4}" id="label4"
-                                                style="left: 24px; top: 72px; position: absolute" text="#{resources.sex}"/>
+                                                style="left: 24px; top: 120px; position: absolute" text="#{resources.sex}"/>
                                             <webuijsf:button actionExpression="#{identification$reIdentify.btn_addStadiumSex1_action}"
                                                 binding="#{identification$reIdentify.btn_addStadiumSex1}" id="btn_addStadiumSex1"
-                                                style="height: 23px; left: 47px; top: 120px; position: absolute; width: 60px" text="#{resources.btnNew}"/>
+                                                style="height: 23px; left: 23px; top: 192px; position: absolute; width: 72px" text="#{resources.btnNew}"/>
                                             <webuijsf:textField binding="#{identification$reIdentify.txt_ssQuantity1}" columns="4" id="txt_ssQuantity1"
-                                                maxLength="4" style="left: 96px; top: 96px; position: absolute; width: 47px" valueChangeListenerExpression="#{identification$reIdentify.txt_ssQuantity1_processValueChange}"/>
+                                                maxLength="4" style="left: 96px; top: 144px; position: absolute; width: 47px" valueChangeListenerExpression="#{identification$reIdentify.txt_ssQuantity1_processValueChange}"/>
                                         </webuijsf:panelLayout>
                                     </webuijsf:tab>
                                 </webuijsf:tab>
@@ -211,19 +212,19 @@
                                 items="#{identification$reIdentify.radioButtonGroup1DefaultOptions.options}"
                                 style="left: 24px; top: 456px; position: absolute; width: 168px" visible="false"/>
                             <webuijsf:checkbox binding="#{identification$reIdentify.chck_dataEntryError}" id="chck_dataEntryError"
-                                label="#{resources.mark_identifications}" selectedValue="y" style="left: 216px; top: 72px; position: absolute"/>
+                                label="#{resources.mark_identifications}" selectedValue="y" style="left: 264px; top: 72px; position: absolute"/>
                             <webuijsf:button actionExpression="#{identification$reIdentify.btn_reIdentify_action}"
                                 binding="#{identification$reIdentify.btn_reIdentify}" id="btn_reIdentify"
-                                style="height: 24px; left: 215px; top: 96px; position: absolute; width: 96px" text="#{resources.re_identify}"/>
+                                style="height: 24px; left: 263px; top: 96px; position: absolute; width: 96px" text="#{resources.re_identify}"/>
                             <webuijsf:button actionExpression="#{identification$reIdentify.btn_add_action}" binding="#{identification$reIdentify.btn_add}"
                                 id="btn_add" style="left: 47px; top: 144px; position: absolute; width: 72px" text="#{resources.btnAdd}"/>
                             <webuijsf:button actionExpression="#{identification$reIdentify.btn_remove_action}" binding="#{identification$reIdentify.btn_remove}"
-                                id="btn_remove" style="height: 24px; left: 47px; top: 384px; position: absolute; width: 120px" text="#{resources.btnDelete}"/>
+                                id="btn_remove" style="height: 24px; left: 47px; top: 408px; position: absolute; width: 120px" text="#{resources.btnDelete}"/>
                             <webuijsf:button actionExpression="#{identification$reIdentify.btn_clean_action}" binding="#{identification$reIdentify.btn_clean}"
-                                id="btn_clean" style="height: 24px; left: 47px; top: 432px; position: absolute; width: 120px" text="#{resources.btnClean}"/>
+                                id="btn_clean" style="height: 24px; left: 47px; top: 456px; position: absolute; width: 120px" text="#{resources.btnClean}"/>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
-                    <jsp:directive.include file="/footer.jspf"/>
+                    <!--<jsp:directive.include file="/footer.jspf"/>-->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>
