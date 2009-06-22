@@ -16,11 +16,11 @@
                             style="font-family: 'Arial','Helvetica',sans-serif; font-size: 24px; font-style: normal; left: 24px; top: 24px; position: absolute; width: 238px" text="#{resources.edit_specimen}"/>
                         <webuijsf:panelLayout id="layoutPanel1" style="height: 214px; left: 24px; top: 72px; position: absolute; width: 910px; -rave-layout: grid">
                             <webuijsf:label id="gathSeqLabel" requiredIndicator="true"
-                                style="height: 23px; left: 24px; top: 24px; position: absolute; width: 165px" text="#{resources.gath_obs_number}"/>
+                            style="height: 23px; left: 24px; top: 24px; position: absolute; width: 165px" text="#{resources.gath_obs_number}"/>
                             <webuijsf:textField binding="#{specimen$EditSpecimen.gathSeqInput}" columns="18" id="gathSeqInput"
                                 style="left: 216px; top: 24px; position: absolute; width: 70px" validatorExpression="#{specimen$EditSpecimen.longRangeValidator2.validate}"/>
                             <webuijsf:label id="barCodeLabel" requiredIndicator="true"
-                                style="height: 22px; left: 24px; top: 0px; position: absolute; width: 165px" text="#{resources.id}"/>
+                                style="height: 22px; left: 24px; top: 0px; position: absolute; width: 165px" text="#{resources.catalognumber}"/>
                             <webuijsf:textField binding="#{specimen$EditSpecimen.barCodeInput}" columns="18" disabled="true" id="barCodeInput"
                                 style="left: 216px; top: 0px; position: absolute; width: 70px" validatorExpression="#{specimen$EditSpecimen.longRangeValidator1.validate}"/>
                             <webuijsf:label id="categoryLabel" requiredIndicator="true"
@@ -43,6 +43,10 @@
                             <webuijsf:dropDown binding="#{specimen$EditSpecimen.gathObsMethodDD}" id="gathObsMethodDD"
                                 items="#{specimen$EditSpecimen.gathObsMethodDDDefaultOptions.options}"
                                 style="left: 216px; top: 144px; position: absolute; width: 118px" width="118"/>
+                            <webuijsf:label id="instutionCode" requiredIndicator="true"
+                            style="left: 24px; top: 192px; position: absolute; width: 165px" text="#{resources.institutioncode}"/>
+                            <webuijsf:textField binding="#{specimen$EditSpecimen.instituionCodeInput}" columns="18" id="instutionCodeInput"
+                                style="left: 216px; top: 192px; position: absolute; width: 70px" />
                             <webuijsf:label for="typeDD" id="typeLabel"
                                 style="left: 24px; top: 120px; position: absolute; width: 165px" text="#{resources.type}"/>
                             <webuijsf:dropDown binding="#{specimen$EditSpecimenSessionBean.typeDD}" id="typeDD"
