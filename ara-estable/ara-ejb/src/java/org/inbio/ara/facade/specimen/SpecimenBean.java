@@ -798,10 +798,10 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
                               "   GeoreferenceVerificationStatus)" +
                               " select ins.INSTITUTION_CODE ||':' || col.name ||':' || s.CATALOG_NUMBER  as GlobalUniqueIdentifier," +
                               " current_date as DateLastModified," +
-                              " null as InstitutionCode," +
+                              " ins.INSTITUTION_CODE as InstitutionCode," +
                               " col.name as CollectionCode ," +
                               " to_char(s.CATALOG_NUMBER, '000000000000') as CatalogNumber," +
-                              " s.specimen_id as CatalogNumberNumeric ," +
+                              "s.CATALOG_NUMBER as CatalogNumberNumeric ,"+
                               " t.default_name as ScientificName," +
                               " '' as BasisOfRecord," +
                               " null as InformationWithheld," +
