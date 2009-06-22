@@ -87,16 +87,17 @@
                                     style="height: 24px; left: 480px; top: 144px; position: absolute" width="118px"/>
                                 <webuijsf:label binding="#{gathering$specimenGeneration.label_observationDate}" id="label_observationDate"
                                     style="height: 29px; left: 624px; top: 24px; position: absolute" text="#{resources.date}"/>
-                                <webuijsf:calendar binding="#{gathering$specimenGeneration.cal_ObsDate1}" id="cal_ObsDate1"
-                                    maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" selectedDate="#{gathering$SpecimenGenerationSessionBean.observationDate}" style="left: 690px; top: 24px; position: absolute"/>
+                                <webuijsf:calendar binding="#{gathering$specimenGeneration.cal_ObsDate1}" dateFormatPattern="dd/MM/yyyy"
+                                    dateFormatPatternHelp="dd/mm/yyyy" id="cal_ObsDate1" maxDate="#{ApplicationBean1.todayDate}"
+                                    minDate="#{ApplicationBean1.minDate}" selectedDate="#{gathering$SpecimenGenerationSessionBean.observationDate}" style="left: 690px; top: 24px; position: absolute"/>
                                 <webuijsf:label binding="#{gathering$specimenGeneration.label_observationTime}" id="label_observationTime"
-                                    style="left: 624px; top: 48px; position: absolute" text="#{resources.time}"/>
+                                    style="left: 624px; top: 72px; position: absolute" text="#{resources.time}"/>
                                 <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_hour}" id="dd_hour"
                                     items="#{gathering$specimenGeneration.dd_hourDefaultOptions.options}"
-                                    selected="#{gathering$SpecimenGenerationSessionBean.hour}" style="left: 720px; top: 48px; position: absolute" width="40px"/>
+                                    selected="#{gathering$SpecimenGenerationSessionBean.hour}" style="left: 696px; top: 72px; position: absolute" width="40px"/>
                                 <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_minute}" id="dd_minute"
                                     items="#{gathering$specimenGeneration.dd_minuteDefaultOptions.options}"
-                                    selected="#{gathering$SpecimenGenerationSessionBean.minute}" style="left: 792px; top: 48px; position: absolute" width="40px"/>
+                                    selected="#{gathering$SpecimenGenerationSessionBean.minute}" style="left: 768px; top: 72px; position: absolute" width="40px"/>
                             </webuijsf:panelLayout>
                             <webuijsf:button actionExpression="#{gathering$specimenGeneration.btn_showSpecimenList_action}"
                                 binding="#{gathering$specimenGeneration.btn_showSpecimenList}" id="btn_showSpecimenList"
@@ -139,7 +140,8 @@
                                             <webuijsf:label binding="#{gathering$specimenGeneration.label_Taxa}" id="label_Taxa"
                                                 style="left: 24px; top: 120px; position: absolute" text="Taxones"/>
                                             <webuijsf:calendar binding="#{gathering$specimenGeneration.cal_identificationDate1}" dateFormatPattern="dd/MM/yyyy"
-                                                maxDate="#{ApplicationBean1.todayDate}" minDate="#{ApplicationBean1.minDate}" dateFormatPatternHelp="dd/MM/yyyy" id="cal_identificationDate1" style="left: 614px; top: 24px; position: absolute; text-align: left"/>
+                                                dateFormatPatternHelp="dd/MM/yyyy" id="cal_identificationDate1" maxDate="#{ApplicationBean1.todayDate}"
+                                                minDate="#{ApplicationBean1.minDate}" style="left: 614px; top: 24px; position: absolute; text-align: left"/>
                                             <webuijsf:dropDown binding="#{gathering$specimenGeneration.dd_validator1}" id="dd_validator1"
                                                 items="#{gathering$SpecimenGenerationSessionBean.identificationValidatorOption}"
                                                 selected="#{gathering$SpecimenGenerationSessionBean.selectedIdentificationValidator}" style="left: 192px; top: 72px; position: absolute"/>
