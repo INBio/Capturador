@@ -415,8 +415,9 @@ public class SelectionListManagerBean implements SelectionListManagerRemote, Sel
         Option[] optionArray = new Option[]{};
         List<TypeSpecimenType> tList = query("Select object(o) from TypeSpecimenType as o order by o.name");
         if (tList.size() > 0) {
-            optionArray = new Option[tList.size()];
-            int i = 0;
+            optionArray = new Option[tList.size()+1];
+	    optionArray[0] = new Option(-1L, "Seleccione un valor");
+            int i = 1;
             for (TypeSpecimenType tmp: tList) {
                 optionArray[i] = new Option(tmp.getId(), tmp.getName());
                 i++;
