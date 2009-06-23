@@ -23,7 +23,7 @@
                                 onChange="webuijsf.suntheme.common.timeoutSubmitForm(this.form, 'lst_specimen');"
                                 selected="#{identification$IdentificationSessionBean.selectedSpecimenId}"
                                 style="height: 192px; left: 48px; top: 168px; position: absolute; width: 150px" valueChangeListenerExpression="#{identification$reIdentify.lst_specimen_processValueChange}"/>
-                            <webuijsf:tabSet binding="#{identification$reIdentify.tab_Identification}" id="tab_Identification" selected="tab_identification" style="border: 1px solid gray; height: 454px; left: 264px; top: 144px; position: absolute; width: 718px">
+                            <webuijsf:tabSet binding="#{identification$reIdentify.tab_Identification}" id="tab_Identification" selected="tab_actualInformation" style="border: 1px solid gray; height: 454px; left: 264px; top: 144px; position: absolute; width: 718px">
                                 <webuijsf:tab binding="#{identification$reIdentify.tab_actualInformation}" id="tab_actualInformation" text="Información actual de especímen seleccionado">
                                     <webuijsf:label binding="#{identification$reIdentify.label14}" id="label14"
                                         style="left: 24px; top: 48px; position: absolute" text="ID. Especimen"/>

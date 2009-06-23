@@ -1250,49 +1250,49 @@ public class reIdentify extends AbstractPageBean {
 
 	private boolean validate() {
 		if (this.cal_identificationDate1.getSelectedDate() == null) {
-			this.getutil$MessageBean().addErrorMessage(EMPTY_IDENTIFICATION_DATE);
+			MessageBean.addErrorMessage(EMPTY_IDENTIFICATION_DATE);
 			return false;
 		}
 
 		if (this.getidentification$IdentificationSessionBean().getSelectedIdentificationStatus().equals(-1L)) {
-			this.getutil$MessageBean().addErrorMessage(EMPTY_STATUS_IDENTIFICATION);
+			MessageBean.addErrorMessage(EMPTY_STATUS_IDENTIFICATION);
 			return false;
 		}
 
 		if (this.getidentification$IdentificationSessionBean().getSelectedTaxon() == null) {
-			this.getutil$MessageBean().addErrorMessage(EMTPY_TAXON_LIST);
+			MessageBean.addErrorMessage(EMTPY_TAXON_LIST);
 			return false;
 		}
 
 		if (this.getidentification$IdentificationSessionBean().getSelectedTaxon().length == 0) {
-			this.getutil$MessageBean().addErrorMessage(EMTPY_TAXON_LIST);
+			MessageBean.addErrorMessage(EMTPY_TAXON_LIST);
 			return false;
 		}
 
 		if (!this.getSessionManager().canIdentifyWithSynonyms()) {
 			if (this.getidentification$IdentificationSessionBean().getSelectedTaxonCategory().equals(3L)) {
-				this.getutil$MessageBean().addErrorMessage(SINONYM_IDENTIFICATIONS_NOT_ALLOWED);
+				MessageBean.addErrorMessage(SINONYM_IDENTIFICATIONS_NOT_ALLOWED);
 				return false;
 			}
 		}
 
-		// Validaciones para la categor�a de especimen "Observaci�n"
+		// Validaciones para la categoría de especimen "Observación"
 		if (getidentification$IdentificationSessionBean().getCurrentSpecimenCategory().equals(1L)) {
 			// No se permite identificar con varios taxones un mismo especimen.
 			if (this.getidentification$IdentificationSessionBean().getSelectedTaxon() != null) {
 				if (this.getidentification$IdentificationSessionBean().getSelectedTaxon().length > 1) {
-					this.getutil$MessageBean().addErrorMessage(MANY_IDENTIFICATIONS_NOT_ALLOWED);
+					MessageBean.addErrorMessage(MANY_IDENTIFICATIONS_NOT_ALLOWED);
 					return false;
 				}
 			}
 		}
 
-		// Validaciones para la categor�a de especimen "Individual"
+		// Validaciones para la categoría de especimen "Individual"
 		if (getidentification$IdentificationSessionBean().getCurrentSpecimenCategory().equals(2L)) {
 			// No se permite identificar con varios taxones un mismo especimen.
 			if (this.getidentification$IdentificationSessionBean().getSelectedTaxon() != null) {
 				if (this.getidentification$IdentificationSessionBean().getSelectedTaxon().length > 1) {
-					this.getutil$MessageBean().addErrorMessage(MANY_IDENTIFICATIONS_NOT_ALLOWED);
+					MessageBean.addErrorMessage(MANY_IDENTIFICATIONS_NOT_ALLOWED);
 					return false;
 				}
 			}
@@ -1450,7 +1450,7 @@ public class reIdentify extends AbstractPageBean {
 			}
 			this.txt_specimenId.setValue("");
 		} else {
-			this.getutil$MessageBean().addErrorMessage(EMPTY_SPECIMEN_NUMBER);
+			MessageBean.addErrorMessage(EMPTY_SPECIMEN_NUMBER);
 		}
 		return null;
 	}

@@ -29,13 +29,8 @@ import com.sun.webui.jsf.model.Option;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import org.inbio.ara.facade.specimen.IdentificationRemote;
 import org.inbio.ara.facade.specimen.SpecimenGenParms;
 import org.inbio.ara.facade.specimen.SpecimenRemote;
@@ -448,21 +443,21 @@ public class IdentificationSessionBean extends AbstractSessionBean {
 
             // Verificar si el especimen existe
             if (newSpecimen == null) {
-                this.getutil$MessageBean().addErrorMessage("No existe espec�men con el id." + newSpecimenId);
+                MessageBean.addErrorMessage("No existe espécimen con el id." + newSpecimenId);
                 return false;
             }
 
             // Verificar si pertence a la colecci�n selecionada
             if (!newSpecimen.getCollection().getId().equals(this.getSessionManager().getCollection().getId())) {
-                this.getutil$MessageBean().addErrorMessage("El espec�men " + specimenId + " no pertenece a la colecci�n actual: " + this.getSessionManager().getCollection().getName());
+                MessageBean.addErrorMessage("El espécimen " + specimenId + " no pertenece a la colección actual: " + this.getSessionManager().getCollection().getName());
                 return false;
             }
 
             // Verificar si tiene la misma categor�a que los especimens ya incluidos en la lista
             if (this.currentSpecimenCategory != null) {
                 if (!this.currentSpecimenCategory.equals(newSpecimen.getSpecimenCategory().getId())) {
-                    this.getutil$MessageBean().addErrorMessage("La categor�a del espec�men es diferente a la de los espec�menes en lista.");
-                    this.getutil$MessageBean().addErrorMessage("El especimen no fu� agregado.");
+                    MessageBean.addErrorMessage("La categoría del espécimen es diferente a la de los espec�menes en lista.");
+                    MessageBean.addErrorMessage("El especimen no fué agregado.");
                     return false;
                 }
             }
@@ -472,7 +467,7 @@ public class IdentificationSessionBean extends AbstractSessionBean {
                 for (int i=0; i<specimenList.length; i++) {
                     currentSpecimenId = (Long)specimenList[i].getValue();
                     if (newSpecimenId.equals(currentSpecimenId)) {
-                        this.getutil$MessageBean().addErrorMessage("El espec�men " + specimenId + " ya est� incluido en la lista");
+                        MessageBean.addErrorMessage("El espec�men " + specimenId + " ya est� incluido en la lista");
                         return false;
                     }
                 }
@@ -480,7 +475,7 @@ public class IdentificationSessionBean extends AbstractSessionBean {
 
             return true;
         } catch (NumberFormatException ex) {
-            this.getutil$MessageBean().addErrorMessage("N�mero de espec�men inv�lido");
+            MessageBean.addErrorMessage("N�mero de espec�men inv�lido");
             return false;
         }
     }
@@ -514,7 +509,7 @@ public class IdentificationSessionBean extends AbstractSessionBean {
                 */
                 
                 if (newSpecimenId.equals(currentSpecimenId)) {
-                    this.getutil$MessageBean().addErrorMessage("El espec�men " + specimenId + " ya est� incluido en la lista");
+                    MessageBean.addErrorMessage("El espécimen " + specimenId + " ya está incluido en la lista");
                     return false;
                 }
             }
@@ -566,7 +561,7 @@ public class IdentificationSessionBean extends AbstractSessionBean {
             }
              */
         } else {
-            this.getutil$MessageBean().addErrorMessage(this.lookupSpecimenBean().getMessage());
+            MessageBean.addErrorMessage(this.lookupSpecimenBean().getMessage());
             return false;
         }
     }
@@ -619,7 +614,7 @@ public class IdentificationSessionBean extends AbstractSessionBean {
         
         if (this.specimenList!= null) {
             if (this.specimenList.length > 0) {
-                // Definir el tama�o del nuevo arreglo
+                // Definir el tamaño del nuevo arreglo
                 tmpOption = new Option[specimenList.length-1];
                 int z=0;
                 Long actualValue;
@@ -655,8 +650,8 @@ public class IdentificationSessionBean extends AbstractSessionBean {
     }
     
     public void initDataProviders() {
-        //*identificationFilteredDataProvider = new IdentificationFilteredDataProvider();
-        //*lifeStageSexFilteredDataProvider = new LifeStageSexFilteredDataProvider();
+        identificationFilteredDataProvider = new IdentificationFilteredDataProvider();
+        lifeStageSexFilteredDataProvider = new LifeStageSexFilteredDataProvider();
     }
 
     public void initDataProvider() {
@@ -669,26 +664,24 @@ public class IdentificationSessionBean extends AbstractSessionBean {
         Long typeSpecimenTypeId = null;
         Long institutionId = null;
         
-        // try {
-            if (this.selectedTypeSpecimenTypeOption > -1L) {
-                typeSpecimenTypeId = this.selectedTypeSpecimenTypeOption;
-                if (this.selectedInstitution != null) {
-                    if (this.selectedInstitution > -1L) {
-                        institutionId = this.selectedInstitution;
-                    }
+        if (this.selectedTypeSpecimenTypeOption > -1L) {
+            typeSpecimenTypeId = this.selectedTypeSpecimenTypeOption;
+            if (this.selectedInstitution != null) {
+                if (this.selectedInstitution > -1L) {
+                    institutionId = this.selectedInstitution;
                 }
             }
-        // } catch (Exception e) {
-        //    this.getutil$MessageBean().addErrorMessage("Nulo");
-        // }
-        
-/*        if (this.lookupIdentificationBean().reIdentify(this.createIdentificationEntity(), this.getSpecimenListArray(), this.getSelectedTaxon(), this.getSelectedIdentifier(), this.lifeStageSexSimpleDataProvider.getList(), typeSpecimenTypeId, institutionId)) {
-            this.getutil$MessageBean().addSuccessMessage("Especimenes reidentificados");
-            this.getutil$MessageBean().addErrorMessage(lookupIdentificationBean().getMessage());
-        } else {
-            this.getutil$MessageBean().addErrorMessage(lookupIdentificationBean().getMessage());
         }
- */
+        
+        if (this.lookupIdentificationBean().reIdentify(this.createIdentificationEntity(), this.getSpecimenListArray(), this.getSelectedTaxon(), this.getSelectedIdentifier(), this.lifeStageSexSimpleDataProvider.getList(), typeSpecimenTypeId, institutionId)) {
+            MessageBean.addSuccessMessage("Especimenes reidentificados");
+            this.getPagination().refreshList();
+            MessageBean.addErrorMessage(lookupIdentificationBean().getMessage());
+        }
+        else {
+            MessageBean.addErrorMessage(lookupIdentificationBean().getMessage());
+        }
+
         return true;
     }
     
@@ -721,38 +714,38 @@ public class IdentificationSessionBean extends AbstractSessionBean {
     
     private boolean validate() {
         if (this.specimenList == null) {
-            this.getutil$MessageBean().addErrorMessage("No hay espec�menes que re-identificar.");
+            MessageBean.addErrorMessage("No hay especímenes que re-identificar.");
             return false;
         }
         
         if (this.specimenList.length == 0) {
-            this.getutil$MessageBean().addErrorMessage("No hay espec�menes que re-identificar.");
+            MessageBean.addErrorMessage("No hay especímenes que re-identificar.");
             return false;
         }
         
         if (this.taxonList == null) {
-            this.getutil$MessageBean().addErrorMessage("No ha seleccionado ning�n tax�n.");
+            MessageBean.addErrorMessage("No ha seleccionado ningún taxón.");
             return false;
         }
         
         if (this.taxonList.length == 0) {
-            this.getutil$MessageBean().addErrorMessage("No ha seleccionado ning�n tax�n.");
+            MessageBean.addErrorMessage("No ha seleccionado ningún taxón.");
             return false;
         }
         
         if (this.identificationDate != null) {
-            this.getutil$MessageBean().addErrorMessage("Falta la fecha de identificaci�n.");
+            MessageBean.addErrorMessage("Falta la fecha de identificación.");
             return false;
         }
         
         if (this.selectedIdentificationStatus == -1L) {
-            this.getutil$MessageBean().addErrorMessage("Falta el status de identificaci�n.");
+            MessageBean.addErrorMessage("Falta el status de identificación.");
             return false;
         }
         
         if (this.selectedTypeSpecimenTypeOption > -1L) {
             if (this.selectedInstitution == -1L) {
-            this.getutil$MessageBean().addErrorMessage("Falta el depositario del tipo.");
+                MessageBean.addErrorMessage("Falta el depositario del tipo.");
             return false;
             }
         }
@@ -787,8 +780,8 @@ public class IdentificationSessionBean extends AbstractSessionBean {
     }
     
     public void cleanParameters() {
-        this.cleanSpecimenList();
-        //identificationDataProvider = new IdentificationDataProvider();
+        this.cleanSpecimenList();        
+        this.getPagination().refreshList(); //Refrescar el data provider de identificaciones (el de paginacion)
         currentIdentificationDataProvider = null;
         lifeStageOption = null;
         selectedLifeStage = -1L;
@@ -808,30 +801,31 @@ public class IdentificationSessionBean extends AbstractSessionBean {
         selectedIdentificationValidator = -1L;
         identifierOption = null;
         selectedIdentifier = null;
-//*        lifeStageSexSimpleDataProvider = new LifeStageSimpleDataProvider();
-//*        currentlifeStageSexSimpleDataProvider  = null;
+        lifeStageSexSimpleDataProvider = new LifeStageSimpleDataProvider();
+        currentlifeStageSexSimpleDataProvider  = null;
         specimenList = null;
         gatheringObservationSummary = "";
         selectedSpecimenId = 0L;
         identificationDate = null;
-        //*identificationFilteredDataProvider = new IdentificationFilteredDataProvider();
-        //*lifeStageSexFilteredDataProvider = new LifeStageSexFilteredDataProvider();
+        identificationFilteredDataProvider = new IdentificationFilteredDataProvider();
+        lifeStageSexFilteredDataProvider = new LifeStageSexFilteredDataProvider();
         setDataEntryError("n");
         setCurrentSpecimenCategory(null);
         setCurrentSpecimenCategoryName("");
     }
     
     public void delete(RowKey rowKey) {
-//        if (rowKey != null) {
-//            Identification identification = (Identification)this.getIdentificationDataProvider().getObject(rowKey);
-//            if (this.lookupIdentificationBean().delete(identification.getIdentificationPK())) {
-//                this.getutil$MessageBean().addSuccessMessage("Registro borrado con �xito");
-//            } else {
-//                this.getutil$MessageBean().addSuccessMessage("Error al borrar el registro: " + lookupIdentificationBean().getMessage());
-//            }
-//        } else {
-//            System.out.println("rowKey es nulo.");
-//        }
+        if (rowKey != null) {
+            Identification identification = (Identification)this.getPagination().getDataProvider().getObject(rowKey);
+            if (this.lookupIdentificationBean().delete(identification.getIdentificationPK())) {
+                this.getPagination().refreshList();
+                MessageBean.addSuccessMessage("Registro borrado con éxito");
+            } else {
+                MessageBean.addSuccessMessage("Error al borrar el registro: " + lookupIdentificationBean().getMessage());
+            }
+        } else {
+            System.out.println("rowKey es nulo.");
+        }
     }
 
     public String getDataEntryError() {
