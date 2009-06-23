@@ -698,6 +698,7 @@ public class EditSpecimen extends AbstractPageBean {
 		Specimen specimen = getspecimen$SpecimenSessionBean().getCurrentSpecimen();
 		specimen.setLastModificationBy(this.getSessionManager().getUser().getUserName());
 
+        specimen.setInstitutionCode((String) this.getInstituionCodeInput().getValue());
 		//specimen.setId(Long.parseLong((String) this.getBarCodeInput().getText()));
 		if (this.getGathSeqInput().getText() != null && !this.getGathSeqInput().getText().equals("")) {
 			Long gatheringObservationId = (Long) getGathSeqInput().getValue();
