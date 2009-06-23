@@ -676,7 +676,7 @@ public class IdentificationSessionBean extends AbstractSessionBean {
         if (this.lookupIdentificationBean().reIdentify(this.createIdentificationEntity(), this.getSpecimenListArray(), this.getSelectedTaxon(), this.getSelectedIdentifier(), this.lifeStageSexSimpleDataProvider.getList(), typeSpecimenTypeId, institutionId)) {
             MessageBean.addSuccessMessage("Especimenes reidentificados");
             this.getPagination().refreshList();
-            MessageBean.addErrorMessage(lookupIdentificationBean().getMessage());
+            //MessageBean.addErrorMessage(lookupIdentificationBean().getMessage());
         }
         else {
             MessageBean.addErrorMessage(lookupIdentificationBean().getMessage());
