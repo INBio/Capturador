@@ -46,7 +46,7 @@
                             <webuijsf:label id="instutionCode" requiredIndicator="true"
                             style="left: 24px; top: 180px; position: absolute; width: 165px" text="#{resources.institutioncode}"/>
                             <webuijsf:textField binding="#{specimen$EditSpecimen.instituionCodeInput}" columns="27" id="instutionCodeInput"
-                                style="left: 216px; top: 180px; position: absolute; width: 70px" />
+                            style="left: 216px; top: 180px; position: absolute; width: 70px" disabled="true"/>
                             <webuijsf:label for="typeDD" id="typeLabel"
                                 style="left: 24px; top: 120px; position: absolute; width: 165px" text="#{resources.type}"/>
                             <webuijsf:dropDown binding="#{specimen$EditSpecimenSessionBean.typeDD}" id="typeDD"
