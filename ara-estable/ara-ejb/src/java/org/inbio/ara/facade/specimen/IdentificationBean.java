@@ -139,7 +139,7 @@ public class IdentificationBean implements org.inbio.ara.facade.specimen.Identif
                 historyErrorCount+= ", " + specimenList[i];
             }
         }
-        this.setMessage("Espec�menes identificados: " + reIdentifiedCount + ". Errores de identificaci�n: " + notIdentifiedCount + ". Especimenes no procesados: " + historyErrorCount);
+        this.setMessage("Especímenes identificados: " + reIdentifiedCount + ". Errores de identificación: " + notIdentifiedCount + ". Especímenes no procesados: " + historyErrorCount);
         return true;
     }
     
