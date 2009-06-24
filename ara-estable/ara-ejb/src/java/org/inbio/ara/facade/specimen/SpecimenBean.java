@@ -826,14 +826,14 @@ public class SpecimenBean implements SpecimenRemote, SpecimenLocal {
                               "  null as AuthorYearOfScientificName," +
                               "  null as NomenclaturalCode," +
                               "  it.name as IdentificationQualifier," +
-                              "  perid.FIRST_NAME || ' '|| perid.initials || ' '|| perid.last_name as IdentifiedBy," +
+                              "  coalesce(rtrim(perid.FIRST_NAME), '') || ' '|| coalesce(rtrim(perid.initials), '') || ' '|| coalesce(rtrim(perid.last_name), '') as IdentifiedBy,"+
                               "  i.identification_date as DateIdentified," +
                               "  null as TypeStatus," +
                               "  cm.name as CollectingMethod," +
                               "  null as ValidDistributionFlag," +
                               "  god.gathering_observation_detail_number as CollectorNumber," +
                               "  to_char(gat.gathering_observation_id, '00000000000000') as FieldNumber," +
-                              "  percol.FIRST_NAME || ' '|| percol.initials || ' '|| percol.last_name as collector," +
+                              "  coalesce(rtrim(percol.FIRST_NAME), '') || ' '|| coalesce(rtrim(percol.initials),'') || ' '|| coalesce(rtrim(percol.last_name),'')  as collector,"+
                               "  gat.initial_date as  EarliestDateCollected," +
                               "  gat.final_DATE as  LatestDateCollected," +
                               "  to_char(gat.initial_date,'Mon DD, YYYY') as VerbatimCollectingDate," +
