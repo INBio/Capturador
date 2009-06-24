@@ -522,10 +522,10 @@ public class SiteSessionBean extends AbstractSessionBean {
         site.setCreatedBy(this.getSessionManager().getUser().getUserName());
         site.setLastModificationBy(site.getCreatedBy());
         if (this.lookupSiteBean().update(site, this.coordinateDataProvider.getList())) {
-            this.getutil$MessageBean().addSuccessMessage("Sitio modificado con �xito");
+            MessageBean.addSuccessMessage("Sitio modificado con éxito");
             return true;
         } else {
-            this.getutil$MessageBean().addErrorMessage(this.lookupSiteBean().getMessage());
+            MessageBean.addErrorMessage(this.lookupSiteBean().getMessage());
             return false;
         }
     }
