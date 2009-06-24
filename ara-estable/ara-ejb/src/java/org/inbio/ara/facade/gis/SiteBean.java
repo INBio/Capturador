@@ -266,6 +266,7 @@ public class SiteBean implements SiteRemote, SiteLocal {
                 currentSite.setDescription(site.getDescription());
                 currentSite.setPrecision(site.getPrecision());
                 currentSite.setGeodeticDatum(site.getGeodeticDatum());
+                currentSite.setName("No aplica"); //Alambrado a lo asco :(
                 em.merge(currentSite);
                 updated = true;
             } catch(EntityExistsException ex0) {
