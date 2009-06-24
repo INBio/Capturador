@@ -38,7 +38,7 @@ public class ProvinceEAOImpl extends BaseEAOImpl implements ProvinceLocalEAO{
      */
     public List<Province> listAll(){
 
-        Query q = em .createQuery("select p from Province as p order by c.name asc");
+        Query q = em .createQuery("select p from Province as p order by p.name asc");
         return q.getResultList();
     }
 
