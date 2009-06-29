@@ -9,7 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.FlushModeType;
 import javax.persistence.Query;
-import org.inbio.ara.eao.ShareEAOLocal;
+import org.inbio.ara.eao.ShareLocalEAO;
 import org.inbio.ara.manager.GatheringManagerRemote;
 import org.inbio.ara.util.QueryNode;
 
@@ -21,7 +21,7 @@ import org.inbio.ara.util.QueryNode;
 public class GatheringManagerImpl implements GatheringManagerRemote {
 
     @EJB
-    ShareEAOLocal shareBean;
+    ShareLocalEAO shareBean;
 
     @Override
     public Long countQueryElements(LinkedList<QueryNode> sll) {
