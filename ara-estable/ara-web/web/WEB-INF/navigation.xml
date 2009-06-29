@@ -1536,11 +1536,11 @@
 			<to-view-id>/specimen/PreviewSpecimen.jsp</to-view-id>
 			<redirect/>
 		</navigation-case>
-		<!--<navigation-case>
+		<navigation-case>
 			<from-outcome>share</from-outcome>
 			<to-view-id>/share/StandardSelection.jsp</to-view-id>
 			<redirect/>
-		</navigation-case>-->
+		</navigation-case>
 	</navigation-rule>
 
 	<navigation-rule>
