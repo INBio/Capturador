@@ -29,5 +29,11 @@ public interface ShareRemote {
     public org.inbio.ara.persistence.share.PliElement getPliElementByIdB(java.math.BigDecimal id);
 
     public java.lang.String createDwCTable();
-    
+
+    public java.lang.String makeDcwSnapshotNative(java.util.LinkedList<org.inbio.ara.util.QueryNode> qnlist, java.util.LinkedList<java.lang.String> elist);
+
+    public java.util.LinkedList<java.lang.String> getAllElementsDwc();
+
+    public java.lang.String makeDcwSnapshotNative(java.util.LinkedList<org.inbio.ara.util.QueryNode> qnlist, java.util.LinkedList<java.lang.String> elist, int validate);
+   
 }

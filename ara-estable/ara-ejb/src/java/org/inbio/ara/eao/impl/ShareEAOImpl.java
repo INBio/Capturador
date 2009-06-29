@@ -19,9 +19,13 @@
 package org.inbio.ara.eao.impl;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
-import org.inbio.ara.eao.ShareEAOLocal;
+import org.inbio.ara.eao.ShareLocalEAO;
 import javax.ejb.Stateless;
 import javax.persistence.FlushModeType;
 import javax.persistence.Query;
@@ -39,7 +43,7 @@ import org.inbio.ara.persistence.taxonomy.TaxonAuthor;
  * @author esmata
  */
 @Stateless 
-public class ShareEAOBean extends BaseEAOImpl implements ShareEAOLocal{
+public class ShareEAOImpl extends BaseEAOImpl implements ShareLocalEAO{
     
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method" or "Web Service > Add Operation")
@@ -399,15 +403,15 @@ public class ShareEAOBean extends BaseEAOImpl implements ShareEAOLocal{
     }
 
     /** @param tId identifier taxon
-     * @param t type of taxon
-     * @return if t = a > kingdomTaxon
-     * if t = b > phylumDivisionTaxon
-     * if t = c > classTaxon
-     * if t = d > orderTaxon
-     * if t = e > familyTaxon
-     * if t = f > genusTaxon
-     * if t = g > speciesTaxon
-     * if t = h > subspeciesTaxon
+     *  @param t type of taxon
+     *  @return if t = a > kingdomTaxon
+     *  if t = b > phylumDivisionTaxon
+     *  if t = c > classTaxon
+     *  if t = d > orderTaxon
+     *  if t = e > familyTaxon
+     *  if t = f > genusTaxon
+     *  if t = g > speciesTaxon
+     *  if t = h > subspeciesTaxon
      */
     @Override
     public Object[] getTaxomonyIds(Long tId,char t){
@@ -463,12 +467,24 @@ public class ShareEAOBean extends BaseEAOImpl implements ShareEAOLocal{
         catch(Exception e){em.setFlushMode(FlushModeType.AUTO);return null;}
     }
 
-
+    /**
+     * @param jpqlQuery is the query
+     * @return the quantity of elements that match with the query
+     */
     @Override
     public Long countQueryElements(String jpqlQuery){
-
         Query q = em.createQuery(jpqlQuery);
         Long ret = (Long) q.getSingleResult();
         return ret;
+    }
+
+    @Override
+    public boolean DcwSnapshotAllPostgresql(String query){
+        try{
+            Query nq = em.createNativeQuery(query);
+            nq.executeUpdate();
+        }
+        catch(Exception e){return false;}
+        return true;
     }
 }

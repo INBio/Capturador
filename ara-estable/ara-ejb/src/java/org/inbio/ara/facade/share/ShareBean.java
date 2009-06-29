@@ -29,7 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import org.inbio.ara.eao.ShareEAOLocal;
+import org.inbio.ara.eao.ShareLocalEAO;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
 import org.inbio.ara.persistence.gathering.GatheringObservationDetail;
 import org.inbio.ara.persistence.gis.Site;
@@ -54,7 +54,7 @@ import org.inbio.ara.util.QueryNode;
 public class ShareBean implements ShareRemote, ShareLocal {
 
     //Injection
-    @EJB private ShareEAOLocal SEAOL;
+    @EJB private ShareLocalEAO SEAOL;
 
     //Constants
     Long CERO = new Long(0);
@@ -62,8 +62,39 @@ public class ShareBean implements ShareRemote, ShareLocal {
     Long DOS = new Long(2);
 
     /**
-     * Metodo para generar los snapshots de darein core con toda la info y todos los campos
-     * Dura demaciado generando los snapshots
+     * Metodo encargado de generar el snapshot Darwin Core con la información indicada del sistema
+     * @param user usuario para la conexion jdbc con postgres
+     * @param pass contraseña para el usuario para la conexion jdbc
+     * @return "success" = everything ok, "fail" = something wrong
+     */
+    @Override
+    public String makeDcwSnapshotNative(LinkedList<QueryNode> qnlist,LinkedList<String> elist){
+        SEAOL.truncateDwcSnapshot(); //Delete all snapshot entries
+        String q = makeQueryStringPostgres(qnlist,elist); //Generate the query string
+        System.out.println(q);
+        boolean result = SEAOL.DcwSnapshotAllPostgresql(q); //Generate snapshot with the query
+        if (result)
+            return "success";
+        else
+            return "fail";
+    }
+
+    @Override
+    public String makeDcwSnapshotNative(LinkedList<QueryNode> qnlist,LinkedList<String> elist,int validate){
+        SEAOL.truncateDwcSnapshot(); //Delete all snapshot entries
+        String q = makeQueryStringPostgres(qnlist,elist); //Generate the query string
+        System.out.println(q);
+        boolean result = SEAOL.DcwSnapshotAllPostgresql(q); //Generate snapshot with the query
+        if (result)
+            return "success";
+        else
+            return "fail";
+    }
+
+    /**
+     * Metodo para generar los snapshots de darwin core con toda la info y todos los campos
+     * Dura demaciado generando los snapshots debido a que utiliza las entidades
+     * Este metodo utiliza paginacion (lo cual contibuyó con el rendimiento pero aun asi dura mucho)
      * @deprecated
      */
     @Override
@@ -274,7 +305,7 @@ public class ShareBean implements ShareRemote, ShareLocal {
         }
     }
 
-    //Contruc the select String for darwin core snapshot
+    //Contruc the JPA select String for darwin core snapshot
     @Override
 	public String makeQueryString(LinkedList<QueryNode> llqn,LinkedList<String> lls, int validate) {
         String jpqlQuery;
@@ -309,6 +340,72 @@ public class ShareBean implements ShareRemote, ShareLocal {
         }
 	}
 
+    /**
+     * Contruc the PostgreSQL select String for darwin core snapshot
+     * @param llqn lista de nodos para la consulta
+     * @param lls lista de elementos darwin core
+     * @return la consulta en postgres notation
+     */
+    @Override
+	public String makeQueryStringPostgres(LinkedList<QueryNode> llqn,LinkedList<String> lls) {
+        //Construyecto el insert
+        String jpqlQuery = "insert into ara.dwc_snapshot (";
+        int llsSize = lls.size();
+        for(int i = 0;i<llsSize;i++){
+            String element = lls.get(i).toLowerCase();
+            if(element.equals("order")){element="orders";}
+            else if(element.equals("class")||element.equals("class1")){element="\"class\"";}
+            else if(element.equals("family")){element="\"family\"";}
+            if(i==(llsSize-1)) //Si es el ultimo, no debe llevar coma (,)
+                jpqlQuery+=element+") ";
+            else
+            jpqlQuery+=element+",";
+        }
+        //Construyendo el select
+        jpqlQuery+="select ";
+        for(int i = 0;i<llsSize;i++){
+            String element = lls.get(i).toLowerCase();
+            String eAux = lls.get(i).toLowerCase();
+            if(eAux.equals("order")){eAux="orders";element="orders";}
+            else if(eAux.equals("class")){eAux="\"class\"";}
+            else if(eAux.equals("class1")){eAux="\"class\"";element="class";}
+            else if(eAux.equals("family")){eAux="\"family\"";}
+            if(i==(llsSize-1)) //Si es el ultimo, no debe llevar coma (,)
+                jpqlQuery+="dwc."+element+" as "+eAux+" ";
+            else
+                jpqlQuery+="dwc."+element+" as "+eAux+",";
+        }
+        //Construyecto el from
+        jpqlQuery+="from ara.darwin_core_1_4 dwc ";
+        if (llqn.isEmpty()){ //si no hay criterio de búsqueda
+            return jpqlQuery+" order by dwc.globaluniqueidentifier;";
+        }
+        else{
+            //Construyecto el where
+            jpqlQuery+="where ";
+            QueryNode qn = llqn.getFirst();
+            jpqlQuery += "lower(dwc." + qn.getDwcElement() + ")";
+            jpqlQuery += " " + qn.getComparator() + " ";
+            if (qn.getComparator().equals("like")) {
+                jpqlQuery += "'%" + qn.getUserEntry().toLowerCase() + "%'";
+            } else {
+                jpqlQuery += "'" + qn.getUserEntry().toLowerCase() + "'";
+            }
+            for (int i = 1; i < llqn.size(); i++) {
+                qn = llqn.get(i);
+                jpqlQuery += " " + qn.getLogicalOperator() + " ";
+                jpqlQuery += "lower(dwc." + qn.getDwcElement() + ")";
+                jpqlQuery += " " + qn.getComparator() + " ";
+                if (qn.getComparator().equals("like")) {
+                    jpqlQuery += "'%" + qn.getUserEntry().toLowerCase() + "%'";
+                } else {
+                    jpqlQuery += "'" + qn.getUserEntry().toLowerCase() + "'";
+                }
+            }
+            return jpqlQuery+" order by dwc.globaluniqueidentifier;";
+        }
+	}
+
     //Method to get a especifica darwin core element
     @Override
 	public DwcElement getDwCElementByIdB(BigDecimal id) {
@@ -326,6 +423,17 @@ public class ShareBean implements ShareRemote, ShareLocal {
 	public List<DwcCategory> getDwCCategoriesB() {
 		return SEAOL.getDwCCategories();
 	}
+
+    @Override
+    public LinkedList<String> getAllElementsDwc(){
+        List<DwcElement> elements = SEAOL.getDwCElements();
+        LinkedList<String> result = new LinkedList();
+        for(DwcElement element:elements){
+            String e = element.getElementName().toLowerCase();
+            result.add(e);
+        }
+        return result;
+    }
 
     //Method to get a list of darwin core elements
     @Override
@@ -986,14 +1094,14 @@ public class ShareBean implements ShareRemote, ShareLocal {
     /**
      * @return the SEAOL
      */
-    public ShareEAOLocal getSEAOL() {
+    public ShareLocalEAO getSEAOL() {
         return SEAOL;
     }
 
     /**
      * @param SEAOL the SEAOL to set
      */
-    public void setSEAOL(ShareEAOLocal SEAOL) {
+    public void setSEAOL(ShareLocalEAO SEAOL) {
         this.SEAOL = SEAOL;
     }
  
