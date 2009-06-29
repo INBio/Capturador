@@ -204,6 +204,10 @@ public class SessionBeanShare extends AbstractSessionBean {
         return tempList;
     }
 
+    public LinkedList<String> getAllElementsDwc(){
+        return getShareBR().getAllElementsDwc();
+    }
+
     //Method to retrive the elements of plinian core
     public LinkedList<StandardNode> findPliElements() {
         List<PliElement> pliElements = this.getShareBR().getPliElementsB();
@@ -227,8 +231,8 @@ public class SessionBeanShare extends AbstractSessionBean {
     }
 
     //Method to create the darwin core snapshot with all information
-    public String createDwcSnapshotAll(){
-        return getShareBR().makeDcwSnapshotAll();
+    public String createDwcSnapshot(){
+        return getShareBR().makeDcwSnapshotNative(queryList, elementList);
     }
 
     /**

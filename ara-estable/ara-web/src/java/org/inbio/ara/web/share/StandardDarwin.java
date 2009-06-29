@@ -644,13 +644,14 @@ public class StandardDarwin extends AbstractPageBean {
 
     //Code execution for "share info" button event
     public String bshareAll_action() {
-        // TODO: Process the action. Return value is a navigation
-        // case name where null will return to the same page.
-        String result = getshare$SessionBeanShare().createDwcSnapshotAll();
+        //Setear la lista de elementos y la lista de consulta
+        getshare$SessionBeanShare().setQueryList(new LinkedList<QueryNode>()); //Sin filtros
+        getshare$SessionBeanShare().setElementList(getAllElementsDwc()); //Con todos los elementos
+        //Crear el snapshot
+        String result = getshare$SessionBeanShare().createDwcSnapshot();
         if (result.equals("success")) {
             //Set to null the query  list (filters)
-            LinkedList<QueryNode> llaux = new LinkedList();
-            getshare$SessionBeanShare().setQueryList(llaux);
+            getshare$SessionBeanShare().setQueryList(new LinkedList<QueryNode>());
             return "dwcSuccess";
         }
         if (result.equals("fail")) {
@@ -668,7 +669,8 @@ public class StandardDarwin extends AbstractPageBean {
             LinkedList<String> selectedElements = getSelectedelements();
             getshare$SessionBeanShare().setElementList(selectedElements);
             //Create the snapshot
-            String result = getshare$SessionBeanShare().createDwcSnapshot(validate);
+            //String result = getshare$SessionBeanShare().createDwcSnapshot(validate);
+            String result = getshare$SessionBeanShare().createDwcSnapshot();
             if (result.equals("success")) {
                 //Set to null the query  list (filters)
                 LinkedList<QueryNode> llaux = new LinkedList();
@@ -697,6 +699,11 @@ public class StandardDarwin extends AbstractPageBean {
             }
         }
         return result;
+    }
+
+    //Metodo que trae todos los elementos darwin core en una lista de strings
+    public LinkedList<String> getAllElementsDwc(){
+        return getshare$SessionBeanShare().getAllElementsDwc();
     }
 
     //Code execution for "add filter" button event
