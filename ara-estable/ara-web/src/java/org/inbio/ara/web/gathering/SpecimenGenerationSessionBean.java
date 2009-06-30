@@ -580,7 +580,12 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     }
 
     public Long getSelectedInstitution() {
-        return (institution == null) ? -1L : selectedInstitution;
+        // return (institution == null) ? -1L : selectedInstitution;
+        if (selectedInstitution == null) {
+            return -1L;
+        } else {
+            return selectedInstitution;
+        }
     }
 
     public void setSelectedInstitution(Long selectedInstitution) {

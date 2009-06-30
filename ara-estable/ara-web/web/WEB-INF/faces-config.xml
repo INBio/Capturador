@@ -17,4 +17,9 @@
 			<var>resources</var>
 		</resource-bundle>
 	</application>
+    <managed-bean>
+        <managed-bean-name>identification$SearchIdentification</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.web.identification.SearchIdentification</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>
