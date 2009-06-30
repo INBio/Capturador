@@ -23,6 +23,8 @@
                                     selected="#{share$SessionBeanShare.result_radio_group}" style="font-size: 14px; height: 48px; width: 408px"/>
                                 <webuijsf:button actionExpression="#{share$StandardSelection.button1_action}" id="button1" style="height: 24px; width: 119px" text="#{resources.standar_button}"/>
                             </h:panelGrid>
+                            <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1" infoClass="infoMessage"
+                                style="height: 24px; left: 288px; top: 144px; position: absolute; width: 334px" warnClass="warnMessage"/>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
                     <jsp:directive.include file="/footer.jspf"/>

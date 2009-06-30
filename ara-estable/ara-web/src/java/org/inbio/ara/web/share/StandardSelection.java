@@ -383,8 +383,11 @@ public class StandardSelection extends AbstractPageBean {
         // TODO: Process the action. Return value is a navigation
         // case name where null will return to the same page.
         int selected_item = this.getshare$SessionBeanShare().getResult_radio_group();
-        if (selected_item == 1)
-            return "irPlinian";
+        if (selected_item == 1){
+            //return "irPlinian";
+            MessageBean.setSuccessMessageFromBundle("not_yet");
+            return null;
+        }
         else if(selected_item == 2)
             return "irDarwin";
         else return "";
