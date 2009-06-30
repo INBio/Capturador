@@ -1880,28 +1880,30 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET escape_string_warning = off;
 SET search_path = ara, pg_catalog;
-INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'PÃºblico general', 'All users', 0, 'ara', '2008-04-02', 'ara', '2008-04-02');
-INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Educadores, estudiantes y formadores de opiniÃ³n de distintos niveles', 'profesores, monitores, periodistas, religiosos o afines', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO ara.geographic_layer(geographic_layer_id, name, obj_version,created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'country', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO ara.geographic_layer(geographic_layer_id, name, obj_version,created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'province', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Público general', 'All users', 0, 'ara', '2008-04-02', 'ara', '2008-04-02');
+INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Educadores, estudiantes y formadores de opinión de distintos niveles', 'profesores, monitores, periodistas, religiosos o afines', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (6, 'Tomadores de decisiones', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Investigadores de biodiversidad', 'CientÃ­ficos, taxÃ³nomos, biÃ³logos, tÃ©cnicos especialistas, bioquÃ­micos, profesionales de salud, educadores y estudiantes universitarios o afines', 1, 'ara', '2008-04-02', 'ara', '2008-04-02');
+INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Investigadores de biodiversidad', 'Científicos, taxónomos, biólogos, técnicos especialistas, bioquímicos, profesionales de salud, educadores y estudiantes universitarios o afines', 1, 'ara', '2008-04-02', 'ara', '2008-04-02');
 INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Productores que hacen un uso sustentable del recurso', NULL , 1, 'ara', '2008-04-02', 'ara', '2008-04-02');
-INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (5, 'Profesionales de campos fuera de la biodiversidad', ' (Autores literarios, historiadores, etnÃ³grafos) y usuarios grÃ¡ficos (Ilustradores, pintores, diseÃ±adores o afines)' , 1, 'ara', '2008-04-02', 'ara', '2008-04-02');
+INSERT INTO audience (audience_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (5, 'Profesionales de campos fuera de la biodiversidad', ' (Autores literarios, historiadores, etnógrafos) y usuarios gráficos (Ilustradores, pintores, diseñadores o afines)' , 1, 'ara', '2008-04-02', 'ara', '2008-04-02');
 INSERT INTO collection (collection_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (11, 'Mollusca', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO collection (collection_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (12, 'Plantae', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO collection (collection_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (13, 'Arachnida', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO collection (collection_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (14, 'Fungi', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO collection (collection_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (9, 'Chordata', 'Vertebrates', '2007-01-01', 'ara', '2007-01-01', 'ara', 0);
 INSERT INTO collection (collection_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (10, 'Insecta', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
-INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Usa detalles de recolecciÃ³n', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'ProyecciÃ³n por defecto', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'MÃ©todo de recolecciÃ³n usado por defecto', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Permite el uso de sinÃ³nimos en identificaciones', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Usa detalles de recolección', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Proyección por defecto', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Método de recolección usado por defecto', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Permite el uso de sinónimos en identificaciones', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (5, 'Utiliza formas de vida', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (6, 'Nombre del mÃ³dulo que utiliza la colecciÃ³n para manejar las descripciones morfolÃ³gicas', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (6, 'Nombre del módulo que utiliza la colección para manejar las descripciones morfológicas', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (7, 'Utiliza cultivos', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (8, 'Comparte secuencias de detalles de recolecciÃ³n con otras colecciones', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (9, 'Permite administrar observaiones de especÃ­menes', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (10, 'La modificaciÃ³n de un taxÃ³n puede generar la reidentificaciÃ³n de los especÃ­menes asociados', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (8, 'Comparte secuencias de detalles de recolección con otras colecciones', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (9, 'Permite administrar observaiones de especímenes', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO protocol_attribute (protocol_attribute_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (10, 'La modificación de un taxón puede generar la reidentificación de los especímenes asociados', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO collection_protocol (collection_id, protocol_attribute_id, value, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (9, 2, '1', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO collection_protocol (collection_id, protocol_attribute_id, value, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (9, 3, '1', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO collection_protocol (collection_id, protocol_attribute_id, value, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (9, 4, 'false', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
@@ -1922,9 +1924,9 @@ INSERT INTO ara.collection_protocol (collection_id, protocol_attribute_id, value
 INSERT INTO ara.collection_protocol (collection_id, protocol_attribute_id, value, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (11, 7, 'false', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO ara.collection_protocol (collection_id, protocol_attribute_id, value, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (11, 8, 'true', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO ara.collection_protocol (collection_id, protocol_attribute_id, value, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (11, 9, 'false', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO concept (concept_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version, name, description) VALUES (1, 'ara', '2007-01-01', 'ara', '2007-01-01', 0, 'EspaÃ±ol', 'espaÃ±ol');
-INSERT INTO concept (concept_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version, name, description) VALUES (2, 'ara', '2007-01-01', 'ara', '2007-01-01', 0, 'English', 'inglÃ©s');
-INSERT INTO concept (concept_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version, name, description) VALUES (3, 'ara', '2007-01-01', 'ara', '2007-01-01', 0, 'Portuguese', 'portuguÃ©s');
+INSERT INTO concept (concept_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version, name, description) VALUES (1, 'ara', '2007-01-01', 'ara', '2007-01-01', 0, 'Español', 'español');
+INSERT INTO concept (concept_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version, name, description) VALUES (2, 'ara', '2007-01-01', 'ara', '2007-01-01', 0, 'English', 'inglés');
+INSERT INTO concept (concept_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version, name, description) VALUES (3, 'ara', '2007-01-01', 'ara', '2007-01-01', 0, 'Portuguese', 'portugués');
 INSERT INTO country (country_id, value, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (1, 'CRA', '2007-01-01', 'ara', '2007-01-01', 'ara', 0);
 INSERT INTO country (country_id, value, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (3, 'USA', '2007-09-02', 'ara', '2007-09-02', 'ara', 0);
 INSERT INTO country (country_id, value, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (2, 'PNA', '2007-01-01', 'ara', '2007-09-02', 'ara', 2);
@@ -1932,15 +1934,15 @@ INSERT INTO exposition (exposition_id, name, description, obj_version, created_b
 INSERT INTO exposition (exposition_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Norte', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO exposition (exposition_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Sur', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO exposition (exposition_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Oeste', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO extraction_type (extraction_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'MÃ©todo modificado de decantaciÃ³n y cribado de Cobb', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO extraction_type (extraction_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'MÃ©todo de Oostenbrink', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO extraction_type (extraction_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Método modificado de decantación y cribado de Cobb', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO extraction_type (extraction_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Método de Oostenbrink', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO feature_type (feature_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Punto', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO feature_type (feature_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'PolÃ­gono', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO feature_type (feature_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'LÃ­nea', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO feature_type (feature_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Polígono', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO feature_type (feature_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Línea', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Recolecta Manual', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'ObservaciÃ³n directa', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Observación directa', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Evidencias - pistas', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'DeterminaciÃ³n auditiva', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Determinación auditiva', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (5, 'Trampa de Foso', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (6, 'Trampa de Malaise', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO ara.gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (7, 'Trampa de Mantillo', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
@@ -1949,10 +1951,10 @@ INSERT INTO ara.gathering_observation_method (gathering_observation_method_id, n
 INSERT INTO ara.gathering_observation_method (gathering_observation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (10, 'Buceo scuba', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO geographic_entity (geographic_entity_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (1, 'America Central', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO geographic_entity (geographic_entity_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (2, 'Mesoamerica', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
-INSERT INTO geographic_entity (geographic_entity_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (3, 'RegiÃ³n Caribe', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
-INSERT INTO geographic_entity (geographic_entity_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (4, 'NorteamÃ©rica', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
+INSERT INTO geographic_entity (geographic_entity_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (3, 'Región Caribe', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
+INSERT INTO geographic_entity (geographic_entity_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (4, 'Norteamérica', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO geographic_entity (geographic_entity_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (5, 'Sudamerica', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
-INSERT INTO geographic_entity (geographic_entity_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (6, 'AmÃ©rica', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
+INSERT INTO geographic_entity (geographic_entity_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (6, 'América', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 insert into ara.id_gen (gen_key,gen_value) values ('taxon_description_stage', 2);
 INSERT INTO id_gen (gen_key, gen_value) VALUES ('user_type_id', 3);
 INSERT INTO id_gen (gen_key, gen_value) VALUES ('reference_element_id', 1);
@@ -2007,18 +2009,18 @@ INSERT INTO interaction_type (interaction_type_id, name, description, creation_d
 INSERT INTO interaction_type (interaction_type_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (3, 'Comensalismo', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO interaction_type (interaction_type_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (4, 'Competencia', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO interaction_type (interaction_type_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (5, 'Mutualismo', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
-INSERT INTO interaction_type (interaction_type_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (6, 'PredaciÃ³n o parasitismo', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
+INSERT INTO interaction_type (interaction_type_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (6, 'Predación o parasitismo', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO "language" (language_id, concept_id, obj_version, creation_date, last_modification_date, created_by, last_modification_by) VALUES (1, 1, 0, '2007-01-01', '2007-01-01', 'ara', 'ara');
 INSERT INTO "language" (language_id, concept_id, obj_version, creation_date, last_modification_date, created_by, last_modification_by) VALUES (2, 2, 0, '2007-01-01', '2007-01-01', 'ara', 'ara');
 INSERT INTO "language" (language_id, concept_id, obj_version, creation_date, last_modification_date, created_by, last_modification_by) VALUES (3, 3, 0, '2007-01-01', '2007-01-01', 'ara', 'ara');
-INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Ãrbol', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Árbol', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Arbusto', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Hierba', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Bejuco', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (5, 'EpÃ­fita', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (6, 'ParÃ¡sita', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (7, 'BriÃ³fita', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (8, 'SaprÃ³fita', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (5, 'Epífita', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (6, 'Parásita', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (7, 'Briófita', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (8, 'Saprófita', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (9, 'Helecho', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (10, 'Palma', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO life_form (life_form_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (11, 'Liana', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
@@ -2031,30 +2033,30 @@ INSERT INTO ara.life_stage (life_stage_id, name, description, obj_version, creat
 INSERT INTO ara.life_stage (life_stage_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (7, 'Huevos', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO ara.life_stage (life_stage_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (8, 'Huevos Aislados', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO ara.life_stage (life_stage_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (9, 'Huevos Masa', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO ara.life_stage (life_stage_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (10, 'Huevos Cápsula', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (1, 'MÃ©todo de observaciÃ³n o recolecta', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'gathering_observation_method', 'gathering_observation_method_id');
+INSERT INTO ara.life_stage (life_stage_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (10, 'Huevos C�psula', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (1, 'Método de observación o recolecta', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'gathering_observation_method', 'gathering_observation_method_id');
 INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (2, 'Specimen categories', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'specimen_category', 'specimen_category_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (3, 'Tipo de espÃ©cimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'specimen_type', 'specimen_type_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (4, 'Origen del espÃ©cimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'origin', 'origin_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (5, 'MÃ©todo de preserva del espÃ©cimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'preservation_medium', 'preservation_medium_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (6, 'Tipo de almacenamiento de los especÃ­menes', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'storage_type', 'storage_type_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (3, 'Tipo de espécimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'specimen_type', 'specimen_type_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (4, 'Origen del espécimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'origin', 'origin_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (5, 'Método de preserva del espécimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'preservation_medium', 'preservation_medium_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (6, 'Tipo de almacenamiento de los especímenes', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'storage_type', 'storage_type_id');
 INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (7, 'Estadio', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'life_stage', 'life_stage_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (8, 'Sexo del espÃ©cimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'sex', 'sex_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (8, 'Sexo del espécimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'sex', 'sex_id');
 INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (9, 'Substrato', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'substrate', 'substrate_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (10, 'Tipo de identificaciÃ³n', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'identification_type', 'identification_type_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (10, 'Tipo de identificación', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'identification_type', 'identification_type_id');
 INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (11, 'Forma de vida', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'life_form', 'life_form_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (13, 'Tipo de extracciÃ³n', 0, 'ARA', '2008-01-01', 'ARA', '2008-01-01', 'extraction_type', 'extraction_type_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (14, 'Partes de componentes asociados a especÃ­menes', 0, 'ARA', '2008-01-01', 'ARA', '2008-01-01', 'component_part', 'component_part_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (17, 'MÃ©todo de preparaciÃ³n del espÃ©cimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'preparation_method', 'preparation_method_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (18, 'MÃ©todo de muestreo', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'sampling_type', 'sampling_type_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (19, 'Conectores para los nombres taxonÃ³micos', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'taxon_author_connector', 'taxon_author_connector_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (20, 'Tipo de espÃ©cimen tipo', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'type_specimen_type', 'type_specimen_type_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (13, 'Tipo de extracción', 0, 'ARA', '2008-01-01', 'ARA', '2008-01-01', 'extraction_type', 'extraction_type_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (14, 'Partes de componentes asociados a especímenes', 0, 'ARA', '2008-01-01', 'ARA', '2008-01-01', 'component_part', 'component_part_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (17, 'Método de preparación del espécimen', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'preparation_method', 'preparation_method_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (18, 'Método de muestreo', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'sampling_type', 'sampling_type_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (19, 'Conectores para los nombres taxonómicos', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'taxon_author_connector', 'taxon_author_connector_id');
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (20, 'Tipo de espécimen tipo', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'type_specimen_type', 'type_specimen_type_id');
 INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (21, 'Tipo de referencias', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'reference_type', 'reference_type_id');
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (22, 'MÃ©todo para calcular el sitio', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'site_calculation_method', 'site_calculation_method_id'); 
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (23, 'ExposiciÃ³n', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'exposition', 'exposition_id'); 
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (24, 'Tipo de interacciÃ³n', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'interaction_type', 'interaction_type_id');  
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (25, 'CatÃ¡logo geogrÃ¡fico', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'geographic_catalogue', 'geographic_catalogue_id');  
-INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (26, 'Estado de la identificaciÃ³n', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'identification_status', 'identification_status_id');  
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (22, 'Método para calcular el sitio', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'site_calculation_method', 'site_calculation_method_id'); 
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (23, 'Exposición', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'exposition', 'exposition_id'); 
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (24, 'Tipo de interacción', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'interaction_type', 'interaction_type_id');  
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (25, 'Catálogo geográfico', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'geographic_catalogue', 'geographic_catalogue_id');  
+INSERT INTO list_table (list_table_id, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date, name, key_field_name) VALUES (26, 'Estado de la identificación', 0, 'ara', '2008-01-01', 'ara', '2008-01-01', 'identification_status', 'identification_status_id');  
 INSERT INTO list_table_collection (list_table_id, collection_id, value_id, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 9, 1, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO list_table_collection (list_table_id, collection_id, value_id, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 9, 2, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO list_table_collection (list_table_id, collection_id, value_id, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 9, 3, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
@@ -2152,15 +2154,15 @@ INSERT INTO preservation_medium (preservation_medium_id, name, description, obj_
 INSERT INTO preservation_medium (preservation_medium_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Congelado', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO preservation_medium (preservation_medium_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'unknown', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO preservation_medium (preservation_medium_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (6, 'Formalina al 4%', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO preservation_medium (preservation_medium_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (8, 'LÃ¡mina fija', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO preservation_medium (preservation_medium_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (8, 'Lámina fija', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO preservation_medium (preservation_medium_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (9, 'Seco', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO preservation_medium (preservation_medium_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (11, 'Vivo', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO preservation_medium (preservation_medium_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (10, 'Sobres', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (9, 'Responsable de recolecciones', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
-INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (10, 'Autor taxonÃ³mico', NULL, '2007-07-13', 'ara', '2007-09-03', 'ara', 3);
-INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (13, 'Colector de especÃ­menes', 'Specimens collector', '2007-09-03', 'ara', '2008-04-03', 'ara', 1);
+INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (10, 'Autor taxonómico', NULL, '2007-07-13', 'ara', '2007-09-03', 'ara', 3);
+INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (13, 'Colector de especímenes', 'Specimens collector', '2007-09-03', 'ara', '2008-04-03', 'ara', 1);
 INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (14, 'Autor de registros de especies', 'Specimens record author', '2007-01-01', 'ara', '2008-03-31', 'ara', 4);
-INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (15, 'Autor de descripciones morfolÃ³gicas', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
+INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (15, 'Autor de descripciones morfológicas', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (16, 'Validador de identificationes', 'Determination validator', '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (18, 'Certificador de grupos nomenclaturales', NULL, '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
 INSERT INTO profile (profile_id, name, description, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (17, 'Determinador', 'Identificador', '2008-01-01', 'ara', '2008-01-01', 'ara', 0);
@@ -2173,23 +2175,23 @@ INSERT INTO sex (sex_id, name, description, obj_version, created_by, creation_da
 INSERT INTO sex (sex_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'N/A', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO sex (sex_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Hembra', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO sex (sex_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Macho', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO site_calculation_method (site_calculation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Hoja CartogrÃ¡fica', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO site_calculation_method (site_calculation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Hoja Cartográfica', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO site_calculation_method (site_calculation_method_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'GPS', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO specimen_category (specimen_category_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Individual', 'Individual', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO specimen_category (specimen_category_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Agrupado multi-taxÃ³n', 'Multiple taxon grouped', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO specimen_category (specimen_category_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Agrupado uni-taxÃ³n', 'Single taxon grouped', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO specimen_category (specimen_category_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'ObservaciÃ³n', 'Observation', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO specimen_category (specimen_category_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Agrupado multi-taxón', 'Multiple taxon grouped', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO specimen_category (specimen_category_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Agrupado uni-taxón', 'Single taxon grouped', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO specimen_category (specimen_category_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Observación', 'Observation', 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO specimen_type (specimen_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Multiples individuos', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO specimen_type (specimen_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Organismo', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (7, 'Viva', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (6, 'Seca', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'HÃºmeda', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Montaje para microscopÃ­a', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Base para microscopÃ­a electrÃ³nica', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Húmeda', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 'Montaje para microscopía', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Base para microscopía electrónica', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (5, 'Montajes permanentes en laminillas de Cobb', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'LÃ¡mina Fija', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO storage_type (storage_type_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 'Lámina Fija', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO substrate (substrate_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 'Suelo', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
-INSERT INTO substrate (substrate_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Troncos en descomposiciÃ³n', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
+INSERT INTO substrate (substrate_id, name, description, obj_version, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 'Troncos en descomposición', NULL, 0, 'ara', '2008-01-01', 'ara', '2008-01-01');
 INSERT INTO system_module (module_id, name, description, created_by, creation_date, last_modification_by, last_modification_date, obj_version, subsystem_id) VALUES (2, 'menuModuleSpecimens', NULL, 'ara', '2008-01-01', 'ara', '2008-01-01', 0, 1);
 INSERT INTO system_module (module_id, name, description, created_by, creation_date, last_modification_by, last_modification_date, obj_version, subsystem_id) VALUES (5, 'menuModuleLocations', NULL, 'ara', '2008-01-01', 'ara', '2008-01-01', 0, 2);
 INSERT INTO system_module (module_id, name, description, created_by, creation_date, last_modification_by, last_modification_date, obj_version, subsystem_id) VALUES (8, 'menuModuleSpecies', NULL, 'ara', '2008-01-01', 'ara', '2008-01-01', 0, 3);
@@ -2209,153 +2211,77 @@ INSERT INTO system_module (module_id, name, description, created_by, creation_da
 INSERT INTO system_module (module_id, name, description, created_by, creation_date, last_modification_by, last_modification_date, obj_version, subsystem_id) VALUES (21, 'menuModuleAdminCollections', NULL, 'ara', '2008-01-01', 'ara', '2008-01-01', 0, 3);
 INSERT INTO system_module (module_id, name, description, created_by, creation_date, last_modification_by, last_modification_date, obj_version, subsystem_id) VALUES (20, 'menuModuleSelectionLists', NULL, 'ara', '2008-01-01', 'ara', '2008-01-01', 0, 3);
 insert into system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) values (94,21,'adminCollections','admin',1,0,'adminCollections','ara','2008-01-01 00:00:00','ara','2008-01-01 00:00:00');
-
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (3, 1, 'modifyGatherings', 'update', 3, 0, 'editGathering', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (4, 1, 'deleteGatherings', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (6, 2, 'listSpecimens', 'list', 1, 0, 'listSpecimen', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (7, 2, 'addSpecimes', 'add', 2, 0, 'addSpecimen', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (8, 2, 'modifySpecimens', 'update', 3, 0, 'modifySpecimen', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (9, 2, 'deleteSpecimens', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (10, 2, 'searchSpecimens', 'search', 5, 0, 'searchSpecimen', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (11, 3, 'listIdentifications', 'list', 1, 0, 'listIdentification', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (12, 3, 'addIdentification', 'add', 2, 0, 'reIdentify', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (13, 3, 'modifyIdentification', 'update', 3, 0, 'editIdentification', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (14, 3, 'deleteIdentification', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (15, 3, 'searchIdentifiers', 'search', 5, 0, 'searchIdentification', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (21, 5, 'listLocations', 'list', 1, 0, 'listSite', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (22, 5, 'addLocation', 'add', 2, 0, 'newSite', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (23, 5, 'modifyLocation', 'update', 3, 0, 'editSite', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (24, 5, 'deleteLocation', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (25, 5, 'searchLocation', 'search', 5, 0, 'searchSite', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (26, 6, 'listTaxons', 'list', 1, 0, 'listTaxon', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (27, 6, 'addTaxons', 'add', 2, 0, 'addTaxon', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (28, 6, 'modifyTaxons', 'update', 3, 0, 'modifyTaxon', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (29, 6, 'deleteTaxons', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (30, 6, 'searchTaxons', 'search', 5, 0, 'searchTaxon', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (31, 7, 'listNomenclaturalGroups', 'list', 1, 0, 'listNomenclaturalGroup', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (32, 7, 'addNomenclaturalGroups', 'add', 2, 0, 'newNomenclaturalGroup', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (33, 7, 'modifyNomenclaturalGroups', 'update', 3, 0, 'editNomenclaturalGroup', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (34, 7, 'deleteNomenclaturalGroups', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (35, 7, 'searchNomenclaturalGroups', 'search', 5, 0, 'searchNomenclaturalGroup', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (36, 8, 'listSpeciesRecords', 'list', 1, 0, 'listSpecies', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (37, 8, 'addSpeciesRecords', 'add', 2, 0, 'newSpecies', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (38, 8, 'modifySpeciesRecords', 'update', 3, 0, 'case2', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (39, 8, 'deleteSpeciesRecords', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (40, 8, 'searchSpeciesRecords', 'search', 5, 0, 'search', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (41, 9, 'listUsers', 'list', 1, 0, 'listUser', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (42, 9, 'addUsers', 'add', 2, 0, 'newUser', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (43, 9, 'modifyUser', 'update', 3, 0, 'editUser', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (44, 9, 'deleteUsers', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (45, 9, 'blockUser', 'update', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (46, 9, 'searchUsers', 'search', 5, 0, 'searchUser', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (47, 10, 'listGroups', 'list', 1, 0, 'listGroup', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (48, 10, 'addGroup', 'add', 2, 0, 'newGroup', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (49, 10, 'modifyGroup', 'modify', 3, 0, 'editGroup', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (50, 10, 'deleteGroup', 'delete', 4, 0, 'deleteGroup', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (51, 10, 'searchGroup', 'search', 5, 0, 'searchGroup', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (68, 13, 'listPeople', 'list', 1, 0, 'listPerson', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (69, 13, 'addPerson', 'add', 2, 0, 'newPerson', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (70, 13, 'modifyPerson', 'update', 3, 0, 'case3', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (71, 13, 'deletePerson', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (73, 14, 'addInstitution', 'add', 2, 0, 'case3', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (74, 14, 'modifyInstitution', 'update', 3, 0, 'doEditInstitution', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (75, 14, 'deleteInstitution', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (76, 15, 'listStages', 'list', 1, 0, 'listStage', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (77, 15, 'addStages', 'add', 2, 0, 'new', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (78, 15, 'modifyStages', 'update', 3, 0, 'edit', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (79, 15, 'deleteStages', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (80, 16, 'listProfiles', 'list', 1, 0, 'listProfile', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (81, 16, 'addProfiles', 'add', 2, 0, 'doNewProfile', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (82, 16, 'modifyProfiles', 'update', 3, 0, 'doEditProfile', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (83, 16, 'deleteProfiles', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (85, 18, 'listReferences', 'list', 1, 0, 'listReference', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (86, 18, 'addReferences', 'add', 2, 0, 'newReference', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (87, 18, 'editReferences', 'update', 3, 0, 'doEditReference', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (88, 18, 'deleteReferences', 'delete', 4, 0, 'null', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (89, 18, 'searchReferences', 'search', 5, 0, 'case2', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (91, 19, 'addAudiences', 'add', 2, 0, 'doNewAudience', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (90, 19, 'listAudiences', 'list', 1, 0, 'listAudience', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (92, 19, 'editAudiences', 'edit', 3, 0, 'doEditAudience', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (1, 1, 'listGatherings', 'list', 1, 0, 'listGathering', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (2, 1, 'addGatherings', 'add', 2, 0, 'newGathering', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (5, 1, 'searchGatherings', 'search', 5, 0, 'searchGathering', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (72, 14, 'listInstitutions', 'list', 1, 0, 'listInstitution', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
 INSERT INTO system_option (option_id, module_id, name, description, type_id, obj_version, navigation_rule, created_by, creation_date, last_modification_by, last_modification_date) VALUES (84, 17, 'changePassword', 'update', 1, 0, 'changePassword', 'ara', '2008-01-01 00:00:00', 'ara', '2008-01-01 00:00:00');
-
-
-
-
 INSERT INTO system_option_type (system_option_type_id, name, description, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (6, 'report', 'report', 'postgres', '2006-09-29 16:41:58.969138', 'postgres', '2006-09-29 16:41:58.969138', NULL);
 INSERT INTO system_option_type (system_option_type_id, name, description, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (1, 'list', 'used for list items from table or query', 'postgres', '2006-07-29 15:39:44.953', 'postgres', '2006-07-29 15:39:44.953', 0);
 INSERT INTO system_option_type (system_option_type_id, name, description, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (2, 'add', 'used for add data into a table', 'postgres', '2006-07-29 15:39:58.906', 'postgres', '2006-07-29 15:39:58.906', 0);
@@ -2376,290 +2302,148 @@ INSERT INTO system_user (user_id, username, fullname, passwd, created_by, creati
 INSERT INTO system_user (user_id, username, fullname, passwd, created_by, creation_date, last_modification_by, last_modification_date, enabled, obj_version, user_type_id, user_group_id) VALUES (70, 'Administradores', 'Administradores del sistema', '636bfa0fb2716ff876f5e33854cc9648', 'ara', '2008-05-13', 'ara', '2008-05-28', 0, 8, 1, NULL);
 insert into system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) values (71,94,'ara','2008-05-28','ara','2008-05-28',0);
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 1, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 2, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 3, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 4, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 5, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 6, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 7, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 8, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 9, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 10, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 11, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 12, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 13, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 14, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 15, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 21, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 22, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 23, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 24, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 25, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 26, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 27, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 28, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 29, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 30, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 31, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 32, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 33, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 34, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 35, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 36, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 37, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 38, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 39, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 40, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 41, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 42, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 43, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 44, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 45, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 46, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 47, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 48, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 49, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 50, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 51, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 68, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 72, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 73, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 74, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 75, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 76, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 77, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 78, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 79, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 80, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 81, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 82, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 83, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 84, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 85, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 86, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 87, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 88, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 89, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 90, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 91, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 92, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 69, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 71, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (71, 70, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 insert into system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) values (25,94, 'ara','2008-05-28','ara','2008-05-28',0);
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 1, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 2, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 3, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 4, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 5, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 6, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 7, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 8, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 9, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 10, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 11, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 12, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 13, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 14, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 15, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 21, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 22, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 23, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 24, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 25, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 26, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 27, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 28, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 29, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 30, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 31, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 32, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 33, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 34, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 35, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 36, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 37, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 38, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 39, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 40, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 41, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 42, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 43, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 44, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 45, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 46, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 47, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 48, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 49, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 50, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 51, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 68, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 72, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 73, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 74, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 75, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 76, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 77, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 78, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 79, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 80, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 81, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 82, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 83, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 84, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 85, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 86, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 87, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 88, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 89, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 90, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 91, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 92, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 69, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 71, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (25, 70, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
-
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (70, 1, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (70, 2, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
 INSERT INTO system_user_option (user_id, option_id, created_by, creation_date, last_modification_by, last_modification_date, obj_version) VALUES (70, 3, 'ara', '2008-05-28', 'ara', '2008-05-28', 0);
@@ -2908,9 +2692,9 @@ INSERT INTO taxonomical_hierarchy (taxonomical_range_id, ancestor_taxonomical_id
 INSERT INTO taxonomical_hierarchy (taxonomical_range_id, ancestor_taxonomical_id, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (2, 1, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_hierarchy (taxonomical_range_id, ancestor_taxonomical_id, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (1, 23, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_hierarchy (taxonomical_range_id, ancestor_taxonomical_id, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (23, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
-INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (0, 'RaÃ­z', NULL, 0, 'r', NULL, 0, 1, '2000-01-01', 'ara', '2000-01-01', 'ara', 0);
+INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (0, 'Raíz', NULL, 0, 'r', NULL, 0, 1, '2000-01-01', 'ara', '2000-01-01', 'ara', 0);
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (1, 'Reino', NULL, 0, 'k', 'kingdom', 2, 1, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
-INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (2, 'Filo/DivisiÃ³n', NULL, 0, 'n', 'phylum_division', 3, 1, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
+INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (2, 'Filo/División', NULL, 0, 'n', 'phylum_division', 3, 1, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (3, 'Subfilo/Division', NULL, 0, 'n', 'subphylum_subdivision', 4, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (4, 'Clase', NULL, 0, 'n', 'class', 5, 1, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (5, 'Subclase', NULL, 0, 'n', 'subclass', 6, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
@@ -2921,10 +2705,10 @@ INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, 
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (10, 'Subfamilia', NULL, 0, 'n', 'subfamily', 11, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (11, 'Tribu', NULL, 0, 'n', 'tribe', 12, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (12, 'Subtribu', NULL, 0, 'n', 'subtribe', 13, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
-INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (13, 'GÃ©nero', NULL, 0, 'g', 'genus', 14, 1, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
-INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (14, 'SubgÃ©nero', 'subg.', 1, 'n', 'subgenus', 15, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
-INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (15, 'SecciÃ³n', 'sect.', 0, 'n', 'section', 16, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
-INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (16, 'SubsecciÃ³n', 'subsect.', 0, 'n', 'subsection', 17, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
+INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (13, 'Género', NULL, 0, 'g', 'genus', 14, 1, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
+INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (14, 'Subgénero', 'subg.', 1, 'n', 'subgenus', 15, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
+INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (15, 'Sección', 'sect.', 0, 'n', 'section', 16, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
+INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (16, 'Subsección', 'subsect.', 0, 'n', 'subsection', 17, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (17, 'Estirpe', 'stirps.', 0, 'n', 'stirps', 18, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (18, 'Especie', NULL, 0, 'e', 'species', 19, 1, '2007-07-15', 'ara', '2007-07-15', 'ara', 0);
 INSERT INTO taxonomical_range (taxonomical_range_id, name, prefix, parenthesis, taxonomical_range_category, field_name, taxonomical_hierarchy_level, mandatory_level, creation_date, created_by, last_modification_date, last_modification_by, obj_version) VALUES (19, 'Subespecie', 'subsp.', 0, 'n', 'subspecies', 20, 0, '2007-07-15', 'ara', '2007-07-15', 'ara', 1);
@@ -3873,54 +3657,24 @@ REVOKE ALL ON TABLE versant FROM ara;
 GRANT ALL ON TABLE versant TO ara;
 GRANT ALL ON TABLE versant TO PUBLIC;
 SET check_function_bodies = false;
-
-
-
-
 CREATE TABLE ara.dwc_category (
     category_id numeric NOT NULL,
     category_name character varying(150) NOT NULL,
     category_keyword character varying(150) NOT NULL
 );
-
-
-
 ALTER TABLE ara.dwc_category OWNER TO postgres;
-
-
 INSERT INTO ara.dwc_category (category_id, category_name, category_keyword) VALUES (1, 'Record-level', 'record-level');
-
 INSERT INTO ara.dwc_category (category_id, category_name, category_keyword) VALUES (2, 'Taxonomic', 'taxonomic');
 INSERT INTO ara.dwc_category (category_id, category_name, category_keyword) VALUES (3, 'Identification', 'identification');
-
 INSERT INTO ara.dwc_category (category_id, category_name, category_keyword) VALUES (4, 'Locality', 'locality');
-
 INSERT INTO ara.dwc_category (category_id, category_name, category_keyword) VALUES (5, 'Collecting Event', 'collecting-event');
-
 INSERT INTO ara.dwc_category (category_id, category_name, category_keyword) VALUES (6, 'Biological', 'biological');
-
 INSERT INTO ara.dwc_category (category_id, category_name, category_keyword) VALUES (7, 'References', 'references');
-
-
-ALTER TABLE ONLY ara.dwc_category
-    ADD CONSTRAINT dwc_categories_pk PRIMARY KEY (category_id);
-
-
-
+ALTER TABLE ONLY ara.dwc_category ADD CONSTRAINT dwc_categories_pk PRIMARY KEY (category_id);
 REVOKE ALL ON TABLE ara.dwc_category FROM PUBLIC;
-
 REVOKE ALL ON TABLE ara.dwc_category FROM postgres;
-
 GRANT ALL ON TABLE ara.dwc_category TO postgres;
-
 GRANT ALL ON TABLE ara.dwc_category TO ara;
-
-
--- begin share module
-
--------------------------------------------------------
--- Creation of darwin core elements table --
--------------------------------------------------------
 SET search_path = ara, pg_catalog;
 CREATE TABLE dwc_element (
     element_id numeric NOT NULL,
@@ -3928,10 +3682,8 @@ CREATE TABLE dwc_element (
     element_keyword character varying NOT NULL,
     element_category_id numeric NOT NULL,
     element_required character varying(1) NOT NULL
-); -- '1' = true and '0' = false
+);
 ALTER TABLE ara.dwc_element OWNER TO postgres;
-
--- Populating the table
 INSERT INTO dwc_element (element_id, element_name, element_keyword, element_category_id, element_required) VALUES (1, 'GlobalUniqueIdentifier', 'globaluniqueidentifier', 1, '1');
 INSERT INTO dwc_element (element_id, element_name, element_keyword, element_category_id, element_required) VALUES (2, 'DateLastModified', 'datelastmodified', 1, '1');
 INSERT INTO dwc_element (element_id, element_name, element_keyword, element_category_id, element_required) VALUES (3, 'BasisOfRecord', 'basisofrecord', 1, '1');
@@ -3978,21 +3730,14 @@ INSERT INTO dwc_element (element_id, element_name, element_keyword, element_cate
 INSERT INTO dwc_element (element_id, element_name, element_keyword, element_category_id, element_required) VALUES (44, 'Attributes', 'attributes', 6, '0');
 INSERT INTO dwc_element (element_id, element_name, element_keyword, element_category_id, element_required) VALUES (45, 'ImageURL', 'imageurl', 7, '0');
 INSERT INTO dwc_element (element_id, element_name, element_keyword, element_category_id, element_required) VALUES (46, 'RelatedInformation', 'relatedinformation', 7, '0');
--- Seting the primary key
 ALTER TABLE ONLY dwc_element
     ADD CONSTRAINT dwc_elements_pk PRIMARY KEY (element_id);
--- Seting the foreing key
 ALTER TABLE ONLY dwc_element
     ADD CONSTRAINT dwc_elements_fk FOREIGN KEY (element_category_id) REFERENCES dwc_category(category_id);
--- Generated by postgres
 REVOKE ALL ON TABLE dwc_element FROM PUBLIC;
 REVOKE ALL ON TABLE dwc_element FROM postgres;
 GRANT ALL ON TABLE dwc_element TO postgres;
 GRANT ALL ON TABLE dwc_element TO ara;
-
--------------------------------------------------------
--- Creation of Darwin Core Snapshot Table --
--------------------------------------------------------
 CREATE TABLE ara.dwc_snapshot
 (
   globaluniqueidentifier character varying,
@@ -4044,11 +3789,6 @@ CREATE TABLE ara.dwc_snapshot
   CONSTRAINT dwc_snapshot_pkey PRIMARY KEY (globaluniqueidentifier)
 );
 ALTER TABLE ara.dwc_snapshot OWNER TO ara;
-
--------------------------------------------------------
--- Creation of Plinian Core elements Table --
--------------------------------------------------------
--- Creation
 CREATE TABLE pli_element (
     element_id numeric NOT NULL,
     element_name character varying(150) NOT NULL,
@@ -4056,7 +3796,6 @@ CREATE TABLE pli_element (
     element_required character varying(1) NOT NULL
 );
 ALTER TABLE ara.pli_element OWNER TO postgres;
--- Populating the table
 INSERT INTO pli_element (element_id, element_name, element_keyword, element_required) VALUES (1, 'ScientificName', 'scientificname', '1');
 INSERT INTO pli_element (element_id, element_name, element_keyword, element_required) VALUES (2, 'InstitutionCode', 'institutioncode', '1');
 INSERT INTO pli_element (element_id, element_name, element_keyword, element_required) VALUES (3, 'DateLastModified', 'datelastmodified', '1');
@@ -4116,22 +3855,13 @@ INSERT INTO pli_element (element_id, element_name, element_keyword, element_requ
 INSERT INTO pli_element (element_id, element_name, element_keyword, element_required) VALUES (57, 'CaptionImage2', 'captionimage2', '0');
 INSERT INTO pli_element (element_id, element_name, element_keyword, element_required) VALUES (58, 'UrlImage3', 'urlimage3', '0');
 INSERT INTO pli_element (element_id, element_name, element_keyword, element_required) VALUES (59, 'CaptionImage3', 'captionimage3', '0');
--- Seting the primary key
-ALTER TABLE ONLY pli_element
-    ADD CONSTRAINT pli_elements_pk PRIMARY KEY (element_id);
--- Generated by postgres
+ALTER TABLE ONLY pli_element ADD CONSTRAINT pli_elements_pk PRIMARY KEY (element_id);
 REVOKE ALL ON TABLE pli_element FROM PUBLIC;
 REVOKE ALL ON TABLE pli_element FROM postgres;
 GRANT ALL ON TABLE pli_element TO postgres;
 GRANT ALL ON TABLE pli_element TO ara;
-
--- end share module
-
 SET check_function_bodies = false;
-
 SET client_min_messages = warning;
-
 SET default_tablespace = '';
-
 SET default_with_oids = false;
 
