@@ -741,8 +741,8 @@ public class editPerson extends AbstractPageBean {
             this.txt_country1.setText(tperson.getCountry());
 
             try {
-                this.txt_birthYear1.setText(tperson.getBirthYear());
-                this.txt_deathYear1.setText(tperson.getDeathYear());
+                this.txt_birthYear1.setText(tperson.getBirthYear()+"");
+                this.txt_deathYear1.setText(tperson.getDeathYear()+"");
             } catch (NullPointerException e) {
             }
 
