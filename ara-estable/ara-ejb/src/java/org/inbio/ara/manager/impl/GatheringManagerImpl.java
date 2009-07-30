@@ -31,7 +31,8 @@ public class GatheringManagerImpl implements GatheringManagerRemote {
 
         //Mandatory
         QueryNode qn = sll.getFirst();
-        jpqlQuery += "lower(o." + qn.getDwcElement() + ")";
+        //jpqlQuery += "lower(o." + qn.getDwcElement() + ")";
+        jpqlQuery += "o." + qn.getDwcElement();
         jpqlQuery += " " + qn.getComparator() + " ";
         if (qn.getComparator().equals("like")) {
             jpqlQuery += "'%" + qn.getUserEntry().toLowerCase() + "%'";
@@ -43,7 +44,8 @@ public class GatheringManagerImpl implements GatheringManagerRemote {
         for (int i = 1; i < sll.size(); i++) {
             qn = sll.get(i);
             jpqlQuery += " " + qn.getLogicalOperator() + " ";
-            jpqlQuery += "lower(o." + qn.getDwcElement() + ")";
+            //jpqlQuery += "lower(o." + qn.getDwcElement() + ")";
+            jpqlQuery += "o." + qn.getDwcElement();
             jpqlQuery += " " + qn.getComparator() + " ";
             if (qn.getComparator().equals("like")) {
                 jpqlQuery += "'%" + qn.getUserEntry().toLowerCase() + "%'";

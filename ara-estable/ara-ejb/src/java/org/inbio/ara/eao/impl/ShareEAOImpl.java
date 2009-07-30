@@ -474,6 +474,7 @@ public class ShareEAOImpl extends BaseEAOImpl implements ShareLocalEAO{
     @Override
     public Long countQueryElements(String jpqlQuery){
         Query q = em.createQuery(jpqlQuery);
+        System.out.println(jpqlQuery);
         Long ret = (Long) q.getSingleResult();
         return ret;
     }
