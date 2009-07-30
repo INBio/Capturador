@@ -94,7 +94,11 @@ public class PreviewSpecimen extends AbstractPageBean {
     private MessageBean mb;
     Option[] comparator = {
         new Option(1, "Igual a"),
-        new Option(2, "Similar a")
+        new Option(2, "Similar a"),
+        new Option(3, "Mayor a"),
+        new Option(4, "Menor a"),
+        new Option(5, "Mayor o igual a"),
+        new Option(6, "Menor o igual a")
     };
     Option[] logicalOperator = {
         new Option(1, "Y"),
@@ -643,7 +647,15 @@ public class PreviewSpecimen extends AbstractPageBean {
         //Comparator
         int comparatorValue = ((Integer) ((DropDown) panelChildren.get(offset + COMPARATOR_CLMN)).getSelected()).intValue();
         qn.setComparatorId(comparatorValue);
-        qn.setComparator((comparatorValue == 1) ? "=" : "like");
+        switch(comparatorValue) {
+            case 1: qn.setComparator("="); break;
+            case 2: qn.setComparator("like"); break;
+            case 3: qn.setComparator(">"); break;
+            case 4: qn.setComparator("<"); break;
+            case 5: qn.setComparator(">="); break;
+            case 6: qn.setComparator("<="); break;
+        }
+        //qn.setComparator((comparatorValue == 1) ? "=" : "like");
         //Input
         String inputValue = ((TextField) panelChildren.get(offset + INPUT_CLMN)).getText().toString();
         qn.setUserEntry(inputValue);
