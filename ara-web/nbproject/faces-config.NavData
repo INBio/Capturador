@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="inventory/ListGatheringDetail.jsp" x="650" y="150" zoom="true"/>
+        <Node id="inventoryTest.jsp" x="448" y="98" zoom="true"/>
+        <Node id="inventory/ListIdentification.jsp" x="150" y="150" zoom="true"/>
+        <Node id="inventory/EditGatheringDetail.jsp" x="650" y="300" zoom="true"/>
+        <Node id="index.jsp" x="99" y="162" zoom="true"/>
+        <Node id="inventory/NewGathering.jsp" x="400" y="300" zoom="true"/>
+        <Node id="inventory/EditSpecimen.jsp" x="400" y="150" zoom="true"/>
+        <Node id="inventory/ListGathering.jsp" x="150" y="300" zoom="true"/>
+        <Node id="gis/ListSite.jsp" x="150" y="450" zoom="true"/>
+        <Node id="inventory/NewGatheringDetail.jsp" x="400" y="450" zoom="true"/>
+        <Node id="inventory/ListSpecimen.jsp" x="108" y="99" zoom="true"/>
+        <Node id="inventory/SpecimenGeneration.jsp" x="150" y="600" zoom="true"/>
+        <Node id="inventory/EditGathering.jsp" x="900" y="150" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

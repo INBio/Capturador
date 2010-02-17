@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Document   : systemStatistics
+	Created on : Mar 25, 2009, 10:08:18 AM
+	Author     : jgutierrez, modified by esmata
+-->
+<div xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:webuijsf="http://www.sun.com/webui/webuijsf">
+    <table cellspacing="20px">
+        <f:subview id="SystemStatistics">
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <h:panelGrid cellspacing="1" columns="1" id="gridpTableButtons1" style="height: 24px" styleClass="My_table_statistics" width="360">
+                            <h:panelGrid columns="1" id="gridptitle1" styleClass="My_table_statistics_top" width="360">
+                                <h:outputText id="specimenTitle" value="#{resources.specimenByCollection}"/>
+                            </h:panelGrid>
+                            <h:panelGrid cellspacing="1" columns="1" id="gridpTable1" style="height: 24px" width="360">
+                                <h:dataTable cellspacing="0" columnClasses="list-columns" headerClass="list-header" id="dataTableSpecimens"
+                                    rowClasses="list-row-even,list-row-odd"
+                                    style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
+                                    value="#{statistics$StatisticsSessionBean.specimenList}" var="currentRow" width="360">
+                                    <h:column>
+                                        <h:outputText value="#{currentRow['name']}"/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value="#{currentRow['value']}"/>
+                                    </h:column>
+                                </h:dataTable>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </td>
+                    <td>
+                        <h:panelGrid cellspacing="1" columns="1" id="gridpTableButtons2" style="height: 24px" styleClass="My_table_statistics" width="360">
+                            <h:panelGrid columns="1" id="gridptitle2" styleClass="My_table_statistics_top" width="360">
+                                <h:outputText id="speciesTitle" value="#{resources.speciesByCollection}"/>
+                            </h:panelGrid>
+                            <h:panelGrid cellspacing="1" columns="1" id="gridpTable2" style="height: 24px" width="360">
+                                <h:dataTable cellspacing="0" columnClasses="list-columns" headerClass="list-header" id="dataTableSpecies"
+                                    rowClasses="list-row-even,list-row-odd"
+                                    style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
+                                    value="#{statistics$StatisticsSessionBean.speciesList}" var="currentRow" width="360">
+                                    <h:column>
+                                        <h:outputText value="#{currentRow['name']}"/>
+                                    </h:column>
+                                    <h:column>
+                                        <h:outputText value="#{currentRow['value']}"/>
+                                    </h:column>
+                                </h:dataTable>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </td>
+                </tr>
+            </tbody>
+        </f:subview>
+    </table>
+</div>
