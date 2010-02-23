@@ -52,5 +52,16 @@ public class NomenclaturalGroupEAOImpl
         q.setParameter("userId", userId);
         return (List<NomenclaturalGroup>)q.getResultList();
     }
+
+    public List<NomenclaturalGroup> getNomenclaturalGroupListByTaxon(Long taxonId) {
+
+        Query q = em.createQuery(
+                " Select ng " +
+                " from NomenclaturalGroup ng, TaxonNomenclaturalGroup tng " +
+                " where tng.taxonNomenclaturalGroupPK.nomenclaturalGroupId = ng.nomenclaturalGroupId and " +
+                " tng.taxonNomenclaturalGroupPK.taxonId = :taxonId" );
+        q.setParameter("taxonId", taxonId);
+        return (List<NomenclaturalGroup>)q.getResultList();
+    }
  
 }

@@ -17,6 +17,14 @@ import org.inbio.ara.persistence.specimen.LifeStage;
 import org.inbio.ara.persistence.specimen.Sex;
 import org.inbio.ara.persistence.specimen.Substrate;
 import org.inbio.ara.persistence.gathering.ExtractionType;
+import org.inbio.ara.persistence.germoplasma.CropSystem;
+import org.inbio.ara.persistence.germoplasma.CropType;
+import org.inbio.ara.persistence.germoplasma.CultivationPractice;
+import org.inbio.ara.persistence.germoplasma.GatheringSource;
+import org.inbio.ara.persistence.germoplasma.MaterialType;
+import org.inbio.ara.persistence.germoplasma.SampleStatus;
+import org.inbio.ara.persistence.germoplasma.SoilColor;
+import org.inbio.ara.persistence.germoplasma.SoilTexture;
 import org.inbio.ara.persistence.specimen.LifeForm;
 
 /**
@@ -53,10 +61,18 @@ public enum SelectionListEntity {
     TYPE_SPECIMEN_TYPE(20, new TypeSpecimenType(), true),
     REFERENCE_TYPE(21, new ReferenceType(), true),
     SITE_CALCULATION_METHOD(22, new SiteCalculationMethod(), true),*/
-    EXPOSITION(new Long(23), new Exposition(), true,"sle_exposition",Exposition.class.getName())
+    EXPOSITION(new Long(23), new Exposition(), true,"sle_exposition",Exposition.class.getName()),
     /*INTERACTION_TYPE(24, new InteractionType(), true),
     GEOGRAPHIC_CATALOGUE(25, new GeographicCatalogue(), true)
      */
+    MATERIAL_TYPE(new Long(27), new MaterialType(), true,"sle_material_type",MaterialType.class.getName()),
+    CROP_SYSTEM(new Long(28), new CropSystem(), true,"sle_crop_system",CropSystem.class.getName()),
+    CROP_TYPE(new Long(29), new CropType(), true,"sle_crop_type",CropType.class.getName()),
+    CULTIVATION_PRACTICE(new Long(30), new CultivationPractice(), true,"sle_cultivation_practice",CultivationPractice.class.getName()),
+    GATHERING_SOURCE(new Long(31), new GatheringSource(), true,"sle_gathering_source",GatheringSource.class.getName()),
+    SAMPLE_STATUS(new Long(32), new SampleStatus(), true,"sle_sample_status",SampleStatus.class.getName()),
+    SOIL_COLOR(new Long(33), new SoilColor(), true,"sle_soil_color",SoilColor.class.getName()),
+    SOIL_TEXTURE(new Long(34), new SoilTexture(), true,"sle_soil_texture",SoilTexture.class.getName())
     ;
 
     /* Class name of the entity maped with the selection list table */

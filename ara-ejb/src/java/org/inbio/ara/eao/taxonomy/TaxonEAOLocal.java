@@ -48,5 +48,6 @@ public interface TaxonEAOLocal extends BaseLocalEAO<Taxon,Long> {
 
     public java.util.List<org.inbio.ara.persistence.taxonomy.Taxon> getTaxonListByNomenclaturalGroup(java.lang.Long nomenclaturalId);
 
+    public List<Taxon> getTaxonsByCollectionIdAndTaxonomicalRangeId(Long collectionId, Long taxonomicalRangeId);
 
 }
