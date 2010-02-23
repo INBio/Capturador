@@ -29,7 +29,9 @@ public enum ProfileEntity {
     MORPHOLOGICAL_DESCRIPTOR(new Long(15)),
     IDENTIFICATION_VALIDATOR(new Long(16)),
     IDENTIFIER_PROFILE(new Long(17)),
-    CERTIFIER(new Long(18));
+    CERTIFIER(new Long(18)),
+
+    DONOR_PERSON_PROFILE(new Long(19));
 
     private Long id;
 
