@@ -1154,3 +1154,439 @@ BEGIN
 
 END;
 ' language 'plpgsql';
+
+
+--2010-2-23 dasolano
+--actualizacion de la base de datos y llenado para el modulo de manejo de germoplasma
+
+﻿/*DROP TABLE ara.material/_type;
+DROP TABLE ara.sample_status;
+DROP TABLE ara.gathering_source;
+DROP TABLE ara.soil_color;
+DROP TABLE ara.soil_texture;
+DROP TABLE ara.cultivation_practice;
+DROP TABLE ara.crop_system;
+DROP TABLE ara.crop_type;
+DROP TABLE ara.passport;*/
+
+				-----------------------------------
+				-- TABLES FOR GERMOPLASMA MODULE --
+				-----------------------------------
+
+CREATE TABLE ara.material_type(
+material_type_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.material_type OWNER TO ara;
+
+ALTER TABLE ONLY ara.material_type ADD CONSTRAINT "MATERIAL_TYPE_ID_PK" PRIMARY KEY (material_type_id);
+
+CREATE TABLE ara.sample_status(
+sample_status_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.sample_status OWNER TO ara;
+
+ALTER TABLE ONLY ara.sample_status ADD CONSTRAINT "SAMPLE_STATUS_ID_PK" PRIMARY KEY (sample_status_id);
+
+CREATE TABLE ara.gathering_source(
+gathering_source_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.gathering_source OWNER TO ara;
+
+ALTER TABLE ONLY ara.gathering_source ADD CONSTRAINT "GATHERING_SOURCE_ID_PK" PRIMARY KEY (gathering_source_id);
+
+CREATE TABLE ara.soil_color(
+soil_color_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.soil_color OWNER TO ara;
+
+ALTER TABLE ONLY ara.soil_color ADD CONSTRAINT "SOIL_COLOR_ID_PK" PRIMARY KEY (soil_color_id);
+
+CREATE TABLE ara.soil_texture(
+soil_texture_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.soil_texture OWNER TO ara;
+
+ALTER TABLE ONLY ara.soil_texture ADD CONSTRAINT "SOIL_TEXTURE_ID_PK" PRIMARY KEY (soil_texture_id);
+
+CREATE TABLE ara.cultivation_practice(
+cultivation_practice_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.cultivation_practice OWNER TO ara;
+
+ALTER TABLE ONLY ara.cultivation_practice ADD CONSTRAINT "CULTURE_PRACTCE_ID_PK" PRIMARY KEY (cultivation_practice_id);
+
+CREATE TABLE ara.crop_system(
+crop_system_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.crop_system OWNER TO ara;
+
+ALTER TABLE ONLY ara.crop_system ADD CONSTRAINT "CROP_SYSTEM_ID_PK" PRIMARY KEY (crop_system_id);
+
+CREATE TABLE ara.crop_type(
+crop_type_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.crop_type OWNER TO ara;
+
+ALTER TABLE ONLY ara.crop_type ADD CONSTRAINT "CROP_TYPE_ID_PK" PRIMARY KEY (crop_type_id);
+
+
+
+
+
+CREATE TABLE ara.passport (
+passport_id 		numeric not null,
+donor_person_id 	numeric,
+donor_institution_id 	numeric,
+gathering_id 		numeric,
+material_type_id 	numeric not null,
+sample_status_id 	numeric,
+gathering_source_id 	numeric,
+mission_number 		numeric,
+soil_color_id 		numeric,
+soil_texture_id 	numeric,
+cultivation_practice_id numeric,
+plant_nursery_date 	date,
+planting_season_date 	date,
+harvesting_season_date 	date,
+crop_system_id 		numeric,
+resistant 		character varying(500),
+remarks 		character varying(1000),
+crop_type_id 		numeric,
+taxon_id  		numeric,
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.passport OWNER TO ara;
+
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT "PASSPORT_ID_PK" PRIMARY KEY (passport_id);
+
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT donor_person_id_fk FOREIGN KEY (donor_person_id) REFERENCES ara.person(person_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT donor_institution_id_fk FOREIGN KEY (donor_institution_id) REFERENCES ara.institution(institution_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT gathering_id_fk FOREIGN KEY (gathering_id) REFERENCES ara.gathering_observation(gathering_observation_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT material_type_id_fk FOREIGN KEY (material_type_id) REFERENCES ara.material_type(material_type_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT sample_status_id_fk FOREIGN KEY (sample_status_id) REFERENCES ara.sample_status(sample_status_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT gathering_source_id_fk FOREIGN KEY (gathering_source_id) REFERENCES ara.gathering_source(gathering_source_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT soil_color_id_fk FOREIGN KEY (soil_color_id) REFERENCES ara.soil_color(soil_color_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT soil_texture_id_fk FOREIGN KEY (soil_texture_id) REFERENCES ara.soil_texture(soil_texture_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT culture_practice_id_fk FOREIGN KEY (cultivation_practice_id) REFERENCES ara.cultivation_practice(cultivation_practice_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT crop_system_id_fk FOREIGN KEY (crop_system_id) REFERENCES ara.crop_system(crop_system_id);
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT crop_type__id_fk FOREIGN KEY (crop_type_id) REFERENCES ara.crop_type(crop_type_id);
+
+
+--ALTER TABLE ONLY ara.passport ADD taxon_id  numeric;
+ALTER TABLE ONLY ara.passport ADD CONSTRAINT taxon_id_fk FOREIGN KEY (taxon_id) REFERENCES ara.taxon(taxon_id);
+
+/*drop sequence ara.material_type_seq cascade;
+drop sequence ara.sample_status_seq cascade;
+drop sequence ara.gathering_source_seq cascade;
+drop sequence ara.soil_color_seq cascade;
+drop sequence ara.soil_texture_seq cascade;
+drop sequence ara.cultivation_practice_seq cascade;
+drop sequence ara.crop_system_seq cascade;
+drop sequence ara.crop_type_seq cascade;
+drop sequence ara.passport_seq cascade;*/
+
+--CREATE SEQUENCE
+CREATE SEQUENCE ara.material_type_seq;
+ALTER TABLE ara.material_type ALTER COLUMN material_type_id SET DEFAULT nextval('ara.material_type_seq'::regclass);
+ALTER TABLE ara.material_type_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.sample_status_seq;
+ALTER TABLE ara.sample_status ALTER COLUMN sample_status_id SET DEFAULT nextval('ara.sample_status_seq'::regclass);
+ALTER TABLE ara.sample_status_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.gathering_source_seq;
+ALTER TABLE ara.gathering_source ALTER COLUMN gathering_source_id SET DEFAULT nextval('ara.gathering_source_seq'::regclass);
+ALTER TABLE ara.gathering_source_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.soil_color_seq;
+ALTER TABLE ara.soil_color ALTER COLUMN soil_color_id SET DEFAULT nextval('ara.soil_color_seq'::regclass);
+ALTER TABLE ara.soil_color_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.soil_texture_seq;
+ALTER TABLE ara.soil_texture ALTER COLUMN soil_texture_id SET DEFAULT nextval('ara.soil_texture_seq'::regclass);
+ALTER TABLE ara.soil_texture_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.cultivation_practice_seq;
+ALTER TABLE ara.cultivation_practice ALTER COLUMN cultivation_practice_id SET DEFAULT nextval('ara.cultivation_practice_seq'::regclass);
+ALTER TABLE ara.cultivation_practice_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.crop_system_seq;
+ALTER TABLE ara.crop_system ALTER COLUMN crop_system_id SET DEFAULT nextval('ara.crop_system_seq'::regclass);
+ALTER TABLE ara.crop_system_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.crop_type_seq;
+ALTER TABLE ara.crop_type ALTER COLUMN crop_type_id SET DEFAULT nextval('ara.crop_type_seq'::regclass);
+ALTER TABLE ara.crop_type_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.passport_seq;
+ALTER TABLE ara.passport ALTER COLUMN passport_id SET DEFAULT nextval('ara.passport_seq'::regclass);
+ALTER TABLE ara.passport_seq OWNER TO ara;
+
+
+
+-- FILL MATERIAL_TYPE TABLE
+INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Ashom',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Dhan',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Fruit',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Khorsani',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Pods',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Rhizom',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Seeding',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Seeds',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Tuber',NULL,'ara','2010-01-21','ara','2010-01-21');
+
+-- FILL SAMPLE STATUS TABLE
+INSERT INTO ara.sample_status (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Improved',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.sample_status (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Landrace',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.sample_status (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Wild relatives',NULL,'ara','2010-01-21','ara','2010-01-21');
+
+-- FILL GATHERING SOURCE
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Backyard',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Farm',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Farm store',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Farmers Field',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Farmers nurse',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Forest',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Kitchen Garden',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Market',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Store',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.gathering_source (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Wild',NULL,'ara','2010-01-21','ara','2010-01-21');
+
+-- FILL SOIL COLOR
+INSERT INTO ara.soil_color (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Black',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_color (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Brown',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_color (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Red',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_color (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Sandy',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_color (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Sandy Loam',NULL,'ara','2010-01-21','ara','2010-01-21');
+
+-- FILL SOIL TEXTURE
+INSERT INTO ara.soil_texture (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Clay',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_texture (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Clay Loam',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_texture (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Clayey',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_texture (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Loam',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_texture (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Loamy',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_texture (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Sandy',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_texture (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Sandy Loam',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.soil_texture (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Stony',NULL,'ara','2010-01-21','ara','2010-01-21');
+
+
+-- FILL CULTIVATION PRACTICE
+INSERT INTO ara.cultivation_practice (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Irrigated',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.cultivation_practice (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Rainfed',NULL,'ara','2010-01-21','ara','2010-01-21');
+
+-- FILL CROP SYSTEM
+INSERT INTO ara.crop_system (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Intercroping',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.crop_system (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Intercroping mi',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.crop_system (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Intercroping wi',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.crop_system (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Mixed Cropping',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.crop_system (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Rotation',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.crop_system (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Shifting',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.crop_system (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Sole',NULL,'ara','2010-01-21','ara','2010-01-21');
+INSERT INTO ara.crop_system (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Tsery cultivati',NULL,'ara','2010-01-21','ara','2010-01-21');
+
+-- FILL SELECTION LIST
+
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (27,'Tipo de Material',0,'ara','2010-01-21','ara','2010-01-21','material_type','material_type_id');
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (28,'Sistema de Cultivo',0,'ara','2010-01-21','ara','2010-01-21','crop_system','crop_system_id');
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (29,'Tipo de Cultivo',0,'ara','2010-01-21','ara','2010-01-21','crop_type','crop_type_id');
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (30,'Practica de Cultivo',0,'ara','2010-01-21','ara','2010-01-21','cultivation_practice','cultivation_practice_id');
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (31,'Fuente de Recoleccion',0,'ara','2010-01-21','ara','2010-01-21','gathering_source','gathering_source_id');
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (32,'Estado de la muestra',0,'ara','2010-01-21','ara','2010-01-21','sample_status','sample_status_id');
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (33,'Color de Suelo',0,'ara','2010-01-21','ara','2010-01-21','soil_color','soil_color_id');
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (34,'Textura del Suelo',0,'ara','2010-01-21','ara','2010-01-21','soil_texture','soil_texture_id');
+
+
+--CREATE DONOR PERSON PROFILE
+INSERT INTO ara.profile (profile_id,name,description,creation_date,created_by,last_modification_date,last_modification_by)
+VALUES(19,'Donor Person','donor person','2010-01-21','ara','2010-01-21','ara');
+
+
+
+CREATE TABLE ara.passport_nomenclatural_group (
+passport_id			numeric NOT NULL,
+nomenclatural_group_id		numeric NOT NULL,
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL
+);
+
+ALTER TABLE ara.passport_nomenclatural_group OWNER TO ara;
+
+ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT passport_nomenclatural_group_pk PRIMARY KEY (passport_id, nomenclatural_group_id);
+ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT nomenclatural_group_id_fk FOREIGN KEY (nomenclatural_group_id) REFERENCES ara.nomenclatural_group(nomenclatural_group_id);
+ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT passport_id_fk FOREIGN KEY (passport_id) REFERENCES ara.passport(passport_id);
+
+
+INSERT
+INTO
+    ara.collection
+    (
+        collection_id,
+        name,
+        description,
+        creation_date,
+        created_by,
+        last_modification_date,
+        last_modification_by
+    )
+    VALUES
+    (
+        15,
+        'Germoplasma',
+        'Germoplasma',
+        '2010-02-19',
+        'ara',
+        '2010-02-19',
+        'ara'
+    );
+
+INSERT
+INTO
+	ara.nomenclatural_group
+	(
+		nomenclatural_group_id,
+		name,
+		description,
+		temporality,
+		common_name,
+		certificator_person_id,
+		collection_id,
+		notes,
+		created_by,
+		creation_date,
+		last_modification_by,
+		last_modification_date
+	)
+VALUES (
+		8,
+		'Germoplasma',
+		'Germoplasma',
+		NULL,
+		'y',
+		NULL,
+		15,
+		NULL,
+		'ara',
+		'2010-02-19',
+		'ara',
+		'2010-02-19'
+		);
+
+
+
+INSERT
+INTO
+    ara.taxon_nomenclatural_group
+    (
+        nomenclatural_group_id,
+        taxon_id,
+        taxonomical_timestamp,
+        sequence,
+        created_by,
+        creation_date,
+        last_modification_by,
+        last_modification_date
+    )
+    VALUES
+    (
+        8,
+        4,
+        '2010-02-16',
+        1,
+        'ara',
+	'2010-02-19',
+	'ara',
+	'2010-02-19'
+    );
+
+
+INSERT
+INTO
+    ara.nomenclatural_group_region
+    (
+        nomenclatural_group_id,
+        region_id,
+        sequence,
+        created_by,
+        creation_date,
+        last_modification_by,
+        last_modification_date
+    )
+    VALUES
+    (
+        8,
+        1,
+        1,
+        'ara',
+	'2010-02-19',
+	'ara',
+	'2010-02-19'
+    );
+
+INSERT INTO ara.user_nomenclatural_group(
+            nomenclatural_group_id, user_id, "sequence", creation_date, created_by,
+            last_modification_date, last_modification_by)
+    VALUES (8, 25, 1, '2010-02-19', 'ara',
+            '2010-02-19', 'ara');
+
+    
