@@ -33,7 +33,7 @@
                                                 <f:validateLength maximum="100" minimum="0"/>
                                             </h:inputText>
                                             <h:commandButton action="#{germoplasma$ListPassport.btnPassportSearch_action}" binding="#{germoplasma$ListPassport.btnSearch}"
-                                                id="btnGatheringSearch" style="height: 25px; width: 160px" styleClass="My_Button" value="#{resources.search}"/>
+                                                id="btnGatheringSearch" style="height: 25px; width: 160px" styleClass="My_Button" value="#{resources.search}"/>    
                                             <h:commandButton action="#{germoplasma$ListPassport.btnAdvPassportSearch_action}"
                                                              binding="#{germoplasma$ListPassport.btnAdvSearch}" id="btnAdvGatheringSearch" style="height: 25px; width: 160px"
                                                 styleClass="My_Button" value="#{resources.advanced_search}"/>
@@ -41,56 +41,73 @@
                                         <h:panelGrid binding="#{germoplasma$ListPassport.gridpAdvancedSearch}" columns="1" id="gridpAdvancedSearch"
                                             rendered="false" style="height: 5px" styleClass="My_panel_blue" width="680">
 
-                                            <h:panelGrid columns="4" id="gridpAdvancedSearch1" style="height: 24px" width="780">
+                                            <h:panelGrid columns="1" id="gridpAdvancedSearch1" style="height: 24px" width="780">
 
-                                                <webuijsf:label id="labelPassportId" style="width: 168px; height: 24px"
+                                                <h:panelGrid columns="4" id="gridpAS1" style="height: 24px" width="780">
+
+                                                    <webuijsf:label id="labelPassportId" style="width: 168px; height: 24px"
                                                                 text="#{resources.passport_id}"/>
-                                                <webuijsf:textField
-                                                                    id="textFieldPassportId" style="width: 200px;"
-                                                                    text="#{germoplasma$PassportListSessionBean.queryPassportDTO.passportId}"/>
+                                                    <webuijsf:textField
+                                                                        id="textFieldPassportId" style="width: 200px;"
+                                                                        text="#{germoplasma$PassportListSessionBean.queryPassportDTO.passportId}"/>
 
-                                                <webuijsf:label id="labelGatheringId" style="width: 168px; height: 24px"
-                                                                text="#{resources.gathering_number}"/>
-                                                <webuijsf:textField 
-                                                                    id="textFieldGatheringId" style="width: 200px;"
-                                                                    text="#{germoplasma$PassportListSessionBean.queryPassportDTO.gatheringId}"/>
+                                                    <webuijsf:label id="labelPlantNusersryDate" text="#{resources.plant_nursery_date}"/>
+                                                    <webuijsf:calendar binding="#{germoplasma$ListPassport.plantNurseryDate}" columns="15"
+                                                                       dateFormatPattern="dd-MM-yyyy" id="plantNusersryDate"/>
 
-                                                <webuijsf:label id="labelDonorPerson" style="width: 168px; height: 24px" text="#{resources.donor_person}"/>
-                                                <webuijsf:dropDown id="dropdownDonorPerson"
-                                                                   items="#{germoplasma$ListPassport.donorPersons.options}"
-                                                    selected="#{germoplasma$PassportListSessionBean.queryPassportDTO.donorPersonId}" width="200px"/>
+                                                    <webuijsf:label id="labelGatheringId" style="width: 168px; height: 24px"
+                                                                    text="#{resources.gathering_number}"/>
+                                                    <webuijsf:textField
+                                                                        id="textFieldGatheringId" style="width: 200px;"
+                                                                        text="#{germoplasma$PassportListSessionBean.queryPassportDTO.gatheringId}"/>
 
-                                                <webuijsf:label id="labelDonorInstitution" style="width: 168px; height: 24px" text="#{resources.donor_institution}"/>
-                                                <webuijsf:dropDown id="dropdownDonorInstitution"
-                                                                   items="#{germoplasma$ListPassport.donorInstitutions.options}"
-                                                    selected="#{germoplasma$PassportSessionBean.passportDTO.donorInstitutionId}" width="200px"/>
+                                                    <webuijsf:label for="labelPlantingSeasonDate" text="#{resources.plantation_date}"/>
+                                                    <webuijsf:calendar binding="#{germoplasma$ListPassport.plantingSeasonDate}" columns="15"
+                                                                       dateFormatPattern="dd-MM-yyyy" id="PlantingSeasonDate"/>
 
-                                                <webuijsf:label id="labelMaterialType" style="width: 168px; height: 24px" text="#{resources.sle_material_type}"/>
-                                                <webuijsf:dropDown id="dropdownMaterialType"
-                                                                   items="#{germoplasma$ListPassport.materialTypes.options}"
-                                                                   selected="#{germoplasma$PassportListSessionBean.queryPassportDTO.materialTypeId}" width="200px"/>
-
-                                                <webuijsf:label id="labelMissionNumber" style="width: 168x; height: 24px"
+                                                    <webuijsf:label id="labelMissionNumber" style="width: 168x; height: 24px"
                                                                 text="#{resources.mission_number}"/>
-                                                <webuijsf:textField 
-                                                                    id="textFieldMissionNumber" style="width: 200px;"
-                                                                    text="#{germoplasma$PassportListSessionBean.queryPassportDTO.missionNumber}"/>
+                                                    <webuijsf:textField
+                                                                        id="textFieldMissionNumber" style="width: 200px;"
+                                                                        text="#{germoplasma$PassportListSessionBean.queryPassportDTO.missionNumber}"/>
 
-                                                <webuijsf:label id="labelPlantNusersryDate" text="#{resources.plant_nursery_date}"/>
-                                                <webuijsf:calendar binding="#{germoplasma$ListPassport.plantNurseryDate}" columns="15"
-                                                                   dateFormatPattern="dd-MM-yyyy" id="plantNusersryDate"/>
+                                                    <webuijsf:label for="labelHarvestingSeasonDate" text="#{resources.harvesting_date}"/>
+                                                    <webuijsf:calendar binding="#{germoplasma$ListPassport.harvestingSeasonDate}" columns="15"
+                                                                       dateFormatPattern="dd-MM-yyyy" id="HarvestingSeasonDate"/>
 
-                                                <webuijsf:label for="labelPlantingSeasonDate" text="#{resources.plantation_date}"/>
-                                                <webuijsf:calendar binding="#{germoplasma$ListPassport.plantingSeasonDate}" columns="15"
-                                                                   dateFormatPattern="dd-MM-yyyy" id="PlantingSeasonDate"/>
-                                                
-                                                <webuijsf:label for="labelHarvestingSeasonDate" text="#{resources.harvesting_date}"/>
-                                                <webuijsf:calendar binding="#{germoplasma$ListPassport.harvestingSeasonDate}" columns="15"
-                                                                   dateFormatPattern="dd-MM-yyyy" id="HarvestingSeasonDate"/>
+                                                    <webuijsf:label id="labelDonorPerson" style="width: 168px; height: 24px" text="#{resources.donor_person}"/>
+                                                    <webuijsf:dropDown id="dropdownDonorPerson"
+                                                                       items="#{germoplasma$ListPassport.donorPersons.options}"
+                                                        selected="#{germoplasma$PassportListSessionBean.queryPassportDTO.donorPersonId}" width="200px"/>
 
-                                                <h:commandButton action="#{inventory$ListGathering.btnAdvSearchGO_action}" id="btnAdvSearchGO"
+                                                    <webuijsf:label id="labelMaterialType" style="width: 168px; height: 24px" text="#{resources.sle_material_type}"/>
+                                                    <webuijsf:dropDown id="dropdownMaterialType"
+                                                                       items="#{germoplasma$ListPassport.materialTypes.options}"
+                                                                       selected="#{germoplasma$PassportListSessionBean.queryPassportDTO.materialTypeId}" width="200px"/>
+
+                                                    <webuijsf:label id="labelDonorInstitution" style="width: 168px; height: 24px" text="#{resources.donor_institution}"/>
+                                                    <webuijsf:dropDown id="dropdownDonorInstitution"
+                                                                       items="#{germoplasma$ListPassport.donorInstitutions.options}"
+                                                        selected="#{germoplasma$PassportListSessionBean.queryPassportDTO.donorInstitutionId}" width="200px"/>
+
+                                                    <webuijsf:label id="labelSampleStatus" style="width: 168px; height: 24px" text="#{resources.sle_sample_status}"/>
+                                                    <webuijsf:dropDown id="dropdownSampleStatus"
+                                                                       items="#{germoplasma$ListPassport.sampleStatus.options}"
+                                                                       selected="#{germoplasma$PassportListSessionBean.queryPassportDTO.sampleStatusId}" width="200px"/>
+
+
+                                                </h:panelGrid>
+
+                                                <h:panelGrid columns="2" id="gridpAS2" style="height: 24px" width="390">
+
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <h:commandButton action="#{germoplasma$ListPassport.btnAdvSearchPassport_action}" id="btnAdvSearchGO"
                                                     style="width: 160px" styleClass="My_Button" value="#{resources.button_proceed}"/>
 
+                                                </h:panelGrid>
                                                 
                                             </h:panelGrid>
 

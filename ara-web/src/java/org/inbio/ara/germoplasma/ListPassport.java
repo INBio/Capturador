@@ -11,6 +11,8 @@ import com.sun.webui.jsf.component.TextField;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import javax.faces.FacesException;
@@ -86,6 +88,7 @@ public class ListPassport extends AbstractPageBean {
     private SingleSelectOptionsList donorPersons = new SingleSelectOptionsList();
     private SingleSelectOptionsList donorInstitutions = new SingleSelectOptionsList();
     private SingleSelectOptionsList materialTypes = new SingleSelectOptionsList();
+    private SingleSelectOptionsList sampleStatus = new SingleSelectOptionsList();
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -155,8 +158,10 @@ public class ListPassport extends AbstractPageBean {
         this.donorInstitutions.setOptions(SetInstitutionDropDownData());
         this.materialTypes.setOptions(getSelectionListDropDownData
                 (SelectionListEntity.MATERIAL_TYPE.getId()));
+        this.sampleStatus.setOptions(getSelectionListDropDownData
+                (SelectionListEntity.SAMPLE_STATUS.getId()));
         
-                //Preguntar si la bandera de busqueda avanzada esta prendida
+        //Preguntar si la bandera de busqueda avanzada esta prendida
         if(getPassportListSessionBean().isAdvancedSearch()){
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
@@ -279,6 +284,8 @@ public class ListPassport extends AbstractPageBean {
                     userInput,
                     getAraSessionBean().getGlobalCollectionId()).intValue());
         }
+        //set the first result of the query
+        this.getPassportListSessionBean().getPagination().firstResults();
         return null;
     }
 
@@ -287,27 +294,49 @@ public class ListPassport extends AbstractPageBean {
      * este boton es el que esta dentro del panel de busqueda avanzada
      * @return
      */
-    public String btnAdvSearchGO_action() {
-        
+    public String btnAdvSearchPassport_action() {
+
+
+        PassportDTO passportDTO = getPassportListSessionBean().getQueryPassportDTO();
+
+
+        GregorianCalendar plantNurseryDateGC = new GregorianCalendar();
+        GregorianCalendar plantationDateGC = new GregorianCalendar();
+        GregorianCalendar harvestingDateGC = new GregorianCalendar();
+
+        Date plantNurseryDateD = this.getPlantNurseryDate().getSelectedDate();
+        Date plantationDateD = this.getPlantingSeasonDate().getSelectedDate();
+        Date harvestingDateD = this.getHarvestingSeasonDate().getSelectedDate();
+
+
+        if (plantNurseryDateD != null) {
+            plantNurseryDateGC.setTime(plantNurseryDateD);
+            passportDTO.setPlantNurseryDate(plantNurseryDateGC);
+        }
+        if (plantationDateD != null) {
+            plantationDateGC.setTime(plantationDateD);
+            passportDTO.setPlantingSeasonDate(plantationDateGC);
+        }
+        if (harvestingDateD != null) {
+            harvestingDateGC.setTime(harvestingDateD);
+            passportDTO.setHarvestingSeasonDate(harvestingDateGC);
+        }
+
+        //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
+        this.getPassportListSessionBean().setQueryMode(true);
+        //Desabilitar la bandera de busqueda simple
+        this.getPassportListSessionBean().setQueryModeSimple(false);
+        //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
+        this.getPassportListSessionBean().getPagination().setTotalResults(
+                this.getPassportListSessionBean().getGermoplasmaFacadeRemote().
+                countPassportAdvancedSearch(
+                passportDTO,
+                this.getAraSessionBean().getGlobalCollectionId()).intValue());
+        this.getPassportListSessionBean().getPagination().firstResults();
+        this.getTxSearch().setValue("");
         /*//----------------------------------------------------------------------
-        consulta.setCountryId(this.getinventory$GatheringSessionBean().
-                getSelectedCountry());
-        consulta.setProvinceId(this.getinventory$GatheringSessionBean().
-                getSelectedProvince());
-        GregorianCalendar iniCal = new GregorianCalendar();
-        GregorianCalendar finCal = new GregorianCalendar();
-        Date iniDate = this.getInitial_date().getSelectedDate();
-        Date finDate = this.getFinal_date().getSelectedDate();
-        if(iniDate!=null){
-            iniCal.setTime(iniDate);
-            consulta.setInitialDateTime(iniCal);
-        }
-        if(finDate!=null){
-            finCal.setTime(finDate);
-            consulta.setFinalDateTime(finCal);
-        }
-        //Setear el GatheringDTO del SessionBean utilizado para realizar la consulta
-        this.getinventory$GatheringSessionBean().setQueryGatheringDTO(consulta);
+        
+        
         //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
         this.getinventory$GatheringSessionBean().setQueryMode(true);
         //Desabilitar la bandera de busqueda simple
@@ -752,5 +781,19 @@ public class ListPassport extends AbstractPageBean {
      */
     public void setMaterialTypes(SingleSelectOptionsList materialTypes) {
         this.materialTypes = materialTypes;
+    }
+
+    /**
+     * @return the sampleStatus
+     */
+    public SingleSelectOptionsList getSampleStatus() {
+        return sampleStatus;
+    }
+
+    /**
+     * @param sampleStatus the sampleStatus to set
+     */
+    public void setSampleStatus(SingleSelectOptionsList sampleStatus) {
+        this.sampleStatus = sampleStatus;
     }
 }

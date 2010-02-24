@@ -180,25 +180,24 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
 
         List<PassportDTO> auxResult = new ArrayList<PassportDTO>();
 
-
         if (isQueryMode()) { //En caso de que sea busqueda avanzada
             //Set the collectionId into the DTO
-            //It is a mandatory filter
-            PassportDTO pdto = getQueryPassportDTO();
             try {
-                return myReturn(getGermoplasmaFacadeRemote().
-                        getPassportListPaginated(firstResult, maxResults));
+                return myReturn(
+                        getGermoplasmaFacadeRemote().
+                        getPassportAdvancedSearch(getQueryPassportDTO(),
+                        getAraSessionBean().getGlobalCollectionId(),
+                        firstResult, maxResults));
             } catch (Exception e) {
                 return auxResult;
             }
         } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
             try {
                 return myReturn(getGermoplasmaFacadeRemote().
-                        getPassportListPaginated(firstResult, maxResults));
-
-                /*return myReturn(searchFacade.
-                            searchGathObsByCriteria(getConsultaSimple(), collectionId, firstResult,
-                            maxResults));*/
+                        getPassportSimpleSearch(
+                        getConsultaSimple(), 
+                        getAraSessionBean().getGlobalCollectionId(), 
+                        firstResult, maxResults));
 
             } catch (Exception e) {
                 return auxResult;
