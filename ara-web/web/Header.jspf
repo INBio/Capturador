@@ -138,6 +138,22 @@
 									</li>
 								</ul>
 							</li>
+
+                                                        <!-- Modulo de manejo de germoplasma -->
+                                                        <li class="germoplasma">
+                                                            <webuijsf:hyperlink id="menuSubsystemGermoplasma" text="#{resources.menuSubsystemGermoplasma}" visible="true"/>
+								<ul>
+									<li>
+										<!-- -->
+                                                                                <webuijsf:hyperlink actionExpression="#{Header.menuModuleGermoPlasmaPassport_action}" id="menuModulePassports"
+                                                                                                    text="#{resources.menuModulePassport}" visible="false"/>
+									</li>
+									<li>
+                                                                            <webuijsf:hyperlink actionExpression="#{Header.menuModuleGermoPlasmaAccession_action}" id="menuModuleAccessions"
+                                                                                                    text="#{resources.menuModuleAccession}" visible="false"/>
+									</li>
+								</ul>
+							</li>
 						</ul>
 					</div>
 				</div>

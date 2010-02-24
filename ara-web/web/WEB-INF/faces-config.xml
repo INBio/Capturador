@@ -577,7 +577,14 @@
             <to-view-id>/taxonomy/ListNomenclaturalGroup.jsp</to-view-id>
             <redirect/>
         </navigation-case>
-	</navigation-rule>
+        
+        <navigation-case>
+            <from-outcome>passports</from-outcome>
+            <to-view-id>/germoplasma/ListPassport.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        
+    </navigation-rule>
 
     <navigation-rule>
         <from-view-id>/inventory/ListSpecimen.jsp</from-view-id>
@@ -908,7 +915,7 @@
     </navigation-rule>
 
 
-    
+
     <navigation-rule>
         <from-view-id>/taxonomy/NewSpecies.jsp</from-view-id>
         <navigation-case>
@@ -1100,7 +1107,8 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-    
+
 </faces-config>
+
 
 
