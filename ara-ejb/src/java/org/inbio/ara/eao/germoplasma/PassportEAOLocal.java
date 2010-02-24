@@ -23,7 +23,7 @@ public interface PassportEAOLocal extends BaseLocalEAO<Passport,Long>{
      * @param materialTypeId
      * @return
      */
-    public List<Long> findByMaterialType(Long materialTypeId);
+    public List<Long> findByMaterialTypeId(Long materialTypeId);
 
     /**
      * Find passports by gathering id
@@ -73,4 +73,11 @@ public interface PassportEAOLocal extends BaseLocalEAO<Passport,Long>{
      * @return
      */
     public List<Long> findByHarvestingSeasonDate(Calendar harvestingSeasonDate);
+
+    /**
+     * find passports by sample status id
+     * @param harvestingSeasonDate
+     * @return
+     */
+    public List<Long> findBySampleStatusId(Long sampleStatusId);
 }

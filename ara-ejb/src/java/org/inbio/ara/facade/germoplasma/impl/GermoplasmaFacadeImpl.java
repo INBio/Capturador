@@ -178,17 +178,35 @@ public class GermoplasmaFacadeImpl implements GermoplasmaFacadeRemote {
         return taxonDTOFactory.createDTOList(taxonEAOLocal.getTaxonsByCollectionIdAndTaxonomicalRangeId(collectionId,taxonomicalRangeId));
     }
 
+    /**
+     * Get Passport list paginated
+     * @param firstResult
+     * @param maxResults
+     * @return
+     */
     public List<PassportDTO> getPassportListPaginated(int firstResult, int maxResults) {
         List<PassportDTO> listPassport =  passportDTOFactory.createDTOList(
                 passportEAOLocal.findAllPaginated(Passport.class, firstResult, maxResults));
-        for (PassportDTO passportDTO : listPassport) {
+        
+        updatePassportDTOListValues(listPassport);
+        /*for (PassportDTO passportDTO : listPassport) {
             updatePassportDTOValues(passportDTO);
-        }
+        }*/
         return listPassport;
-
-
     }
 
+    /**
+     * Update the content of each passport in a list
+     * @param passportDTOList
+     * @return
+     */
+    private List<PassportDTO> updatePassportDTOListValues(List<PassportDTO> passportDTOList)
+    {
+        for (PassportDTO passportDTO : passportDTOList) {
+            updatePassportDTOValues(passportDTO);
+        }
+        return passportDTOList;
+    }
 
     /**
      * Update the content of a passportDTO
@@ -446,7 +464,7 @@ public class GermoplasmaFacadeImpl implements GermoplasmaFacadeRemote {
         List<Passport> passportList = getEntities(passportIds,
                 Passport.class, firstResult, maxResult);
 
-        return passportDTOFactory.createDTOList(passportList);
+        return updatePassportDTOListValues(passportDTOFactory.createDTOList(passportList));
     }
 
     /**
@@ -475,7 +493,7 @@ public class GermoplasmaFacadeImpl implements GermoplasmaFacadeRemote {
 
             if(id != null)
             {
-                passportsId = passportEAOLocal.findByMaterialType(id);
+                passportsId = passportEAOLocal.findByMaterialTypeId(id);
                 if(passportsId != null && !passportsId.isEmpty())
                     passportList.addAll(passportsId);
             }
@@ -612,7 +630,7 @@ public class GermoplasmaFacadeImpl implements GermoplasmaFacadeRemote {
         List<Passport> passportList = getEntities(passportIds,
                 Passport.class, firstResult, maxResult);
 
-        return passportDTOFactory.createDTOList(passportList);
+        return updatePassportDTOListValues(passportDTOFactory.createDTOList(passportList));
     }
 
 
@@ -696,7 +714,7 @@ public class GermoplasmaFacadeImpl implements GermoplasmaFacadeRemote {
         if(passportDTO.getMaterialTypeId() != null)
         {
             query = passportEAOLocal.
-                    findByMaterialType(passportDTO.getMaterialTypeId());
+                    findByMaterialTypeId(passportDTO.getMaterialTypeId());
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -765,6 +783,23 @@ public class GermoplasmaFacadeImpl implements GermoplasmaFacadeRemote {
         {
             query = passportEAOLocal.
                     findByHarvestingSeasonDate(passportDTO.getHarvestingSeasonDate());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by sample status
+        if(passportDTO.getSampleStatusId() != null)
+        {
+            query = passportEAOLocal.
+                    findBySampleStatusId(passportDTO.getSampleStatusId());
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)

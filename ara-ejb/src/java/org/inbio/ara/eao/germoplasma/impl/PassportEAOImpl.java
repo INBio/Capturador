@@ -25,11 +25,11 @@ public class PassportEAOImpl extends BaseEAOImpl<Passport, Long> implements Pass
      * @param materialTypeId
      * @return
      */
-    public List<Long> findByMaterialType(Long materialTypeId) {
+    public List<Long> findByMaterialTypeId(Long materialTypeId) {
         Query q = em.createQuery(
                 " Select p.passportId " +
                 " from Passport as p " +
-                " where p.materialtypeId = :materialTypeId "
+                " where p.materialTypeId = :materialTypeId "
                );
         q.setParameter("materialTypeId", materialTypeId);
         return  q.getResultList();
@@ -137,6 +137,22 @@ public class PassportEAOImpl extends BaseEAOImpl<Passport, Long> implements Pass
                 " where p.harvestingSeasonDate = :harvestingSeasonDate "
                );
         q.setParameter("harvestingSeasonDate", harvestingSeasonDate);
+        return  q.getResultList();
+    }
+
+
+    /**
+     * find passports by sample status id
+     * @param harvestingSeasonDate
+     * @return
+     */
+    public List<Long> findBySampleStatusId(Long sampleStatusId) {
+        Query q = em.createQuery(
+                " Select p.passportId " +
+                " from Passport as p " +
+                " where p.sampleStatusId = :sampleStatusId "
+               );
+        q.setParameter("sampleStatusId", sampleStatusId);
         return  q.getResultList();
     }
 
