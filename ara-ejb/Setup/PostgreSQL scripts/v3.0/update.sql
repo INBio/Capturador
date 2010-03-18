@@ -748,7 +748,7 @@ update ara.taxon_description_category set standard_concept = 'Endemicity' where 
                     -------------------------------------------------------------
                     -- Required functions to create the plinian core snapshot ---
                     -------------------------------------------------------------
---2010.01.19 esmata
+--2010.03.18 esmata
 create or replace function ara.taxon_description_audience_list (arg_taxon_id NUMERIC, arg_taxon_description_sequence NUMERIC,
                                        arg_separator TEXT) returns text as '
 DECLARE
@@ -763,7 +763,11 @@ aAudienceList text;
 taxonDescAudience CURSOR IS
    select  a.audience_id, a.name
       from ara.taxon_description_audience tda, ara.audience a
-      where tda.audience_id = a.audience_id
+      where tda.audience_id = a.audience_id and
+            tda.taxon_id = arg_taxon_id
+ and
+            tda.taxon_description_sequence = arg_taxon_description_sequence
+
       order by  a.name;
 
 
@@ -771,7 +775,7 @@ BEGIN
    -- Procedure Name: taxon_description_audience_list
 
 
-   -- Retrun a taxon description audience list .
+   -- Retruns a taxon description audience list.
    -- Created to be use during the generation of the Plinian Core snapshot.
    -- Revisión History:
    --   December 16,  2009 - Maria  Mora
@@ -1155,20 +1159,6 @@ BEGIN
 END;
 ' language 'plpgsql';
 
-
---2010-2-23 dasolano
---actualizacion de la base de datos y llenado para el modulo de manejo de germoplasma
-
-﻿/*DROP TABLE ara.material/_type;
-DROP TABLE ara.sample_status;
-DROP TABLE ara.gathering_source;
-DROP TABLE ara.soil_color;
-DROP TABLE ara.soil_texture;
-DROP TABLE ara.cultivation_practice;
-DROP TABLE ara.crop_system;
-DROP TABLE ara.crop_type;
-DROP TABLE ara.passport;*/
-
 				-----------------------------------
 				-- TABLES FOR GERMOPLASMA MODULE --
 				-----------------------------------
@@ -1278,9 +1268,6 @@ ALTER TABLE ara.crop_type OWNER TO ara;
 ALTER TABLE ONLY ara.crop_type ADD CONSTRAINT "CROP_TYPE_ID_PK" PRIMARY KEY (crop_type_id);
 
 
-
-
-
 CREATE TABLE ara.passport (
 passport_id 		numeric not null,
 donor_person_id 	numeric,
@@ -1326,16 +1313,6 @@ ALTER TABLE ONLY ara.passport ADD CONSTRAINT crop_type__id_fk FOREIGN KEY (crop_
 --ALTER TABLE ONLY ara.passport ADD taxon_id  numeric;
 ALTER TABLE ONLY ara.passport ADD CONSTRAINT taxon_id_fk FOREIGN KEY (taxon_id) REFERENCES ara.taxon(taxon_id);
 
-/*drop sequence ara.material_type_seq cascade;
-drop sequence ara.sample_status_seq cascade;
-drop sequence ara.gathering_source_seq cascade;
-drop sequence ara.soil_color_seq cascade;
-drop sequence ara.soil_texture_seq cascade;
-drop sequence ara.cultivation_practice_seq cascade;
-drop sequence ara.crop_system_seq cascade;
-drop sequence ara.crop_type_seq cascade;
-drop sequence ara.passport_seq cascade;*/
-
 --CREATE SEQUENCE
 CREATE SEQUENCE ara.material_type_seq;
 ALTER TABLE ara.material_type ALTER COLUMN material_type_id SET DEFAULT nextval('ara.material_type_seq'::regclass);
@@ -1372,8 +1349,6 @@ ALTER TABLE ara.crop_type_seq OWNER TO ara;
 CREATE SEQUENCE ara.passport_seq;
 ALTER TABLE ara.passport ALTER COLUMN passport_id SET DEFAULT nextval('ara.passport_seq'::regclass);
 ALTER TABLE ara.passport_seq OWNER TO ara;
-
-
 
 -- FILL MATERIAL_TYPE TABLE
 INSERT INTO ara.material_type (name,description,created_by,creation_date,last_modification_by,last_modification_date) values ('Ashom',NULL,'ara','2010-01-21','ara','2010-01-21');
@@ -1454,12 +1429,9 @@ values (33,'Color de Suelo',0,'ara','2010-01-21','ara','2010-01-21','soil_color'
 INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
 values (34,'Textura del Suelo',0,'ara','2010-01-21','ara','2010-01-21','soil_texture','soil_texture_id');
 
-
 --CREATE DONOR PERSON PROFILE
 INSERT INTO ara.profile (profile_id,name,description,creation_date,created_by,last_modification_date,last_modification_by)
 VALUES(19,'Donor Person','donor person','2010-01-21','ara','2010-01-21','ara');
-
-
 
 CREATE TABLE ara.passport_nomenclatural_group (
 passport_id			numeric NOT NULL,
@@ -1475,7 +1447,6 @@ ALTER TABLE ara.passport_nomenclatural_group OWNER TO ara;
 ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT passport_nomenclatural_group_pk PRIMARY KEY (passport_id, nomenclatural_group_id);
 ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT nomenclatural_group_id_fk FOREIGN KEY (nomenclatural_group_id) REFERENCES ara.nomenclatural_group(nomenclatural_group_id);
 ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT passport_id_fk FOREIGN KEY (passport_id) REFERENCES ara.passport(passport_id);
-
 
 INSERT
 INTO
@@ -1589,4 +1560,3 @@ INSERT INTO ara.user_nomenclatural_group(
     VALUES (8, 25, 1, '2010-02-19', 'ara',
             '2010-02-19', 'ara');
 
-    
