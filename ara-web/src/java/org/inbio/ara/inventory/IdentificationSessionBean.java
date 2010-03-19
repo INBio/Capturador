@@ -36,6 +36,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.util.AddRemoveList;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -51,7 +53,7 @@ import org.inbio.ara.util.AddRemoveList;
  * @version Created on 17/08/2009, 03:39:33 PM
  * @author asanabria
  */
-public class IdentificationSessionBean extends AbstractSessionBean implements Serializable {
+public class IdentificationSessionBean extends AbstractSessionBean implements Serializable, PaginationCoreInterface {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -67,8 +69,10 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
     private InventoryFacadeRemote inventoryFacade;
     @EJB
     private SearchFacadeRemote searchFacade;
-    //Objeto que controla la paginacion de la informacion de especimenes
-    private PaginationController pagination = null;
+
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
+
     //Value binding para los drop downs
     private Long INVALID_VALUE_ID = new Long(-1);
     //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
@@ -176,22 +180,10 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl(inventoryFacade.countIdentifications().intValue(), quantity);
+        setPagination(new PaginationControllerRemix(inventoryFacade.countIdentifications().intValue(), getQuantity(), this));
     }
 
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
+    
 
     public InventoryFacadeRemote getInventoryFacade() {
         return inventoryFacade;
@@ -373,16 +365,8 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
         return (AraSessionBean) getBean("AraSessionBean");
     }
 
-    private class PaginationControllerImpl extends PaginationController
-            implements Serializable {
-
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+    public List getResults(int firstResult, int maxResults) {
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
 
             List<IdentificationDTO> auxResult =
                     new ArrayList<IdentificationDTO>();
@@ -413,6 +397,21 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
                     return auxResult;
                 }
             }
-        }
     }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
+    
 }

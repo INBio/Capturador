@@ -30,11 +30,13 @@ import org.inbio.ara.dto.agent.CollectionDTO;
 import org.inbio.ara.facade.agent.AdminFacadeRemote;
 import javax.faces.FacesException;
 import org.inbio.ara.AraSessionBean;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 /**
  *
  * @author jgutierrez
  */
-public class CollectionSessionBean extends AbstractSessionBean implements Serializable{
+public class CollectionSessionBean extends AbstractSessionBean implements Serializable, PaginationCoreInterface{
 
     //Injections
     @EJB
@@ -45,8 +47,8 @@ public class CollectionSessionBean extends AbstractSessionBean implements Serial
     //Data table binding para la tabla que muetra las collecciones
     private HtmlDataTable dataTableCollections = new HtmlDataTable();
 
-    //Objeto que controla la paginacion de la informacion de especimenes
-    private PaginationController pagination = null;
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
 
     //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
     private int quantity = 10; //Por defecto se mostraran 10 elementos
@@ -55,20 +57,6 @@ public class CollectionSessionBean extends AbstractSessionBean implements Serial
     //Variable que contiene los datos de la paginacion para ser mostrados en la tabla
     private String quantityTotal = new String();
 
-
-        /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
 
         /**
      * @return the quantity
@@ -86,7 +74,7 @@ public class CollectionSessionBean extends AbstractSessionBean implements Serial
     }
 
     void initDataProvider() {
-        pagination = new PaginationControllerImpl(this.inventoryFacade.countCollections().intValue(), quantity);
+        setPagination(new PaginationControllerRemix(this.inventoryFacade.countCollections().intValue(), getQuantity(), this));
     }
 
     /**
@@ -116,18 +104,25 @@ public class CollectionSessionBean extends AbstractSessionBean implements Serial
     public void setAdminFacade(AdminFacadeRemote adminFacade) {
         this.adminFacade = adminFacade;
     }
-    private class PaginationControllerImpl extends PaginationController implements Serializable{
 
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            return inventoryFacade.getAllCollectionPaginated(firstResult, maxResults);
-        }
+    public List getResults(int firstResult, int maxResults) {
+        return inventoryFacade.getAllCollectionPaginated(firstResult, maxResults);
     }
 
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+    
     /**
      *
      * @return

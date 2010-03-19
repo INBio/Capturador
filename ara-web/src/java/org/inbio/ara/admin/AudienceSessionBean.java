@@ -27,6 +27,8 @@ import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.agent.AudienceDTO;
 import org.inbio.ara.facade.agent.AdminFacadeRemote;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -43,7 +45,7 @@ import org.inbio.ara.util.PaginationController;
  * @author esmata
  */
 
-public class AudienceSessionBean extends AbstractSessionBean implements Serializable{
+public class AudienceSessionBean extends AbstractSessionBean implements Serializable, PaginationCoreInterface{
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -59,8 +61,8 @@ public class AudienceSessionBean extends AbstractSessionBean implements Serializ
     @EJB
     private AdminFacadeRemote adminFacade;
 
-    //Objeto que controla la paginacion
-    private PaginationController pagination = null;
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
 
     //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
     private int quantity = 10; //Por defecto se mostraran 10 elementos
@@ -179,19 +181,7 @@ public class AudienceSessionBean extends AbstractSessionBean implements Serializ
         this.adminFacade.updateAudience(dto);
     }
 
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
+    
 
     /**
      * @return the quantity
@@ -211,7 +201,7 @@ public class AudienceSessionBean extends AbstractSessionBean implements Serializ
      * Inicializar el data provider
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl(this.getAdminFacade().countAudiences().intValue(), this.getQuantity());
+        setPagination(new PaginationControllerRemix(this.getAdminFacade().countAudiences().intValue(), getQuantity(), this));
     }
 
     /**
@@ -253,15 +243,23 @@ public class AudienceSessionBean extends AbstractSessionBean implements Serializ
         this.currentAudienceDTO = currentAudienceDTO;
     }
 
-    private class PaginationControllerImpl extends PaginationController implements Serializable{
-
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            return adminFacade.getAllAudiencesPaginated(firstResult, maxResults);
-        }
+    public List getResults(int firstResult, int maxResults) {
+        return adminFacade.getAllAudiencesPaginated(firstResult, maxResults);
     }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
+    
 }

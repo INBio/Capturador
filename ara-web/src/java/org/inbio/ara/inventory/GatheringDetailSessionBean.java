@@ -30,6 +30,8 @@ import org.inbio.ara.dto.inventory.GatheringObservationDetailDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -46,7 +48,7 @@ import org.inbio.ara.util.PaginationController;
  * @author esmata
  */
 
-public class GatheringDetailSessionBean extends AbstractSessionBean {
+public class GatheringDetailSessionBean extends AbstractSessionBean implements PaginationCoreInterface{
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -62,8 +64,9 @@ public class GatheringDetailSessionBean extends AbstractSessionBean {
     @EJB
     private InventoryFacadeRemote inventoryFacade;
 
-    //Objeto que controla la paginacion de la informacion de detalles
-    private PaginationController pagination = null;
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
+
     //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
     private int quantity = 10; //Por defecto se mostraran 10 elementos
     
@@ -179,22 +182,10 @@ public class GatheringDetailSessionBean extends AbstractSessionBean {
      * Inicializar el data provider de detalles de recoleccion
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl(getInventoryFacade().countGatheringDetail().intValue(),getQuantity());
+        setPagination(new PaginationControllerRemix(getInventoryFacade().countGatheringDetail().intValue(), getQuantity(), this));
     }
 
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
+    
 
     /**
      * @return the inventoryFacade
@@ -280,15 +271,22 @@ public class GatheringDetailSessionBean extends AbstractSessionBean {
         this.selectedDescriptor = selectedDescriptor;
     }
 
-     private class PaginationControllerImpl extends PaginationController implements Serializable{
-
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            return inventoryFacade.getDetailPaginatedByGathering(firstResult, maxResults,currentGathering.getGatheringObservationId());
-        }
+    public List getResults(int firstResult, int maxResults) {
+        return inventoryFacade.getDetailPaginatedByGathering(firstResult, maxResults,currentGathering.getGatheringObservationId());
     }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
 }

@@ -25,6 +25,8 @@ import javax.faces.FacesException;
 import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.facade.agent.AdminFacadeRemote;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -41,7 +43,7 @@ import org.inbio.ara.util.PaginationController;
  * @author esmata
  */
 
-public class InstitutionSessionBean extends AbstractSessionBean {
+public class InstitutionSessionBean extends AbstractSessionBean implements PaginationCoreInterface{
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -57,8 +59,8 @@ public class InstitutionSessionBean extends AbstractSessionBean {
     @EJB
     private AdminFacadeRemote adminFacadeImpl;
 
-    //Objeto que controla la paginacion de la informacion de recolecciones
-    private PaginationController pagination = null;
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
 
     //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
     private int quantity = 10; //Por defecto se mostraran 10 elementos
@@ -181,7 +183,7 @@ public class InstitutionSessionBean extends AbstractSessionBean {
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl(this.getAdminFacadeImpl().countInstitutions().intValue(), this.getQuantity());
+        setPagination(new PaginationControllerRemix(this.getAdminFacadeImpl().countInstitutions().intValue(), getQuantity(), this));
     }
 
     /**
@@ -192,20 +194,6 @@ public class InstitutionSessionBean extends AbstractSessionBean {
         int resultsPerPage = this.getPagination().getResultsPerPage();
         int totalResults = this.getPagination().getTotalResults();
         return "  "+(actualPage+1)+" - "+(actualPage+resultsPerPage)+"  | "+totalResults+"  ";
-    }
-
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
     }
 
     /**
@@ -252,15 +240,22 @@ public class InstitutionSessionBean extends AbstractSessionBean {
         this.currentInstitution = currentInstitution;
     }
 
-     private class PaginationControllerImpl extends PaginationController implements Serializable{
-
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            return adminFacadeImpl.getAllInstitutionsPaginated(firstResult, maxResults);
-        }
+    public List getResults(int firstResult, int maxResults) {
+        return adminFacadeImpl.getAllInstitutionsPaginated(firstResult, maxResults);
     }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
 }

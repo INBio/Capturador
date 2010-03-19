@@ -39,6 +39,8 @@ import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.search.SearchFacadeRemote;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -54,7 +56,7 @@ import org.inbio.ara.util.PaginationController;
  * @version Created on 17/08/2009, 05:14:08 PM
  * @author esmata
  */
-public class GatheringSessionBean extends AbstractSessionBean implements Serializable {
+public class GatheringSessionBean extends AbstractSessionBean implements Serializable, PaginationCoreInterface {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -74,8 +76,9 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
     private SearchFacadeRemote searchFacade;
     @EJB
     private AdminFacadeRemote adminFacade;
-    //Objeto que controla la paginacion de la informacion de recolecciones
-    private PaginationController pagination = null;
+
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
     //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
     private int quantity = 10; //Por defecto se mostraran 10 elementos
     //Value binding para los drop downs
@@ -311,7 +314,7 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl(getInventoryFacade().countGatheringObservations().intValue(), this.getQuantity());
+        setPagination(new PaginationControllerRemix(getInventoryFacade().countGatheringObservations().intValue(), getQuantity(), this));
     }
 
     /**
@@ -333,19 +336,6 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
         }
     }
 
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
 
     /**
      * @return un String que contiene el detalle de la paginacion
@@ -787,16 +777,22 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
         return (AraSessionBean) getBean("AraSessionBean");
     }
 
-    private class PaginationControllerImpl extends PaginationController
-            implements Serializable {
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
 
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
 
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+    public List getResults(int firstResult, int maxResults) {
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
 
             List<GatheringObservationDTO> auxResult =
                     new ArrayList<GatheringObservationDTO>();
@@ -828,7 +824,5 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
                     return auxResult;
                 }
             }
-
-        }
     }
 }
