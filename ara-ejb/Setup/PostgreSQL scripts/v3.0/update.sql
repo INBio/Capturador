@@ -1560,3 +1560,7 @@ INSERT INTO ara.user_nomenclatural_group(
     VALUES (8, 25, 1, '2010-02-19', 'ara',
             '2010-02-19', 'ara');
 
+--2010.03.18 esmata
+--Adding unique constraint between catalog number and institution code on specimen table
+ALTER TABLE ara.specimen ADD CONSTRAINT unique_specimen UNIQUE (catalog_number,institution_id);
+

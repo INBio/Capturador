@@ -1122,10 +1122,11 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     }
 
     /**
-     * 
-     * @param sDTO
-     * @param iDTO
-     * @param lssDTO
+     * This method generates specimens by specific specimen,identification,
+     * life forms and life stages information
+     * @param sDTO specimen
+     * @param iDTO identification
+     * @param lssDTO life forms
      * @param quantity
      * @return int Operation code
      */
@@ -1151,7 +1152,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 sDTO.getCatalogNumber().isEmpty()) {
             Specimen lastSpecimen = specimenEAOImpl.getLastSpecimen();
             if (lastSpecimen != null) {
-                sDTO.setCatalogNumber(increment(lastSpecimen.getCatalogNumber().
+                sDTO.setCatalogNumber(increment(lastSpecimen.getSpecimenId().toString().
                         toCharArray()));
             } else {
                 sDTO.setCatalogNumber("0");
@@ -1381,10 +1382,14 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 return null;
             }
         }
-        Long numberPart = Long.parseLong(catalogNumberNumeric.toString());
-        numberPart++;
-
-        return catalogNumberText.toString() + numberPart;
+        if(catalogNumberNumeric.toString().equals("")){
+            return catalogNumberText.toString();
+        }
+        else{
+            Long numberPart = Long.parseLong(catalogNumberNumeric.toString());
+            numberPart++;
+            return catalogNumberText.toString() + numberPart;
+        }
     }
 
     /**
