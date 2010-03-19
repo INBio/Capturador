@@ -1529,6 +1529,31 @@ public class SpecimenGeneration extends AbstractPageBean {
             dateTime.setMinutes(sgsb.getSelectedMinute().intValue());
             dateTime.setHours(sgsb.getSelectedHour().intValue());
         }
+        //Obtener el dato de cuantos especimenes se generaran
+        Long specimensQuantity = new Long(0);
+        String quanAux = (String)this.getTxQuantity().getText();
+        if(quanAux!=null&&!quanAux.equals(""))
+            specimensQuantity = Long.parseLong(quanAux);
+
+        /**
+         * Verificar que el número de catálogo inicial sea un número, si es un
+         * número todo bien, sino, se verifica que la cantidad a generar sea 1.
+         *
+         * La idea es que si NO es un nmero entero, el sistema solo podrá generar
+         * los especmenes de uno en uno. Ya que la funcionalidad de generar en bloque
+         * solo funciona para números de catálogo enteros.
+         */
+        if (!(initialCatalog==null)&&!initialCatalog.isEmpty()) {
+            try {
+                Long.parseLong(initialCatalog);
+            } catch (Exception e) {
+                if (specimensQuantity > 1L) {
+                    MessageBean.setErrorMessageFromBundle("generation_catalog_num_error", this.getMyLocale());
+                    return null;
+                }
+            }
+        }
+
         //Setear los valores del specimenDTO
         sgsb.getSpecimenDTO().setCatalogNumber(initialCatalog);
         sgsb.getSpecimenDTO().setCertaintyLevel(certaintyLevel);
@@ -1590,11 +1615,6 @@ public class SpecimenGeneration extends AbstractPageBean {
         //**************************** (3) **********************************
         
         /* (4) Cantidad a generar */
-        //Obtener el dato de cuantos especimenes se generaran
-        Long specimensQuantity = new Long(0);
-        String quanAux = (String)this.getTxQuantity().getText();
-        if(quanAux!=null)
-            specimensQuantity = Long.parseLong(quanAux);
         //Setear la variable del session bean
         sgsb.setSpecimenQuantity(specimensQuantity);
         //***************************** (4) ********************************
@@ -1619,11 +1639,8 @@ public class SpecimenGeneration extends AbstractPageBean {
             MessageBean.setSuccessMessageFromBundle
                     ("specimen_generation_success", this.getMyLocale());
         } catch (Exception e) {
+            //Must parse the exception to show a specific error to the user
             MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-            System.out.println("*******************"+e.getCause());
-            System.out.println("*******************"+e.getLocalizedMessage());
-            System.out.println("*******************"+e.getMessage());
-            System.out.println("*******************"+e.hashCode());
         }
 
         return null;
