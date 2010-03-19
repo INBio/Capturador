@@ -110,7 +110,8 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
      * Metodo que retorna la lista completa de instituciones paginada
      */
     public List<InstitutionDTO> getAllInstitutionsPaginated(int firstResult,int maxResults){
-        List<Institution> entityList =  institutionEAOImpl.findAllPaginated(Institution.class, firstResult, maxResults);
+        List<Institution> entityList =  institutionEAOImpl.findAllPaginatedFilterAndOrderBy(Institution.class,
+                firstResult, maxResults,null,null);
         return institutionDTOFactory.createDTOList(entityList);
     }
 
@@ -125,7 +126,8 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
      * Metodo que retorna la lista completa de audiencias paginada
      */
     public List<AudienceDTO> getAllAudiencesPaginated(int firstResult,int maxResults){
-        List<Audience> entityList =  audienceEAOImpl.findAllPaginated(Audience.class, firstResult, maxResults);
+        List<Audience> entityList =  audienceEAOImpl.findAllPaginatedFilterAndOrderBy(Audience.class,
+                firstResult, maxResults,null,null);
         return audienceDTOFactory.createDTOList(entityList);
     }
 
@@ -148,7 +150,8 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
      * Metodo que retorna la lista completa de perfiles paginada
      */
     public List<ProfileDTO> getAllProfilesPaginated(int firstResult,int maxResults){
-        List<Profile> entityList =  profileEAOImpl.findAllPaginated(Profile.class, firstResult, maxResults);
+        List<Profile> entityList =  profileEAOImpl.findAllPaginatedFilterAndOrderBy(Profile.class,
+                firstResult, maxResults,null,null);
         return profileDTOFactory.createDTOList(entityList);
     }
 

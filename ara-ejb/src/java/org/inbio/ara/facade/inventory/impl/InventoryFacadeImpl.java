@@ -233,8 +233,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      */
     public List<SpecimenDTO> getAllSpecimenPaginated(int first,
             int totalResults) {
-        List<Specimen> sList = specimenEAOImpl.findAllPaginated(Specimen.class,
-                first, totalResults);
+        List<Specimen> sList = specimenEAOImpl.findAllPaginatedFilterAndOrderBy(Specimen.class,
+                first, totalResults, null, null);
         if (sList == null)
             return null;
         List<SpecimenDTO> updated = updateCountryAndProvinceName(
@@ -251,8 +251,9 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      */
     public List<SpecimenDTO> getAllSpecimenPaginated(int first,
             int totalResults, Long collectionId) {
-        List<Specimen> sList = specimenEAOImpl.findAllPaginated(Specimen.class,
-                first, totalResults, collectionId);
+        String[] orderByFields = {"specimenId"};
+        List<Specimen> sList = specimenEAOImpl.findAllPaginatedFilterAndOrderBy(Specimen.class,
+                first, totalResults, orderByFields, collectionId);
         if (sList == null)
             return null;
         List<SpecimenDTO> updated = updateCountryAndProvinceName(
@@ -314,8 +315,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      */
     public List<GatheringObservationDTO>
             getAllGatheringObservationPaginated(int first, int totalResults) {
-        List<GatheringObservation> gList = gatheringObservationEAOImpl.
-            findAllPaginated(GatheringObservation.class, first, totalResults);
+        List<GatheringObservation> gList = gatheringObservationEAOImpl.findAllPaginatedFilterAndOrderBy(GatheringObservation.class,
+                first, totalResults, null, null);
         if (gList == null)
             return null;
         return updateGathObsCountryAndProvinceName(
@@ -325,9 +326,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     public List<GatheringObservationDTO>
             getAllGatheringObservationPaginated(int first, int totalResults,
             Long collectionId) {
-        List<GatheringObservation> gList = gatheringObservationEAOImpl.
-            findAllPaginated(GatheringObservation.class, first, totalResults,
-            collectionId);
+        List<GatheringObservation> gList = gatheringObservationEAOImpl.findAllPaginatedFilterAndOrderBy(GatheringObservation.class,
+                first, totalResults, null, collectionId);
         if (gList == null)
             return null;
         return updateGathObsCountryAndProvinceName(
@@ -845,10 +845,9 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      * Retrive all people paginated
      * @return
      */
-    public List<PersonDTO>
-            getAllPersonPaginated(int firstResult, int maxResults) {
-        return personDTOFactory.createDTOList(personEAOImpl.
-                findAllPaginated(Person.class, firstResult, maxResults));
+    public List<PersonDTO> getAllPersonPaginated(int firstResult, int maxResults) {
+        return personDTOFactory.createDTOList(
+                personEAOImpl.findAllPaginatedFilterAndOrderBy(Person.class, firstResult, maxResults, null,null));
     }
 
     public Long countPerson() {
@@ -1404,7 +1403,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     public List<CollectionDTO> getAllCollectionPaginated(int firstResult,
             int maxResults) {
         List<Collection> cList = collectionEAOImpl.
-                findAllPaginated(Collection.class, firstResult, maxResults);
+                findAllPaginatedFilterAndOrderBy(Collection.class, firstResult, maxResults,null,null);
         if (cList == null)
             return null;
         return collectionDTOFactory.createDTOList(cList);

@@ -186,7 +186,7 @@ public class GermoplasmaFacadeImpl implements GermoplasmaFacadeRemote {
      */
     public List<PassportDTO> getPassportListPaginated(int firstResult, int maxResults) {
         List<PassportDTO> listPassport =  passportDTOFactory.createDTOList(
-                passportEAOLocal.findAllPaginated(Passport.class, firstResult, maxResults));
+                passportEAOLocal.findAllPaginatedFilterAndOrderBy(Passport.class, firstResult, maxResults, null,null));
         
         updatePassportDTOListValues(listPassport);
         /*for (PassportDTO passportDTO : listPassport) {

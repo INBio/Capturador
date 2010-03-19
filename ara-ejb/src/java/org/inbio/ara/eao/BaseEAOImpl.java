@@ -20,18 +20,10 @@
 
 package org.inbio.ara.eao;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.inbio.ara.persistence.gathering.GatheringObservation;
-import org.inbio.ara.persistence.gis.Site;
-import org.inbio.ara.persistence.specimen.Specimen;
-import org.inbio.ara.persistence.identification.Identification;
-import org.inbio.ara.persistence.person.Person;
 
 /**
  *
@@ -73,202 +65,50 @@ public class BaseEAOImpl<E extends Object,I extends Object>
         Long result = (Long)q.getSingleResult();
         return result;
     }
+     
 
     /**
      *
-     * @param entityClass
-     * @param firstResult
-     * @param maxResults
-     * @return Ordered list of elements
-     * @deprecated Use instead:
-     *  public List<E> findAllPaginated(Class<E> entityClass, int firstResult,
-     *      int maxResults, int collectionId)
+     * This method does 3 things:
+     * 1. Paginate the output
+     * 2. Filter by collection
+     * 3. Order the results using one o more fields.
+     *
+     * @param entityClass Type of returned elements
+     * @param base First result of the returned list of elements
+     * @param offset Maximum number of results to be returned in the list.
+     * @param orderByFields The criteria for the "order by" of the results. This
+     * will be an array of String, each one value containing the name of the field
+     * in the *entity*. ei: String[] orderByFields = {specimenId}.
+     * @param collectionId CollectionId to be used as filter
+     * @return List of paginated, Filterd by collection and freely order by elements
      */
-    public List<E> findAllPaginated(Class<E> entityClass, int firstResult,
-            int maxResults) {        
-        if(entityClass == Identification.class) {
-            try {
-                Field field1 = entityClass.getDeclaredField("identificationPK");
-                Field[] fields = {field1};
-                return findAllPaginatedOrderBy(entityClass, firstResult,
-                        maxResults, fields);
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if(entityClass == GatheringObservation.class) {
-            try {
-                Field field1 = entityClass.getDeclaredField("gatheringObservationId");
-                Field[] fields = {field1};
-                return findAllPaginatedOrderBy(entityClass, firstResult,
-                        maxResults, fields);
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if(entityClass == Specimen.class) {
-            try {
-                Field field1 = entityClass.getDeclaredField("specimenId");
-                Field[] fields = {field1};
-                return findAllPaginatedOrderBy(entityClass, firstResult,
-                        maxResults, fields);
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if(entityClass == Site.class) {
-            try {
-                Field field1 = entityClass.getDeclaredField("description");
-                Field[] fields = {field1};
-                return findAllPaginatedOrderBy(entityClass, firstResult,
-                        maxResults, fields);
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if(entityClass == Person.class) {
-            try {
-                Field field1 = entityClass.getDeclaredField("firstName");
-                Field[] fields = {field1};
-                return findAllPaginatedOrderBy(entityClass, firstResult,
-                        maxResults, fields);
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+    public List<E> findAllPaginatedFilterAndOrderBy(Class<E> entityClass, int base,
+            int offset, String[] orderByFields, Long collectionId) {
+        StringBuffer query = new StringBuffer();
+        boolean firstField = true;
+
+        query.append("from " + entityClass.getName() + " as e");
         
-        //If it's another... without order
-        Query q = em.createQuery("select e from " + entityClass.getName() +
-                " as e");
-        q.setFirstResult(firstResult);
-        q.setMaxResults(maxResults);
-        return q.getResultList();
-    }
-
-    /**
-     *
-     * @param entityClass
-     * @param firstResult
-     * @param maxResults
-     * @return Ordered list of elements
-     */
-    public List<E> findAllPaginated(Class<E> entityClass, int firstResult,
-            int maxResults, Long collectionId) {
-        if(entityClass == Identification.class) {
-            try {
-                Field field1 = entityClass.getDeclaredField("identificationPK");
-                Field[] fields = {field1};
-                return findAllPaginatedOrderBy(entityClass, firstResult,
-                        maxResults, fields, collectionId);
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if(entityClass == GatheringObservation.class) {
-            try {
-                Field field1 = entityClass.getDeclaredField("gatheringObservationId");
-                Field[] fields = {field1};
-                return findAllPaginatedOrderBy(entityClass, firstResult,
-                        maxResults, fields, collectionId);
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        if(entityClass == Specimen.class) {
-            try {
-                Field field1 = entityClass.getDeclaredField("specimenId");
-                Field[] fields = {field1};
-                return findAllPaginatedOrderBy(entityClass, firstResult,
-                        maxResults, fields, collectionId);
-            } catch (NoSuchFieldException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
-                Logger.getLogger(BaseEAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        //If it's another... without order
-        Query q = em.createQuery("select e from " + entityClass.getName() +
-                " as e");
-        q.setFirstResult(firstResult);
-        q.setMaxResults(maxResults);
-        return q.getResultList();
-
-    }
-
-
-    /**
-     *
-     * @param entityClass
-     * @param base
-     * @param offset
-     * @param fields
-     * @return
-     * @deprecated use instead:
-     * private List<E> findAllPaginatedOrderBy(Class<E> entityClass, int base,
-     *      int offset, Field[] fields, <b>int collectionId</b>)
-     */
-    private List<E> findAllPaginatedOrderBy(Class<E> entityClass, int base,
-            int offset, Field[] fields) {
-        StringBuffer query = new StringBuffer();
-        boolean firstField = true;
-        query.append("from " + entityClass.getName() + " as e ");
-        query.append("order by ");
-        for (Field field : fields) {
+        if(collectionId != null)
+            query.append(" where e.collectionId = :collectionId");
+        
+        if(orderByFields != null){
+          query.append(" order by ");
+          for (String field : orderByFields) {
             if(firstField) {
-                query.append("e."+field.getName() + " asc");
+                query.append("e."+field + " asc");
                 firstField = false;
             } else {
-                query.append(", e."+field.getName() + " asc");
+                query.append(", e."+field + " asc");
             }
+          }
         }
-        System.out.println(query.toString());
-        Query q = em.createQuery(query.toString());
-        q.setFirstResult(base);
-        q.setMaxResults(offset);
-        return q.getResultList();
-    }
 
-    /**
-     *
-     * @param entityClass
-     * @param base
-     * @param offset
-     * @param fields
-     * @param collectionId
-     * @return
-     */
-    private List<E> findAllPaginatedOrderBy(Class<E> entityClass, int base,
-            int offset, Field[] fields, Long collectionId) {
-        StringBuffer query = new StringBuffer();
-        boolean firstField = true;
-        query.append("from " + entityClass.getName() + " as e ");
-        query.append("where e.collectionId = :collectionId order by ");
-        for (Field field : fields) {
-            if(firstField) {
-                query.append("e."+field.getName() + " asc");
-                firstField = false;
-            } else {
-                query.append(", e."+field.getName() + " asc");
-            }
-        }
-        System.out.println(query.toString());
+        //System.out.println(query.toString());
         Query q = em.createQuery(query.toString());
-        q.setParameter("collectionId", collectionId);
+        if(collectionId != null)
+            q.setParameter("collectionId", collectionId);
         q.setFirstResult(base);
         q.setMaxResults(offset);
         return q.getResultList();

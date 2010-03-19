@@ -223,7 +223,7 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
      */
     public List<TaxonDescriptionDTO> getAllTaxonDescriptionPaginated(int first, int totalResults) {
 
-        List<TaxonDescription> tdList = taxonDescriptionEAOImpl.findAllPaginated(TaxonDescription.class, first, totalResults);
+        List<TaxonDescription> tdList = taxonDescriptionEAOImpl.findAllPaginatedFilterAndOrderBy(TaxonDescription.class, first, totalResults,null,null);
         if (tdList == null) {
             return null;
         } else {
@@ -1028,10 +1028,11 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
                                             , int maxResults
 											, Long collectionId){
         List<NomenclaturalGroup> entityList =
-            nomenclaturalGroupEAOImpl.findAllPaginated(
+            nomenclaturalGroupEAOImpl.findAllPaginatedFilterAndOrderBy(
                 NomenclaturalGroup.class
                 , firstResult
                 , maxResults
+                , null
                 , collectionId);
 
         return nomenclaturalGroupDTOFatory.createDTOList(entityList);

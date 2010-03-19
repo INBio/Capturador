@@ -20,7 +20,6 @@ package org.inbio.ara.eao;
 
 import java.util.List;
 import javax.ejb.Local;
-import org.inbio.ara.persistence.GenericEntity;
 
 /**
  *
@@ -66,32 +65,35 @@ public interface BaseLocalEAO<E extends Object,I extends Object> {
 
 
     /**
-     *
-     * @param entityClass
-     * @param firstResult
-     * @param maxResults
-     * @return
-     * @deprecated Use instead:
-     *  public List<E> findAllPaginated(Class<E> entityClass, int firstResult,
-     *      int maxResults, int collectionId)
-     */
-    public List<E> findAllPaginated(Class<E> entityClass,int firstResult, int maxResults);
-
-    /**
-     *
-     * @param entityClass
-     * @param firstResult
-     * @param maxResults
-     * @return Ordered list of elements
-     */
-    public List<E> findAllPaginated(Class<E> entityClass, int firstResult,
-            int maxResults, Long collectionId);
-
-    /**
      * 
      * @param entityClass
      * @return
      */
     public Long count(Class<E> entityClass);
 
+
+    /**
+     *
+     * This method does 3 things:
+     * 1. Paginate the output
+     * 2. Filter by collection (optional)
+     * 3. Order the results using one o more fields. (optional)
+     *
+     *
+     * @param entityClass Type of returned elements
+     * @param base First result of the returned list of elements
+     * @param offset Maximum number of results to be returned in the list.
+     * @param orderByFields The criteria for the "order by" of the results. This
+     * will be an array of String, each one value containing the name of the field
+     * in the *entity*. ei: String[] orderByFields = {specimenId}.
+     * @param collectionId CollectionId to be used as filter. If null then the
+     * returned list wont be filtered.
+     * @return List of paginated, Filterd by collection and freely order by elements
+     * @exception if the orderByFields array contains values that doesn't exist in 
+     * the returned Entity Class. Double check the values of the array for prevent
+     * misspelled values.
+     *
+     */
+    public List<E> findAllPaginatedFilterAndOrderBy(Class<E> entityClass, int base,
+            int offset, String[] orderByFields, Long collectionId);
 }

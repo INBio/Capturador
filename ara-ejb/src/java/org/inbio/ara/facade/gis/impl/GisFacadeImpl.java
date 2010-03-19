@@ -132,7 +132,7 @@ public class GisFacadeImpl implements GisFacadeRemote {
      * Retorna un listado de la sitios
      */
     public List<SiteDTO> getAllSitePaginated(int first, int totalResults) {
-        List<Site> sList = siteEAOImpl.findAllPaginated(Site.class, first, totalResults);
+        List<Site> sList = siteEAOImpl.findAllPaginatedFilterAndOrderBy(Site.class, first, totalResults,null,null);
         if (sList == null) {
             return null;
         } else {
