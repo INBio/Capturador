@@ -27,6 +27,8 @@ import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.agent.ProfileDTO;
 import org.inbio.ara.facade.agent.AdminFacadeRemote;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -43,7 +45,7 @@ import org.inbio.ara.util.PaginationController;
  * @author esmata
  */
 
-public class ProfileSessionBean extends AbstractSessionBean {
+public class ProfileSessionBean extends AbstractSessionBean implements PaginationCoreInterface{
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -59,8 +61,8 @@ public class ProfileSessionBean extends AbstractSessionBean {
     @EJB
     private AdminFacadeRemote adminFacade;
 
-    //Objeto que controla la paginacion
-    private PaginationController pagination = null;
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
 
     //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
     private int quantity = 10; //Por defecto se mostraran 10 elementos
@@ -164,19 +166,6 @@ public class ProfileSessionBean extends AbstractSessionBean {
         this.adminFacade.updateProfile(dto);
     }
 
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
 
     /**
      * @return the quantity
@@ -211,7 +200,7 @@ public class ProfileSessionBean extends AbstractSessionBean {
      * Inicializar el data provider
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl(this.getAdminFacade().countProfiles().intValue(), this.getQuantity());
+        setPagination(new PaginationControllerRemix(this.getAdminFacade().countProfiles().intValue(), getQuantity(), this));
     }
 
     /**
@@ -238,15 +227,21 @@ public class ProfileSessionBean extends AbstractSessionBean {
         this.adminFacade = adminFacade;
     }
 
-    private class PaginationControllerImpl extends PaginationController implements Serializable{
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
 
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
 
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            return adminFacade.getAllProfilesPaginated(firstResult, maxResults);
-        }
+    public List getResults(int firstResult, int maxResults) {
+        return adminFacade.getAllProfilesPaginated(firstResult, maxResults);
     }
 }

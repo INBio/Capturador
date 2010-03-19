@@ -34,6 +34,8 @@ import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.search.SearchFacadeRemote;
 import org.inbio.ara.facade.taxonomy.TaxonomyFacadeRemote;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -51,7 +53,7 @@ import org.inbio.ara.util.PaginationController;
  */
 
 
-public class SiteSessionBean extends AbstractSessionBean {
+public class SiteSessionBean extends AbstractSessionBean implements PaginationCoreInterface{
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -73,8 +75,8 @@ public class SiteSessionBean extends AbstractSessionBean {
     @EJB
     private InventoryFacadeRemote inventoryFacade;
 
-    //Objeto que controla la paginacion de la informacion de sitios
-    private PaginationController pagination = null;
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
 
     //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
     private int quantity = 10; //Por defecto se mostraran 10 elementos
@@ -289,23 +291,10 @@ public class SiteSessionBean extends AbstractSessionBean {
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl
-                (getGisFacade().countSites().intValue(), quantity);
+        setPagination(new PaginationControllerRemix(getGisFacade().countSites().intValue(), getQuantity(), this));
     }
 
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
+    
 
     /**
      *
@@ -644,24 +633,29 @@ public class SiteSessionBean extends AbstractSessionBean {
         this.firstTime = firstTime;
     }
 
-    private class PaginationControllerImpl extends PaginationController implements Serializable {
-
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            if(isQueryMode()){ //En caso de que sea busqueda avanzada
-                return searchFacade.searchSiteByCriteria(getQuerySiteDTO(), firstResult, maxResults);
-            }
-            else if(isQueryModeSimple()){ //En caso de que sea busqueda simple
-                return searchFacade.searchSiteByCriteria(getConsultaSimple(), firstResult, maxResults);
-            }
-            else //Valores default
-                return gisFacade.getAllSitePaginated(firstResult, maxResults);
-        }
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
     }
 
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
+    public List getResults(int firstResult, int maxResults) {
+        if(isQueryMode()){ //En caso de que sea busqueda avanzada
+            return searchFacade.searchSiteByCriteria(getQuerySiteDTO(), firstResult, maxResults);
+        }
+        else if(isQueryModeSimple()){ //En caso de que sea busqueda simple
+            return searchFacade.searchSiteByCriteria(getConsultaSimple(), firstResult, maxResults);
+        }
+        else //Valores default
+            return gisFacade.getAllSitePaginated(firstResult, maxResults);
+    }
 
 }

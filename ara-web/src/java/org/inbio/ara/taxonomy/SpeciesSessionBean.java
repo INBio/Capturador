@@ -41,8 +41,11 @@ import org.inbio.ara.facade.agent.AdminFacadeRemote;
 import org.inbio.ara.facade.taxonomy.TaxonomyFacadeRemote;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
-/**
+
+    /**
  * <p>Session scope data bean for your application.  Create properties
  *  here to represent cached data that should be made available across
  *  multiple HTTP requests for an individual user.</p>
@@ -57,8 +60,8 @@ import org.inbio.ara.util.PaginationController;
  * @author esmata
  */
 
-public class SpeciesSessionBean extends AbstractSessionBean
-implements Serializable{
+public class SpeciesSessionBean extends AbstractSessionBean 
+implements Serializable, PaginationCoreInterface {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -76,8 +79,9 @@ implements Serializable{
     @EJB
     private AdminFacadeRemote adminFacadeImpl;
 
-    //Objeto que controla la paginacion
-    private PaginationController pagination = null;
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
+    
 
     //Cantidad de elementos que el usuario desea mostrar en los resultados
     private int quantity = 10; //Por defecto se mostraran 10 elementos
@@ -542,21 +546,22 @@ implements Serializable{
         this.taxonomyFacadeImpl.deleteTaxonDescription(taxonId,sequenceId);
     }
 
+
     /**
      * @return the pagination
      */
-    public PaginationController getPagination() {
+    public PaginationControllerRemix getPagination() {
         return pagination;
     }
 
     /**
      * @param pagination the pagination to set
      */
-    public void setPagination(PaginationController pagination) {
+    public void setPagination(PaginationControllerRemix pagination) {
         this.pagination = pagination;
     }
-
-    /**
+    
+/**
      * @return the quantity
      */
     public int getQuantity() {
@@ -588,8 +593,7 @@ implements Serializable{
      * Inicializar el data provider
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl
-                (this.getTaxonomyFacadeImpl().countTaxonDescriptions().intValue(),this.getQuantity());
+        setPagination(new PaginationControllerRemix(this.getTaxonomyFacadeImpl().countTaxonDescriptions().intValue(), getQuantity(), this));
     }
 
     /**
@@ -817,16 +821,8 @@ implements Serializable{
         this.selectedInstitution = selectedInstitution;
     }
 
-    private class PaginationControllerImpl extends PaginationController implements Serializable{
-
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            return taxonomyFacadeImpl.getAllTaxonDescriptionPaginated(firstResult, maxResults);
-        }
+    public List getResults(int firstResult, int maxResults) {
+        return taxonomyFacadeImpl.getAllTaxonDescriptionPaginated(firstResult, maxResults);
     }
 
     private class TaxonDescriptionRowDataProviderImpl

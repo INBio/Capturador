@@ -31,6 +31,8 @@ import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.security.SecurityFacadeRemote;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -47,7 +49,7 @@ import org.inbio.ara.util.PaginationController;
  * @author esmata
  */
 
-public class SystemUserSessionBean extends AbstractSessionBean {
+public class SystemUserSessionBean extends AbstractSessionBean implements PaginationCoreInterface {
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -67,9 +69,11 @@ public class SystemUserSessionBean extends AbstractSessionBean {
     @EJB
     private AdminFacadeRemote adminFacade;
 
-    //Objeto que controla la paginacion de la informacion de recolecciones
-    private PaginationController pagination = null;
+    
 
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
+    
     //Cantidad de usuarios por pagina
     private int quantity = 10;
 
@@ -257,22 +261,10 @@ public class SystemUserSessionBean extends AbstractSessionBean {
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl(this.securityFacade.countUsers().intValue(), this.getQuantity());
+        setPagination(new PaginationControllerRemix(this.securityFacade.countUsers().intValue(), getQuantity(), this));
     }
 
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
+    
 
     /**
      * @return the quantity
@@ -354,16 +346,24 @@ public class SystemUserSessionBean extends AbstractSessionBean {
         this.firstTime = firstTime;
     }
 
-    private class PaginationControllerImpl extends PaginationController implements Serializable{
-
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            return securityFacade.getAllUsersPaginated(firstResult, maxResults);
-        }
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
     }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
+    public List getResults(int firstResult, int maxResults) {
+        return securityFacade.getAllUsersPaginated(firstResult, maxResults);
+    }
+
+  
     
 }

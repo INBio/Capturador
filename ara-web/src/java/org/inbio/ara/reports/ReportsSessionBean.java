@@ -28,6 +28,8 @@ import javax.faces.FacesException;
 import org.inbio.ara.facade.reports.ReportsFacadeRemote;
 import org.inbio.ara.facade.search.SearchFacadeRemote;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 import org.inbio.ara.util.QueryNode;
 
 /**
@@ -46,7 +48,7 @@ import org.inbio.ara.util.QueryNode;
  */
 
 public class ReportsSessionBean extends AbstractSessionBean
-implements Serializable{
+implements Serializable, PaginationCoreInterface{
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -69,8 +71,8 @@ implements Serializable{
     private LinkedList<QueryNode> queryList = new LinkedList();
     private boolean dwcFiltered = false; //Usada para el reporte de especimenes
 
-    //Paginador para los reportes de especimenes
-    private PaginationController pagination = null;
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
 
     /**
      * <p>Construct a new session data bean instance.</p>
@@ -155,12 +157,10 @@ implements Serializable{
     public void initDwCDataProvider() {
 
         if (!isDwcFiltered()) {
-            pagination = new PaginationControllerImpl(getSearchFacade().
-                    countAllDwC().intValue(), 10);
+            setPagination(new PaginationControllerRemix(getSearchFacade().countAllDwC().intValue(), 10, this));
 
         } else {
-            pagination = new PaginationControllerImpl(getSearchFacade().
-                    countQueryElements(this.queryList).intValue(), 10);
+            setPagination(new PaginationControllerRemix(getSearchFacade().countQueryElements(this.queryList).intValue(), 10, this));
         }
     }
 
@@ -220,19 +220,7 @@ implements Serializable{
         this.dwcFiltered = dwcFiltered;
     }
 
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
+    
 
     /**
      * @return the searchFacade
@@ -259,22 +247,30 @@ implements Serializable{
         return "  "+(actualPage+1)+" - "+(actualPage+resultsPerPage)+"  | "+totalResults+"  ";
     }
 
-    private class PaginationControllerImpl extends PaginationController {
-
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            if(!isDwcFiltered()) {
+    public List getResults(int firstResult, int maxResults) {
+        if(!isDwcFiltered()) {
                 return searchFacade.findAllDwCPaginated(firstResult, maxResults);
             }
             else {
                 return searchFacade.makePaginatedQuery
                         (queryList, firstResult, maxResults);
             }
-        }
     }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
+    
     
 }

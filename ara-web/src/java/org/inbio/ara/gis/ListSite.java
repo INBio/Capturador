@@ -883,7 +883,7 @@ public class ListSite extends AbstractPageBean {
      */
     public String btnShowAllLocalities_action() {
         List<SiteDTO> localities = this.getGis$SiteSessionBean().
-                getPagination().getResults(0, 1000000);
+                getResults(0, 1000000);
         this.getGis$SiteSessionBean().getPagination().getDataProvider().
                 setList(localities);
         return null;

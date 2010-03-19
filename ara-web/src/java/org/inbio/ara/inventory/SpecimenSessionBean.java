@@ -35,6 +35,8 @@ import org.inbio.ara.facade.gis.GisFacadeRemote;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.search.SearchFacadeRemote;
 import org.inbio.ara.util.PaginationController;
+import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -51,7 +53,7 @@ import org.inbio.ara.util.PaginationController;
  * @author esmata
  */
 
-public class SpecimenSessionBean extends AbstractSessionBean {
+public class SpecimenSessionBean extends AbstractSessionBean implements PaginationCoreInterface{
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -73,8 +75,9 @@ public class SpecimenSessionBean extends AbstractSessionBean {
     @EJB
     private SearchFacadeRemote searchFacade;
 
-    //Objeto que controla la paginacion de la informacion de especimenes
-    private PaginationController pagination = null;
+
+    //Objeto que controla la paginacion de la informacion de passport
+    private PaginationControllerRemix pagination = null;
 
     //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
     private int quantity = 10; //Por defecto se mostraran 10 elementos
@@ -185,23 +188,10 @@ public class SpecimenSessionBean extends AbstractSessionBean {
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerImpl(getInventoryFacade().
-                countSpecimens().intValue(), quantity);
+        setPagination(new PaginationControllerRemix(getInventoryFacade().countSpecimens().intValue(), getQuantity(), this));
     }
 
-    /**
-     * @return the pagination
-     */
-    public PaginationController getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationController pagination) {
-        this.pagination = pagination;
-    }
+    
 
     /**
      *
@@ -502,15 +492,8 @@ public class SpecimenSessionBean extends AbstractSessionBean {
         return (AraSessionBean) getBean("AraSessionBean");
     }
 
-    private class PaginationControllerImpl extends PaginationController 
-            implements Serializable {
-        public PaginationControllerImpl(int totalResults, int resultsPerPage) {
-            super(totalResults, resultsPerPage);
-        }
-
-        @Override
-        public List getResults(int firstResult, int maxResults) {
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+    public List getResults(int firstResult, int maxResults) {
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
             List<SpecimenDTO> auxResult =
                     new ArrayList<SpecimenDTO>();
 
@@ -540,7 +523,22 @@ public class SpecimenSessionBean extends AbstractSessionBean {
                 }
                 catch(Exception e){return auxResult;}
             }
-        }
     }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
+    
     
 }
