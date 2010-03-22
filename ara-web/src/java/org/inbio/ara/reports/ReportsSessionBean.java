@@ -27,7 +27,6 @@ import javax.ejb.EJB;
 import javax.faces.FacesException;
 import org.inbio.ara.facade.reports.ReportsFacadeRemote;
 import org.inbio.ara.facade.search.SearchFacadeRemote;
-import org.inbio.ara.util.PaginationController;
 import org.inbio.ara.util.PaginationControllerRemix;
 import org.inbio.ara.util.PaginationCoreInterface;
 import org.inbio.ara.util.QueryNode;

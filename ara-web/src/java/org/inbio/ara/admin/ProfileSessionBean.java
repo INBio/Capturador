@@ -19,14 +19,12 @@
 package org.inbio.ara.admin;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
-import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.agent.ProfileDTO;
 import org.inbio.ara.facade.agent.AdminFacadeRemote;
-import org.inbio.ara.util.PaginationController;
 import org.inbio.ara.util.PaginationControllerRemix;
 import org.inbio.ara.util.PaginationCoreInterface;
 
