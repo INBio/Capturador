@@ -29,7 +29,6 @@ import org.inbio.ara.dto.inventory.GatheringObservationDTO;
 import org.inbio.ara.dto.inventory.GatheringObservationDetailDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
-import org.inbio.ara.util.PaginationController;
 import org.inbio.ara.util.PaginationControllerRemix;
 import org.inbio.ara.util.PaginationCoreInterface;
 

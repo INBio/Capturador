@@ -31,7 +31,6 @@ import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.search.SearchFacadeRemote;
-import org.inbio.ara.util.PaginationController;
 import java.io.Serializable;
 import java.util.ArrayList;
 import org.inbio.ara.AraSessionBean;

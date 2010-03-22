@@ -24,7 +24,6 @@ import javax.ejb.EJB;
 import javax.faces.FacesException;
 import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.facade.agent.AdminFacadeRemote;
-import org.inbio.ara.util.PaginationController;
 import org.inbio.ara.util.PaginationControllerRemix;
 import org.inbio.ara.util.PaginationCoreInterface;
 

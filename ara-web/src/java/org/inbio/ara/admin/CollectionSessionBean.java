@@ -22,7 +22,6 @@ import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import org.inbio.ara.util.PaginationController;
 import javax.ejb.EJB;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import javax.faces.component.html.HtmlDataTable;

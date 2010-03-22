@@ -34,7 +34,6 @@ import org.inbio.ara.facade.agent.AdminFacadeRemote;
 import org.inbio.ara.facade.gis.GisFacadeRemote;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.search.SearchFacadeRemote;
-import org.inbio.ara.util.PaginationController;
 import org.inbio.ara.util.PaginationControllerRemix;
 import org.inbio.ara.util.PaginationCoreInterface;
 
