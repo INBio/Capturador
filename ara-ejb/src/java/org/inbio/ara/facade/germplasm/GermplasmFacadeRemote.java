@@ -196,7 +196,7 @@ public interface GermplasmFacadeRemote {
      * Update an Accession
      * @param accessionDTO
      */
-    public void updateAccession(AccessionDTO accessionDTO);
+    public AccessionDTO updateAccession(AccessionDTO accessionDTO);
 
 
 

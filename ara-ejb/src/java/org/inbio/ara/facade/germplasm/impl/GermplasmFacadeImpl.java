@@ -1139,21 +1139,30 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return accession.getAccessionId();
     }
 
-    public void updateAccession(AccessionDTO accessionDTO) {
+    public AccessionDTO updateAccession(AccessionDTO accessionDTO) {
 
         Accession accession = accessionEAOLocal.findById(
                 Accession.class, accessionDTO.getAccessionId());
 
-        Long weightRemoved = accession.getOriginalWeigth() - accession.getCurrentWeigth();
+        Long weightRemoved = new Long(0);
+        
+        if(accession.getOriginalWeigth() != null)
+        {
+            weightRemoved = accession.getOriginalWeigth() - accession.getCurrentWeigth();
 
-        if(accessionDTO.getOriginalWeigth() < weightRemoved)
-            throw new IllegalArgumentException("error_low_weight");
+            if(accessionDTO.getOriginalWeigth() < weightRemoved)
+                throw new IllegalArgumentException("error_low_weight");
+        }
 
         accessionDTOFactory.updatePlainEntity(accessionDTO, accession);
 
         accession.setCurrentWeigth(accessionDTO.getOriginalWeigth() - weightRemoved);
 
         accessionEAOLocal.update(accession);
+
+        accessionDTO.setCurrentWeigth(accession.getCurrentWeigth());
+        
+        return accessionDTO;
     }
 
 
@@ -1176,9 +1185,13 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
 
             accession.setCurrentWeigth(accession.getCurrentWeigth() - accessionMovementDTO.getWeight());
             accessionEAOLocal.update(accession);
+            
+            accessionMovementEAOLocal.create(accessionMovement);
 
         }
-        accessionMovementEAOLocal.create(accessionMovement);
+        else
+            throw new IllegalArgumentException("error_current_weight_null");
+        
     }
 
     public void updateAccessionMovement(AccessionMovementDTO accessionMovementDTO) {
