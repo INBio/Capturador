@@ -424,29 +424,69 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>germoplasma$EditPassport</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.germoplasma.EditPassport</managed-bean-class>
+        <managed-bean-name>germplasm$EditPassport</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.EditPassport</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>germoplasma$ListPassport</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.germoplasma.ListPassport</managed-bean-class>
+        <managed-bean-name>germplasm$ListPassport</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.ListPassport</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>germoplasma$NewPassport</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.germoplasma.NewPassport</managed-bean-class>
+        <managed-bean-name>germplasm$NewPassport</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.NewPassport</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>germoplasma$PassportListSessionBean</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.germoplasma.PassportListSessionBean</managed-bean-class>
+        <managed-bean-name>germplasm$PassportListSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.PassportListSessionBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>germoplasma$PassportSessionBean</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.germoplasma.PassportSessionBean</managed-bean-class>
+        <managed-bean-name>germplasm$PassportSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.PassportSessionBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$NewAccession</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.NewAccession</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$AccessionSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.AccessionSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$ListAccession</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.ListAccession</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$EditAccession</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.EditAccession</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$ListAccessionMovement</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.ListAccessionMovement</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$AccessionMovementSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.AccessionMovementSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$NewAccessionMovement</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.NewAccessionMovement</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$EditAccessionMovement</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.EditAccessionMovement</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS DE NAVEGACION ENTRE LOS DIFERENTES JSP'S -->
 
@@ -565,7 +605,7 @@
             <redirect/>
         </navigation-case>
 		<!-- Taxonomy Navigation Module -->
-		
+
         <navigation-case>
             <from-outcome>editTaxonomy</from-outcome>
             <to-view-id>/taxonomy/EditTaxonomy.jsp</to-view-id>
@@ -577,13 +617,20 @@
             <to-view-id>/taxonomy/ListNomenclaturalGroup.jsp</to-view-id>
             <redirect/>
         </navigation-case>
-        
+
+        <!-- Germoplasma Module -->
+
         <navigation-case>
             <from-outcome>passports</from-outcome>
-            <to-view-id>/germoplasma/ListPassport.jsp</to-view-id>
+            <to-view-id>/germplasm/ListPassport.jsp</to-view-id>
             <redirect/>
         </navigation-case>
-        
+        <navigation-case>
+            <from-outcome>accessions</from-outcome>
+            <to-view-id>/germplasm/ListAccession.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+
     </navigation-rule>
 
     <navigation-rule>
@@ -1078,37 +1125,115 @@
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/germoplasma/ListPassport.jsp</from-view-id>
+        <from-view-id>/germplasm/ListPassport.jsp</from-view-id>
         <navigation-case>
             <from-outcome>new</from-outcome>
-            <to-view-id>/germoplasma/NewPassport.jsp</to-view-id>
+            <to-view-id>/germplasm/NewPassport.jsp</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
             <from-outcome>edit</from-outcome>
-            <to-view-id>/germoplasma/EditPassport.jsp</to-view-id>
-        </navigation-case>
-    </navigation-rule>
-
-    <navigation-rule>
-        <from-view-id>/germoplasma/NewPassport.jsp</from-view-id>
-        <navigation-case>
-            <from-outcome>back</from-outcome>
-            <to-view-id>/germoplasma/ListPassport.jsp</to-view-id>
+            <to-view-id>/germplasm/EditPassport.jsp</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/germoplasma/EditPassport.jsp</from-view-id>
+        <from-view-id>/germplasm/NewPassport.jsp</from-view-id>
         <navigation-case>
             <from-outcome>back</from-outcome>
-            <to-view-id>/germoplasma/ListPassport.jsp</to-view-id>
+            <to-view-id>/germplasm/ListPassport.jsp</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
 
+    <navigation-rule>
+        <from-view-id>/germplasm/EditPassport.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListPassport.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/germplasm/ListAccession.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/germplasm/NewAccession.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/germplasm/EditAccession.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/germplasm/NewAccession.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListAccession.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/germplasm/EditAccession.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/germplasm/EditAccession.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListAccession.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>movements</from-outcome>
+            <to-view-id>/germplasm/ListAccessionMovement.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/germplasm/ListAccessionMovement.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/germplasm/NewAccessionMovement.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/EditAccession.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/germplasm/EditAccessionMovement.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/germplasm/NewAccessionMovement.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListAccessionMovement.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/germplasm/EditAccessionMovement.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListAccessionMovement.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>
-
 
 
