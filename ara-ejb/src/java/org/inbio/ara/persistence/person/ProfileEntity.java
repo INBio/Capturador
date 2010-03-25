@@ -31,7 +31,8 @@ public enum ProfileEntity {
     IDENTIFIER_PROFILE(new Long(17)),
     CERTIFIER(new Long(18)),
 
-    DONOR_PERSON_PROFILE(new Long(19));
+    DONOR_PERSON_PROFILE(new Long(19)),
+    RESPONSABLE_PERSON_GERMPLASM_PROFILE(new Long(20));
 
     private Long id;
 

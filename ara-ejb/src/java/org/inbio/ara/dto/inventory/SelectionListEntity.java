@@ -5,6 +5,7 @@
 
 package org.inbio.ara.dto.inventory;
 
+import org.hibernate.type.CollectionType;
 import org.inbio.ara.persistence.SelectionListGenericEntity;
 import org.inbio.ara.persistence.gathering.Exposition;
 import org.inbio.ara.persistence.gathering.GatheringObservationMethod;
@@ -17,14 +18,17 @@ import org.inbio.ara.persistence.specimen.LifeStage;
 import org.inbio.ara.persistence.specimen.Sex;
 import org.inbio.ara.persistence.specimen.Substrate;
 import org.inbio.ara.persistence.gathering.ExtractionType;
-import org.inbio.ara.persistence.germoplasma.CropSystem;
-import org.inbio.ara.persistence.germoplasma.CropType;
-import org.inbio.ara.persistence.germoplasma.CultivationPractice;
-import org.inbio.ara.persistence.germoplasma.GatheringSource;
-import org.inbio.ara.persistence.germoplasma.MaterialType;
-import org.inbio.ara.persistence.germoplasma.SampleStatus;
-import org.inbio.ara.persistence.germoplasma.SoilColor;
-import org.inbio.ara.persistence.germoplasma.SoilTexture;
+import org.inbio.ara.persistence.germplasm.AccessionMovementType;
+import org.inbio.ara.persistence.germplasm.CropSystem;
+import org.inbio.ara.persistence.germplasm.CropType;
+import org.inbio.ara.persistence.germplasm.CultivationPractice;
+import org.inbio.ara.persistence.germplasm.GatheringSource;
+import org.inbio.ara.persistence.germplasm.GerminationMethodType;
+import org.inbio.ara.persistence.germplasm.MaterialType;
+import org.inbio.ara.persistence.germplasm.MoistureMethodType;
+import org.inbio.ara.persistence.germplasm.SampleStatus;
+import org.inbio.ara.persistence.germplasm.SoilColor;
+import org.inbio.ara.persistence.germplasm.SoilTexture;
 import org.inbio.ara.persistence.specimen.LifeForm;
 
 /**
@@ -72,7 +76,13 @@ public enum SelectionListEntity {
     GATHERING_SOURCE(new Long(31), new GatheringSource(), true,"sle_gathering_source",GatheringSource.class.getName()),
     SAMPLE_STATUS(new Long(32), new SampleStatus(), true,"sle_sample_status",SampleStatus.class.getName()),
     SOIL_COLOR(new Long(33), new SoilColor(), true,"sle_soil_color",SoilColor.class.getName()),
-    SOIL_TEXTURE(new Long(34), new SoilTexture(), true,"sle_soil_texture",SoilTexture.class.getName())
+    SOIL_TEXTURE(new Long(34), new SoilTexture(), true,"sle_soil_texture",SoilTexture.class.getName()),
+
+    GERMINATION_METHOD_TYPE(new Long(35), new GerminationMethodType(), true,"sle_germination_method_type",GerminationMethodType.class.getName()),
+    COLLECTION_TYPE(new Long(36), new org.inbio.ara.persistence.germplasm.CollectionType(), true,"sle_collection_type",CollectionType.class.getName()),
+    MOISTURE_METHOD_TYPE(new Long(37), new MoistureMethodType(), true,"sle_moisture_method_type",MoistureMethodType.class.getName()),
+    ACCESSION_MOVEMENT_TYPE(new Long(38), new AccessionMovementType(), true,"sle_accession_movement_type",MoistureMethodType.class.getName())
+
     ;
 
     /* Class name of the entity maped with the selection list table */

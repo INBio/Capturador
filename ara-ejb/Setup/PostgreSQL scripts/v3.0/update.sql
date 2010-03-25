@@ -1463,8 +1463,8 @@ INTO
     VALUES
     (
         15,
-        'Germoplasma',
-        'Germoplasma',
+        'Germplasm',
+        'Germplasm',
         '2010-02-19',
         'ara',
         '2010-02-19',
@@ -1490,8 +1490,8 @@ INTO
 	)
 VALUES (
 		8,
-		'Germoplasma',
-		'Germoplasma',
+		'Germplasm',
+		'Germplasm',
 		NULL,
 		'y',
 		NULL,
@@ -1563,4 +1563,220 @@ INSERT INTO ara.user_nomenclatural_group(
 --2010.03.18 esmata
 --Adding unique constraint between catalog number and institution code on specimen table
 ALTER TABLE ara.specimen ADD CONSTRAINT unique_specimen UNIQUE (catalog_number,institution_id);
+
+--2010.03.24 dasolano
+
+                                ---------------------------------------------
+                                -- TABLES FOR GERMPLASM MODULE: ACCESSIONS --
+                                ---------------------------------------------
+
+
+CREATE TABLE ara.germination_method_type(
+germination_method_type_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.germination_method_type OWNER TO ara;
+
+ALTER TABLE ONLY ara.germination_method_type ADD CONSTRAINT "GERMINATION_METHOD_TYPE_ID_PK" PRIMARY KEY (germination_method_type_id);
+
+CREATE TABLE ara.moisture_method_type(
+moisture_method_type_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.moisture_method_type OWNER TO ara;
+
+ALTER TABLE ONLY ara.moisture_method_type ADD CONSTRAINT "MOISTURE_METHOD_TYPE_ID_PK" PRIMARY KEY (moisture_method_type_id);
+
+CREATE TABLE ara.collection_type(
+collection_type_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.collection_type OWNER TO ara;
+
+ALTER TABLE ONLY ara.collection_type ADD CONSTRAINT "COLLECTION_TYPE_ID_PK" PRIMARY KEY (collection_type_id);
+
+
+CREATE TABLE ara.accession_movement_type(
+accession_movement_type_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.accession_movement_type OWNER TO ara;
+
+ALTER TABLE ONLY ara.accession_movement_type ADD CONSTRAINT "ACCESSION_MOVEMENT_TYPE_ID_PK" PRIMARY KEY (accession_movement_type_id);
+
+
+CREATE TABLE ara.accession(
+accession_id 			numeric not null,
+accession_number		character varying(20),
+collection_type_id		numeric not null,
+responsable_person_id		numeric,
+packages			numeric,
+original_weigth			numeric,
+passport_id			numeric,
+multiplication_regeneration	numeric,
+current_weigth			numeric,
+location			character varying(1000),
+germination_date		date,
+germination_rate		numeric,
+germination_viability		numeric,
+germination_method_type_id	numeric,
+moisture			numeric,
+moisture_method_type_id		numeric,
+storage_date			date,
+accession_parent_id		numeric,
+notes				character varying(1000),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.accession OWNER TO ara;
+
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT "ACCESSION_ID_PK" PRIMARY KEY (accession_id);
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT accession_number_unique UNIQUE (accession_number);
+
+CREATE TABLE ara.accession_movement(
+accession_id 		numeric not null,
+accession_movement_date		timestamp with time zone default now(),
+weight				numeric not null,
+accession_movement_type_id 	numeric not null,
+responsable_person_id 		numeric not null,
+notes 				character varying(1000),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.accession_movement OWNER TO ara;
+
+ALTER TABLE ONLY ara.accession_movement ADD CONSTRAINT "ACCESSION_MOVEMENT_ID_PK" PRIMARY KEY (accession_id, accession_movement_date);
+
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT collection_type_id_fk FOREIGN KEY (collection_type_id) REFERENCES ara.collection_type(collection_type_id);
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT responsable_person_id_fk FOREIGN KEY (responsable_person_id) REFERENCES ara.person(person_id);
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT passport_id_fk FOREIGN KEY (passport_id) REFERENCES ara.passport(passport_id);
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT germination_method_type_id_fk FOREIGN KEY (germination_method_type_id) REFERENCES ara.germination_method_type(germination_method_type_id);
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT moisture_method_type_id_fk FOREIGN KEY (moisture_method_type_id) REFERENCES ara.moisture_method_type(moisture_method_type_id);
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT accession_parent_id_fk FOREIGN KEY (accession_parent_id) REFERENCES ara.accession(accession_id);
+
+
+
+ALTER TABLE ONLY ara.accession_movement ADD CONSTRAINT accession_id_fk FOREIGN KEY (accession_id) REFERENCES ara.accession(accession_id);
+ALTER TABLE ONLY ara.accession_movement ADD CONSTRAINT accession_movement_type_id_fk FOREIGN KEY (accession_movement_type_id) REFERENCES ara.accession_movement_type(accession_movement_type_id);
+
+--SEQUENCE
+
+CREATE SEQUENCE ara.germination_method_type_seq;
+ALTER TABLE ara.germination_method_type ALTER COLUMN germination_method_type_id SET DEFAULT nextval('ara.germination_method_type_seq'::regclass);
+ALTER TABLE ara.germination_method_type_seq OWNER TO ara;
+
+
+CREATE SEQUENCE ara.moisture_method_type_seq;
+ALTER TABLE ara.moisture_method_type ALTER COLUMN moisture_method_type_id SET DEFAULT nextval('ara.moisture_method_type_seq'::regclass);
+ALTER TABLE ara.moisture_method_type_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.collection_type_seq;
+ALTER TABLE ara.collection_type ALTER COLUMN collection_type_id SET DEFAULT nextval('ara.collection_type_seq'::regclass);
+ALTER TABLE ara.collection_type_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.accession_movement_type_seq;
+ALTER TABLE ara.accession_movement_type ALTER COLUMN accession_movement_type_id SET DEFAULT nextval('ara.accession_movement_type_seq'::regclass);
+ALTER TABLE ara.accession_movement_type_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.accession_seq;
+ALTER TABLE ara.accession ALTER COLUMN accession_id SET DEFAULT nextval('ara.accession_seq'::regclass);
+ALTER TABLE ara.accession_seq OWNER TO ara;
+
+
+--selection list correspondientes para la seccion de accessiones del modulo de germoplasma
+
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (35,'Método de Germinación',0,'ara','2010-03-03','ara','2010-03-03','germination_method_type','germination_method_type_id');
+
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (36,'Tipo de Colección',0,'ara','2010-03-03','ara','2010-03-03','collection_type','collection_type_id');
+
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (37,'Método de Humedad',0,'ara','2010-03-03','ara','2010-03-03','moisture_method_type','moisture_method_type_id');
+
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (38,'Movimiento de Accesión',0,'ara','2010-03-03','ara','2010-03-03','accession_movement_type','accession_movement_type_id');
+
+-- selection list de ejemplo
+
+INSERT INTO ara.accession_movement_type
+(name, description,created_by,creation_date,last_modification_by,last_modification_date )
+values
+('Donación','','ara','2010-03-03','ara','2010-03-03');
+
+
+INSERT INTO ara.accession_movement_type
+(name, description,created_by,creation_date,last_modification_by,last_modification_date )
+values
+('Prestamo','','ara','2010-03-03','ara','2010-03-03');
+
+
+
+INSERT INTO ara.moisture_method_type
+(name, description,created_by,creation_date,last_modification_by,last_modification_date )
+values
+('Rango 1','','ara','2010-03-03','ara','2010-03-03');
+
+INSERT INTO ara.moisture_method_type
+(name, description,created_by,creation_date,last_modification_by,last_modification_date )
+values
+('Rango 2','','ara','2010-03-03','ara','2010-03-03');
+
+INSERT INTO ara.collection_type
+(name, description,created_by,creation_date,last_modification_by,last_modification_date )
+values
+('Activa','','ara','2010-03-03','ara','2010-03-03');
+
+INSERT INTO ara.collection_type
+(name, description,created_by,creation_date,last_modification_by,last_modification_date )
+values
+('Base','','ara','2010-03-03','ara','2010-03-03');
+
+INSERT INTO ara.germination_method_type
+(name, description,created_by,creation_date,last_modification_by,last_modification_date )
+values
+('Humedo','','ara','2010-03-03','ara','2010-03-03');
+
+INSERT INTO ara.germination_method_type
+(name, description,created_by,creation_date,last_modification_by,last_modification_date )
+values
+('Seco','','ara','2010-03-03','ara','2010-03-03');
+
+INSERT INTO ara.germination_method_type
+(name, description,created_by,creation_date,last_modification_by,last_modification_date )
+values
+('Frio','','ara','2010-03-03','ara','2010-03-03');
+
+
+
+
+--CREATE DONOR PERSON PROFILE
+INSERT INTO ara.profile (profile_id,name,description,creation_date,created_by,last_modification_date,last_modification_by)
+VALUES(20,'Responsable Person','GermPlams Responsable Person Management','2010-01-21','ara','2010-01-21','ara');
+
+
 
