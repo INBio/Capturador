@@ -1673,14 +1673,14 @@ ALTER TABLE ONLY ara.accession_movement ADD CONSTRAINT "ACCESSION_MOVEMENT_ID_PK
 
 ALTER TABLE ONLY ara.accession ADD CONSTRAINT collection_type_id_fk FOREIGN KEY (collection_type_id) REFERENCES ara.collection_type(collection_type_id);
 ALTER TABLE ONLY ara.accession ADD CONSTRAINT responsable_person_id_fk FOREIGN KEY (responsable_person_id) REFERENCES ara.person(person_id);
-ALTER TABLE ONLY ara.accession ADD CONSTRAINT passport_id_fk FOREIGN KEY (passport_id) REFERENCES ara.passport(passport_id);
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT passport_id_fk FOREIGN KEY (passport_id) REFERENCES ara.passport(passport_id) ON DELETE CASCADE;
 ALTER TABLE ONLY ara.accession ADD CONSTRAINT germination_method_type_id_fk FOREIGN KEY (germination_method_type_id) REFERENCES ara.germination_method_type(germination_method_type_id);
 ALTER TABLE ONLY ara.accession ADD CONSTRAINT moisture_method_type_id_fk FOREIGN KEY (moisture_method_type_id) REFERENCES ara.moisture_method_type(moisture_method_type_id);
-ALTER TABLE ONLY ara.accession ADD CONSTRAINT accession_parent_id_fk FOREIGN KEY (accession_parent_id) REFERENCES ara.accession(accession_id);
+ALTER TABLE ONLY ara.accession ADD CONSTRAINT accession_parent_id_fk FOREIGN KEY (accession_parent_id) REFERENCES ara.accession(accession_id) ON DELETE CASCADE;
 
 
 
-ALTER TABLE ONLY ara.accession_movement ADD CONSTRAINT accession_id_fk FOREIGN KEY (accession_id) REFERENCES ara.accession(accession_id);
+ALTER TABLE ONLY ara.accession_movement ADD CONSTRAINT accession_id_fk FOREIGN KEY (accession_id) REFERENCES ara.accession(accession_id)  ON DELETE CASCADE;
 ALTER TABLE ONLY ara.accession_movement ADD CONSTRAINT accession_movement_type_id_fk FOREIGN KEY (accession_movement_type_id) REFERENCES ara.accession_movement_type(accession_movement_type_id);
 
 --SEQUENCE
