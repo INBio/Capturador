@@ -199,6 +199,7 @@ public interface GermplasmFacadeRemote {
     public AccessionDTO updateAccession(AccessionDTO accessionDTO);
 
 
+    public void deleteAccession(Long accessionId);
 
 
 
@@ -212,7 +213,7 @@ public interface GermplasmFacadeRemote {
 
     public void updateAccessionMovement(AccessionMovementDTO accessionMovementDTO);
 
-    public void deleteAccessionMovement(AccessionMovementDTO accessionMovementDTO);
+    public AccessionDTO deleteAccessionMovement(AccessionMovementDTO accessionMovementDTO);
     
     public List<AccessionMovementDTO> getAllAccessionMovementByAccesionIdPaginated(Long accessionId, int firstResult, int maxResult);
 
@@ -226,5 +227,11 @@ public interface GermplasmFacadeRemote {
 
     public Long countAccessionMovementsAdvancedSearch(AccessionMovementDTO accessionMovement, Long collectionId);
 
+    public boolean haveMovementsAndAccessions(Long accessionId);
 
+    public AccessionDTO addToAccessionCurrentWeight(AccessionDTO accessionDTO, Long weigth);
+
+    public void deletePassport(Long PassportId);
+
+    public boolean haveAccessions(Long passportId);
 }

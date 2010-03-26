@@ -1156,7 +1156,8 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
 
         accessionDTOFactory.updatePlainEntity(accessionDTO, accession);
 
-        accession.setCurrentWeigth(accessionDTO.getOriginalWeigth() - weightRemoved);
+        if(accessionDTO.getOriginalWeigth() != null)
+            accession.setCurrentWeigth(accessionDTO.getOriginalWeigth() - weightRemoved);
 
         accessionEAOLocal.update(accession);
 
@@ -1223,11 +1224,21 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         accessionMovementEAOLocal.update(accessionMovement);
     }
 
-    public void deleteAccessionMovement(AccessionMovementDTO accessionMovementDTO) {
+    public AccessionDTO deleteAccessionMovement(AccessionMovementDTO accessionMovementDTO) {
         AccessionMovement accessionMovement =
-                accessionMovementEAOLocal.findById(
-                AccessionMovement.class, accessionMovementDTO.getAccessionId());
+                accessionMovementEAOLocal.findByAccessionIdAndDateTime(
+                accessionMovementDTO.getAccessionId(), accessionMovementDTO.getAccessionMovementDate());
+
+        //delete the accession movement
         accessionMovementEAOLocal.delete(accessionMovement);
+
+        //get the accession and update the current weight
+        Accession accession = accessionEAOLocal.findById(Accession.class, accessionMovementDTO.getAccessionId());
+        accession.setCurrentWeigth(accession.getCurrentWeigth() + accessionMovementDTO.getWeight());
+        accessionEAOLocal.update(accession);
+
+        //return the accessionDTO with the new weight value
+        return accessionDTOFactory.createDTO(accession);
     }
 
     public List<AccessionMovementDTO> getAllAccessionMovementByAccesionIdPaginated(Long accessionId, int firstResult, int maxResult) {
@@ -1293,5 +1304,48 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
     public List<PersonDTO> getResponsablePersons() {
         return personDTOFactory.createDTOList(personEAOLocal.
                 findByProfile(ProfileEntity.RESPONSABLE_PERSON_GERMPLASM_PROFILE.getId()));
+    }
+
+
+    public boolean haveMovementsAndAccessions(Long accessionId)
+    {
+        List<AccessionMovement> accessionMovementList = accessionMovementEAOLocal.findAllPaginatedByAccessionId(accessionId);
+        if(accessionMovementList != null && !accessionMovementList.isEmpty())
+            return true;
+
+        List<Long> accessionsList = accessionEAOLocal.findByAccessionParentId(accessionId);
+        if(accessionsList != null && !accessionsList.isEmpty())
+            return true;
+
+        else
+            return false;
+    }
+
+    public void deleteAccession(Long accessionId)
+    {
+        Accession accession = accessionEAOLocal.findById(Accession.class, accessionId);
+        accessionEAOLocal.delete(accession);
+    }
+
+    public AccessionDTO addToAccessionCurrentWeight(AccessionDTO accessionDTO, Long weigth) {
+        Accession accession = accessionEAOLocal.findById(Accession.class, accessionDTO.getAccessionId());
+
+        accession.setCurrentWeigth(accession.getCurrentWeigth() + weigth);
+
+        accessionEAOLocal.update(accession);
+        return accessionDTOFactory.createDTO(accession);
+    }
+
+    public void deletePassport(Long PassportId) {
+        Passport passport = passportEAOLocal.findById(Passport.class, PassportId);
+        passportEAOLocal.delete(passport);
+    }
+
+    public boolean haveAccessions(Long passportId) {
+        List<Long> accessionList = accessionEAOLocal.findByPassportId(passportId);
+        if(accessionList != null && !accessionList.isEmpty())
+            return true;
+        else
+            return false;
     }
 }
