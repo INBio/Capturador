@@ -22,10 +22,23 @@
                             <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="850">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                     style="height: 50px; width: 840px" warnClass="warnMessage"/>
+                                
+                                <h:panelGrid rendered="false" columns="1" id="panelAlert" binding="#{germplasm$ListAccession.alertMessage}" >
+                                    <webuijsf:label text="#{resources.have_accesions}" style="color: red" />
+                                    <h:panelGrid columns="2" id="butonsAlert" >
+                                        <h:commandButton action="#{germplasm$ListAccession.btn_confirm_delete_action}"
+                                            style="height: 25px; width: 160px"
+                                            styleClass="My_Button" value="#{resources.acept}"/>
+                                        <h:commandButton action="#{germplasm$ListAccession.btn_cancel_delete_action}"
+                                            style="height: 25px; width: 160px"
+                                            styleClass="My_Button" value="#{resources.cancel}"/>
+                                    </h:panelGrid>
+                                </h:panelGrid>
+
                                 <!-- Tabla que posee la lista de accesiones -->
-                                <h:panelGrid id="gridpGathering_Main" style="position: relative" width="850">
+                                <h:panelGrid binding="#{germplasm$ListAccession.mainPanel}" id="gridpGathering_Main" style="position: relative" width="850">
                                     <!-- panel de busquedas -->
-                                    <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">
+                                    <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">                                        
                                         <h:inputText binding="#{germplasm$ListAccession.txSearchAccession}" id="txSearchAccession" style="height: 18px; width: 408px">
                                             <f:validateLength maximum="100" minimum="0"/>
                                         </h:inputText>
@@ -78,9 +91,9 @@
                                                     style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.new}"/>
                                                 <h:commandButton action="#{germplasm$ListAccession.btn_edit_action}" id="btn_edit"
                                                     style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnEdit}"/>
-                                                <!--<h:commandButton action="#{inventory$ListGathering.btnGatheringDelete}" id="btn_delete"
+                                                -<h:commandButton action="#{germplasm$ListAccession.btn_delete_action}" id="btn_delete"
                                                             style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnDelete}"/>
-                                                        -->
+                                                        
                                                 <!-- Botones de paginacion -->
                                                 <h:commandButton action="#{germplasm$AccessionSessionBean.pagination.firstResults}" id="btnFirstAcession"
                                                     rendered="#{germplasm$AccessionSessionBean.pagination.isVisiblePrevious}" style="margin: 2px;height: 22px"

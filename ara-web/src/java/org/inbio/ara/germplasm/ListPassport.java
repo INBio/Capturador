@@ -70,8 +70,8 @@ public class ListPassport extends AbstractPageBean {
     //Data table binding para la tabla que muetra los passport
     private HtmlDataTable dataTablePassport = new HtmlDataTable();
 
-
-
+    private HtmlPanelGrid alertMessage = new HtmlPanelGrid();
+    private HtmlPanelGrid mainPanel = new HtmlPanelGrid();
 
     /*Componentes para las busquedas*/
     private HtmlInputText txSearch = new HtmlInputText(); //Input text de busqueda simple
@@ -89,6 +89,9 @@ public class ListPassport extends AbstractPageBean {
     private SingleSelectOptionsList donorInstitutions = new SingleSelectOptionsList();
     private SingleSelectOptionsList materialTypes = new SingleSelectOptionsList();
     private SingleSelectOptionsList sampleStatus = new SingleSelectOptionsList();
+
+
+    
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -528,6 +531,15 @@ public class ListPassport extends AbstractPageBean {
     }
 
     /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AccessionSessionBean getAccessionListSessionBean() {
+        return (AccessionSessionBean) getBean("germplasm$AccessionSessionBean");
+    }
+
+    /**
      * @return the myLocale
      */
     public Locale getMyLocale() {
@@ -628,6 +640,84 @@ public class ListPassport extends AbstractPageBean {
             MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
             return null;
         }
+    }
+
+    public String btn_delete_action()
+    {
+        int n = this.getDataTablePassport().getRowCount();
+        ArrayList<PassportDTO> selectedPassport = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getDataTablePassport().setRowIndex(i);
+            PassportDTO aux = (PassportDTO) this.
+                    getDataTablePassport().getRowData();
+            if (aux.isSelected()) {
+                selectedPassport.add(aux);
+            }
+        }
+        if(selectedPassport == null || selectedPassport.size() == 0){
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        else if(selectedPassport.size() == 1)
+        { //En caso de que solo se seleccione un elemento, lo elimina
+            //si tiene hijos o asociacions despliega el mensaje de alerta
+            if(getPassportListSessionBean().getGermplasmFacadeRemote().
+                    haveAccessions(selectedPassport.get(0).getPassportId()))
+            {
+                this.getAlertMessage().setRendered(true);
+                this.getMainPanel().setRendered(false);
+                getPassportListSessionBean().setDeletePassport(
+                        selectedPassport.get(0).getPassportId());
+            }
+            else
+            {
+                //delete the passport
+                getPassportListSessionBean().getGermplasmFacadeRemote().
+                        deletePassport(selectedPassport.get(0).getPassportId());
+                //refresh the list
+                getPassportListSessionBean().getPagination().deleteItem();
+                getPassportListSessionBean().getPagination().refreshList();
+
+            }
+            return null;
+
+        }
+        else
+        { //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
+    }
+
+    public String btn_confirm_delete_action()
+    {
+        //delete the accession
+        getPassportListSessionBean().getGermplasmFacadeRemote().
+                deletePassport(
+                getPassportListSessionBean().getDeletePassport());
+
+        //refresh the list
+        getPassportListSessionBean().getPagination().deleteItem();
+        getPassportListSessionBean().getPagination().refreshList();
+
+        getAccessionListSessionBean().setPagination(null);
+        //getAccessionListSessionBean().getPagination().refreshList();
+
+
+        //show and hidde panels
+        this.getMainPanel().setRendered(true);
+        this.getAlertMessage().setRendered(false);
+
+        return null;
+    }
+
+    public String btn_cancel_delete_action()
+    {
+        //show and hidde panels
+        this.getMainPanel().setRendered(true);
+        this.getAlertMessage().setRendered(false);
+        return null;
     }
 
     /**
@@ -796,5 +886,33 @@ public class ListPassport extends AbstractPageBean {
      */
     public void setSampleStatus(SingleSelectOptionsList sampleStatus) {
         this.sampleStatus = sampleStatus;
+    }
+
+    /**
+     * @return the alertMessage
+     */
+    public HtmlPanelGrid getAlertMessage() {
+        return alertMessage;
+    }
+
+    /**
+     * @param alertMessage the alertMessage to set
+     */
+    public void setAlertMessage(HtmlPanelGrid alertMessage) {
+        this.alertMessage = alertMessage;
+    }
+
+    /**
+     * @return the mainPanel
+     */
+    public HtmlPanelGrid getMainPanel() {
+        return mainPanel;
+    }
+
+    /**
+     * @param mainPanel the mainPanel to set
+     */
+    public void setMainPanel(HtmlPanelGrid mainPanel) {
+        this.mainPanel = mainPanel;
     }
 }

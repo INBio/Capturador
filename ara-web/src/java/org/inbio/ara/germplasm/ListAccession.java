@@ -60,6 +60,8 @@ public class ListAccession extends AbstractPageBean {
     private HtmlDataTable dataTableAccession = new HtmlDataTable();
 
 
+    private HtmlPanelGrid alertMessage = new HtmlPanelGrid();
+    private HtmlPanelGrid mainPanel = new HtmlPanelGrid();
     /**busquedas avanzadas**/
     //listado
 
@@ -189,7 +191,7 @@ public class ListAccession extends AbstractPageBean {
                     getAraSessionBean().getGlobalCollectionId()).intValue());
         }
         //set the first result of the query
-        this.getgermplasm$AccessionSessionBean().getPagination().firstResults();
+        this.getgermplasm$AccessionSessionBean().getPagination().firstResults();        
         return null;
     }
 
@@ -297,6 +299,12 @@ public class ListAccession extends AbstractPageBean {
      */
     public String btn_new_action() {
         getgermplasm$AccessionSessionBean().resetValues();
+        try
+        {
+            getgermplasm$PassportListSessionBean().getPagination().refreshList();
+        }
+        catch(Exception e){}
+
         return "new";
     }
 
@@ -322,6 +330,11 @@ public class ListAccession extends AbstractPageBean {
 
             //reset values
             getgermplasm$AccessionSessionBean().resetValues();
+            try
+            {
+                getgermplasm$PassportListSessionBean().getPagination().refreshList();
+            }
+            catch(Exception e){}
             //set the AccessionDTO
             getgermplasm$AccessionSessionBean().setEditAccessionDTO(selectedAccession.get(0));
             
@@ -333,6 +346,80 @@ public class ListAccession extends AbstractPageBean {
             MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
             return null;
         }
+    }
+
+    public String btn_delete_action()
+    {
+        int n = this.getDataTableAccession().getRowCount();
+        ArrayList<AccessionDTO> selectedAccession = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getDataTableAccession().setRowIndex(i);
+            AccessionDTO aux = (AccessionDTO) this.
+                    getDataTableAccession().getRowData();
+            if (aux.isSelected()) {
+                selectedAccession.add(aux);
+            }
+        }
+        if(selectedAccession == null || selectedAccession.size() == 0)
+        {
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        else if(selectedAccession.size() == 1)
+        { //En caso de que solo se seleccione un elemento
+
+            //si tiene hijos o asociacions despliega el mensaje de alerta
+            if(getgermplasm$AccessionSessionBean().getGermplasmFacadeRemote().
+                    haveMovementsAndAccessions(
+                    selectedAccession.get(0).getAccessionId()))
+            {
+                this.getAlertMessage().setRendered(true);
+                this.getMainPanel().setRendered(false);
+                getgermplasm$AccessionSessionBean().setDeleteAccession(
+                        selectedAccession.get(0).getAccessionId());
+            }
+            else
+            {
+                //delete the accession
+                getgermplasm$AccessionSessionBean().getGermplasmFacadeRemote().
+                        deleteAccession(selectedAccession.get(0).getAccessionId());
+                //refresh the list
+                getgermplasm$AccessionSessionBean().getPagination().deleteItem();
+                getgermplasm$AccessionSessionBean().getPagination().refreshList();
+            }
+
+            return null;
+        }
+        else{ //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
+    }
+
+    public String btn_confirm_delete_action()
+    {
+        //delete the accession
+        getgermplasm$AccessionSessionBean().getGermplasmFacadeRemote().
+                deleteAccession(
+                getgermplasm$AccessionSessionBean().getDeleteAccession());
+        //refresh the list
+        getgermplasm$AccessionSessionBean().getPagination().deleteItem();
+        getgermplasm$AccessionSessionBean().getPagination().refreshList();
+
+        //show and hidde panels
+        this.getMainPanel().setRendered(true);
+        this.getAlertMessage().setRendered(false);
+        
+        return null;
+    }
+
+    public String btn_cancel_delete_action()
+    {
+        //show and hidde panels
+        this.getMainPanel().setRendered(true);
+        this.getAlertMessage().setRendered(false);
+        return null;
     }
 
     public String btnAdvSearchAccession_action()
@@ -554,6 +641,36 @@ public class ListAccession extends AbstractPageBean {
     public void setGerminationMethod(SingleSelectOptionsList germinationMethod) {
         this.germinationMethod = germinationMethod;
     }
+
+    /**
+     * @return the alertMessage
+     */
+    public HtmlPanelGrid getAlertMessage() {
+        return alertMessage;
+    }
+
+    /**
+     * @param alertMessage the alertMessage to set
+     */
+    public void setAlertMessage(HtmlPanelGrid alertMessage) {
+        this.alertMessage = alertMessage;
+    }
+
+    /**
+     * @return the mainPanel
+     */
+    public HtmlPanelGrid getMainPanel() {
+        return mainPanel;
+    }
+
+    /**
+     * @param mainPanel the mainPanel to set
+     */
+    public void setMainPanel(HtmlPanelGrid mainPanel) {
+        this.mainPanel = mainPanel;
+    }
+
+    
 
     
     

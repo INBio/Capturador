@@ -318,9 +318,11 @@ public class EditAccession extends AbstractPageBean {
 
                 else
                 {
-                    getgermplasm$AccessionSessionBean().
+                    getgermplasm$AccessionSessionBean().setEditAccessionDTO(
+                            getgermplasm$AccessionSessionBean().
                             getGermplasmFacadeRemote().
-                            updateAccession(accessionDTO);
+                            updateAccession(accessionDTO));
+                    
                     MessageBean.setSuccessMessageFromBundle("update_accession_succces", this.getMyLocale());
                     getgermplasm$AccessionSessionBean().getPagination().refreshList();
                 }

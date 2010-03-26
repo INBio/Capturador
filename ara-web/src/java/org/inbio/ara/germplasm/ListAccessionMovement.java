@@ -254,6 +254,53 @@ public class ListAccessionMovement extends AbstractPageBean {
             return null;
         }
     }
+
+
+    public String btn_delete_action()
+    {
+        //reset values
+        get$AccessionMovementSessionBean().setAccessionMovementDTO(
+                new AccessionMovementDTO());
+
+        //set the movement
+        int n = this.getDataTableAccessionMovements().getRowCount();
+        ArrayList<AccessionMovementDTO> selectedAccessionMovement = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getDataTableAccessionMovements().setRowIndex(i);
+            AccessionMovementDTO aux = (AccessionMovementDTO) this.
+                    getDataTableAccessionMovements().getRowData();
+            if (aux.isSelected()) {
+                selectedAccessionMovement.add(aux);
+            }
+        }
+        if(selectedAccessionMovement == null || selectedAccessionMovement.size() == 0){
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        else if(selectedAccessionMovement.size() == 1)
+        { //En caso de que solo se seleccione un elemento
+
+            get$AccessionMovementSessionBean().setAccessionDTO(
+            get$AccessionMovementSessionBean().getGermplasmFacadeRemote().
+                    deleteAccessionMovement(selectedAccessionMovement.get(0)));
+
+            get$AccessionSessionBean().setEditAccessionDTO(
+                    get$AccessionMovementSessionBean().getAccessionDTO());
+
+            //refresh the list
+            get$AccessionMovementSessionBean().getPagination().deleteItem();
+            get$AccessionMovementSessionBean().getPagination().refreshList();
+            
+            return null;
+
+        }
+        else{ //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
+
+    }
     /**
      * <p>Return a reference to the scoped data bean.</p>
      *
@@ -279,6 +326,15 @@ public class ListAccessionMovement extends AbstractPageBean {
      */
     protected AccessionMovementSessionBean get$AccessionMovementSessionBean() {
         return (AccessionMovementSessionBean) getBean("germplasm$AccessionMovementSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AccessionSessionBean get$AccessionSessionBean() {
+        return (AccessionSessionBean) getBean("germplasm$AccessionSessionBean");
     }
 
     /**

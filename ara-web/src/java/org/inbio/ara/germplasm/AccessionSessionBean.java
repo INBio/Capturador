@@ -70,6 +70,8 @@ public class AccessionSessionBean extends AbstractSessionBean implements Paginat
     private String consultaSimple = new String("");
 
     private AccessionDTO queryAccessionDTO = new AccessionDTO();
+
+    private Long deleteAccession = null;
     
     /**
      * <p>Construct a new session data bean instance.</p>
@@ -426,6 +428,20 @@ public class AccessionSessionBean extends AbstractSessionBean implements Paginat
      */
     public void setEditAccessionDTO(AccessionDTO editAccessionDTO) {
         this.editAccessionDTO = editAccessionDTO;
+    }
+
+    /**
+     * @return the deleteAccession
+     */
+    public Long getDeleteAccession() {
+        return deleteAccession;
+    }
+
+    /**
+     * @param deleteAccession the deleteAccession to set
+     */
+    public void setDeleteAccession(Long deleteAccession) {
+        this.deleteAccession = deleteAccession;
     }
     
 }

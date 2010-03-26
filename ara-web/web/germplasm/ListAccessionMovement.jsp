@@ -29,50 +29,7 @@
                                 <!-- Tabla que posee la lista de accessionmovements -->
                                 <h:panelGrid id="gridpGathering_Main" style="position: relative" width="850">
                                     <!-- panel de busquedas -->
-                                    <!-- <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">
-                                            <h:inputText binding="#{germplasm$ListPassport.txSearch}" id="txSearch" style="height: 18px; width: 408px">
-                                                <f:validateLength maximum="100" minimum="0"/>
-                                            </h:inputText>
-                                            <h:commandButton action="#{germplasm$ListPassport.btnPassportSearch_action}" binding="#{germplasm$ListPassport.btnSearch}"
-                                                id="btnGatheringSearch" style="height: 25px; width: 160px" styleClass="My_Button" value="#{resources.search}"/>
-                                            <h:commandButton action="#{germplasm$ListPassport.btnAdvPassportSearch_action}"
-                                                             binding="#{germplasm$ListPassport.btnAdvSearch}" id="btnAdvGatheringSearch" style="height: 25px; width: 160px"
-                                                styleClass="My_Button" value="#{resources.advanced_search}"/>
-                                        </h:panelGrid>
-                                        <h:panelGrid binding="#{germplasm$ListPassport.gridpAdvancedSearch}" columns="1" id="gridpAdvancedSearch"
-                                            rendered="false" style="height: 5px" styleClass="My_panel_blue" width="680">
-
-                                            <h:panelGrid columns="1" id="gridpAdvancedSearch1" style="height: 24px" width="780">
-
-                                                <h:panelGrid columns="4" id="gridpAS1" style="height: 24px" width="780">
-
-                                                    <webuijsf:label id="labelPassportId" style="width: 168px; height: 24px"
-                                                                text="#{resources.passport_id}"/>
-                                                    <webuijsf:textField
-                                                                        id="textFieldPassportId" style="width: 200px;"
-                                                                        text="#{germplasm$PassportListSessionBean.queryPassportDTO.passportId}"/>
-
-
-                                                    <webuijsf:label id="labelSampleStatus" style="width: 168px; height: 24px" text="#{resources.sle_sample_status}"/>
-                                                    <webuijsf:dropDown id="dropdownSampleStatus"
-                                                                       items="#{germplasm$ListPassport.sampleStatus.options}"
-                                                                       selected="#{germplasm$PassportListSessionBean.queryPassportDTO.sampleStatusId}" width="200px"/>
-
-
-                                                </h:panelGrid>
-
-                                                <h:panelGrid columns="2" id="gridpAS2" style="height: 24px" width="390">
-
-
-
-                                                    <h:commandButton action="#{germplasm$ListPassport.btnAdvSearchPassport_action}" id="btnAdvSearchGO"
-                                                    style="width: 160px" styleClass="My_Button" value="#{resources.button_proceed}"/>
-
-                                                </h:panelGrid>
-
-                                            </h:panelGrid>
-
-                                        </h:panelGrid>-->
+                                    
                                     <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="height: 24px" styleClass="My_table" width="840">
                                         <webuijsf:panelGroup id="grouppButtons">
                                             <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" width="840">
@@ -84,9 +41,8 @@
                                                     style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.new}"/>
                                                 <h:commandButton action="#{germplasm$ListAccessionMovement.btn_edit_action}" id="btn_edit"
                                                     style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnEdit}"/>
-                                                <!--<h:commandButton action="#{inventory$ListGathering.btnGatheringDelete}" id="btn_delete"
+                                                <h:commandButton action="#{germplasm$ListAccessionMovement.btn_delete_action}" id="btn_delete"
                                                         style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnDelete}"/>
-                                                    -->
                                                 <!-- Botones de paginacion -->
                                                 <h:commandButton action="#{germplasm$AccessionMovementSessionBean.pagination.firstResults}" id="btnFirst"
                                                     rendered="#{germplasm$AccessionMovementSessionBean.pagination.isVisiblePrevious}"

@@ -67,6 +67,8 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
     //Passport DTO utilizado para realizar las consultas
     private PassportDTO queryPassportDTO = new PassportDTO();
 
+    //passport to be deleted
+    private Long deletePassport = null;
     /**
      * <p>Construct a new session data bean instance.</p>
      */
@@ -379,6 +381,20 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
      */
     public void setAdvancedSearch(boolean advancedSearch) {
         this.advancedSearch = advancedSearch;
+    }
+
+    /**
+     * @return the deletePassport
+     */
+    public Long getDeletePassport() {
+        return deletePassport;
+    }
+
+    /**
+     * @param deletePassport the deletePassport to set
+     */
+    public void setDeletePassport(Long deletePassport) {
+        this.deletePassport = deletePassport;
     }
 
 }
