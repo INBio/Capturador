@@ -601,6 +601,7 @@ body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 .geographical a {background: url(../images/info-geo.png)}
 .security a { background: url(../images/seguridad.png)}
 .reports a { background: url(../images/report.png)}
-.taxonomy a, .inventory a, .administration a, .geographical a, .security a, .reports a
+.germplasm a { background: url(../images/germplasm.png)}
+.taxonomy a, .inventory a, .administration a, .geographical a, .security a, .reports a, .germplasm a
 { background-position: 3px 3px; background-repeat:no-repeat;}
 

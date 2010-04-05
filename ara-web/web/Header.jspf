@@ -140,17 +140,17 @@
 							</li>
 
                                                         <!-- Modulo de manejo de germoplasma -->
-                                                        <li class="germoplasma">
-                                                            <webuijsf:hyperlink id="menuSubsystemGermoplasma" text="#{resources.menuSubsystemGermoplasma}" visible="true"/>
+                                                        <li class="germplasm">
+                                                            <webuijsf:hyperlink id="menuSubsystemGermplasm" text="#{resources.menuSubsystemGermplasm}" visible="true"/>
 								<ul>
 									<li>
 										<!-- Entrar a pasaportes-->
-                                                                                <webuijsf:hyperlink actionExpression="#{Header.menuModuleGermoPlasmaPassport_action}" id="menuModulePassports"
+                                                                                <webuijsf:hyperlink actionExpression="#{Header.menuModuleGermPlasmPassport_action}" id="menuModulePassports"
                                                                                                     text="#{resources.menuModulePassport}" visible="false"/>
 									</li>
 									<li>
                                                                             <!-- Entrar a accesiones-->
-                                                                            <webuijsf:hyperlink actionExpression="#{Header.menuModuleGermoPlasmaAccession_action}" id="menuModuleAccessions"
+                                                                            <webuijsf:hyperlink actionExpression="#{Header.menuModuleGermPlasmAccession_action}" id="menuModuleAccessions"
                                                                                                     text="#{resources.menuModuleAccession}" visible="false"/>
 									</li>
 								</ul>

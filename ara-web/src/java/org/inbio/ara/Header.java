@@ -272,13 +272,13 @@ public class Header extends AbstractFragmentBean {
     }
 
     //Menú germoplasma -> Entrada a Administracion de Pasaportes
-    public String menuModuleGermoPlasmaPassport_action() {
+    public String menuModuleGermPlasmPassport_action() {
         this.getSessionManager().setCurrentModuleId(new Long(25));
         return "passports";
     }
 
     //Menú germoplasma -> Entrada a Administracion de Accessiones
-    public String menuModuleGermoPlasmaAccession_action() {
+    public String menuModuleGermPlasmAccession_action() {
         this.getSessionManager().setCurrentModuleId(new Long(26));
         return "accessions";
     }
