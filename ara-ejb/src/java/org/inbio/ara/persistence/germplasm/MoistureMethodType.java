@@ -29,7 +29,7 @@ public class MoistureMethodType extends SelectionListGenericEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO, generator="moisture_method_type")
-    @SequenceGenerator(name="moisture_method_type", sequenceName="moisture_method_typee_seq")
+    @SequenceGenerator(name="moisture_method_type", sequenceName="moisture_method_type_seq")
     @Basic(optional = false)
     @Column(name = "moisture_method_type_id")
     private Long moistureMethodTypeId;
