@@ -1431,7 +1431,7 @@ values (34,'Textura del Suelo',0,'ara','2010-01-21','ara','2010-01-21','soil_tex
 
 --CREATE DONOR PERSON PROFILE
 INSERT INTO ara.profile (profile_id,name,description,creation_date,created_by,last_modification_date,last_modification_by)
-VALUES(19,'Donor Person','donor person','2010-01-21','ara','2010-01-21','ara');
+VALUES(20,'Donor Person','donor person','2010-01-21','ara','2010-01-21','ara');
 
 CREATE TABLE ara.passport_nomenclatural_group (
 passport_id			numeric NOT NULL,
@@ -1772,11 +1772,9 @@ values
 ('Frio','','ara','2010-03-03','ara','2010-03-03');
 
 
-
-
 --CREATE DONOR PERSON PROFILE
 INSERT INTO ara.profile (profile_id,name,description,creation_date,created_by,last_modification_date,last_modification_by)
-VALUES(20,'Responsable Person','GermPlams Responsable Person Management','2010-01-21','ara','2010-01-21','ara');
+VALUES(21,'Responsable Person','GermPlams Responsable Person Management','2010-01-21','ara','2010-01-21','ara');
 
 
 

@@ -30,9 +30,9 @@ public enum ProfileEntity {
     IDENTIFICATION_VALIDATOR(new Long(16)),
     IDENTIFIER_PROFILE(new Long(17)),
     CERTIFIER(new Long(18)),
-
-    DONOR_PERSON_PROFILE(new Long(19)),
-    RESPONSABLE_PERSON_GERMPLASM_PROFILE(new Long(20));
+    SPECIMEN_IDENTIFIER(new Long(19)),
+    DONOR_PERSON_PROFILE(new Long(20)),
+    RESPONSABLE_PERSON_GERMPLASM_PROFILE(new Long(21));
 
     private Long id;
 
