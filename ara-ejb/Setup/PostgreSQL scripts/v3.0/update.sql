@@ -1,4 +1,4 @@
--- Ara - capture species and specimen data
+﻿-- Ara - capture species and specimen data
 --
 -- Copyright (C) 2009  INBio (Instituto Nacional de Biodiversidad)
 --
@@ -24,7 +24,6 @@
 --
 --  created: 2009.08.12
 --
-
 
 -- 2009.08.12
 --Cambia el tipo de la columna catalog_number a varhcar(100) pues antes era numeric
@@ -1775,6 +1774,100 @@ values
 --CREATE DONOR PERSON PROFILE
 INSERT INTO ara.profile (profile_id,name,description,creation_date,created_by,last_modification_date,last_modification_by)
 VALUES(21,'Responsable Person','GermPlams Responsable Person Management','2010-01-21','ara','2010-01-21','ara');
+
+--2010.04.27 gsulca
+
+                                ---------------------------------------------
+                                    -- TABLES FOR INDICATOR MODULE --
+                                ---------------------------------------------
+
+
+create table ARA.INDICATOR  (
+   INDICATOR_ID         numeric not null,
+   NAME                 character varying(80) not null,
+   DESCRIPTION          character varying(200),
+   CREATION_DATE        DATE,
+   CREATED_BY           character varying(20),
+   LAST_MODIFICATION_DATE DATE,
+   LAST_MODIFICATION_BY character varying(20),
+   INDICATOR_ANCESTOR_ID numeric ,
+   APPLIES_TO_PARTS     numeric,
+   CONSTRAINT ckc_APPLIES_TO_PARTS CHECK (((APPLIES_TO_PARTS  = (0)::numeric) OR (APPLIES_TO_PARTS  = (1)::numeric)))
+);
+ALTER TABLE  ARA.INDICATOR OWNER TO ara;
+ALTER TABLE ONLY ARA.INDICATOR add constraint INDICATOR_ID_pk primary key (INDICATOR_ID);
+
+create table ARA.TAXON_INDICATOR  (
+   INDICATOR_ID         numeric NOT NULL,
+   TAXON_ID             numeric NOT NULL,
+   CERTAINTY_LEVEL      numeric
+         constraint CKC_CERTAINTY_LEVEL_TAXON_IN check (CERTAINTY_LEVEL is null or (CERTAINTY_LEVEL between 0 and 1)),
+   EVALUATION_CRITERIA  character varying(200),
+   REGIONALITY          character varying(200),
+   TEMPORALITY          character varying(200),
+   NOTES                character varying(4000),
+   VALUER_PERSON_ID     numeric not null,
+   CREATION_DATE        DATE,
+   CREATED_BY           character varying(20),
+   LAST_MODIFICATION_DATE DATE,
+   LAST_MODIFICATION_BY character varying(20)
+);
+ALTER TABLE ARA.TAXON_INDICATOR OWNER TO ara;
+ALTER TABLE ONLY ARA.TAXON_INDICATOR ADD CONSTRAINT TAXON_INDICATOR_ID_TAXON_ID_PK PRIMARY KEY (INDICATOR_ID, TAXON_ID);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR ADD CONSTRAINT TAXON_INDICATOR_taxon_id_fk FOREIGN KEY (TAXON_ID ) REFERENCES ARA.TAXON(TAXON_ID);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR ADD CONSTRAINT TAXON_INDICATOR_INDICATOR_id_fk FOREIGN KEY (INDICATOR_ID) REFERENCES ARA.INDICATOR(INDICATOR_ID);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR ADD CONSTRAINT valuer_person_id_fk FOREIGN KEY (valuer_person_id) REFERENCES ARA.PERSON(person_id);
+
+
+create table ARA.TAXON_INDICATOR_REFERENCE  (
+   REFERENCE_ID         numeric not null,
+   INDICATOR_ID         numeric not null,
+   TAXON_ID             numeric not null
+);
+ALTER TABLE  ARA.TAXON_INDICATOR_REFERENCE OWNER TO ara;
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_REFERENCE add constraint TAXON_INDICATOR_REFERENCE_PK primary key (REFERENCE_ID, INDICATOR_ID, TAXON_ID);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_REFERENCE  ADD CONSTRAINT TAXON_INDIC_INDICATOR_TAXON_id_fk FOREIGN KEY (INDICATOR_ID, TAXON_ID) REFERENCES ARA.TAXON_INDICATOR(INDICATOR_ID, TAXON_ID);
+
+
+create table ARA.INDICATOR_REFERENCE  (
+   REFERENCE_ID         numeric not null,
+   INDICATOR_ID         numeric not null
+);
+ALTER TABLE ARA.INDICATOR_REFERENCE OWNER TO ara;
+ALTER TABLE ONLY ARA.INDICATOR_REFERENCE add constraint INDICATOR_REFERENCE_pk primary key (REFERENCE_ID, INDICATOR_ID);
+
+
+create table ARA.TAXON_INDICATOR_COMPONENT_PART  (
+   COMPONENT_PART_ID    numeric NOT NULL,
+   INDICATOR_ID         numeric NOT NULL,
+   TAXON_ID             numeric NOT NULL
+);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_COMPONENT_PART ADD CONSTRAINT TAXON_INDICATOR_CP_ID_TAXON_ID_PK PRIMARY KEY (COMPONENT_PART_ID,INDICATOR_ID, TAXON_ID);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_COMPONENT_PART ADD CONSTRAINT TAXON_INDIC_CP_indic_taxon_fk FOREIGN KEY (INDICATOR_ID, TAXON_ID) REFERENCES ARA.TAXON_INDICATOR(INDICATOR_ID, TAXON_ID);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_COMPONENT_PART OWNER TO ara;
+
+-- Agregué las siguientes llaves foraneas
+ALTER TABLE ONLY ARA.INDICATOR_REFERENCE  ADD CONSTRAINT INDICATOR_reference_id_fk FOREIGN KEY (INDICATOR_ID ) REFERENCES ARA.INDICATOR(INDICATOR_ID);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_COMPONENT_PART  ADD CONSTRAINT TAXON_INDICATOR_COMPONENT_PART_fk FOREIGN KEY (COMPONENT_PART_ID ) REFERENCES ARA.COMPONENT_PART(COMPONENT_PART_ID);
+
+-- Hacer la tabla indicadores jerárquica
+ALTER TABLE ONLY ARA.INDICATOR ADD CONSTRAINT TAXON_INDICATOR_ancestor_id_fk FOREIGN KEY (INDICATOR_ANCESTOR_ID ) REFERENCES ARA.INDICATOR(INDICATOR_ID);
+
+
+-- Nuevo secuence para la tabla de component_part
+CREATE SEQUENCE ara.component_part_seq;
+ALTER TABLE ara.component_part_seq OWNER TO ara;
+-- Asignar dicho secuence al atributo correspondiente de la tabla
+ALTER TABLE ara.component_part ALTER COLUMN component_part_id SET DEFAULT nextval('ara.component_part_seq'::regclass);
+-- Eliminar el obj_version
+ALTER TABLE ara.component_part DROP COLUMN obj_version;
+
+
+-- Nuevo secuence para la tabla de indicator
+CREATE SEQUENCE ara.indicator_seq START 0 MINVALUE 0;
+ALTER TABLE ara.indicator_seq OWNER TO ara;
+-- Asignar dicho secuence al atributo correspondiente de la tabla
+ALTER TABLE ara.indicator ALTER COLUMN indicator_id SET DEFAULT nextval('ara.indicator_seq'::regclass);
 
 
 
