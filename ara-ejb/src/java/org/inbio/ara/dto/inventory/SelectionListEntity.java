@@ -29,6 +29,7 @@ import org.inbio.ara.persistence.germplasm.MoistureMethodType;
 import org.inbio.ara.persistence.germplasm.SampleStatus;
 import org.inbio.ara.persistence.germplasm.SoilColor;
 import org.inbio.ara.persistence.germplasm.SoilTexture;
+import org.inbio.ara.persistence.indicator.ComponentPart;
 import org.inbio.ara.persistence.specimen.LifeForm;
 
 /**
@@ -57,8 +58,9 @@ public enum SelectionListEntity {
      */
     LIFE_FORM(new Long(11),new LifeForm(), true,"sle_life_form",LifeForm.class.getName()),
     EXTRACTION_TYPE(new Long(13), new ExtractionType(), true,"sle_extraction_type",ExtractionType.class.getName()),
+    
+    COMPONENT_PART(new Long(14), new ComponentPart(), true, "sle_component_part", ComponentPart.class.getName()),
     /*
-    COMPONENT_PART(14, new ComponentPart(), true),
     PREPARATION_METHOD(17, new PreparationMethod(), true),
     SAMPLING_TYPE(18, new SamplingType(), true),
     TAXON_AUTHOR_CONNECTOR(19, new TaxonAuthorConnector(), true),
