@@ -64,7 +64,7 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
         {
             result = null;
         }
-        System.out.println("---> Apply to parts (facade) "+result.getAppliesToParts());
+        //System.out.println("---> Apply to parts (facade) "+result.getAppliesToParts());
         return result;
     }
 
@@ -86,15 +86,8 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
      public IndicatorDTO updateIndicator(IndicatorDTO iDTO)
      {
          Indicator indicator = indicatorEAOImpl.findById(Indicator.class, iDTO.getIndicatorId());
-System.out.println("indicator id (facade impl) = "+ indicator.getIndicatorId());
-         indicator.setName(iDTO.getName());
-         indicator.setDescription(iDTO.getDescription());
-         indicator.setAppliesToParts(iDTO.getAppliesToParts());
-         indicator.setIndicatorAncestorId(iDTO.getIndicatorAncestorId());
-System.out.println("indicator name (facade impl) = "+ indicator.getName());
-System.out.println("indicator description (facade impl) = "+ indicator.getDescription());
-System.out.println("indicator apply to parts (facade impl) = "+ indicator.getAppliesToParts());
-System.out.println("indicator ancestor id (facade impl) = "+ indicator.getIndicatorAncestorId());
+         //System.out.println("************** Create by "+indicator.getCreatedBy());
+         indicator = indicatorDTOFactory.updateEntityWithPlainValues(iDTO, indicator);
 
          indicatorEAOImpl.update(indicator);
 

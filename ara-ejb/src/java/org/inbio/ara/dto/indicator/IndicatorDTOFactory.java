@@ -5,6 +5,7 @@
 
 package org.inbio.ara.dto.indicator;
 
+import java.util.GregorianCalendar;
 import org.inbio.ara.dto.BaseDTOFactory;
 import org.inbio.ara.dto.BaseEntityOrDTOFactory;
 import org.inbio.ara.persistence.indicator.Indicator;
@@ -19,7 +20,16 @@ public class IndicatorDTOFactory extends BaseEntityOrDTOFactory<Indicator ,Indic
 
     @Override
     public Indicator updateEntityWithPlainValues(IndicatorDTO dto, Indicator e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        e.setName(dto.getName());
+        e.setDescription(dto.getDescription());
+        e.setAppliesToParts(dto.getAppliesToParts());
+        e.setIndicatorAncestorId(dto.getIndicatorAncestorId());
+
+        e.setLastModificationBy(dto.getUserName());
+        e.setLastModificationDate(new GregorianCalendar());
+
+
+        return e;
     }
 
     public IndicatorDTO createDTO(Indicator entity) {
