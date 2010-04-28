@@ -31,5 +31,13 @@ public class IndicatorEAOImpl extends BaseEAOImpl<Indicator, Long> implements In
         //return null;
     }
 
+     public Long countByIndicatorId(Long indicatorNodeId) {
+        StringBuffer query = new StringBuffer();
+        query.append("select count(i.indicatorId) from Indicator"+
+                " as i where i.indicatorAncestorId = :indicatorNodeId");
+        Query q = em.createQuery(query.toString());
+        q.setParameter("indicatorNodeId", indicatorNodeId);
+        return (Long)q.getSingleResult();
+    }
  
 }

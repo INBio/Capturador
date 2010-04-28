@@ -19,5 +19,7 @@ import org.inbio.ara.persistence.indicator.Indicator;
 public interface IndicatorEAOLocal extends BaseLocalEAO<Indicator,Long>{
 
     public List<Long> findChildrenByIndicatorId(java.lang.Long indicatorId);
+
+    public Long countByIndicatorId(Long indicatorNodeId);
     
 }

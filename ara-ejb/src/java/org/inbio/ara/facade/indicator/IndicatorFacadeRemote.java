@@ -26,6 +26,10 @@ public interface IndicatorFacadeRemote {
 
     public IndicatorDTO updateIndicator(IndicatorDTO iDTO);
 
+    public Long countChildrenByIndicatorId(Long indicatorId);
+
+    public void deletePassport(Long IndicatorId);
+
 
     
 }

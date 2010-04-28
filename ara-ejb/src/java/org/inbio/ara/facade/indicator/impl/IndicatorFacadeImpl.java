@@ -68,6 +68,11 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
         return result;
     }
 
+    public Long countChildrenByIndicatorId(Long indicatorId)
+    {
+        return indicatorEAOImpl.countByIndicatorId(indicatorId);
+    }
+
      public IndicatorDTO saveNewIndicator(IndicatorDTO iDTO)
      {
 
@@ -93,6 +98,11 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
 
          return null;
      }
+
+    public void deletePassport(Long IndicatorId) {
+        Indicator indicator = indicatorEAOImpl.findById(Indicator.class, IndicatorId);
+        indicatorEAOImpl.delete(indicator);
+    }
 
  
 }
