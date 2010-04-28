@@ -205,27 +205,35 @@ public class IndicatorSessionBean extends AbstractSessionBean {
         this.currentIndicatorDTO = currentIndicatorDTO;
     }
 
-
+    public Long countChildrenByIndicatorId(Long indicatorId) {
+       return this.indicatorFacade.countChildrenByIndicatorId(indicatorId);
+    }
         /**
      * Guardar el nuevo sitio, sus coordenadas y division politica
      */
     public void saveNewIndicator(){
-        System.out.println("ancestor id (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getIndicatorAncestorId());
+      //  System.out.println("ancestor id (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getIndicatorAncestorId());
         IndicatorDTO newDTO = this.getIndicatorFacade().saveNewIndicator(this.getCurrentIndicatorDTO());
         this.setCurrentIndicatorDTO(newDTO);
     }
 
 
      public void updateIndicator(){
-         System.out.println("node id (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getIndicatorId());
+      /*   System.out.println("node id (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getIndicatorId());
          System.out.println("name (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getName());
          System.out.println("description (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getDescription());
          System.out.println("appliy to parts (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getAppliesToParts());
          System.out.println("ancestor id (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getIndicatorAncestorId());
-
+*/
         this.getIndicatorFacade().updateIndicator(this.getCurrentIndicatorDTO());
         //this.setCurrentIndicatorDTO(newDTO);
     }
+
+     public void deleteIndicator(Long indicatorId)
+     {
+         this.indicatorFacade.deletePassport(indicatorId);
+     }
+
 
     public IndicatorDTO getIndicatorDTOByIndicatorId(Long indicatorId)
     {

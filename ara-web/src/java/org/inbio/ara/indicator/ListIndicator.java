@@ -30,6 +30,7 @@ import org.inbio.ara.util.ValidatorBean;
 import org.inbio.ara.admin.CollectionSessionBean;
 import org.inbio.ara.SessionManager;
 import org.inbio.ara.dto.indicator.IndicatorDTO;
+import org.inbio.ara.util.MessageBean;
 
 /**
  * <p>Page bean that corresponds to a similarly named JSP page.  This
@@ -268,8 +269,17 @@ public class ListIndicator extends AbstractPageBean {
     }
 
     public String btnDeleteIndicator_action() {
-        // TODO: Process the button click action. Return value is a navigation
-        // case name where null will return to the same page.
+        Long indicatorId = new Long(this.hiddenNodeId.getValue().toString());
+       if(this.getIndicatorSessionBean().countChildrenByIndicatorId(indicatorId) <= 0)
+       {
+           this.getIndicatorSessionBean().deleteIndicator(indicatorId);
+       }
+       else
+       {
+               MessageBean.setErrorMessageFromBundle("has_indicator_children", this.getMyLocale());
+        
+
+       }
         return null;
     }
 
