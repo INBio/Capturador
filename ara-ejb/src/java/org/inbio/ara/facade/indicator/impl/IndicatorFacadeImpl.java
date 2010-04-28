@@ -77,15 +77,15 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
      {
 
        
-         
-        indicatorEAOImpl.create(indicatorDTOFactory.createPlainEntity(iDTO));
+        Indicator indicator = indicatorDTOFactory.createPlainEntity(iDTO);
+        indicatorEAOImpl.create(indicator);
        
         //Actualizar el CurrentDTO con el id asignado
-        //IndicatorDTO result = indicatorDTOFactory.createDTO(indicator);
+        IndicatorDTO result = indicatorDTOFactory.createDTO(indicator);
 
 
         //Retornar el nuevo dto
-        return null;
+        return result;
     }
 
      public IndicatorDTO updateIndicator(IndicatorDTO iDTO)
