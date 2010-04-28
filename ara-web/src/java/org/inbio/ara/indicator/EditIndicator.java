@@ -300,19 +300,21 @@ public class EditIndicator extends AbstractPageBean {
         // TODO: Process the button click action. Return value is a navigation
         // case name where null will return to the same page.
 
-       // try{
+        try{
             Long ancestorId = new Long(this.hiddenAncestorNodeId.getValue().toString());
             this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setUserName(getAraSessionBean().getGlobalUserName());            
             this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setIndicatorAncestorId(ancestorId);
             this.getindicator$IndicatorSessionBean().updateIndicator();
-        /*}
+            this.getindicator$IndicatorSessionBean().setNodeId(this.hiddenNodeId.getValue().toString());
+            this.getindicator$IndicatorSessionBean().setPathNode(this.hiddenPathNode.getValue().toString());
+            //System.out.println("****************** -nodeId (Edit) = "+this.getindicator$IndicatorSessionBean().getNodeId());
+            //System.out.println("****************** -pathNodeId (Edit) = "+this.getindicator$IndicatorSessionBean().getPathNode());
+        }
         catch(Exception e){
             MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
             return null;
         }
-*/
-
-        System.out.println("- Name: "+txIndicatorName.getText()+" -> Description: "+txaIndicatorDescription.getText());
+                
         return "back";
         }
 
