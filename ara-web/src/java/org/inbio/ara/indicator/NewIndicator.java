@@ -273,6 +273,7 @@ public class NewIndicator extends AbstractPageBean {
          //Create a new indicator
         try{
             Long ancestorId = new Long(this.hiddenNodeId.getValue().toString());
+            
             this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setUserName(getAraSessionBean().getGlobalUserName());
             this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setIndicatorAncestorId(ancestorId);
             this.getindicator$IndicatorSessionBean().saveNewIndicator();
@@ -282,6 +283,8 @@ public class NewIndicator extends AbstractPageBean {
             String newPath = this.getindicator$IndicatorSessionBean().getPathNode()+","+newNodeId;
             this.getindicator$IndicatorSessionBean().setNodeId(newNodeId.toString());
             this.getindicator$IndicatorSessionBean().setPathNode(newPath);
+            
+            
             return "back";
         }
         catch(Exception e){

@@ -43,10 +43,10 @@
                                     <div id="tree" style="width:200px; float:left; " title="Indicators Tree "></div>
                                     <h:panelGrid binding="#{indicator$NewIndicator.indicator}" columns="1" id="indicator" style="height: 124px; position: relative; width: 400px; -rave-layout: grid">
                                         <webuijsf:label for="txIndicatorName" id="lbIndicatorName" text="#{resources.indicator_name}"/>
-                                        <webuijsf:textField text="#{indicator$IndicatorSessionBean.currentIndicatorDTO.name}" columns="25" id="txIndicatorName"/>
+                                        <webuijsf:textField text="#{indicator$IndicatorSessionBean.currentIndicatorDTO.name}"  required="true" columns="25" id="txIndicatorName"/>
                                         <webuijsf:label for="txIndicatorDescription" id="lbIndicatorDescription" text="#{resources.indicator_description}"/>
                                         <webuijsf:textArea text="#{indicator$IndicatorSessionBean.currentIndicatorDTO.description}" columns="25"
-                                            id="txaIndicatorDescription" required="true" style="height: 24px;width: 189px"/>
+                                            id="txaIndicatorDescription"  style="height: 24px;width: 189px"/>
                                         <webuijsf:label for="txApplyinParts" id="lbIApplyinParts" text="#{resources.applying_to_parts}"/>
                                         <webuijsf:radioButtonGroup id="radioButtonGroup" items="#{indicator$NewIndicator.radioData.options}"
                                                                    selected="#{indicator$IndicatorSessionBean.currentIndicatorDTO.appliesToParts}" style="font-size: 14px; height: 48px; width: 408px"/>
