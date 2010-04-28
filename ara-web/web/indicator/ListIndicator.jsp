@@ -46,8 +46,8 @@
                                 <h:panelGrid binding="#{indicator$ListIndicator.gridIndicator}" columns="2" id="gridIndicator" style="height: 24px" width="540">
                                     <div id="tree" style="width:200px; float:left; " title="Indicators Tree "></div>
                                     <h:panelGrid binding="#{indicator$ListIndicator.indicator}" columns="1" id="indicator">                                                                               
-                                        <h:inputHidden binding="#{indicator$ListIndicator.hiddenNodeId}" id="hiddenNodeId" value="0"/>
-                                        <h:inputHidden binding="#{indicator$ListIndicator.hiddenPathNode}" id="hiddenPathNode" value="0"/>
+                                        <h:inputHidden binding="#{indicator$ListIndicator.hiddenNodeId}" id="hiddenNodeId"/>
+                                        <h:inputHidden binding="#{indicator$ListIndicator.hiddenPathNode}" id="hiddenPathNode"/>
                                     </h:panelGrid>
                                 </h:panelGrid>
                                 <jsp:directive.include file="/Footer.jspf"/>

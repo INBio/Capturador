@@ -59,8 +59,8 @@ public class IndicatorSessionBean extends AbstractSessionBean {
     // </editor-fold>
 
 
-    private String nodeId = null; //
-    private String pathNode = null; //
+    private String nodeId = "0"; //
+    private String pathNode = "0"; //
 
     //Seleccion del estandar a utilizar
     private Long resultRadioGroup = 1L;

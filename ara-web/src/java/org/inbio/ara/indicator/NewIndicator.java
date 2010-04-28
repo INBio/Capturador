@@ -276,6 +276,13 @@ public class NewIndicator extends AbstractPageBean {
             this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setUserName(getAraSessionBean().getGlobalUserName());
             this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setIndicatorAncestorId(ancestorId);
             this.getindicator$IndicatorSessionBean().saveNewIndicator();
+            //System.out.println("****************** -nodeId (Edit) = "+this.getindicator$IndicatorSessionBean().getNodeId());
+            //System.out.println("****************** -pathNodeId (Edit) = "+this.getindicator$IndicatorSessionBean().getPathNode());
+            Long newNodeId = this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getIndicatorId();
+            String newPath = this.getindicator$IndicatorSessionBean().getPathNode()+","+newNodeId;
+            this.getindicator$IndicatorSessionBean().setNodeId(newNodeId.toString());
+            this.getindicator$IndicatorSessionBean().setPathNode(newPath);
+            return "back";
         }
         catch(Exception e){
             MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
@@ -283,7 +290,7 @@ public class NewIndicator extends AbstractPageBean {
         }
         
 
-        return "back";
+        
     }
 
     /**

@@ -166,7 +166,12 @@ public class ListIndicator extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-       
+
+        hiddenNodeId.setValue(this.getIndicatorSessionBean().getNodeId());
+        hiddenPathNode.setValue(this.getIndicatorSessionBean().getPathNode());
+
+        System.out.println("****************** -hiddenNodeId (List) = "+hiddenNodeId.getValue());
+        System.out.println("****************** -hiddenPathNodeId (List) = "+hiddenPathNode.getValue());
     }
 
 
