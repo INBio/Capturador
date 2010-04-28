@@ -1264,6 +1264,22 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/indicator/NewIndicator.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/indicator/ListIndicator.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/indicator/EditIndicator.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/indicator/ListIndicator.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     <managed-bean>
         <managed-bean-name>indicator$EditIndicator</managed-bean-name>
         <managed-bean-class>org.inbio.ara.indicator.EditIndicator</managed-bean-class>
