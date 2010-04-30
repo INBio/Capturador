@@ -33,14 +33,8 @@ function setInformation(selectedNodeId)
     name.setProps({value: sname});
     var description = document.getElementById('contenido:form1:txaIndicatorDescription');
     description.setProps({value: sdescription});
-    var applyToParts = document.getElementById('contenido:form1:radioButtonGroup');
-    alert("partes = "+sapplyToParts);
-    var tmp = applyToParts.getProps();
-    alert("Get Props : "+tmp);
-      
-    var strJSON = JSON.stringify(tmp);
-
-    alert("Propiedad "+strJSON );
-    applyToParts.setProps({disable: true});
+    var applyToParts = document.getElementsByName('contenido:form1:myRadio'); 
+    applyToParts[sapplyToParts].checked = true;
+    
     
 }

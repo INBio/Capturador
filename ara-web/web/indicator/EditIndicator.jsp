@@ -50,6 +50,10 @@
                                         <webuijsf:label for="txApplyinParts" id="lbIApplyinParts" text="#{resources.applying_to_parts}"/>
                                         <webuijsf:radioButtonGroup id="radioButtonGroup" items="#{indicator$EditIndicator.radioData.options}"
                                                                    selected="#{indicator$IndicatorSessionBean.currentIndicatorDTO.appliesToParts}" style="font-size: 14px; height: 48px; width: 408px"/>
+                                        <h:selectOneRadio id="myRadio" value="#{indicator$IndicatorSessionBean.currentIndicatorDTO.appliesToParts}" >
+                                            <f:selectItem itemValue="1" itemLabel="#{resources.yes}"/>
+                                            <f:selectItem itemValue="0" itemLabel="#{resources.no}"/>
+                                        </h:selectOneRadio>
                                         <h:inputHidden binding="#{indicator$EditIndicator.hiddenNodeId}" id="hiddenNodeId"/>
                                         <h:inputHidden binding="#{indicator$EditIndicator.hiddenPathNode}" id="hiddenPathNode"/>
                                         <h:inputHidden binding="#{indicator$EditIndicator.hiddenAncestorNodeId}" id="hiddenAncestorNodeId"/>

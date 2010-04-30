@@ -5,6 +5,7 @@
 
 package org.inbio.ara.indicator;
 
+import com.sun.rave.faces.data.DefaultSelectItemsArray;
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.RadioButtonGroup;
 import com.sun.webui.jsf.component.TextArea;
@@ -144,6 +145,15 @@ public class EditIndicator extends AbstractPageBean {
 
     public void sethiddenAncestorNodeId(HtmlInputHidden hdn) {
         this.hiddenAncestorNodeId = hdn;
+    }
+    private DefaultSelectItemsArray radioButtonList1DefaultItems = new DefaultSelectItemsArray();
+
+    public DefaultSelectItemsArray getRadioButtonList1DefaultItems() {
+        return radioButtonList1DefaultItems;
+    }
+
+    public void setRadioButtonList1DefaultItems(DefaultSelectItemsArray dsia) {
+        this.radioButtonList1DefaultItems = dsia;
     }
 
     /**
@@ -309,6 +319,7 @@ public class EditIndicator extends AbstractPageBean {
             this.getindicator$IndicatorSessionBean().setPathNode(this.hiddenPathNode.getValue().toString());
             //System.out.println("****************** -nodeId (Edit) = "+this.getindicator$IndicatorSessionBean().getNodeId());
             //System.out.println("****************** -pathNodeId (Edit) = "+this.getindicator$IndicatorSessionBean().getPathNode());
+            System.out.println("****************** -applyToParts (Edit) = "+this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getAppliesToParts());
         }
         catch(Exception e){
             MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
