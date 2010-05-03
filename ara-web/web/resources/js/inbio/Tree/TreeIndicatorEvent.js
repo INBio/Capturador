@@ -35,8 +35,8 @@ function loadNodeData(node, fnLoadComplete){
         {
          //tempNode.highlight(true);
          //tempNode.focus();
-         //tree.root.children[1].focus();
-        // alert(tree.root.children[0].focus());
+         //tree.root.children[0].children[0].focus();
+        // alert(tree.root.children[0]);
          //alert(nodeId+" = "+id);
          focusNode = true;
         }
@@ -49,18 +49,22 @@ function loadNodeData(node, fnLoadComplete){
    //alert( tree.getNodeByProperty("data",nodeId));
    //tree.root.children[0].focus();
    //tree.getNodeByProperty("data",nodeId).focus();
-   if(focusNode)
+  
+   
+   node.loadComplete();
+
+    if(focusNode)
    {
         //alert(tree.getNodeByProperty("data",nodeId));
-        //tree.getNodeByProperty("data",5).focus();
-        var tmpNodePath = tree.root.children[0].children[0].children[0];
-        //alert(tmpNodePath.focus());
-
+        tree.getNodeByProperty("data",nodeId).focus();
+        //var tmpNodePath = tree.root.children[0].children[0];
+        //alert(tmpNodePath.children[1].focus());
+        //alert(tmpNodePath.children[1].children);
+        //alert(tmpNodePath.children[1].children[0].children);
+        //tmpNodePath.children[1].children[0].children[0].focus();
         //tree.root.children[0].children[0].children[0].focus();
 
    }
-   
-   node.loadComplete();
 
 }
 
