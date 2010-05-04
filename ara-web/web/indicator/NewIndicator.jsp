@@ -47,10 +47,11 @@
                                         <webuijsf:label for="txIndicatorDescription" id="lbIndicatorDescription" text="#{resources.indicator_description}"/>
                                         <webuijsf:textArea text="#{indicator$IndicatorSessionBean.currentIndicatorDTO.description}" columns="25"
                                             id="txaIndicatorDescription"  style="height: 24px;width: 189px"/>
-                                        <webuijsf:label for="txApplyinParts" id="lbIApplyinParts" text="#{resources.applying_to_parts}"/>
-                                        <webuijsf:radioButtonGroup id="radioButtonGroup" items="#{indicator$NewIndicator.radioData.options}"
-                                                                   selected="#{indicator$IndicatorSessionBean.currentIndicatorDTO.appliesToParts}" style="font-size: 14px; height: 48px; width: 408px"/>
-
+                                        <webuijsf:label for="txApplyinParts" id="lbIApplyinParts" text="#{resources.applying_to_parts}"/>                                        
+                                        <h:selectOneRadio id="myRadio" layout="pageDirection" value="#{indicator$IndicatorSessionBean.currentIndicatorDTO.appliesToParts}" >
+                                            <f:selectItem itemValue="1" itemLabel="#{resources.yes}"/>
+                                            <f:selectItem itemValue="0" itemLabel="#{resources.no}"/>
+                                        </h:selectOneRadio>
                                         <h:inputHidden binding="#{indicator$NewIndicator.hiddenNodeId}" id="hiddenNodeId"/>
                                         <h:inputHidden binding="#{indicator$NewIndicator.hiddenPathNode}" id="hiddenPathNode"/>
                                     </h:panelGrid>
