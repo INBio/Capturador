@@ -2,115 +2,115 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
+        <Node id="resources/tinymce/examples/custom_formats.html" x="400" y="1800" zoom="true"/>
+        <Node id="germplasm/EditPassport.jsp" x="1150" y="300" zoom="true"/>
+        <Node id="taxonomy/NewSpecies.jsp" x="150" y="2100" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/emotions/emotions.htm" x="2150" y="750" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/paste/pastetext.htm" x="400" y="750" zoom="true"/>
+        <Node id="indicator/EditIndicator.jsp" x="1650" y="900" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/advhr/rule.htm" x="1400" y="900" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/paste/pasteword.htm" x="1650" y="600" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/table/row.htm" x="650" y="1350" zoom="true"/>
+        <Node id="security/ChangePassword.jsp" x="400" y="1650" zoom="true"/>
+        <Node id="taxonomy/EditTaxonomy.jsp" x="2900" y="150" zoom="true"/>
+        <Node id="germplasm/ListAccession.jsp" x="3150" y="300" zoom="true"/>
+        <Node id="taxonomy/EditNomenclaturalGroup.jsp" x="650" y="1500" zoom="true"/>
+        <Node id="inventory/EditSpecimen.jsp" x="400" y="150" zoom="true"/>
+        <Node id="germplasm/EditAccession.jsp" x="1400" y="1200" zoom="true"/>
         <Node id="reports/PreviewSpecimen.jsp" x="2150" y="300" zoom="true"/>
+        <Node id="inventory/ListSpecimen.jsp" x="108" y="99" zoom="true"/>
+        <Node id="gis/ListSite.jsp" x="150" y="450" zoom="true"/>
+        <Node id="taxonomy/EditSpecies.jsp" x="1150" y="450" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/fullscreen/fullscreen.htm" x="150" y="1800" zoom="true"/>
+        <Node id="indicator/ListIndicator.jsp" x="2150" y="900" zoom="true"/>
         <Node id="reports/SpecimenReport.jsp" x="1150" y="1050" zoom="true"/>
+        <Node id="inventoryTest.jsp" x="448" y="98" zoom="true"/>
+        <Node id="index.jsp" x="99" y="162" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/attributes.htm" x="2900" y="450" zoom="true"/>
+        <Node id="admin/ListSelectionListCollection.jsp" x="400" y="1050" zoom="true"/>
+        <Node id="taxonomy/NewNomenclaturalGroup.jsp" x="3150" y="150" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/table/table.htm" x="400" y="1350" zoom="true"/>
+        <Node id="admin/EditAudience.jsp" x="900" y="300" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/about.htm" x="1650" y="1200" zoom="true"/>
         <Node id="resources/tinymce/examples/skins.html" x="2400" y="750" zoom="true"/>
         <Node id="resources/tinymce/jscripts/tiny_mce/plugins/preview/example.html" x="400" y="600" zoom="true"/>
         <Node id="resources/tinymce/examples/menu.html" x="1900" y="1050" zoom="true"/>
         <Node id="resources/js/yui/build/history/assets/blank.html" x="6400" y="2550" zoom="true"/>
-        <Node id="admin/EditInstitution.jsp" x="650" y="750" zoom="true"/>
-        <Node id="germplasm/NewAccessionMovement.jsp" x="150" y="1650" zoom="true"/>
-        <Node id="admin/EditProfile.jsp" x="900" y="750" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/advlink/link.htm" x="150" y="1350" zoom="true"/>
-        <Node id="security/ListUser.jsp" x="2650" y="150" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/paste/pasteword.htm" x="1650" y="600" zoom="true"/>
-        <Node id="taxonomy/EditTaxonomy.jsp" x="2900" y="150" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/color_picker.htm" x="1150" y="150" zoom="true"/>
-        <Node id="inventory/ListGatheringDetail.jsp" x="650" y="150" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/acronym.htm" x="2150" y="150" zoom="true"/>
-        <Node id="taxonomy/PreviewSpecies.jsp" x="1150" y="1500" zoom="true"/>
-        <Node id="indicator/NewIndicator.jsp" x="1650" y="150" zoom="true"/>
-        <Node id="gis/ListSite.jsp" x="150" y="450" zoom="true"/>
-        <Node id="admin/EditAudience.jsp" x="900" y="300" zoom="true"/>
+        <Node id="security/NewUser.jsp" x="650" y="1200" zoom="true"/>
         <Node id="germplasm/EditAccessionMovement.jsp" x="2400" y="600" zoom="true"/>
-        <Node id="inventory/ListGathering.jsp" x="150" y="300" zoom="true"/>
-        <Node id="germplasm/NewPassport.jsp" x="1650" y="750" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/table/table.htm" x="400" y="1350" zoom="true"/>
+        <Node id="resources/tinymce/examples/index.html" x="650" y="1050" zoom="true"/>
         <Node id="Login.jsp" x="1400" y="600" zoom="true"/>
-        <Node id="resources/tinymce/examples/simple.html" x="900" y="1650" zoom="true"/>
-        <Node id="resources/tinymce/examples/full.html" x="900" y="600" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/ins.htm" x="1400" y="150" zoom="true"/>
-        <Node id="reports/StandardDarwin.jsp" x="900" y="1200" zoom="true"/>
-        <Node id="resources/tinymce/examples/custom_formats.html" x="400" y="1800" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/fullscreen/fullscreen.htm" x="150" y="1800" zoom="true"/>
-        <Node id="reports/DwcSuccess.jsp" x="1150" y="900" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/advhr/rule.htm" x="1400" y="900" zoom="true"/>
-        <Node id="index.jsp" x="99" y="162" zoom="true"/>
+        <Node id="taxonomy/ListSpecies.jsp" x="650" y="900" zoom="true"/>
+        <Node id="germplasm/ListAccessionMovement.jsp" x="1650" y="300" zoom="true"/>
+        <Node id="inventory/EditGatheringDetail.jsp" x="650" y="300" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/fullpage/fullpage.htm" x="1150" y="600" zoom="true"/>
+        <Node id="admin/EditInstitution.jsp" x="650" y="750" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/cite.htm" x="1150" y="1350" zoom="true"/>
+        <Node id="germplasm/NewAccessionMovement.jsp" x="150" y="1650" zoom="true"/>
         <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/link.htm" x="2150" y="450" zoom="true"/>
         <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/source_editor.htm" x="650" y="1650" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/advimage/image.htm" x="150" y="1050" zoom="true"/>
-        <Node id="Welcome.jsp" x="1150" y="750" zoom="true"/>
-        <Node id="reports/StandardPlinian.jsp" x="150" y="900" zoom="true"/>
-        <Node id="taxonomy/EditNomenclaturalGroup.jsp" x="650" y="1500" zoom="true"/>
-        <Node id="inventory/EditSpecimen.jsp" x="400" y="150" zoom="true"/>
-        <Node id="inventory/ListSpecimen.jsp" x="108" y="99" zoom="true"/>
-        <Node id="indicator/ListIndicator.jsp" x="2150" y="900" zoom="true"/>
-        <Node id="inventory/EditGatheringDetail.jsp" x="650" y="300" zoom="true"/>
-        <Node id="admin/NewInstitution.jsp" x="650" y="450" zoom="true"/>
-        <Node id="gis/EditSite.jsp" x="900" y="1500" zoom="true"/>
-        <Node id="resources/tinymce/examples/templates/layout1.htm" x="1650" y="450" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/inlinepopups/template.htm" x="2400" y="450" zoom="true"/>
-        <Node id="taxonomy/EditSpecies.jsp" x="1150" y="450" zoom="true"/>
-        <Node id="inventoryTest.jsp" x="448" y="98" zoom="true"/>
-        <Node id="admin/ListSelectionListCollection.jsp" x="400" y="1050" zoom="true"/>
-        <Node id="resources/tinymce/examples/index.html" x="650" y="1050" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/media/media.htm" x="650" y="600" zoom="true"/>
-        <Node id="admin/EditPerson.jsp" x="1900" y="150" zoom="true"/>
-        <Node id="resources/tinymce/examples/templates/snippet1.htm" x="3400" y="150" zoom="true"/>
-        <Node id="taxonomy/ListNomenclaturalGroup.jsp" x="400" y="900" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/table/merge_cells.htm" x="2400" y="300" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/searchreplace/searchreplace.htm" x="400" y="1200" zoom="true"/>
-        <Node id="admin/ListSelectionList.jsp" x="900" y="450" zoom="true"/>
-        <Node id="inventory/NewGathering.jsp" x="400" y="300" zoom="true"/>
-        <Node id="admin/ListAudience.jsp" x="2400" y="150" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/about.htm" x="1650" y="1200" zoom="true"/>
         <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/anchor.htm" x="2650" y="450" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/image.htm" x="1400" y="450" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/charmap.htm" x="1900" y="600" zoom="true"/>
-        <Node id="admin/ListInstitution.jsp" x="400" y="1500" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/attributes.htm" x="2900" y="450" zoom="true"/>
-        <Node id="taxonomy/NewNomenclaturalGroup.jsp" x="3150" y="150" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/cite.htm" x="1150" y="1350" zoom="true"/>
-        <Node id="inventory/ListIdentification.jsp" x="150" y="150" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/abbr.htm" x="650" y="1800" zoom="true"/>
-        <Node id="inventory/SpecimenGeneration.jsp" x="150" y="600" zoom="true"/>
-        <Node id="germplasm/NewAccession.jsp" x="1900" y="900" zoom="true"/>
-        <Node id="germplasm/EditAccession.jsp" x="1400" y="1200" zoom="true"/>
+        <Node id="resources/tinymce/examples/templates/snippet1.htm" x="3400" y="150" zoom="true"/>
+        <Node id="admin/EditProfile.jsp" x="900" y="750" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/media/media.htm" x="650" y="600" zoom="true"/>
         <Node id="admin/NewPerson.jsp" x="900" y="1350" zoom="true"/>
         <Node id="admin/ListProfile.jsp" x="1650" y="1050" zoom="true"/>
-        <Node id="inventory/EditGathering.jsp" x="900" y="150" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/template/blank.htm" x="1900" y="300" zoom="true"/>
-        <Node id="security/EditUser.jsp" x="1150" y="1200" zoom="true"/>
-        <Node id="admin/ListCollection.jsp" x="150" y="1500" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/table/row.htm" x="650" y="1350" zoom="true"/>
-        <Node id="taxonomy/ListSpecies.jsp" x="650" y="900" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/example/dialog.htm" x="150" y="1950" zoom="true"/>
-        <Node id="resources/tinymce/examples/translate.html" x="150" y="1200" zoom="true"/>
-        <Node id="gis/NewSite.jsp" x="150" y="750" zoom="true"/>
-        <Node id="admin/NewAudience.jsp" x="1400" y="300" zoom="true"/>
-        <Node id="security/ChangePassword.jsp" x="400" y="1650" zoom="true"/>
-        <Node id="germplasm/ListAccession.jsp" x="3150" y="300" zoom="true"/>
-        <Node id="security/NewUser.jsp" x="650" y="1200" zoom="true"/>
-        <Node id="reports/StandardSelection.jsp" x="1900" y="750" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/table/cell.htm" x="2150" y="600" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/template/template.htm" x="2650" y="600" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/del.htm" x="2650" y="300" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/emotions/emotions.htm" x="2150" y="750" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/paste/pastetext.htm" x="400" y="750" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/fullpage/fullpage.htm" x="1150" y="600" zoom="true"/>
+        <Node id="taxonomy/ListNomenclaturalGroup.jsp" x="400" y="900" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/table/merge_cells.htm" x="2400" y="300" zoom="true"/>
         <Node id="admin/AdminGeographicalLayers.jsp" x="1400" y="750" zoom="true"/>
+        <Node id="reports/StandardSelection.jsp" x="1900" y="750" zoom="true"/>
         <Node id="resources/tinymce/examples/word.html" x="1400" y="1350" zoom="true"/>
+        <Node id="inventory/ListIdentification.jsp" x="150" y="150" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/searchreplace/searchreplace.htm" x="400" y="1200" zoom="true"/>
+        <Node id="resources/tinymce/examples/simple.html" x="900" y="1650" zoom="true"/>
+        <Node id="resources/tinymce/examples/full.html" x="900" y="600" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/image.htm" x="1400" y="450" zoom="true"/>
+        <Node id="admin/NewInstitution.jsp" x="650" y="450" zoom="true"/>
+        <Node id="gis/EditSite.jsp" x="900" y="1500" zoom="true"/>
+        <Node id="admin/ListSelectionList.jsp" x="900" y="450" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/charmap.htm" x="1900" y="600" zoom="true"/>
+        <Node id="resources/tinymce/examples/templates/layout1.htm" x="1650" y="450" zoom="true"/>
+        <Node id="inventory/NewGatheringDetail.jsp" x="400" y="450" zoom="true"/>
+        <Node id="reports/DwcSuccess.jsp" x="1150" y="900" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/advimage/image.htm" x="150" y="1050" zoom="true"/>
+        <Node id="inventory/EditGathering.jsp" x="900" y="150" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/example/dialog.htm" x="150" y="1950" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/template/blank.htm" x="1900" y="300" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/themes/advanced/color_picker.htm" x="1150" y="150" zoom="true"/>
+        <Node id="admin/ListInstitution.jsp" x="400" y="1500" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/abbr.htm" x="650" y="1800" zoom="true"/>
+        <Node id="security/EditUser.jsp" x="1150" y="1200" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/advlink/link.htm" x="150" y="1350" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/table/cell.htm" x="2150" y="600" zoom="true"/>
+        <Node id="resources/tinymce/examples/translate.html" x="150" y="1200" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/ins.htm" x="1400" y="150" zoom="true"/>
+        <Node id="reports/StandardDarwin.jsp" x="900" y="1200" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/inlinepopups/template.htm" x="2400" y="450" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/template/template.htm" x="2650" y="600" zoom="true"/>
+        <Node id="inventory/SpecimenGeneration.jsp" x="150" y="600" zoom="true"/>
+        <Node id="Welcome.jsp" x="1150" y="750" zoom="true"/>
+        <Node id="inventory/ListGatheringDetail.jsp" x="650" y="150" zoom="true"/>
+        <Node id="inventory/NewGathering.jsp" x="400" y="300" zoom="true"/>
+        <Node id="reports/StandardPlinian.jsp" x="150" y="900" zoom="true"/>
         <Node id="About.jsp" x="400" y="1950" zoom="true"/>
         <Node id="germplasm/ListPassport.jsp" x="900" y="1050" zoom="true"/>
+        <Node id="germplasm/NewAccession.jsp" x="1900" y="900" zoom="true"/>
+        <Node id="security/ListUser.jsp" x="2650" y="150" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/del.htm" x="2650" y="300" zoom="true"/>
+        <Node id="admin/ListAudience.jsp" x="2400" y="150" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/xhtmlxtras/acronym.htm" x="2150" y="150" zoom="true"/>
+        <Node id="gis/NewSite.jsp" x="150" y="750" zoom="true"/>
+        <Node id="taxonomy/PreviewSpecies.jsp" x="1150" y="1500" zoom="true"/>
+        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/preview/preview.html" x="900" y="900" zoom="true"/>
         <Node id="SelectCollection.jsp" x="2900" y="300" zoom="true"/>
+        <Node id="admin/ListCollection.jsp" x="150" y="1500" zoom="true"/>
+        <Node id="inventory/ListGathering.jsp" x="150" y="300" zoom="true"/>
         <Node id="admin/ListPerson.jsp" x="1900" y="450" zoom="true"/>
         <Node id="resources/tinymce/jscripts/tiny_mce/plugins/style/props.htm" x="1400" y="1050" zoom="true"/>
-        <Node id="germplasm/EditPassport.jsp" x="1150" y="300" zoom="true"/>
-        <Node id="taxonomy/NewSpecies.jsp" x="150" y="2100" zoom="true"/>
-        <Node id="indicator/EditIndicator.jsp" x="1650" y="900" zoom="true"/>
-        <Node id="germplasm/ListAccessionMovement.jsp" x="1650" y="300" zoom="true"/>
-        <Node id="inventory/NewGatheringDetail.jsp" x="400" y="450" zoom="true"/>
-        <Node id="resources/tinymce/jscripts/tiny_mce/plugins/preview/preview.html" x="900" y="900" zoom="true"/>
+        <Node id="germplasm/NewPassport.jsp" x="1650" y="750" zoom="true"/>
+        <Node id="admin/EditPerson.jsp" x="1900" y="150" zoom="true"/>
+        <Node id="indicator/NewIndicator.jsp" x="1650" y="150" zoom="true"/>
+        <Node id="admin/NewAudience.jsp" x="1400" y="300" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>
