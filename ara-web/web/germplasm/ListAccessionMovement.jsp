@@ -99,7 +99,7 @@
                                         </h:dataTable>
                                     </h:panelGrid>
                                 </h:panelGrid>
-                                <!-- FIN Tabla que posee la lista de passport -->
+                                <!-- FIN Tabla que posee la lista de accessiones -->
                                 <jsp:directive.include file="/Footer.jspf"/>
                             </h:panelGrid>
                         </webuijsf:form>
