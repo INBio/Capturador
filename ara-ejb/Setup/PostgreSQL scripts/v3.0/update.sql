@@ -1871,3 +1871,173 @@ ALTER TABLE ara.indicator ALTER COLUMN indicator_id SET DEFAULT nextval('ara.ind
 
 
 
+
+------------------------------------------------
+----GERMPLASM SEMEN MODULE----------------------
+------------------------------------------------
+
+CREATE TABLE ara.condition(
+condition_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.condition OWNER TO ara;
+
+ALTER TABLE ONLY ara.condition ADD CONSTRAINT "CONDITION_TYPE_ID_PK" PRIMARY KEY (condition_id);
+
+
+CREATE TABLE ara.solvent(
+solvent_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.solvent OWNER TO ara;
+
+ALTER TABLE ONLY ara.solvent ADD CONSTRAINT "SOLVENT_TYPE_ID_PK" PRIMARY KEY (solvent_id);
+
+CREATE TABLE ara.semen_gathering_method(
+semen_gathering_method_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.semen_gathering_method OWNER TO ara;
+
+ALTER TABLE ONLY ara.semen_gathering_method ADD CONSTRAINT "SEMEN_GATHERING_METHOD_ID_PK" PRIMARY KEY (semen_gathering_method_id);
+
+
+CREATE TABLE ara.breed(
+breed_id numeric not null,
+name character varying(100) UNIQUE NOT NULL,
+taxon_id numeric not null,
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.breed OWNER TO ara;
+
+ALTER TABLE ONLY ara.breed ADD CONSTRAINT "BREED_TYPE_ID_PK" PRIMARY KEY (breed_id);
+
+ALTER TABLE ONLY ara.breed ADD CONSTRAINT taxon_id_fk FOREIGN KEY (taxon_id) REFERENCES ara.taxon(taxon_id);
+
+
+CREATE TABLE ara.semental(
+semental_id 	numeric not null,
+name 		character varying(200),
+animal_code 	character varying(100) NOT NULL UNIQUE,
+breed_id 	numeric not null,
+color 		character varying(200) NOT NULL,
+birth_date 	date,
+site_id 	numeric,
+veterinarian_status character varying(100),
+condition_id 	numeric not null,
+animal_description character varying(100),
+father 		character varying(100),
+mother 		character varying(100),
+created_by 	character varying(20) NOT NULL,
+creation_date 	date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.semental OWNER TO ara;
+
+ALTER TABLE ONLY ara.semental ADD CONSTRAINT "SEMENTAL_ID_PK" PRIMARY KEY (semental_id);
+
+
+ALTER TABLE ONLY ara.semental ADD CONSTRAINT breed_id_fk FOREIGN KEY (breed_id) REFERENCES ara.breed(breed_id) ON DELETE CASCADE;
+ALTER TABLE ONLY ara.semental ADD CONSTRAINT site_id_fk FOREIGN KEY (site_id) REFERENCES ara.site(site_id);
+ALTER TABLE ONLY ara.semental ADD CONSTRAINT condition_id_fk FOREIGN KEY (condition_id) REFERENCES ara.condition(condition_id);
+
+
+CREATE TABLE ara.semen_gathering(
+semen_gathering_id numeric not null,
+semental_id numeric not null,
+semen_gathering_date date NOT NULL,
+semen_gathering_time character varying(5) NOT NULL,
+volume numeric not null,
+motility numeric not null,
+concentration numeric not null,
+straw_quantity numeric not null,
+dilution character varying(100) NOT NULL,
+tank_number numeric not null,
+canister_number numeric not null,
+goblet_number numeric not null,
+straw_color character varying(100) NOT NULL,
+post_thaw_motility numeric not null,
+active_doses numeric not null,
+straw_size numeric not null,
+semen_gathering_method_id numeric not null,
+consistency character varying(100) NOT NULL,
+semen_color character varying(100) NOT NULL,
+ph numeric not null,
+mass_motility numeric not null,
+solvent_id numeric not null,
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.semen_gathering OWNER TO ara;
+
+ALTER TABLE ONLY ara.semen_gathering ADD CONSTRAINT "SEMEN_GATHERING_ID_PK" PRIMARY KEY (semen_gathering_id);
+
+ALTER TABLE ONLY ara.semen_gathering ADD CONSTRAINT solvent_id_fk FOREIGN KEY (solvent_id) REFERENCES ara.solvent(solvent_id);
+ALTER TABLE ONLY ara.semen_gathering ADD CONSTRAINT semen_gathering_method_id_fk FOREIGN KEY (semen_gathering_method_id) REFERENCES ara.semen_gathering_method(semen_gathering_method_id);
+ALTER TABLE ONLY ara.semen_gathering ADD CONSTRAINT semental_id_fk FOREIGN KEY (semental_id) REFERENCES ara.semental(semental_id) ON DELETE CASCADE;
+
+--CREATE SEQUENCE
+CREATE SEQUENCE ara.condition_seq;
+ALTER TABLE ara.condition ALTER COLUMN condition_id SET DEFAULT nextval('ara.condition_seq'::regclass);
+ALTER TABLE ara.condition_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.solvent_seq;
+ALTER TABLE ara.solvent ALTER COLUMN solvent_id SET DEFAULT nextval('ara.solvent_seq'::regclass);
+ALTER TABLE ara.solvent_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.semen_gathering_method_seq;
+ALTER TABLE ara.semen_gathering_method ALTER COLUMN semen_gathering_method_id SET DEFAULT nextval('ara.semen_gathering_method_seq'::regclass);
+ALTER TABLE ara.semen_gathering_method_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.breed_seq;
+ALTER TABLE ara.breed ALTER COLUMN breed_id SET DEFAULT nextval('ara.breed_seq'::regclass);
+ALTER TABLE ara.breed_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.semental_seq;
+ALTER TABLE ara.semental ALTER COLUMN semental_id SET DEFAULT nextval('ara.semental_seq'::regclass);
+ALTER TABLE ara.semental_seq OWNER TO ara;
+
+CREATE SEQUENCE ara.semen_gathering_seq;
+ALTER TABLE ara.semen_gathering ALTER COLUMN semen_gathering_id SET DEFAULT nextval('ara.semen_gathering_seq'::regclass);
+ALTER TABLE ara.semen_gathering_seq OWNER TO ara;
+
+INSERT INTO ara.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (39, '', 0, 'Ara', '13-4-2010',
+            'Ara', '13-4-2010', 'condition', 'condition_id');
+
+INSERT INTO ara.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (40, '', 0, 'Ara', '13-4-2010',
+            'Ara', '13-4-2010', 'semen_gathering_method', 'semen_gathering_method_id');
+
+INSERT INTO ara.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (41, '', 0, 'Ara', '13-4-2010',
+            'Ara', '13-4-2010', 'solvent', 'solvent_id');
+
+
