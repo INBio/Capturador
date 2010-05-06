@@ -31,7 +31,9 @@ import org.inbio.ara.persistence.germplasm.SoilColor;
 import org.inbio.ara.persistence.germplasm.SoilTexture;
 import org.inbio.ara.persistence.indicator.ComponentPart;
 import org.inbio.ara.persistence.specimen.LifeForm;
-
+import org.inbio.ara.persistence.germplasm.Solvent;
+import org.inbio.ara.persistence.germplasm.SemenGatheringMethod;
+import org.inbio.ara.persistence.germplasm.Condition;
 /**
  *
  * Esta clase esta hecha para poder llegarle desde el Objeto ListTable a las
@@ -83,8 +85,11 @@ public enum SelectionListEntity {
     GERMINATION_METHOD_TYPE(new Long(35), new GerminationMethodType(), true,"sle_germination_method_type",GerminationMethodType.class.getName()),
     COLLECTION_TYPE(new Long(36), new org.inbio.ara.persistence.germplasm.CollectionType(), true,"sle_collection_type",CollectionType.class.getName()),
     MOISTURE_METHOD_TYPE(new Long(37), new MoistureMethodType(), true,"sle_moisture_method_type",MoistureMethodType.class.getName()),
-    ACCESSION_MOVEMENT_TYPE(new Long(38), new AccessionMovementType(), true,"sle_accession_movement_type",MoistureMethodType.class.getName())
+    ACCESSION_MOVEMENT_TYPE(new Long(38), new AccessionMovementType(), true,"sle_accession_movement_type",MoistureMethodType.class.getName()),
 
+    CONDITION(new Long(39), new Condition(), true,"sle_condition",Condition.class.getName()),
+    SEMEN_GATHERING_METHOD(new Long(40), new SemenGatheringMethod(), true,"sle_semen_gathering_method",SemenGatheringMethod.class.getName()),
+    SOLVENT(new Long(41), new Solvent(), true,"sle_solvent",Solvent.class.getName())
     ;
 
     /* Class name of the entity maped with the selection list table */
