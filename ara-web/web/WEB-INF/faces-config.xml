@@ -488,6 +488,86 @@
         <managed-bean-class>org.inbio.ara.germplasm.EditAccessionMovement</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>indicator$EditIndicator</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.indicator.EditIndicator</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>indicator$ListIndicator</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.indicator.ListIndicator</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>indicator$IndicatorSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.indicator.IndicatorSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>indicator$NewIndicator</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.indicator.NewIndicator</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$ListBreed</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.ListBreed</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$NewBreed</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.NewBreed</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$EditBreed</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.EditBreed</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$ListSemental</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.ListSemental</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$NewSemental</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.NewSemental</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$EditSemental</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.EditSemental</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$ListSemenGathering</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.ListSemenGathering</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$NewSemenGathering</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.NewSemenGathering</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$EditSemenGathering</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.EditSemenGathering</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$BreedSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.BreedSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$SementalSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.SementalSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>germplasm$SemenGatheringSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.SemenGatheringSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
     
 
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS DE NAVEGACION ENTRE LOS DIFERENTES JSP'S -->
@@ -1235,22 +1315,7 @@
             <to-view-id>/germplasm/ListAccessionMovement.jsp</to-view-id>
             <redirect/>
         </navigation-case>
-    </navigation-rule>
-    <managed-bean>
-        <managed-bean-name>indicator$ListIndicator</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.indicator.ListIndicator</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>indicator$IndicatorSessionBean</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.indicator.IndicatorSessionBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>indicator$NewIndicator</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.indicator.NewIndicator</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+    </navigation-rule>    
     <navigation-rule>
         <from-view-id>/indicator/ListIndicator.jsp</from-view-id>
         <navigation-case>
@@ -1280,11 +1345,111 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
-    <managed-bean>
-        <managed-bean-name>indicator$EditIndicator</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.indicator.EditIndicator</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+
+    <navigation-rule>
+        <from-view-id>/germplasm/ListBreed.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/germplasm/NewBreed.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/germplasm/EditBreed.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/germplasm/NewBreed.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListBreed.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/germplasm/EditBreed.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListBreed.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/germplasm/ListSemental.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/germplasm/NewSemental.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/germplasm/EditSemental.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/germplasm/EditSemental.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListSemental.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>semen_gathering</from-outcome>
+            <to-view-id>/germplasm/ListSemenGathering.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/germplasm/NewSemental.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListSemental.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/germplasm/EditSemental.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/germplasm/ListSemenGathering.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/EditSemental.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/germplasm/NewSemenGathering.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/germplasm/EditSemenGathering.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/germplasm/EditSemenGathering.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListSemenGathering.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/germplasm/NewSemenGathering.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListSemenGathering.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    
 </faces-config>
 
 
