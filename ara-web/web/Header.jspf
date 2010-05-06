@@ -153,6 +153,18 @@
                                                                             <webuijsf:hyperlink actionExpression="#{Header.menuModuleGermPlasmAccession_action}" id="menuModuleAccessions"
                                                                                                     text="#{resources.menuModuleAccession}" visible="false"/>
 									</li>
+
+                                                                        <li>
+                                                                            <!-- Entrar a breeds-->
+                                                                            <webuijsf:hyperlink actionExpression="#{Header.menuModuleGermPlasmBreeds_action}" id="menuModuleBreeds"
+                                                                                                    text="#{resources.menuModuleBreeds}" visible="false"/>
+									</li>
+
+                                                                        <li>
+                                                                            <!-- Entrar a sementals-->
+                                                                            <webuijsf:hyperlink actionExpression="#{Header.menuModuleGermPlasmSemental_action}" id="menuModuleSementals"
+                                                                                                    text="#{resources.menuModuleSementals}" visible="false"/>
+									</li>
 								</ul>
 							</li>
 						</ul>

@@ -283,7 +283,19 @@ public class Header extends AbstractFragmentBean {
         return "accessions";
     }
 
+    //Menú germoplasma -> Entrada a Administracion de Accessiones
+    public String menuModuleGermPlasmBreeds_action() {
+        this.getSessionManager().setCurrentModuleId(new Long(27));
+        return "breeds";
+    }
+
+    //Menú germoplasma -> Entrada a Administracion de Accessiones
+    public String menuModuleGermPlasmSemental_action() {
+        this.getSessionManager().setCurrentModuleId(new Long(28));
+        return "sementals";
+    }
+
     /**
-     * ULTIMO ID DE MODULO INGRESADO = 26
+     * ULTIMO ID DE MODULO INGRESADO = 28
      */
 }
