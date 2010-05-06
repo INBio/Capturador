@@ -12,7 +12,10 @@ import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import org.inbio.ara.dto.germplasm.AccessionMovementDTO;
+import org.inbio.ara.dto.germplasm.BreedDTO;
 import org.inbio.ara.dto.germplasm.PassportDTO;
+import org.inbio.ara.dto.germplasm.SemenGatheringDTO;
+import org.inbio.ara.dto.germplasm.SementalDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
@@ -22,9 +25,12 @@ import javax.ejb.Stateless;
 import org.inbio.ara.dto.germplasm.AccessionDTO;
 import org.inbio.ara.dto.germplasm.AccessionDTOFactory;
 import org.inbio.ara.dto.germplasm.AccessionMovementDTOFactory;
+import org.inbio.ara.dto.germplasm.BreedDTOFactory;
 import org.inbio.ara.dto.germplasm.PassportDTOFactory;
 import org.inbio.ara.dto.germplasm.PassportNomenclaturalGroupDTO;
 import org.inbio.ara.dto.germplasm.PassportNomenclaturalGroupDTOFactory;
+import org.inbio.ara.dto.germplasm.SemenGatheringDTOFactory;
+import org.inbio.ara.dto.germplasm.SementalDTOFactory;
 import org.inbio.ara.dto.inventory.PersonDTOFactory;
 import org.inbio.ara.dto.inventory.SelectionListDTOFactory;
 import org.inbio.ara.dto.inventory.SelectionListEntity;
@@ -34,17 +40,23 @@ import org.inbio.ara.eao.agent.InstitutionEAOLocal;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
 import org.inbio.ara.eao.germplasm.AccessionEAOLocal;
 import org.inbio.ara.eao.germplasm.AccessionMovementEAOLocal;
+import org.inbio.ara.eao.germplasm.BreedEAOLocal;
 import org.inbio.ara.eao.germplasm.PassportEAOLocal;
 import org.inbio.ara.eao.germplasm.PassportNomenclaturalGroupEAOLocal;
+import org.inbio.ara.eao.germplasm.SemenGatheringEAOLocal;
+import org.inbio.ara.eao.germplasm.SementalEAOLocal;
+import org.inbio.ara.eao.gis.SiteEAOLocal;
 import org.inbio.ara.eao.security.NomenclaturalGroupEAOLocal;
 import org.inbio.ara.eao.selectionlist.SelectionListValueLocalEAO;
 import org.inbio.ara.eao.taxonomy.TaxonEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonomicalRangeEAOLocal;
-import org.inbio.ara.facade.search.SearchFacadeRemote;
 import org.inbio.ara.persistence.SelectionListGenericEntity;
 import org.inbio.ara.persistence.germplasm.Accession;
 import org.inbio.ara.persistence.germplasm.AccessionMovement;
+import org.inbio.ara.persistence.germplasm.Breed;
 import org.inbio.ara.persistence.germplasm.Passport;
+import org.inbio.ara.persistence.germplasm.SemenGathering;
+import org.inbio.ara.persistence.germplasm.Semental;
 import org.inbio.ara.persistence.institution.Institution;
 import org.inbio.ara.persistence.person.Person;
 import org.inbio.ara.persistence.person.ProfileEntity;
@@ -92,7 +104,17 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
     @EJB
     private AccessionMovementEAOLocal accessionMovementEAOLocal;
 
-    
+    @EJB
+    private BreedEAOLocal breedEAOLocal;
+
+    @EJB
+    private SementalEAOLocal sementalEAOLocal;
+
+    @EJB
+    private SemenGatheringEAOLocal semenGatheringEAOLocal;
+
+    @EJB
+    private SiteEAOLocal siteEAOLocal;
 
     /**
      * Factory
@@ -108,6 +130,11 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
 
     private AccessionDTOFactory accessionDTOFactory = new AccessionDTOFactory();
     private AccessionMovementDTOFactory accessionMovementDTOFactory = new AccessionMovementDTOFactory();
+
+
+    private BreedDTOFactory breedDTOFactory = new BreedDTOFactory();
+    private SemenGatheringDTOFactory semenGatheringDTOFactory = new SemenGatheringDTOFactory();
+    private SementalDTOFactory sementalDTOFactory = new SementalDTOFactory();
 
     /**
      * Return all the SelectionList values for a Selection List id
@@ -589,10 +616,37 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
                         entitiesList.add(passportEAOLocal.
                             findById(Passport.class, (Long)id));
                     }
-                    else if(t == Accession.class)
+                    else 
                     {
-                        entitiesList.add(accessionEAOLocal.
-                            findById(Accession.class, (Long)id));
+                        if(t == Accession.class)
+                        {
+                            entitiesList.add(accessionEAOLocal.
+                                findById(Accession.class, (Long)id));
+                        }
+                        else
+                        {
+                            if(t == Breed.class)
+                            {
+                                entitiesList.add(breedEAOLocal.
+                                    findById(Breed.class, (Long)id));
+                            }
+                            else
+                            {
+                                if(t == Semental.class)
+                                {
+                                    entitiesList.add(sementalEAOLocal.
+                                        findById(Semental.class, (Long)id));
+                                }
+                                else
+                                {
+                                    if(t == SemenGathering.class)
+                                    {
+                                        entitiesList.add(semenGatheringEAOLocal.
+                                            findById(SemenGathering.class, (Long)id));
+                                    }
+                                }
+                            }
+                        }
                     }
                     
                     entitiesCounter++;
@@ -854,6 +908,14 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return updateAccessionDTOListValues(accessionDTOFactory.createDTOList(accessionList));
     }
 
+    /**
+     * Use this method for accession advance search. Searh by:
+     * accession id, accession number, packagesoriginal weight, current weight,
+     * responsable person, passport id,parent id, germination rate, germination
+     * method type
+     * @param accessionDTO
+     * @return
+     */
     public Set<Long> getAccessionByCriteria(AccessionDTO accessionDTO)
     {
         Set<Long> ids = new HashSet<Long>();
@@ -1040,6 +1102,11 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return updateAccessionDTOListValues(accessionDTOFactory.createDTOList(accessionList));
     }
 
+    /**
+     * Update values for an Accession List
+     * @param accessionDTOList
+     * @return List<AccessionDTO>
+     */
     public List<AccessionDTO> updateAccessionDTOListValues(List<AccessionDTO> accessionDTOList)
     {
         for (AccessionDTO accessionDTO : accessionDTOList)
@@ -1048,6 +1115,12 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return accessionDTOList;
     }
 
+    /**
+     * Update values for an AccessionDTO. Put: accession parent name, responsable person,
+     * germinationMethodType name
+     * @param accessionDTO
+     * @return AccessionDTO
+     */
     public AccessionDTO updateAccessionDTOValues(AccessionDTO accessionDTO)
     {
         if(accessionDTO.getAccessionParentId() != null)
@@ -1248,6 +1321,11 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return updateAccessionMovementDTOListValues(accessionMovementDTOList);
     }
 
+    /**
+     * Update values for an Accession movement list
+     * @param accessionMovementDTOList
+     * @return List<AccessionMovementDTO>
+     */
     public List<AccessionMovementDTO> updateAccessionMovementDTOListValues(List<AccessionMovementDTO> accessionMovementDTOList)
     {
         for (AccessionMovementDTO accessionMovementDTO : accessionMovementDTOList)
@@ -1256,7 +1334,13 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         }
         return accessionMovementDTOList;
     }
-    
+
+    /**
+     * Update values for  accession movements. put: responsable person, and
+     * movement type id.
+     * @param accessionMovementDTO
+     * @return AccessionMovementDTO
+     */
     public AccessionMovementDTO updateAccessionMovementDTOValue(AccessionMovementDTO accessionMovementDTO)
     {
         accessionMovementDTO.setAccessionNumber(
@@ -1347,5 +1431,847 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
             return true;
         else
             return false;
+    }
+
+    public void saveBreed(BreedDTO breedDTO) {
+        Breed breed = breedDTOFactory.createPlainEntity(breedDTO);
+        breedEAOLocal.create(breed);
+    }
+
+    public void updateBreed(BreedDTO breedDTO) {
+        Breed breed = breedEAOLocal.findById(Breed.class, breedDTO.getBreedId());
+        breedDTOFactory.updatePlainEntity(breedDTO, breed);
+        breedEAOLocal.update(breed);
+    }
+
+    public List<BreedDTO> getAllBreedPaginated(int firstResult, int maxResult) {
+        String[] parts = {"name"};
+        return updateBreedDTOListValues(breedDTOFactory.createDTOList(breedEAOLocal.findAllPaginatedFilterAndOrderBy(
+                Breed.class, firstResult, maxResult,parts, null)));
+    }
+
+    public Long countAllBreed() {
+        return breedEAOLocal.count(Breed.class);
+    }
+
+    public List<BreedDTO> getBreedSimpleSearch(String query, int firstResult, int maxResult) {
+        Set<Long> breedIds = unstructeredBreedQuery(splitQuery(query));
+        List<Breed> breedList = getEntities(breedIds, Breed.class, firstResult, maxResult);
+        return updateBreedDTOListValues(breedDTOFactory.createDTOList(breedList));
+    }
+
+    public Long countBreedSimpleSearch(String query) {
+        Integer quantity = new Integer(unstructeredBreedQuery(splitQuery(query)).size());
+        return quantity.longValue();
+    }
+
+    /**
+     * Use this method for breed simple search
+     * Search by: name and scientific name
+     * @param parts
+     * @return Set<Long>
+     */
+    private Set<Long> unstructeredBreedQuery(String[] parts)
+    {
+        Set<Long> list = new HashSet();
+        List<Long> ids = null;
+
+
+
+        for (int i = 0; i < parts.length; i++)
+        {
+            //try to cast it
+            try
+            {
+                //find by breed
+                ids = breedEAOLocal.findByBreedName(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+                //find by scientific name
+                ids = breedEAOLocal.findByScientificName(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+            }
+            catch(Exception e){}
+        }
+        return list;
+    }
+
+    public SementalDTO saveSemental(SementalDTO sementalDTO) {
+        Semental semental = sementalDTOFactory.createPlainEntity(sementalDTO);
+        sementalEAOLocal.create(semental);
+        return sementalDTOFactory.createDTO(semental);
+    }
+
+    public void updateSemental(SementalDTO sementalDTO) {
+        Semental semental = sementalEAOLocal.findById(Semental.class, sementalDTO.getSementalId());
+        sementalDTOFactory.updatePlainEntity(sementalDTO, semental);
+        sementalEAOLocal.update(semental);
+    }
+
+    public List<SementalDTO> getAllSementalPaginated(int firstResult, int maxResult) {
+        String[] parts = {"breedId","name","animalCode"};
+        return updateSementalDTOListValues(sementalDTOFactory.createDTOList(
+                sementalEAOLocal.findAllPaginatedFilterAndOrderBy(
+                Semental.class, firstResult, maxResult, parts, null)));
+    }
+
+    public Long countAllSemental() {
+        return sementalEAOLocal.count(Semental.class);
+    }
+
+    public List<SementalDTO> getSementalSimpleSearch(String query, int firstResult, int maxResult) {
+
+        Set<Long> sementalIds = unstructeredSementalQuery(splitQuery(query));
+        List<Semental> sementalList = getEntities(sementalIds, Semental.class, firstResult, maxResult);
+        return updateSementalDTOListValues(sementalDTOFactory.createDTOList(sementalList));
+    }
+
+    public Long countSementalSimpleSearch(String query) {
+        Integer quantity = new Integer(unstructeredSementalQuery(splitQuery(query)).size());
+        return quantity.longValue();
+    }
+
+    /**
+     * Use this method for semental simple search:
+     * unstructuredSementalQuery: search by breed name, animal name, animal code,
+     * veterinarian status,condition and animal description
+     * @param parts
+     * @return Set<Long>
+     */
+    private Set<Long> unstructeredSementalQuery(String[] parts)
+    {
+        Set<Long> list = new HashSet();
+        List<Long> ids = null;
+
+
+
+        for (int i = 0; i < parts.length; i++)
+        {
+            //try to cast it
+            try
+            {
+                //find by breed
+                ids = sementalEAOLocal.findByBreedName(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by name
+                ids = sementalEAOLocal.findByAnimalName(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by animal code
+                ids = sementalEAOLocal.findByAnimalCode(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by veterinarian status
+                ids = sementalEAOLocal.findByVeterinarianStatus(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by condition
+                ids = sementalEAOLocal.findByCondition(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by animal description
+                ids = sementalEAOLocal.findByAnimalDescription(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+            }
+            catch(Exception e){}
+        }
+        return list;
+    }
+
+    public List<SementalDTO> getSementalAdvancedSearch(SementalDTO sementalDTO, int firstResult, int maxResult) {
+        Set<Long> ids = getSementalsByCriteria(sementalDTO);
+
+        //Retrieve entities
+        List<Semental> list = getEntities(ids,
+                Semental.class, firstResult, maxResult);
+
+        return updateSementalDTOListValues(sementalDTOFactory.createDTOList(list));
+
+    }
+
+    public Long countSementalAdvancedSearch(SementalDTO sementalDTO) {
+        Integer quantity = new Integer(getSementalsByCriteria(sementalDTO).size());
+        return quantity.longValue();
+    }
+
+    /**
+     * Use this method for sementals advance search:
+     * getElementsByCriteria: searh by, name, animal code, color,
+     * veterinarian status, father, mother, bith date, breed, site, condition
+     * @param sementalDTO
+     * @return  Set<Long>
+     */
+    public Set<Long> getSementalsByCriteria(SementalDTO sementalDTO)
+    {
+         Set<Long> ids = new HashSet();
+        boolean firstTime = true;
+
+        List<Long> query = new ArrayList<Long>();
+
+        //find by name
+        if(sementalDTO.getName() != null)
+        {
+            query = sementalEAOLocal.findByAnimalName(sementalDTO.getName());
+            if(query != null && !query.isEmpty())
+            {
+                ids.addAll(query);
+                firstTime = false;
+            }
+        }
+
+        //find by animal code
+        if(sementalDTO.getAnimalCode() != null)
+        {
+            query = sementalEAOLocal.findByAnimalCode(sementalDTO.getAnimalCode());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by Color
+        if(sementalDTO.getColor() != null)
+        {
+            query = sementalEAOLocal.findByColor(sementalDTO.getColor());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by veterinarian status
+        if(sementalDTO.getVeterinarianStatus() != null)
+        {
+            query = sementalEAOLocal.findByVeterinarianStatus(sementalDTO.getVeterinarianStatus());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by father
+        if(sementalDTO.getFather() != null)
+        {
+            query = sementalEAOLocal.findByFather(sementalDTO.getFather());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by Mother
+        if(sementalDTO.getMother() != null)
+        {
+            query = sementalEAOLocal.findByMother(sementalDTO.getMother());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by birth date
+        if(sementalDTO.getBirthDate() != null)
+        {
+            query = sementalEAOLocal.findByBirthDate(sementalDTO.getBirthDate());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by breed
+        if(sementalDTO.getBreedId() != null)
+        {
+            query = sementalEAOLocal.findByBreedId(sementalDTO.getBreedId());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by Site
+        if(sementalDTO.getSiteId() != null)
+        {
+            query = sementalEAOLocal.findByLocalityId(sementalDTO.getSiteId());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by condition
+        if(sementalDTO.getConditionId() != null)
+        {
+            query = sementalEAOLocal.findByConditionId(sementalDTO.getConditionId());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+
+       
+        return ids;
+    }
+
+    
+
+    public void saveSemenGathering(SemenGatheringDTO semenGatheringDTO) {
+        SemenGathering semenGathering = semenGatheringDTOFactory.createPlainEntity(semenGatheringDTO);
+        semenGatheringEAOLocal.create(semenGathering);
+    }
+
+    public void updateSemenGathering(SemenGatheringDTO semenGatheringDTO) {
+        SemenGathering semenGathering = semenGatheringEAOLocal.findById(SemenGathering.class, semenGatheringDTO.getSemenGatheringId());
+        semenGatheringDTOFactory.updatePlainEntity(semenGatheringDTO, semenGathering);
+        semenGatheringEAOLocal.update(semenGathering);
+    }
+
+    public List<SemenGatheringDTO> getAllSemenGatheringPaginated(Long sementalId, int firstResult, int maxResult) {
+        return updateSemenGatheringDTOListValues(semenGatheringDTOFactory.createDTOList(
+                semenGatheringEAOLocal.findAllBySementalId(sementalId, firstResult, maxResult)));
+    }
+
+    public Long countAllSemenGathering(Long sementalId) {
+        return semenGatheringEAOLocal.countAllBySementalId(sementalId);
+    }
+
+    public List<SemenGatheringDTO> getSemenGatheringlSimpleSearch(String query, int firstResult, int maxResult) {
+        
+        Set<Long> semengatheringIds = unstructeredSemenGatheringQuery(splitQuery(query));
+        List<SemenGathering> semenGatheringList = getEntities(semengatheringIds, SemenGathering.class, firstResult, maxResult);
+        return updateSemenGatheringDTOListValues(semenGatheringDTOFactory.createDTOList(semenGatheringList));
+    }
+
+    public Long countSemenGatheringSimpleSearch(String query) {
+
+        Integer quantity = new Integer(unstructeredSemenGatheringQuery(splitQuery(query)).size());
+        return quantity.longValue();
+    }
+
+    /**
+     * Use this method for simples simple seach. seach by, dilution name,
+     * volume, motility, concentration, straw quantity, straw size, quantity,
+     * tank number, canister number, goblet number,ptm, active doses
+     * @param parts
+     * @return
+     */
+    private Set<Long> unstructeredSemenGatheringQuery(String[] parts)
+    {
+        Set<Long> list = new HashSet();
+        List<Long> ids = null;
+
+        Long id;
+
+        for (int i = 0; i < parts.length; i++)
+        {
+            //find by Dilution
+            ids = semenGatheringEAOLocal.findByDilution(parts[i]);
+            if(ids != null && !ids.isEmpty())
+                list.addAll(ids);
+            //try to cast it
+            try
+            {
+                id = Long.parseLong(parts[i]);
+
+                //find by volume
+                ids = semenGatheringEAOLocal.findByVolume(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by motility
+                ids = semenGatheringEAOLocal.findByMotility(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by Concentration
+                ids = semenGatheringEAOLocal.findByConcentration(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by StrawQuantity
+                ids = semenGatheringEAOLocal.findByStrawQuantity(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by StrawSize
+                ids = semenGatheringEAOLocal.findByStrawSize(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                
+
+                //find by TankNumber
+                ids = semenGatheringEAOLocal.findByTankNumber(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by CanisterNumber
+                ids = semenGatheringEAOLocal.findByCanisterNumber(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by GobletNumber
+                ids = semenGatheringEAOLocal.findByGobletNumber(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by PostThawMotility
+                ids = semenGatheringEAOLocal.findByPostThawMotility(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by ActiveDoses
+                ids = semenGatheringEAOLocal.findByActiveDoses(id);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+            }
+            catch(Exception e){}
+        }
+        return list;
+    }
+
+    public List<SemenGatheringDTO> getSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO, int firstResult, int maxResult) {
+        Set<Long> ids = getSemenGatheringsByCriteria(semenGatheringDTO);
+
+        //Retrieve entities
+        List<SemenGathering> list = getEntities(ids,
+                SemenGathering.class, firstResult, maxResult);
+
+        return updateSemenGatheringDTOListValues(semenGatheringDTOFactory.createDTOList(list));
+    }
+
+    public Long countSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO) {
+        Integer quantity = new Integer(getSemenGatheringsByCriteria(semenGatheringDTO).size());
+        return quantity.longValue();
+    }
+
+    /**
+     * Use this method for advance search for semen gathering
+     * Search semenGathering By criteria: search by: semen gathering date,
+     * semenGatheringTime, volume,motility,concentration, strawSize,straw quantity,
+     * straw color,dilution, tank number, canister number, goblet number, gathering method,
+     * solvent, active doses, ptm, ph mass motility.
+     * @param semenGatheringDTO
+     * @return
+     */
+    public Set<Long> getSemenGatheringsByCriteria(SemenGatheringDTO semenGatheringDTO)
+    {
+         Set<Long> ids = new HashSet();
+        boolean firstTime = true;
+
+        List<Long> query = new ArrayList<Long>();
+
+        //find by gathering date
+        if(semenGatheringDTO.getSemenGatheringDate() != null)
+        {
+            query = semenGatheringEAOLocal.findBySemenGatheringDate(semenGatheringDTO.getSemenGatheringDate());
+            if(query != null && !query.isEmpty())
+            {
+                ids.addAll(query);
+                firstTime = false;
+            }
+        }
+
+        //find by time
+        if(semenGatheringDTO.getSemenGatheringTime() != null)
+        {
+            query = semenGatheringEAOLocal.findBySemenGatheringTime(semenGatheringDTO.getSemenGatheringTime());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by volume
+        if(semenGatheringDTO.getVolume() != null)
+        {
+            query = semenGatheringEAOLocal.findByVolume(semenGatheringDTO.getVolume());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by Motility
+        if(semenGatheringDTO.getMotility() != null)
+        {
+            query = semenGatheringEAOLocal.findByMotility(semenGatheringDTO.getMotility());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by concentration
+        if(semenGatheringDTO.getConcentration() != null)
+        {
+            query = semenGatheringEAOLocal.findByConcentration(semenGatheringDTO.getConcentration());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by straw size
+        if(semenGatheringDTO.getStrawSize() != null)
+        {
+            query = semenGatheringEAOLocal.findByStrawSize(semenGatheringDTO.getStrawSize());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by dilution
+        if(semenGatheringDTO.getDilution() != null)
+        {
+            query = semenGatheringEAOLocal.findByDilution(semenGatheringDTO.getDilution());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by tank number
+        if(semenGatheringDTO.getTankNumber() != null)
+        {
+            query = semenGatheringEAOLocal.findByTankNumber(semenGatheringDTO.getTankNumber());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by canister number
+        if(semenGatheringDTO.getCanisterNumber() != null)
+        {
+            query = semenGatheringEAOLocal.findByCanisterNumber(semenGatheringDTO.getCanisterNumber());
+            if(query != null && !query.isEmpty())
+            {System.out.println("entro canister = " + semenGatheringDTO.getCanisterNumber());
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by goblet number
+        if(semenGatheringDTO.getGobletNumber() != null)
+        {
+            query = semenGatheringEAOLocal.findByGobletNumber(semenGatheringDTO.getGobletNumber());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by straw color
+        if(semenGatheringDTO.getStrawColor() != null)
+        {
+            query = semenGatheringEAOLocal.findByStrawColor(semenGatheringDTO.getStrawColor());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by ptm
+        if(semenGatheringDTO.getPostThawMotility() != null)
+        {
+            query = semenGatheringEAOLocal.findByPostThawMotility(semenGatheringDTO.getPostThawMotility());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        //find by active doses
+        if(semenGatheringDTO.getActiveDoses() != null)
+        {
+            query = semenGatheringEAOLocal.findByActiveDoses(semenGatheringDTO.getActiveDoses());
+            if(query != null && !query.isEmpty())
+            {
+                if(firstTime)
+                {
+                    ids.addAll(query);
+                    firstTime = false;
+                }
+                else
+                    ids.retainAll(query);
+            }
+        }
+
+        return ids;
+    }
+
+    /**
+     * Update the values of a BreedDTO list
+     * @param listBreedDTO
+     * @return List<BreedDTO>
+     */
+    private List<BreedDTO> updateBreedDTOListValues(List<BreedDTO> listBreedDTO)
+    {
+        for (BreedDTO breedDTO : listBreedDTO)
+        {
+            updateBreedDTOValue(breedDTO);
+        }
+        return listBreedDTO;
+    }
+
+    /**
+     * Update the values of a BreedDTO: search the taxon name
+     * @param breedDTO
+     * @return BreedDTO
+     */
+    private BreedDTO updateBreedDTOValue(BreedDTO breedDTO)
+    {
+        if(breedDTO.getTaxonId() != null)
+        {
+            breedDTO.setTaxonName(taxonEAOLocal.findById(
+                    Taxon.class, breedDTO.getTaxonId()).getDefaultName());
+        }
+        return breedDTO;
+    }
+
+    /**
+     * Upate the values of  SementalDTO list
+     * @param listSementalDTO
+     * @return  List<SementalDTO>
+     */
+    private List<SementalDTO> updateSementalDTOListValues(List<SementalDTO> listSementalDTO)
+    {
+        for (SementalDTO sementalDTO : listSementalDTO)
+        {
+            updateSementalDTOValues(sementalDTO);
+        }
+        return listSementalDTO;
+    }
+
+    /**
+     * Update the values of a SementalDTO: search the condition name and the breed name
+     * @param sementalDTO
+     * @return SementalDTO
+     */
+    private SementalDTO updateSementalDTOValues(SementalDTO sementalDTO)
+    {
+        if(sementalDTO.getConditionId() != null)
+        {
+            sementalDTO.setCondition(
+                    selectionListValueLocalEAO.
+                    findById(
+                    SelectionListEntity.CONDITION.getId(),
+                    sementalDTO.getConditionId()).getName());
+        }
+        if(sementalDTO.getBreedId() != null)
+        {
+            sementalDTO.setBreed(
+                    breedEAOLocal.findById(
+                    Breed.class, sementalDTO.getBreedId()).getName());
+        }
+        return sementalDTO;
+    }
+
+    /**
+     * Update the values of a SemenGatheringDTO list
+     * @param listSGDTO
+     * @return List<SemenGatheringDTO>
+     */
+    private List<SemenGatheringDTO> updateSemenGatheringDTOListValues(List<SemenGatheringDTO> listSGDTO)
+    {
+        for (SemenGatheringDTO semenGatheringDTO : listSGDTO)
+        {
+            updateSemenGatheringDTOValues(semenGatheringDTO);
+        }
+        return listSGDTO;
+    }
+
+    /**
+     * Update the values of a SemenGatheringDTO: put the gathering method name,
+     * and solvent id.
+     * @param sgDTO
+     * @return SemenGatheringDTO
+     */
+    private SemenGatheringDTO updateSemenGatheringDTOValues(SemenGatheringDTO sgDTO)
+    {
+        if(sgDTO.getSemenGatheringMethodId() != null)
+        {
+            sgDTO.setSemenGatheringMethod(
+                    selectionListValueLocalEAO.
+                    findById(
+                    SelectionListEntity.SEMEN_GATHERING_METHOD.getId(),
+                    sgDTO.getSemenGatheringMethodId()).getName());
+        }
+        if(sgDTO.getSolventId() != null)
+        {
+            sgDTO.setSolvent(
+            selectionListValueLocalEAO.
+                    findById(
+                    SelectionListEntity.SOLVENT.getId(),
+                    sgDTO.getSolventId()).getName());
+        }
+        return sgDTO;
+    }
+
+    public List<BreedDTO> getAllBreeds() {
+        return breedDTOFactory.createDTOList(breedEAOLocal.findAll(Breed.class));
+    }
+
+    public boolean haveSementals(Long breedId) {
+        List<Long> sementalList = sementalEAOLocal.findByBreedId(breedId);
+        if(sementalList != null && !sementalList.isEmpty())
+            return true;
+        else
+            return false;
+
+    }
+
+    public boolean haveSemenGathering(Long sementalId) {
+        List<SemenGathering> semenGatheringList = semenGatheringEAOLocal.findAllBySementalId(sementalId, 0, 10);
+        if(semenGatheringList != null && !semenGatheringList.isEmpty())
+            return true;
+        else
+            return false;
+    }
+
+    public void deleteBreed(Long breedId) {
+        Breed breed = breedEAOLocal.findById(Breed.class, breedId);
+        breedEAOLocal.delete(breed);
+    }
+
+    public void deleteSemental(Long sementalId) {
+        Semental semental = sementalEAOLocal.findById(Semental.class, sementalId);
+        sementalEAOLocal.delete(semental);
+    }
+
+    public void deleteSemenGathering(Long semenGatheringId) {
+        SemenGathering semenGathering = semenGatheringEAOLocal.findById(SemenGathering.class, semenGatheringId);
+        semenGatheringEAOLocal.delete(semenGathering);
     }
 }

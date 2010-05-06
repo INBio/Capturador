@@ -9,7 +9,10 @@ import java.util.List;
 import javax.ejb.Remote;
 import org.inbio.ara.dto.germplasm.AccessionDTO;
 import org.inbio.ara.dto.germplasm.AccessionMovementDTO;
+import org.inbio.ara.dto.germplasm.BreedDTO;
 import org.inbio.ara.dto.germplasm.PassportDTO;
+import org.inbio.ara.dto.germplasm.SemenGatheringDTO;
+import org.inbio.ara.dto.germplasm.SementalDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
@@ -209,14 +212,39 @@ public interface GermplasmFacadeRemote {
      */
     public List<PersonDTO> getResponsablePersons();
 
+    /**
+     * Save an Accession Movement
+     * @param accessionMovementDTO
+     */
     public void saveAccessionMovement(AccessionMovementDTO accessionMovementDTO);
 
+    /**
+     * Update an Accession movement
+     * @param accessionMovementDTO
+     */
     public void updateAccessionMovement(AccessionMovementDTO accessionMovementDTO);
 
+    /**
+     * delete an Accession movement
+     * @param accessionMovementDTO
+     * @return
+     */
     public AccessionDTO deleteAccessionMovement(AccessionMovementDTO accessionMovementDTO);
-    
+
+    /**
+     * Obtain all the acession movements for an accession Id specified
+     * @param accessionId
+     * @param firstResult
+     * @param maxResult
+     * @return List<AccessionMovementDTO> list of accession movements
+     */
     public List<AccessionMovementDTO> getAllAccessionMovementByAccesionIdPaginated(Long accessionId, int firstResult, int maxResult);
 
+    /**
+     * Count all the accession movements for an accession id specified
+     * @param accessionId
+     * @return Long
+     */
     public Long countAccessionMovements(Long accessionId);
 
     public List<AccessionMovementDTO> getAccessionMovementsSimpleSearch(String query, Long collectionId, int firstResult, int maxResult);
@@ -227,11 +255,233 @@ public interface GermplasmFacadeRemote {
 
     public Long countAccessionMovementsAdvancedSearch(AccessionMovementDTO accessionMovement, Long collectionId);
 
+    /**
+     * Return true if an Accession id has accession movements,
+     * False if not
+     * @param accessionId
+     * @return
+     */
     public boolean haveMovementsAndAccessions(Long accessionId);
 
+    /**
+     * Add to an Accession weight the given value
+     * @param accessionDTO
+     * @param weigth
+     * @return
+     */
     public AccessionDTO addToAccessionCurrentWeight(AccessionDTO accessionDTO, Long weigth);
 
+    /**
+     * Delete passport
+     * @param PassportId
+     */
     public void deletePassport(Long PassportId);
 
+    /**
+     * Return true if a Passport has accession associated to it, false if not
+     * @param passportId
+     * @return
+     */
     public boolean haveAccessions(Long passportId);
+
+    //** semen module **// 
+
+    /**
+     * Save breed
+     * @param breedDTO
+     */
+    public void saveBreed(BreedDTO breedDTO);
+
+    /**
+     * Update breed
+     * @param breedDTO
+     */
+    public void updateBreed(BreedDTO breedDTO);
+
+    /**
+     * Obtain a list of breeds paginated
+     * @param firstResult
+     * @param maxResult
+     * @return  List<BreedDTO> 
+     */
+    public List<BreedDTO> getAllBreedPaginated(int firstResult, int maxResult);
+
+    /**
+     * Count all breeds
+     * @return
+     */
+    public Long countAllBreed();
+
+    /**
+     * Get a list of breeds paginated for a simple search
+     * @param query
+     * @param firstResult
+     * @param maxResult
+     * @return List<BreedDTO>
+     */
+    public List<BreedDTO> getBreedSimpleSearch(String query, int firstResult, int maxResult);
+
+    /**
+     * Count all the breeds for a simple search
+     * @param query
+     * @return
+     */
+    public Long countBreedSimpleSearch(String query);
+
+    /**
+     * Save semental
+     * @param sementalDTO
+     * @return SementalDTO
+     */
+    public SementalDTO saveSemental(SementalDTO sementalDTO);
+
+    /**
+     * Update semental
+     * @param sementalDTO
+     */
+    public void updateSemental(SementalDTO sementalDTO);
+
+    /**
+     * Obtain all sementals paginated
+     * @param firstResult
+     * @param maxResult
+     * @return List<SementalDTO>
+     */
+    public List<SementalDTO> getAllSementalPaginated(int firstResult, int maxResult);
+
+    /**
+     * Count all sementals
+     * @return
+     */
+    public Long countAllSemental();
+
+    /**
+     * Obtain a list of sementals for a simple search
+     * @param query
+     * @param firstResult
+     * @param maxResult
+     * @return List<SementalDTO>
+     */
+    public List<SementalDTO> getSementalSimpleSearch(String query, int firstResult, int maxResult);
+
+    /**
+     * Count all sementals for a simple search
+     * @param query
+     * @return Long
+     */
+    public Long countSementalSimpleSearch(String query);
+
+    /**
+     * Obtain a list of sementals for an advance search
+     * @param sementalDTO
+     * @param firstResult
+     * @param maxResult
+     * @return List<SementalDTO>
+     */
+    public List<SementalDTO> getSementalAdvancedSearch(SementalDTO sementalDTO, int firstResult, int maxResult);
+
+    /**
+     * Count all sementals for an advance search
+     * @param sementalDTO
+     * @return Long
+     */
+    public Long countSementalAdvancedSearch(SementalDTO sementalDTO);
+
+    /**
+     * Save semen gathering
+     * @param semenGatheringDTO
+     */
+    public void saveSemenGathering(SemenGatheringDTO semenGatheringDTO);
+
+    /**
+     * update semen gathering
+     * @param semenGatheringDTO
+     */
+    public void updateSemenGathering(SemenGatheringDTO semenGatheringDTO);
+
+    /**
+     * Obtain all the semen gathering paginated for a semental Id
+     * @param sementalId
+     * @param firstResult
+     * @param maxResult
+     * @return List<SemenGatheringDTO> 
+     */
+    public List<SemenGatheringDTO> getAllSemenGatheringPaginated(Long sementalId, int firstResult, int maxResult);
+
+    /**
+     * Count all semen gathering for a semental Id
+     * @param sementalId
+     * @return Long
+     */
+    public Long countAllSemenGathering(Long sementalId);
+
+    /**
+     * Obtain a list of semen gathering for a simple search
+     * @param query
+     * @param firstResult
+     * @param maxResult
+     * @return List<SemenGatheringDTO>
+     */
+    public List<SemenGatheringDTO> getSemenGatheringlSimpleSearch(String query, int firstResult, int maxResult);
+
+    /**
+     * Count all semen gathering for a simple search
+     * @param query
+     * @return Long
+     */
+    public Long countSemenGatheringSimpleSearch(String query);
+
+    /**
+     * Obtain a list of semen gathering for an advance search
+     * @param semenGatheringDTO
+     * @param firstResult
+     * @param maxResult
+     * @return List<SemenGatheringDTO>
+     */
+    public List<SemenGatheringDTO> getSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO, int firstResult, int maxResult);
+
+    /**
+     * Count all semen gathering for an advance search
+     * @param semenGatheringDTO
+     * @return Long
+     */
+    public Long countSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO);
+
+    /**
+     * get All breeds
+     * @return  List<BreedDTO>
+     */
+    public List<BreedDTO> getAllBreeds();
+
+    /**
+     * Return true if a breed has sementals associated, false if not
+     * @param breedId
+     * @return boolean
+     */
+    public boolean haveSementals(Long breedId);
+
+    /**
+     * Return true if a semental has semen gatherins associated, false if not
+     * @param sementalId
+     * @return boolean
+     */
+    public boolean haveSemenGathering(Long sementalId);
+
+    /**
+     * Delete breed
+     * @param breedId
+     */
+    public void deleteBreed(Long breedId);
+
+    /**
+     * Delete semental
+     * @param sementalId
+     */
+    public void deleteSemental(Long sementalId);
+
+    /**
+     * Delete semen gathering
+     * @param semenGatheringId
+     */
+    public void deleteSemenGathering(Long semenGatheringId);
 }
