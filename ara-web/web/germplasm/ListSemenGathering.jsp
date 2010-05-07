@@ -65,41 +65,36 @@
                                                 <webuijsf:label id="labelVolume" style="width: 168px; height: 24px" text="#{resources.volume}"/>
                                                 <webuijsf:textField id="textFieldVolume" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.volume}"/>
 
-                                                <webuijsf:label id="labelMotility" style="width: 168px; height: 24px" text="#{resources.motility}"/>
-                                                <webuijsf:textField id="textFieldMotility" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.motility}"/>
-
-                                                <webuijsf:label id="labelConcentration" style="width: 168px; height: 24px" text="#{resources.concentration}"/>
-                                                <webuijsf:textField id="textFieldConcentration" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.concentration}"/>
-
                                                 <webuijsf:label id="labelStrawSize" style="width: 168px; height: 24px" text="#{resources.straw_size}"/>
                                                 <webuijsf:textField id="textFieldStrawSize" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.strawSize}"/>
 
-                                                <webuijsf:label id="labelDilution" style="width: 168px; height: 24px" text="#{resources.dilution}"/>
-                                                <webuijsf:textField id="textFieldDilution" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.dilution}"/>
-
-                                                <webuijsf:label id="labelTankNumber" style="width: 168px; height: 24px" text="#{resources.tank_number}"/>
-                                                <webuijsf:textField id="textFieldTankNumber" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.tankNumber}"/>
-
-                                                <webuijsf:label id="labelCanisterNumber" style="width: 168px; height: 24px" text="#{resources.canister_number}"/>
-                                                <webuijsf:textField id="textFieldCanisterNumber" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.canisterNumber}"/>
-
-                                                <webuijsf:label id="labelGobletNumber" style="width: 168px; height: 24px" text="#{resources.goblet_number}"/>
-                                                <webuijsf:textField id="textFieldGobletNumer" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.gobletNumber}"/>
+                                                <webuijsf:label id="labelMotility" style="width: 168px; height: 24px" text="#{resources.motility}"/>
+                                                <webuijsf:textField id="textFieldMotility" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.motility}"/>
 
                                                 <webuijsf:label id="labelStrawColor" style="width: 168px; height: 24px" text="#{resources.straw_color}"/>
                                                 <webuijsf:textField id="textFieldStrawColor" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.strawColor}"/>
 
+                                                <webuijsf:label id="labelConcentration" style="width: 168px; height: 24px" text="#{resources.concentration}"/>
+                                                <webuijsf:textField id="textFieldConcentration" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.concentration}"/>
+
+                                                <webuijsf:label id="labelTankNumber" style="width: 168px; height: 24px" text="#{resources.tank_number}"/>
+                                                <webuijsf:textField id="textFieldTankNumber" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.tankNumber}"/>
+
                                                 <webuijsf:label id="labelPTM" style="width: 168px; height: 24px" text="#{resources.post_thaw_motility}"/>
                                                 <webuijsf:textField id="textFieldPTM" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.postThawMotility}"/>
+
+                                                <webuijsf:label id="labelCanisterNumber" style="width: 168px; height: 24px" text="#{resources.canister_number}"/>
+                                                <webuijsf:textField id="textFieldCanisterNumber" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.canisterNumber}"/>
 
                                                 <webuijsf:label id="labelActiveDoses" style="width: 168px; height: 24px" text="#{resources.active_doses}"/>
                                                 <webuijsf:textField id="textFieldActiveDoses" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.activeDoses}"/>
 
-                                                
+                                                <webuijsf:label id="labelGobletNumber" style="width: 168px; height: 24px" text="#{resources.goblet_number}"/>
+                                                <webuijsf:textField id="textFieldGobletNumer" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.gobletNumber}"/>
 
-                                                
+                                                <webuijsf:label id="labelDilution" style="width: 168px; height: 24px" text="#{resources.dilution}"/>
+                                                <webuijsf:textField id="textFieldDilution" style="width: 200px;" text="#{germplasm$SemenGatheringSessionBean.querySemenGatheringDTO.dilution}"/>
 
-                                             
                                             </h:panelGrid>
                                             <h:panelGrid columns="2" id="gridpAS2" style="height: 24px" width="390">
                                                 <h:commandButton action="#{germplasm$ListSemenGathering.btnAdvSearchSemenGathering_action}" id="btnAdvSearchGO"

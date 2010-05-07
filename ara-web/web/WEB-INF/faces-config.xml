@@ -712,7 +712,16 @@
             <to-view-id>/germplasm/ListAccession.jsp</to-view-id>
             <redirect/>
         </navigation-case>
-
+        <navigation-case>
+            <from-outcome>sementals</from-outcome>
+            <to-view-id>/germplasm/ListSemental.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>breeds</from-outcome>
+            <to-view-id>/germplasm/ListBreed.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
 
     <navigation-rule>
@@ -1315,7 +1324,7 @@
             <to-view-id>/germplasm/ListAccessionMovement.jsp</to-view-id>
             <redirect/>
         </navigation-case>
-    </navigation-rule>    
+    </navigation-rule>
     <navigation-rule>
         <from-view-id>/indicator/ListIndicator.jsp</from-view-id>
         <navigation-case>
@@ -1449,6 +1458,8 @@
         </navigation-case>
     </navigation-rule>
 </faces-config>
+
+
 
 
 

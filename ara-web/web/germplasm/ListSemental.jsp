@@ -59,25 +59,16 @@
                                                 <webuijsf:label id="labelName" style="width: 168px; height: 24px" text="#{resources.name}"/>
                                                 <webuijsf:textField id="textFieldName" style="width: 200px;" text="#{germplasm$SementalSessionBean.querySementalDTO.name}"/>
 
+                                                <webuijsf:label id="labelBirthDate" style="width: 150px; height: 24px" text="#{resources.birth_date}"/>
+                                                <webuijsf:calendar  binding="#{germplasm$ListSemental.birthDate}"
+                                                    id="calendarBirthDate" style="width: 50px"/>
+
                                                 <webuijsf:label id="labelAnimalCode" style="width: 168px; height: 24px" text="#{resources.animal_code}"/>
                                                 <webuijsf:textField id="textFieldAnimalCode" style="width: 200px;" text="#{germplasm$SementalSessionBean.querySementalDTO.animalCode}"/>
 
                                                 <webuijsf:label id="labelColor" style="width: 168px; height: 24px" text="#{resources.color}"/>
                                                 <webuijsf:textField id="textFieldColor" style="width: 200px;" text="#{germplasm$SementalSessionBean.querySementalDTO.color}"/>
 
-                                                <webuijsf:label id="labelVeterinarianStatus" style="width: 168px; height: 24px" text="#{resources.veterinarian_status}"/>
-                                                <webuijsf:textField id="textFieldVeterinarianStatus" style="width: 200px;" text="#{germplasm$SementalSessionBean.querySementalDTO.veterinarianStatus}"/>
-
-                                                <webuijsf:label id="labelFather" style="width: 168px; height: 24px" text="#{resources.father}"/>
-                                                <webuijsf:textField id="textFieldFather" style="width: 200px;" text="#{germplasm$SementalSessionBean.querySementalDTO.father}"/>
-
-                                                <webuijsf:label id="labelMother" style="width: 168px; height: 24px" text="#{resources.mother}"/>
-                                                <webuijsf:textField id="textFieldMother" style="width: 200px;" text="#{germplasm$SementalSessionBean.querySementalDTO.mother}"/>
-
-                                                <webuijsf:label id="labelBirthDate" style="width: 168px; height: 24px" text="#{resources.birth_date}"/>
-                                                <webuijsf:calendar  binding="#{germplasm$ListSemental.birthDate}"
-                                                    id="calendarBirthDate" style="width: 200px"/>
-                                                
                                                 <webuijsf:label id="labelBreed" style="width: 168px; height: 24px" text="#{resources.breed}"/>
                                                 <webuijsf:dropDown id="dropdownBreed" items="#{germplasm$ListSemental.breeds.options}"
                                                                    selected="#{germplasm$SementalSessionBean.querySementalDTO.breedId}" width="160px"/>
@@ -89,6 +80,16 @@
                                                 <webuijsf:label id="labelCondition" style="width: 168px; height: 24px" text="#{resources.condition}"/>
                                                 <webuijsf:dropDown id="dropdownCondition" items="#{germplasm$ListSemental.conditions.options}"
                                                                    selected="#{germplasm$SementalSessionBean.querySementalDTO.conditionId}" width="160px"/>
+
+                                                <webuijsf:label id="labelFather" style="width: 168px; height: 24px" text="#{resources.father}"/>
+                                                <webuijsf:textField id="textFieldFather" style="width: 200px;" text="#{germplasm$SementalSessionBean.querySementalDTO.father}"/>
+
+
+                                                <webuijsf:label id="labelVeterinarianStatus" style="width: 168px; height: 24px" text="#{resources.veterinarian_status}"/>
+                                                <webuijsf:textField id="textFieldVeterinarianStatus" style="width: 200px;" text="#{germplasm$SementalSessionBean.querySementalDTO.veterinarianStatus}"/>
+                                                
+                                                <webuijsf:label id="labelMother" style="width: 168px; height: 24px" text="#{resources.mother}"/>
+                                                <webuijsf:textField id="textFieldMother" style="width: 200px;" text="#{germplasm$SementalSessionBean.querySementalDTO.mother}"/>
                                                 
                                             </h:panelGrid>
                                             <h:panelGrid columns="2" id="gridpAS2" style="height: 24px" width="390">
