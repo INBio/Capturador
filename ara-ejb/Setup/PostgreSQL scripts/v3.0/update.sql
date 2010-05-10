@@ -2040,6 +2040,6 @@ INSERT INTO ara.list_table(
     VALUES (41, '', 0, 'Ara', '13-4-2010',
             'Ara', '13-4-2010', 'solvent', 'solvent_id');
 
---Add column current straw quantity to semental tabble
+--Add column current straw quantity to semen_gathering tabble
 ALTER TABLE ara.semen_gathering ADD COLUMN current_straw_quantity numeric;
 
