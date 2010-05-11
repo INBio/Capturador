@@ -190,6 +190,11 @@ public class NewAccession extends AbstractPageBean {
         //Preguntar si la bandera de busqueda avanzada esta prendida
         if(getPassportListSessionBean().isAdvancedSearch()){
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
+            //Deshabilitar busqueda simple
+            this.getTxSearch().setRendered(false);
+            this.getBtnSearch().setRendered(false);
+            //Cambia el text del boton de busqueda avanzada
+            this.getBtnAdvSearch().setValue(BundleHelper.getDefaultBundleValue("advanced_search_specimen_back",getMyLocale()));
         }
         //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
         else if (getPassportListSessionBean().getPagination()==null) {
@@ -214,6 +219,11 @@ public class NewAccession extends AbstractPageBean {
         //Preguntar si la bandera de busqueda avanzada esta prendida
         if(getgermplasm$AccessionSessionBean().isAdvancedSearch()){
             this.getGridpAdvancedSearchAccession().setRendered(true);//Muestra el panel de busqueda avanzada
+            //Deshabilitar busqueda simple
+            this.getTxSearchAccession().setRendered(false);
+            this.getBtnSearchAccession().setRendered(false);
+            //Cambia el text del boton de busqueda avanzada
+            this.getBtnAdvSearchAccession().setValue(BundleHelper.getDefaultBundleValue("advanced_search_specimen_back",getMyLocale()));
         }
         //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
         else if (getgermplasm$AccessionSessionBean().getPagination()==null) {

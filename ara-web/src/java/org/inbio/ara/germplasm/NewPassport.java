@@ -86,25 +86,7 @@ public class NewPassport extends AbstractPageBean {
 
     private DefaultSelectItemsArray dropdown1DefaultItems = new DefaultSelectItemsArray();
 
-    //Components binding
-    private DropDown dropdownDonorPerson = new DropDown();
-    private DropDown dropdownDonorInstitution = new DropDown();
-    private DropDown dropdownGatheringSource = new DropDown();
-    private DropDown dropdownSoilColor = new DropDown();
-    private DropDown dropdownSoilTexture = new DropDown();
-    private DropDown dropdownMaterialType = new DropDown();
-    private DropDown dropdownSampleStatus = new DropDown();
-    private DropDown dropdownCultivationPractice = new DropDown();
-    private DropDown dropdownCropType = new DropDown();
-    private DropDown dropdownCropSystem = new DropDown();
-
-    private DropDown dropdownTaxonomicaLevel = new DropDown();
-    private DropDown dropdownScientificName = new DropDown();
-    private DropDown dropdownNomenclaturalGroup = new DropDown();
-
-    private TextArea textAreaRemarks = new TextArea();
-    private TextField textFieldMissionNumber = new TextField();
-    private TextField textFieldResist = new TextField();
+    
 
     //variables with information of the selector option
     private SingleSelectOptionsList donorPersons = new SingleSelectOptionsList();
@@ -993,147 +975,7 @@ public class NewPassport extends AbstractPageBean {
 
 
 
-    /**
-     * @return the dropdownDonorPerson
-     */
-    public DropDown getDropdownDonorPerson() {
-        return dropdownDonorPerson;
-    }
-
-    /**
-     * @param dropdownDonorPerson the dropdownDonorPerson to set
-     */
-    public void setDropdownDonorPerson(DropDown dropdownDonorPerson) {
-        this.dropdownDonorPerson = dropdownDonorPerson;
-    }
-
-
-
-    /**
-     * @return the dropdownDonorInstitution
-     */
-    public DropDown getDropdownDonorInstitution() {
-        return dropdownDonorInstitution;
-    }
-
-    /**
-     * @param dropdownDonorInstitution the dropdownDonorInstitution to set
-     */
-    public void setDropdownDonorInstitution(DropDown dropdownDonorInstitution) {
-        this.dropdownDonorInstitution = dropdownDonorInstitution;
-    }
-
-    /**
-     * @return the dropdownCollectionSource
-     */
-    public DropDown getDropdownGatheringSource() {
-        return dropdownGatheringSource;
-    }
-
-    /**
-     * @param dropdownCollectionSource the dropdownCollectionSource to set
-     */
-    public void setDropdownGatheringSource(DropDown dropdownCollectionSource) {
-        this.dropdownGatheringSource = dropdownCollectionSource;
-    }
-
-    /**
-     * @return the dropdownSoilColor
-     */
-    public DropDown getDropdownSoilColor() {
-        return dropdownSoilColor;
-    }
-
-    /**
-     * @param dropdownSoilColor the dropdownSoilColor to set
-     */
-    public void setDropdownSoilColor(DropDown dropdownSoilColor) {
-        this.dropdownSoilColor = dropdownSoilColor;
-    }
-
-    /**
-     * @return the dropdownSoilTexture
-     */
-    public DropDown getDropdownSoilTexture() {
-        return dropdownSoilTexture;
-    }
-
-    /**
-     * @param dropdownSoilTexture the dropdownSoilTexture to set
-     */
-    public void setDropdownSoilTexture(DropDown dropdownSoilTexture) {
-        this.dropdownSoilTexture = dropdownSoilTexture;
-    }
-
-    /**
-     * @return the dropdownMaterialType
-     */
-    public DropDown getDropdownMaterialType() {
-        return dropdownMaterialType;
-    }
-
-    /**
-     * @param dropdownMaterialType the dropdownMaterialType to set
-     */
-    public void setDropdownMaterialType(DropDown dropdownMaterialType) {
-        this.dropdownMaterialType = dropdownMaterialType;
-    }
-
-    /**
-     * @return the dropdownSampleStatus
-     */
-    public DropDown getDropdownSampleStatus() {
-        return dropdownSampleStatus;
-    }
-
-    /**
-     * @param dropdownSampleStatus the dropdownSampleStatus to set
-     */
-    public void setDropdownSampleStatus(DropDown dropdownSampleStatus) {
-        this.dropdownSampleStatus = dropdownSampleStatus;
-    }
-
-    /**
-     * @return the dropdownCultivationPractice
-     */
-    public DropDown getDropdownCultivationPractice() {
-        return dropdownCultivationPractice;
-    }
-
-    /**
-     * @param dropdownCultivationPractice the dropdownCultivationPractice to set
-     */
-    public void setDropdownCultivationPractice(DropDown dropdownCultivationPractice) {
-        this.dropdownCultivationPractice = dropdownCultivationPractice;
-    }
-
-    /**
-     * @return the dropdownCropType
-     */
-    public DropDown getDropdownCropType() {
-        return dropdownCropType;
-    }
-
-    /**
-     * @param dropdownCropType the dropdownCropType to set
-     */
-    public void setDropdownCropType(DropDown dropdownCropType) {
-        this.dropdownCropType = dropdownCropType;
-    }
-
-    /**
-     * @return the dropdownCropSystem
-     */
-    public DropDown getDropdownCropSystem() {
-        return dropdownCropSystem;
-    }
-
-    /**
-     * @param dropdownCropSystem the dropdownCropSystem to set
-     */
-    public void setDropdownCropSystem(DropDown dropdownCropSystem) {
-        this.dropdownCropSystem = dropdownCropSystem;
-    }
+  
 
     /**
      * @return the donorInstitutions
@@ -1303,33 +1145,7 @@ public class NewPassport extends AbstractPageBean {
         this.nomenclaturalGroups = nomenclaturalGroups;
     }*/
 
-    /**
-     * @return the dropdownScientificName
-     */
-    public DropDown getDropdownScientificName() {
-        return dropdownScientificName;
-    }
-
-    /**
-     * @param dropdownScientificName the dropdownScientificName to set
-     */
-    public void setDropdownScientificName(DropDown dropdownScientificName) {
-        this.dropdownScientificName = dropdownScientificName;
-    }
-
-    /**
-     * @return the dropdownNomenclaturalGroup
-     */
-    public DropDown getDropdownNomenclaturalGroup() {
-        return dropdownNomenclaturalGroup;
-    }
-
-    /**
-     * @param dropdownNomenclaturalGroup the dropdownNomenclaturalGroup to set
-     */
-    public void setDropdownNomenclaturalGroup(DropDown dropdownNomenclaturalGroup) {
-        this.dropdownNomenclaturalGroup = dropdownNomenclaturalGroup;
-    }
+  
 
     public void dropdownScientificName_processValueChange() {
         /*nomenclaturalGroups.setOptions(null);
@@ -1444,33 +1260,7 @@ public class NewPassport extends AbstractPageBean {
         }
     }
 
-    /**
-     * @return the textAreaRemarks
-     */
-    public TextArea getTextAreaRemarks() {
-        return textAreaRemarks;
-    }
-
-    /**
-     * @param textAreaRemarks the textAreaRemarks to set
-     */
-    public void setTextAreaRemarks(TextArea textAreaRemarks) {
-        this.textAreaRemarks = textAreaRemarks;
-    }
-
-    /**
-     * @return the textFieldMissionNumber
-     */
-    public TextField getTextFieldMissionNumber() {
-        return textFieldMissionNumber;
-    }
-
-    /**
-     * @param textFieldMissionNumber the textFieldMissionNumber to set
-     */
-    public void setTextFieldMissionNumber(TextField textFieldMissionNumber) {
-        this.textFieldMissionNumber = textFieldMissionNumber;
-    }
+   
 
     /**
      * @return the plantNurseryDate
@@ -1514,23 +1304,7 @@ public class NewPassport extends AbstractPageBean {
         this.harvestingDate = harvestingDate;
     }
 
-    /**
-     * @return the textFieldResist
-     */
-    public TextField getTextFieldResist() {
-        return textFieldResist;
-    }
-
-    /**
-     * @param textFieldResist the textFieldResist to set
-     */
-    public void setTextFieldResist(TextField textFieldResist) {
-        this.textFieldResist = textFieldResist;
-    }
-
-
-
-
+    
 
     /**
      * @return the gridpAdvancedSearch
@@ -1785,19 +1559,7 @@ public class NewPassport extends AbstractPageBean {
         this.dataTableGathering = dataTableGathering;
     }
 
-    /**
-     * @return the dropdownTaxonomicaLevel
-     */
-    public DropDown getDropdownTaxonomicaLevel() {
-        return dropdownTaxonomicaLevel;
-    }
-
-    /**
-     * @param dropdownTaxonomicaLevel the dropdownTaxonomicaLevel to set
-     */
-    public void setDropdownTaxonomicaLevel(DropDown dropdownTaxonomicaLevel) {
-        this.dropdownTaxonomicaLevel = dropdownTaxonomicaLevel;
-    }
+  
 
     /**
      * @return the taxonomicLevels

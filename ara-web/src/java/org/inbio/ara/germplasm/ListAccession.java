@@ -299,6 +299,9 @@ public class ListAccession extends AbstractPageBean {
      */
     public String btn_new_action() {
         getgermplasm$AccessionSessionBean().resetValues();
+
+        //Reestablecer los valores por defecto de los textfields
+        getgermplasm$AccessionSessionBean().setQueryAccessionDTO(new AccessionDTO());
         try
         {
             getgermplasm$PassportListSessionBean().getPagination().refreshList();
@@ -328,13 +331,15 @@ public class ListAccession extends AbstractPageBean {
         }
         else if(selectedAccession.size() == 1){ //En caso de que solo se seleccione un elemento
 
-            //reset values
-            getgermplasm$AccessionSessionBean().resetValues();
+
+            //Reestablecer los valores por defecto de los textfields
+            getgermplasm$AccessionSessionBean().setQueryAccessionDTO(new AccessionDTO());
             try
             {
                 getgermplasm$PassportListSessionBean().getPagination().refreshList();
             }
             catch(Exception e){}
+            getgermplasm$AccessionSessionBean().resetValues();
             //set the AccessionDTO
             getgermplasm$AccessionSessionBean().setEditAccessionDTO(selectedAccession.get(0));
             

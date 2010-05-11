@@ -34,34 +34,34 @@
                                             <h:panelGrid columns="4" id="gridDonors" style="position: relative" width="840">
                                                 <!-- Componentes de relacionados con Donadores-->
                                                 <webuijsf:label id="labelDonorPerson" style="width: 168px; height: 24px" text="#{resources.donor_person}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownDonorPerson}" id="dropdownDonorPerson"
+                                                <webuijsf:dropDown  id="dropdownDonorPerson"
                                                     items="#{germplasm$NewPassport.donorPersons.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.donorPersonId}" width="200px"/>
                                                 <webuijsf:label id="labelDonorInstitution" style="width: 168px; height: 24px" text="#{resources.donor_institution}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownDonorInstitution}" id="dropdownDonorInstitution"
+                                                <webuijsf:dropDown id="dropdownDonorInstitution"
                                                     items="#{germplasm$NewPassport.donorInstitutions.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.donorInstitutionId}" width="200px"/>
                                                 <webuijsf:label id="labelCollectionSource" style="width: 168px; height: 24px" text="#{resources.sle_gathering_source}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownGatheringSource}" id="dropdownGatheringSource"
+                                                <webuijsf:dropDown id="dropdownGatheringSource"
                                                     items="#{germplasm$NewPassport.gatheringSource.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.gatheringSourceId}" width="200px"/>
                                                 <webuijsf:label id="labelSoilColor" style="width: 168; height: 24px" text="#{resources.sle_soil_color}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownSoilColor}" id="dropdownSoilColor"
+                                                <webuijsf:dropDown id="dropdownSoilColor"
                                                     items="#{germplasm$NewPassport.soilColosr.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.soilColorId}" width="200px"/>
                                                 <webuijsf:label id="labelRecoleccionAsociada" style="width: 260px; height: 24px" text="#{resources.gathering_associated}"/>
                                                 <webuijsf:textField columns="27" disabled="true" id="textFieldRecoleccionAsociada" style="width: 200px;" text="#{germplasm$PassportSessionBean.passportDTO.gatheringId}"/>
                                                 <webuijsf:label id="labelSoilTexture" style="width: 168px; height: 24px" text="#{resources.sle_soil_texture}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownSoilTexture}" id="dropdownSoilTexture"
+                                                <webuijsf:dropDown id="dropdownSoilTexture"
                                                     items="#{germplasm$NewPassport.soilTextures.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.soilTextureId}" width="200px"/>
                                                 <webuijsf:label id="labelMisionNumber" style="width: 260px; height: 24px" text="#{resources.mission_number}"/>
-                                                <webuijsf:textField binding="#{germplasm$NewPassport.textFieldMissionNumber}" columns="27"
+                                                <webuijsf:textField columns="27"
                                                     id="textFieldMisionNumber" style="width: 200px;" text="#{germplasm$PassportSessionBean.passportDTO.missionNumber}">
                                                     <f:validateLongRange minimum="0"/>
                                                 </webuijsf:textField>
                                                 <webuijsf:label id="labelRemarks" style="width: 168px; height: 24px" text="#{resources.remarks}"/>
-                                                <webuijsf:textArea binding="#{germplasm$NewPassport.textAreaRemarks}" columns="24" id="textAreaRemarks"
+                                                <webuijsf:textArea columns="24" id="textAreaRemarks"
                                                     style="width: 200px; height: 55px" text="#{germplasm$PassportSessionBean.passportDTO.remarks}"/>
                                             </h:panelGrid>
                                         </h:panelGrid>
@@ -73,12 +73,12 @@
                                                     <webuijsf:label id="labelTaxonomicLevel" style="width: 168px; height: 24px" text="#{resources.taxonomic_level}"/>
                                                     <webuijsf:dropDown
                                                         actionExpression="#{germplasm$NewPassport.updateNomenclaturalGroupListActionForTaxonomicalLevelChange}"
-                                                        binding="#{germplasm$NewPassport.dropdownTaxonomicaLevel}" id="dropdownTaxonomicLevel"
+                                                        id="dropdownTaxonomicLevel"
                                                         items="#{germplasm$NewPassport.taxonomicLevels.options}"
                                                         selected="#{germplasm$PassportSessionBean.selectedTaxonomicLevel}" submitForm="true" width="200px"/>
                                                     <webuijsf:label id="labelScientificName" style="width: 168px; height: 24px" text="#{resources.scientificname}"/>
                                                     <webuijsf:dropDown actionExpression="#{germplasm$NewPassport.updateNomenclaturalGroupListAction}"
-                                                        binding="#{germplasm$NewPassport.dropdownScientificName}" id="dropdownScientificName"
+                                                        id="dropdownScientificName"
                                                         items="#{germplasm$NewPassport.scientificNames.options}"
                                                         selected="#{germplasm$PassportSessionBean.passportDTO.taxonId}" submitForm="true" width="200px"/>
                                                 </h:panelGrid>
@@ -123,31 +123,31 @@
                                             </h:panelGrid>
                                             <h:panelGrid columns="4" id="gridSampleAndCrop" style="position: relative; top:10" width="840">
                                                 <webuijsf:label id="labelMaterialType" style="width: 168px; height: 24px" text="#{resources.sle_material_type}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownMaterialType}" id="dropdownMaterialType"
+                                                <webuijsf:dropDown  id="dropdownMaterialType"
                                                     items="#{germplasm$NewPassport.materialTypes.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.materialTypeId}" width="200px"/>
                                                 <webuijsf:label id="labelCropPractice" style="width: 168px; height: 24px" text="#{resources.sle_cultivation_practice}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownCultivationPractice}"
+                                                <webuijsf:dropDown 
                                                     id="dropdownultivationPractice" items="#{germplasm$NewPassport.cultivationPractice.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.cultivationPracticeId}" width="200px"/>
                                                 <webuijsf:label id="labelSampleStatus" style="width: 168px; height: 24px" text="#{resources.sle_sample_status}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownSampleStatus}" id="dropdownSampleStatus"
+                                                <webuijsf:dropDown  id="dropdownSampleStatus"
                                                     items="#{germplasm$NewPassport.sampleStatus.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.sampleStatusId}" width="200px"/>
                                                 <webuijsf:label id="labelCropType" style="width: 168px; height: 24px" text="#{resources.sle_crop_type}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownCropType}" id="dropdownCropType"
+                                                <webuijsf:dropDown id="dropdownCropType"
                                                     items="#{germplasm$NewPassport.cropTypes.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.cropTypeId}" width="200px"/>
                                                 <webuijsf:label id="labelPlantNursery" style="width: 168px; height: 24px" text="#{resources.plant_nursery_date}"/>
                                                 <webuijsf:calendar binding="#{germplasm$NewPassport.plantNurseryDate}" id="calendarPlantNursery" style="width: 200px"/>
                                                 <webuijsf:label id="labelCropSystem" style="width: 168px; height: 24px" text="#{resources.sle_crop_system}"/>
-                                                <webuijsf:dropDown binding="#{germplasm$NewPassport.dropdownCropSystem}" id="dropdownCropSystem"
+                                                <webuijsf:dropDown  id="dropdownCropSystem"
                                                     items="#{germplasm$NewPassport.cropSystems.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.cropSystemId}" width="200px"/>
                                                 <webuijsf:label id="labelPlantingDate" style="width: 168px; height: 24px" text="#{resources.plantation_date}"/>
                                                 <webuijsf:calendar binding="#{germplasm$NewPassport.plantationDate}" id="calendarPlantingDate" style="width: 200px"/>
                                                 <webuijsf:label id="labelCropResistence" style="width: 168px; height: 24px" text="#{resources.resistence}"/>
-                                                <webuijsf:textField binding="#{germplasm$NewPassport.textFieldResist}" columns="27" id="textFieldCropResistence"
+                                                <webuijsf:textField columns="27" id="textFieldCropResistence"
                                                     style="width: 200px;" text="#{germplasm$PassportSessionBean.passportDTO.resistant}"/>
                                                 <webuijsf:label id="labelHarvestingDate" style="width: 168px; height: 24px" text="#{resources.harvesting_date}"/>
                                                 <webuijsf:calendar binding="#{germplasm$NewPassport.harvestingDate}" id="calendarHarvestingDate" style="width: 200px"/>

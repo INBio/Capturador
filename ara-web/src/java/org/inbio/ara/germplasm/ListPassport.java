@@ -679,6 +679,8 @@ public class ListPassport extends AbstractPageBean {
                 getPassportListSessionBean().getPagination().deleteItem();
                 getPassportListSessionBean().getPagination().refreshList();
 
+                MessageBean.setSuccessMessageFromBundle("delete_passports", this.getMyLocale());
+
             }
             return null;
 
@@ -708,6 +710,8 @@ public class ListPassport extends AbstractPageBean {
         //show and hidde panels
         this.getMainPanel().setRendered(true);
         this.getAlertMessage().setRendered(false);
+
+        MessageBean.setSuccessMessageFromBundle("delete_passports", this.getMyLocale());
 
         return null;
     }
