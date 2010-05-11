@@ -23,7 +23,7 @@ public interface SemenGatheringEAOLocal extends BaseLocalEAO<SemenGathering,Long
 
     public List<SemenGathering> findAllBySementalId(Long sementalId, int firstResult, int maxtResult);
 
-    public List<Long> findBySemenGatheringDate(Calendar semenGatheringDate);
+    public List<Long> findBySemenGatheringDate(Calendar semenGatheringDate, Calendar finalSemenGatheringDate);
 
     public List<Long> findBySemenGatheringTime(String time);
 

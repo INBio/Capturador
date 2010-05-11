@@ -44,13 +44,15 @@ public class SemenGatheringEAOImpl extends BaseEAOImpl<SemenGathering, Long> imp
         return  q.getResultList();
     }
 
-    public List<Long> findBySemenGatheringDate(Calendar semenGatheringDate) {
+    public List<Long> findBySemenGatheringDate(Calendar semenGatheringDate, Calendar finalSemenGatheringDate) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.semenGatheringDate = :semenGatheringDate"
+                " where s.semenGatheringDate >= :semenGatheringDate and " +
+                " s.semenGatheringDate <= :finalSemenGatheringDate"
                );
         q.setParameter("semenGatheringDate", semenGatheringDate);
+        q.setParameter("finalSemenGatheringDate", finalSemenGatheringDate);
 
         return  q.getResultList();
     }
