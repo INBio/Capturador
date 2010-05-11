@@ -322,9 +322,24 @@ public class EditSemenGathering extends AbstractPageBean {
             getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO().
                     setSemenGatheringTime(hhmm);
 
-            getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().updateSemenGathering(semenGatheringDTO);
-            getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
-            MessageBean.setSuccessMessageFromBundle("update_semen_gathering_success", this.getMyLocale());
+            if(semenGatheringDTO.getCurrentStrawQuantity() != null)
+            {
+                if(semenGatheringDTO.getCurrentStrawQuantity() <= semenGatheringDTO.getStrawQuantity() &&
+                        semenGatheringDTO.getCurrentStrawQuantity() >= 0)
+                {
+                    getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().updateSemenGathering(semenGatheringDTO);
+                    getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
+                    MessageBean.setSuccessMessageFromBundle("update_semen_gathering_success", this.getMyLocale());
+                }
+                else
+                    MessageBean.setErrorMessageFromBundle("error_current_straw_quantity", this.getMyLocale());
+            }
+            else
+            {
+                getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().updateSemenGathering(semenGatheringDTO);
+                getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
+                MessageBean.setSuccessMessageFromBundle("update_semen_gathering_success", this.getMyLocale());
+            }
 
         }
         catch (Exception e)
