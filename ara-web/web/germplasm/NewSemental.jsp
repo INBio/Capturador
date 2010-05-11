@@ -54,7 +54,7 @@
                                                         required="true"
                                                         text="#{germplasm$SementalSessionBean.sementalDTO.color}"/>
 
-                                    <webuijsf:label id="labelSiteId" style="width: 168px; height: 24px" text="#{resources.site}"/>
+                                    <webuijsf:label id="labelSiteId" style="width: 168px; height: 24px" text="#{resources.place_of_origin}"/>
                                     <webuijsf:dropDown id="dropdownSiteId"  width="200px"
                                                        items="#{germplasm$NewSemental.localities.options}"
                                                        selected="#{germplasm$SementalSessionBean.sementalDTO.siteId}"/>

@@ -73,7 +73,7 @@
                                                 <webuijsf:dropDown id="dropdownBreed" items="#{germplasm$ListSemental.breeds.options}"
                                                                    selected="#{germplasm$SementalSessionBean.querySementalDTO.breedId}" width="160px"/>
 
-                                                <webuijsf:label id="labelSite" style="width: 168px; height: 24px" text="#{resources.site}"/>
+                                                <webuijsf:label id="labelSite" style="width: 168px; height: 24px" text="#{resources.place_of_origin}"/>
                                                 <webuijsf:dropDown id="dropdownSite" items="#{germplasm$ListSemental.sites.options}"
                                                                    selected="#{germplasm$SementalSessionBean.querySementalDTO.siteId}" width="160px"/>
 
