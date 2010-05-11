@@ -2068,3 +2068,12 @@ ALTER TABLE ONLY ARA.INDICATOR_DUBLIN_CORE add constraint INDICATOR_DUBLIN_CORE_
 ALTER TABLE ONLY ARA.INDICATOR_DUBLIN_CORE  ADD CONSTRAINT INDICATOR_DUBLIN_CORE_ID_FK FOREIGN KEY (INDICATOR_ID ) REFERENCES ARA.INDICATOR(INDICATOR_ID);
 
 
+--2010.05.11 --update the contraint of the passport_nomenclatural table
+ALTER TABLE ONLY ara.passport_nomenclatural_group
+   DROP CONSTRAINT nomenclatural_group_id_fk;
+
+ALTER TABLE ONLY ara.passport_nomenclatural_group
+   DROP CONSTRAINT passport_id_fk;
+
+ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT nomenclatural_group_id_fk FOREIGN KEY (nomenclatural_group_id) REFERENCES ara.nomenclatural_group(nomenclatural_group_id) ON DELETE CASCADE;
+ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT passport_id_fk FOREIGN KEY (passport_id) REFERENCES ara.passport(passport_id) ON DELETE CASCADE;
