@@ -302,15 +302,37 @@ public class NewSemenGathering extends AbstractPageBean {
             getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO().
                     setSementalId(getgermplasm$SemenGatheringSessionBean().getSementalId());
 
-            getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().saveSemenGathering(
-                    getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO());
-            getgermplasm$SemenGatheringSessionBean().getPagination().addItem();
-            getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
-            getgermplasm$SemenGatheringSessionBean().setSemenGatheringDTO(new SemenGatheringDTO());
-            getgermplasm$SemenGatheringSessionBean().setSelectedHour(null);
-            getgermplasm$SemenGatheringSessionBean().setSelectedMinutes(null);
-            getGatheringDate().setSelectedDate(null);
-            MessageBean.setSuccessMessageFromBundle("create_semen_gathering_success", this.getMyLocale());
+            SemenGatheringDTO semenGatheringDTO = getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO();
+            if(semenGatheringDTO.getCurrentStrawQuantity() != null)
+            {
+                if(semenGatheringDTO.getCurrentStrawQuantity() <= semenGatheringDTO.getStrawQuantity() &&
+                        semenGatheringDTO.getCurrentStrawQuantity() >= 0)
+                {
+                    getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().saveSemenGathering(
+                        getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO());
+                    getgermplasm$SemenGatheringSessionBean().getPagination().addItem();
+                    getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
+                    getgermplasm$SemenGatheringSessionBean().setSemenGatheringDTO(new SemenGatheringDTO());
+                    getgermplasm$SemenGatheringSessionBean().setSelectedHour(null);
+                    getgermplasm$SemenGatheringSessionBean().setSelectedMinutes(null);
+                    getGatheringDate().setSelectedDate(null);
+                    MessageBean.setSuccessMessageFromBundle("create_semen_gathering_success", this.getMyLocale());
+                }
+                else
+                    MessageBean.setErrorMessageFromBundle("error_current_straw_quantity", this.getMyLocale());
+            }
+            else
+            {
+                getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().saveSemenGathering(
+                        getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO());
+                getgermplasm$SemenGatheringSessionBean().getPagination().addItem();
+                getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
+                getgermplasm$SemenGatheringSessionBean().setSemenGatheringDTO(new SemenGatheringDTO());
+                getgermplasm$SemenGatheringSessionBean().setSelectedHour(null);
+                getgermplasm$SemenGatheringSessionBean().setSelectedMinutes(null);
+                getGatheringDate().setSelectedDate(null);
+                MessageBean.setSuccessMessageFromBundle("create_semen_gathering_success", this.getMyLocale());
+            }
 
         }
         catch (Exception e)
