@@ -1420,8 +1420,8 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return accessionDTOFactory.createDTO(accession);
     }
 
-    public void deletePassport(Long PassportId) {
-        Passport passport = passportEAOLocal.findById(Passport.class, PassportId);
+    public void deletePassport(Long passportId) {
+        Passport passport = passportEAOLocal.findById(Passport.class, passportId);
         passportEAOLocal.delete(passport);
     }
 
@@ -1926,9 +1926,9 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         List<Long> query = new ArrayList<Long>();
 
         //find by gathering date
-        if(semenGatheringDTO.getSemenGatheringDate() != null)
+        if(semenGatheringDTO.getSemenGatheringDate() != null && semenGatheringDTO.getFinalSemenGatheringDate() != null)
         {
-            query = semenGatheringEAOLocal.findBySemenGatheringDate(semenGatheringDTO.getSemenGatheringDate());
+            query = semenGatheringEAOLocal.findBySemenGatheringDate(semenGatheringDTO.getSemenGatheringDate(), semenGatheringDTO.getFinalSemenGatheringDate());
             if(query != null && !query.isEmpty())
             {
                 ids.addAll(query);
@@ -1936,21 +1936,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
             }
         }
 
-        //find by time
-        if(semenGatheringDTO.getSemenGatheringTime() != null)
-        {
-            query = semenGatheringEAOLocal.findBySemenGatheringTime(semenGatheringDTO.getSemenGatheringTime());
-            if(query != null && !query.isEmpty())
-            {
-                if(firstTime)
-                {
-                    ids.addAll(query);
-                    firstTime = false;
-                }
-                else
-                    ids.retainAll(query);
-            }
-        }
+        
 
         //find by volume
         if(semenGatheringDTO.getVolume() != null)
