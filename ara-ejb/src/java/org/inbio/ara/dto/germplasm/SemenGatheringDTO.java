@@ -24,6 +24,8 @@ public class SemenGatheringDTO extends GenericDTO {
 
     private Calendar semenGatheringDate;
 
+    private Calendar finalSemenGatheringDate;//just for search purpose
+
     private String semenGatheringTime;
 
     private Long volume;
@@ -33,6 +35,8 @@ public class SemenGatheringDTO extends GenericDTO {
     private Long concentration;
 
     private Long strawQuantity;
+
+    private Long currentStrawQuantity;
 
     private String dilution;
 
@@ -415,5 +419,33 @@ public class SemenGatheringDTO extends GenericDTO {
      */
     public void setSemenGatheringTime(String semenGatheringTime) {
         this.semenGatheringTime = semenGatheringTime;
+    }
+
+    /**
+     * @return the currentStrawQuantity
+     */
+    public Long getCurrentStrawQuantity() {
+        return currentStrawQuantity;
+    }
+
+    /**
+     * @param currentStrawQuantity the currentStrawQuantity to set
+     */
+    public void setCurrentStrawQuantity(Long currentStrawQuantity) {
+        this.currentStrawQuantity = currentStrawQuantity;
+    }
+
+    /**
+     * @return the finalSemenGatheringDate
+     */
+    public Calendar getFinalSemenGatheringDate() {
+        return finalSemenGatheringDate;
+    }
+
+    /**
+     * @param finalSemenGatheringDate the finalSemenGatheringDate to set
+     */
+    public void setFinalSemenGatheringDate(Calendar finalSemenGatheringDate) {
+        this.finalSemenGatheringDate = finalSemenGatheringDate;
     }
 }
