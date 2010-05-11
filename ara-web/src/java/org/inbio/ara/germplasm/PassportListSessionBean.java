@@ -75,6 +75,13 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
     public PassportListSessionBean() {
     }
 
+    public void resetValues()
+    {
+        advancedSearch = false;
+        queryMode = false;
+        queryModeSimple = false;
+    }
+
     /**
      * <p>This method is called when this bean is initially added to
      * session scope.  Typically, this occurs as a result of evaluating
@@ -202,14 +209,6 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
                         getAraSessionBean().getGlobalCollectionId(),
                         firstResult, maxResults));
 
-                /*if(passportDTO.getPassportId() != null && pListDTO != null && !pListDTO.isEmpty())
-                {
-                    for (PassportDTO passportDTO1 : pListDTO)
-                    {
-                        if(passportDTO1.getPassportId().equals(passportDTO.getPassportId()))
-                            passportDTO.setSelected(true);
-                    }
-                }*/
                 return pListDTO;
             } catch (Exception e) {
                 return auxResult;
@@ -222,14 +221,6 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
                         getAraSessionBean().getGlobalCollectionId(), 
                         firstResult, maxResults));
 
-                /*if(passportDTO.getPassportId() != null && pListDTO != null && !pListDTO.isEmpty())
-                {
-                    for (PassportDTO passportDTO1 : pListDTO)
-                    {
-                        if(passportDTO1.getPassportId().equals(passportDTO.getPassportId()))
-                            passportDTO.setSelected(true);
-                    }
-                }*/
                 return pListDTO;
 
             } catch (Exception e) {
@@ -241,14 +232,6 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
                 pListDTO = myReturn(getGermplasmFacadeRemote().
                         getPassportListPaginated(firstResult, maxResults));
 
-                /*if(passportDTO.getPassportId() != null && pListDTO != null && !pListDTO.isEmpty())
-                {
-                    for (PassportDTO passportDTO1 : pListDTO)
-                    {
-                        if(passportDTO1.getPassportId().equals(passportDTO.getPassportId()))
-                            passportDTO1.setSelected(true);
-                    }
-                }*/
                 return pListDTO;
                 
             } catch (Exception e) {
@@ -397,4 +380,5 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
         this.deletePassport = deletePassport;
     }
 
+    
 }
