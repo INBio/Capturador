@@ -71,7 +71,8 @@ public class ListSemenGathering extends AbstractPageBean {
 
 
 
-    private Calendar gatheringDate = new Calendar();
+    private Calendar initialGatheringDate = new Calendar();
+    private Calendar finalGatheringDate = new Calendar();
     /**
      * <p>Construct a new Page bean instance.</p>
      */
@@ -359,7 +360,7 @@ public class ListSemenGathering extends AbstractPageBean {
 
         //Set the date
         GregorianCalendar semenGatheringDateGC = new GregorianCalendar();
-        Date semenGatheringDate = this.getGatheringDate().getSelectedDate();
+        Date semenGatheringDate = this.getInitialGatheringDate().getSelectedDate();
 
         if (semenGatheringDate != null)
         {
@@ -368,18 +369,17 @@ public class ListSemenGathering extends AbstractPageBean {
                     setSemenGatheringDate(semenGatheringDateGC);
         }
 
-        //set the time
-        if(getgermplasm$SemenGatheringSessionBean().getSelectedHour() != null &&
-                    getgermplasm$SemenGatheringSessionBean().getSelectedMinutes() != null)
+        //Set the date
+        GregorianCalendar semenGatheringDateGCfinal = new GregorianCalendar();
+        Date semenGatheringDatefinal = this.getFinalGatheringDate().getSelectedDate();
+
+        if (semenGatheringDatefinal != null)
         {
-            String mm = getgermplasm$SemenGatheringSessionBean().getSelectedMinutes().toString();
-            if(mm.length() == 1)
-                mm = "0"+mm;
-            String hhmm = getgermplasm$SemenGatheringSessionBean().getSelectedHour() +
-                    ":"+ mm;
+            semenGatheringDateGCfinal.setTime(semenGatheringDatefinal);
             getgermplasm$SemenGatheringSessionBean().getQuerySemenGatheringDTO().
-                setSemenGatheringTime(hhmm);
+                    setFinalSemenGatheringDate(semenGatheringDateGCfinal);
         }
+        
 
 
         //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
@@ -652,18 +652,34 @@ public class ListSemenGathering extends AbstractPageBean {
     }
 
     /**
-     * @return the gatheringDate
+     * @return the initialGatheringDate
      */
-    public Calendar getGatheringDate() {
-        return gatheringDate;
+    public Calendar getInitialGatheringDate() {
+        return initialGatheringDate;
     }
 
     /**
-     * @param gatheringDate the gatheringDate to set
+     * @param initialGatheringDate the initialGatheringDate to set
      */
-    public void setGatheringDate(Calendar gatheringDate) {
-        this.gatheringDate = gatheringDate;
+    public void setInitialGatheringDate(Calendar initialGatheringDate) {
+        this.initialGatheringDate = initialGatheringDate;
     }
+
+    /**
+     * @return the finalGatheringDate
+     */
+    public Calendar getFinalGatheringDate() {
+        return finalGatheringDate;
+    }
+
+    /**
+     * @param finalGatheringDate the finalGatheringDate to set
+     */
+    public void setFinalGatheringDate(Calendar finalGatheringDate) {
+        this.finalGatheringDate = finalGatheringDate;
+    }
+
+   
 
 }
 

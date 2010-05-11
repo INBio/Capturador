@@ -44,22 +44,14 @@
                                         <h:panelGrid columns="1" id="gridpAdvancedSearch1" style="height: 24px" width="780">
                                             <h:panelGrid columns="4" id="gridpAS1" style="height: 24px" width="780">
 
-                                                <webuijsf:label id="labelGatheringDate" style="width: 168px; height: 24px" text="#{resources.birth_date}"/>
-                                                <webuijsf:calendar  binding="#{germplasm$ListSemenGathering.gatheringDate}"
+                                                <webuijsf:label id="labelGatheringDate" style="width: 168px; height: 24px" text="#{resources.initial_gathering_date}"/>
+                                                <webuijsf:calendar  binding="#{germplasm$ListSemenGathering.initialGatheringDate}"
                                                     id="calendaratheringDate" style="width: 200px"/>
 
-                                                <webuijsf:label id="labelGatheringTime" style="width: 168px; height: 24px" text="#{resources.semen_gathering_time}"/>
-                                                <h:panelGrid id="panelTime" columns="3">
+                                                <webuijsf:label id="labelGatheringDate2" style="width: 168px; height: 24px" text="#{resources.final_gathering_date}"/>
+                                                <webuijsf:calendar  binding="#{germplasm$ListSemenGathering.finalGatheringDate}"
+                                                    id="calendarfinalgatheringDate" style="width: 200px"/>
 
-                                                    <webuijsf:dropDown id="dropdownhh"  width="43px"
-                                                                   items="#{germplasm$ListSemenGathering.hourDropDown.options}"
-                                                                   selected="#{germplasm$SemenGatheringSessionBean.selectedHour}"/>
-                                                    <webuijsf:label id="labelDP" text=":"/>
-                                                    <webuijsf:dropDown id="dropdownmm"  width="43px"
-                                                                   items="#{germplasm$ListSemenGathering.minutesDropDown.options}"
-                                                                   selected="#{germplasm$SemenGatheringSessionBean.selectedMinutes}"/>
-
-                                                </h:panelGrid>
 
                                                 
                                                 <webuijsf:label id="labelVolume" style="width: 168px; height: 24px" text="#{resources.volume}"/>
