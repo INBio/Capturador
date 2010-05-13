@@ -7,6 +7,7 @@ package org.inbio.ara.germplasm;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.Calendar;
+import com.sun.webui.jsf.component.Label;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
 import java.util.ArrayList;
@@ -58,7 +59,9 @@ public class EditSemental extends AbstractPageBean {
     private SingleSelectOptionsList breeds = new SingleSelectOptionsList();
     private SingleSelectOptionsList localities = new SingleSelectOptionsList();
     private SingleSelectOptionsList condition = new SingleSelectOptionsList();
-    
+
+    private Label lbTitle = new Label();
+
     /**
      * <p>Construct a new Page bean instance.</p>
      */
@@ -126,6 +129,10 @@ public class EditSemental extends AbstractPageBean {
         breeds.setOptions(SetBreedDropDownData());
         localities.setOptions(SetSitesDropDownData());
         condition.setOptions(getSelectionListDropDownData(SelectionListEntity.CONDITION.getId()));
+
+        if(getgermplasm$SementalSessionBean().getSementalDTO() != null)
+            getLbTitle().setText(BundleHelper.getDefaultBundleValue("edit_semental", this.getMyLocale()) + "  " +
+                    getgermplasm$SementalSessionBean().getSementalDTO().getAnimalCode());
 
         if(getgermplasm$SementalSessionBean().isFirstTime())
         {
@@ -392,6 +399,20 @@ public class EditSemental extends AbstractPageBean {
      */
     public void setCondition(SingleSelectOptionsList condition) {
         this.condition = condition;
+    }
+
+    /**
+     * @return the lbTitle
+     */
+    public Label getLbTitle() {
+        return lbTitle;
+    }
+
+    /**
+     * @param lbTitle the lbTitle to set
+     */
+    public void setLbTitle(Label lbTitle) {
+        this.lbTitle = lbTitle;
     }
     
 }

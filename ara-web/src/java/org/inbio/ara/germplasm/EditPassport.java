@@ -272,13 +272,24 @@ public class EditPassport extends AbstractPageBean {
     public void setGathering() {
         try {
             if (getSelectedGathering() != null) {
-                getPassportSessionBean().getPassportDTO().setGatheringId(getSelectedGathering());
+                getPassportSessionBean().getPassportDTO().setGatheringId(getSelectedGathering().getGatheringObservationId());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+
+    public String clearAssociatedGO()
+    {
+        getPassportSessionBean().getPassportDTO().setGatheringId(null);
+        if(getPassportSessionBean().getPagination() != null)
+            getPassportSessionBean().getPagination().refreshList();
+        try
+        {getSelectedGathering().setSelected(false);}
+        catch(Exception e){}
+        return null;
+    }
 
     /**
      * Load the information to the add remove nomenclatural groups for a taxon
@@ -923,7 +934,7 @@ public class EditPassport extends AbstractPageBean {
 
         try {
             //assign the gathering id
-            Long selectedGathering = getSelectedGathering();
+            Long selectedGathering = getSelectedGathering().getGatheringObservationId();
             passportDTO.setGatheringId(selectedGathering);
 
             //si alguna de las 3 opciones no ha sido seleccionada avisa el error
@@ -962,7 +973,7 @@ public class EditPassport extends AbstractPageBean {
 
     }
 
-    private Long getSelectedGathering() throws Exception {
+    private GatheringObservationDTO getSelectedGathering() throws Exception {
         int n = this.getDataTableGathering().getRowCount();
         ArrayList<GatheringObservationDTO> selectedGathering = new ArrayList();
         for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
@@ -977,7 +988,7 @@ public class EditPassport extends AbstractPageBean {
         } else if (selectedGathering.size() == 1) { //En caso de que solo se seleccione un elemento
 
             GatheringObservationDTO goDTO = selectedGathering.get(0);
-            return goDTO.getGatheringObservationId();
+            return goDTO;
 
         } else { //En caso de que sea seleccion multiple
             MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());

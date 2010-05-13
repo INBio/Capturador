@@ -51,7 +51,13 @@
                                                     items="#{germplasm$EditPassport.soilColosr.options}"
                                                     selected="#{germplasm$PassportSessionBean.passportDTO.soilColorId}" width="200px"/>
                                                 <webuijsf:label id="labelRecoleccionAsociada" style="width: 260px; height: 24px" text="#{resources.gathering_associated}"/>
-                                                <webuijsf:textField columns="27" disabled="true" id="textFieldRecoleccionAsociada" style="width: 200px;" text="#{germplasm$PassportSessionBean.passportDTO.gatheringId}"/>
+
+                                                <h:panelGrid id="agrupa" columns="2">
+                                                    <webuijsf:textField columns="27" disabled="true" id="textFieldRecoleccionAsociada" style="width: 200px;" text="#{germplasm$PassportSessionBean.passportDTO.gatheringId}"/>
+                                                    <h:commandButton action="#{germplasm$EditPassport.clearAssociatedGO}" id="clearGO"
+                                                        style="height: 24px; width: 100px" styleClass="My_Button" value="#{resources.clear}"/>
+                                                </h:panelGrid>
+
                                                 <webuijsf:label id="labelSoilTexture" style="width: 168px; height: 24px" text="#{resources.sle_soil_texture}"/>
                                                 <webuijsf:dropDown  id="dropdownSoilTexture"
                                                     items="#{germplasm$EditPassport.soilTextures.options}"

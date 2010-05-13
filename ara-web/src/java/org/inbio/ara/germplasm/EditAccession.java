@@ -696,6 +696,11 @@ public class EditAccession extends AbstractPageBean {
     public String clearAssociatedPassport()
     {
         getgermplasm$AccessionSessionBean().getEditAccessionDTO().setPassportId(null);
+        if(getPassportListSessionBean().getPagination() != null)
+            getPassportListSessionBean().getPagination().refreshList();
+        try
+        {getSelectedPassport().setSelected(false);}
+        catch(Exception e){}
         return null;
     }
 
@@ -703,6 +708,12 @@ public class EditAccession extends AbstractPageBean {
     {
         getgermplasm$AccessionSessionBean().getEditAccessionDTO().setAccessionParent(null);
         getgermplasm$AccessionSessionBean().getEditAccessionDTO().setAccessionParentId(null);
+        if(getgermplasm$AccessionSessionBean().getPagination() != null)
+            getgermplasm$AccessionSessionBean().getPagination().refreshList();
+        try
+        {getSelectedAccession().setSelected(false);}
+        catch(Exception e){}
+
         return null;
     }
 
@@ -721,7 +732,7 @@ public class EditAccession extends AbstractPageBean {
                         getPassportListSessionBean().getPassportDTO().getPassportId());*/
 
                 getgermplasm$AccessionSessionBean().getEditAccessionDTO().
-                        setPassportId(getSelectedPassport());
+                        setPassportId(getSelectedPassport().getPassportId());
             }
             /*else
                 getgermplasm$AccessionSessionBean().getEditAccessionDTO().
@@ -731,7 +742,7 @@ public class EditAccession extends AbstractPageBean {
     }
 
     
-    private Long getSelectedPassport() throws Exception
+    private PassportDTO getSelectedPassport() throws Exception
     {
         int n = this.getDataTablePassport().getRowCount();
         ArrayList<PassportDTO> selectedPassport = new ArrayList();
@@ -749,7 +760,7 @@ public class EditAccession extends AbstractPageBean {
         else if(selectedPassport.size() == 1){ //En caso de que solo se seleccione un elemento
 
             PassportDTO passportDTOaux = selectedPassport.get(0);
-            return passportDTOaux.getPassportId();
+            return passportDTOaux;
 
         }
         else{ //En caso de que sea seleccion multiple

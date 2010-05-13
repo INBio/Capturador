@@ -6,6 +6,7 @@
 package org.inbio.ara.germplasm;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
+import com.sun.webui.jsf.component.Label;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
 import java.util.ArrayList;
@@ -45,6 +46,8 @@ public class EditBreed extends AbstractPageBean {
     // </editor-fold>
 
     private SingleSelectOptionsList scientificName = new SingleSelectOptionsList();
+
+    private Label lbTitle = new Label();
     
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -110,6 +113,11 @@ public class EditBreed extends AbstractPageBean {
     @Override
     public void prerender() {
         getScientificName().setOptions(updateTaxonListAction(new Long (18)));
+
+        if(getgermplasm$BreedSessionBean().getBreedDTO() != null)
+            getLbTitle().setText(BundleHelper.getDefaultBundleValue("edit_breed", this.getMyLocale()) + "  " +
+                    getgermplasm$BreedSessionBean().getBreedDTO().getName());
+
     }
 
     /**
@@ -252,6 +260,20 @@ public class EditBreed extends AbstractPageBean {
      */
     public void setScientificName(SingleSelectOptionsList scientificName) {
         this.scientificName = scientificName;
+    }
+
+    /**
+     * @return the lbTitle
+     */
+    public Label getLbTitle() {
+        return lbTitle;
+    }
+
+    /**
+     * @param lbTitle the lbTitle to set
+     */
+    public void setLbTitle(Label lbTitle) {
+        this.lbTitle = lbTitle;
     }
     
 }
