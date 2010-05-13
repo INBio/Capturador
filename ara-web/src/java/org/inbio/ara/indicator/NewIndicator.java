@@ -26,7 +26,9 @@ import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
 import java.util.Locale;
 import javax.faces.FacesException;
+import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlInputHidden;
+import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import org.inbio.ara.security.SystemUserSessionBean;
@@ -65,21 +67,6 @@ public class NewIndicator extends AbstractPageBean {
     private FacesContext context;
     private Locale myLocale;
 
-    private RadioButtonGroup radioButtonGroup = new RadioButtonGroup();
-    private SingleSelectOptionsList radioData = new SingleSelectOptionsList();
-    /**
-     * @return the radioData
-     */
-    public SingleSelectOptionsList getRadioData() {
-        return radioData;
-    }
-
-    /**
-     * @param radioData the radioData to set
-     */
-    public void setRadioData(SingleSelectOptionsList radioData) {
-        this.radioData = radioData;
-    }
 
 
     private HtmlPanelGrid gridIndicator = new HtmlPanelGrid();
@@ -92,6 +79,15 @@ public class NewIndicator extends AbstractPageBean {
         this.gridIndicator = hpg;
     }
 
+    private HtmlPanelGrid gridDublinCore = new HtmlPanelGrid();
+
+    public HtmlPanelGrid getGridDublinCore() {
+        return gridDublinCore;
+    }
+
+    public void setGridDublinCore(HtmlPanelGrid hpg) {
+        this.gridDublinCore = hpg;
+    }
 
      private HtmlPanelGrid indicator = new HtmlPanelGrid();
 
@@ -103,26 +99,50 @@ public class NewIndicator extends AbstractPageBean {
         this.indicator = hpg;
     }
 
-
-    private TextField txIndicatorName = new TextField();
-
-    public TextField getTxIndicatorName() {
-        return txIndicatorName;
+    HtmlInputText txSearch = new HtmlInputText();
+    /**
+     * @return the txSearch
+     */
+    public HtmlInputText getTxSearch() {
+        return txSearch;
     }
 
-    public void setTxIndicatorName(TextField tf) {
-        this.txIndicatorName = tf;
+    /**
+     * @param txSearch the txSearch to set
+     */
+    public void setTxSearch(HtmlInputText txSearch) {
+        this.txSearch = txSearch;
     }
 
 
-    private TextArea txaIndicatorDescription = new TextArea();
-
-    public TextArea getTxaIndicatorDescription() {
-        return txaIndicatorDescription;
+    HtmlCommandButton btnSearch = new HtmlCommandButton();
+     /**
+     * @return the btnSearch
+     */
+    public HtmlCommandButton getBtnSearch() {
+        return btnSearch;
     }
 
-    public void setTxaIndicatorDescription(TextArea ta) {
-        this.txaIndicatorDescription = ta;
+    /**
+     * @param btnSearch the btnSearch to set
+     */
+    public void setBtnSearch(HtmlCommandButton btnSearch) {
+        this.btnSearch = btnSearch;
+    }
+
+    HtmlCommandButton btnAdvSearch = new HtmlCommandButton();
+     /**
+     * @return the btnAdvSearch
+     */
+    public HtmlCommandButton getBtnAdvSearch() {
+        return btnAdvSearch;
+    }
+
+    /**
+     * @param btnAdvSearch the btnAdvSearch to set
+     */
+    public void setBtnAdvSearch(HtmlCommandButton btnAdvSearch) {
+        this.btnAdvSearch = btnAdvSearch;
     }
 
     private HtmlInputHidden hiddenNodeId = new HtmlInputHidden();
@@ -212,12 +232,14 @@ public class NewIndicator extends AbstractPageBean {
         hiddenNodeId.setValue(this. getindicator$IndicatorSessionBean().getNodeId());
         hiddenPathNode.setValue(this.getindicator$IndicatorSessionBean().getPathNode());
          //Inicialization of radio button group options
+        /*
         Option op1 = new Option(0L,BundleHelper.getDefaultBundleValue
                 ("yes",this.getMyLocale()));
         Option op2 = new Option(1L,BundleHelper.getDefaultBundleValue
                 ("no",this.getMyLocale()));
         Option options[] = {op1,op2};
         this.radioData.setOptions(options);
+         * */
         this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setAppliesToParts(1L);
     }
 
@@ -265,6 +287,13 @@ public class NewIndicator extends AbstractPageBean {
         return (AraSessionBean) getBean("AraSessionBean");
     }
 
+    public String btnDublinCoreSearch_action() {
+        return null;
+    }
+
+    public String btnAdvDublinCoreSearch_action() {
+        return null;
+    }
 
 
     public String btnSaveIndicator_action() {
@@ -296,19 +325,6 @@ public class NewIndicator extends AbstractPageBean {
         
     }
 
-    /**
-     * @return the radioButtonGroup
-     */
-    public RadioButtonGroup getRadioButtonGroup() {
-        return radioButtonGroup;
-    }
-
-    /**
-     * @param radioButtonGroup the radioButtonGroup to set
-     */
-    public void setRadioButtonGroup(RadioButtonGroup radioButtonGroup) {
-        this.radioButtonGroup = radioButtonGroup;
-    }
 
   
 }

@@ -39,23 +39,41 @@
                                     <h:commandButton action="#{indicator$NewIndicator.btnSaveIndicator_action}" id="btnSaveIndicator"
                                         style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.btnSave}"/>
                                 </h:panelGrid>
-                                <h:panelGrid binding="#{indicator$NewIndicator.gridIndicator}" columns="2" id="gridIndicator" style="height: 24px" width="540">
-                                    <div id="tree" style="width:200px; float:left; " title="Indicators Tree "></div>
-                                    <h:panelGrid binding="#{indicator$NewIndicator.indicator}" columns="1" id="indicator" style="height: 124px; position: relative; width: 400px; -rave-layout: grid">
-                                        <webuijsf:label for="txIndicatorName" id="lbIndicatorName" text="#{resources.indicator_name}"/>
-                                        <webuijsf:textField text="#{indicator$IndicatorSessionBean.currentIndicatorDTO.name}"  required="true" columns="25" id="txIndicatorName"/>
-                                        <webuijsf:label for="txIndicatorDescription" id="lbIndicatorDescription" text="#{resources.indicator_description}"/>
-                                        <webuijsf:textArea text="#{indicator$IndicatorSessionBean.currentIndicatorDTO.description}" columns="25"
-                                            id="txaIndicatorDescription"  style="height: 24px;width: 189px"/>
-                                        <webuijsf:label for="txApplyinParts" id="lbIApplyinParts" text="#{resources.applying_to_parts}"/>                                        
-                                        <h:selectOneRadio id="myRadio" layout="pageDirection" value="#{indicator$IndicatorSessionBean.currentIndicatorDTO.appliesToParts}" >
-                                            <f:selectItem itemValue="1" itemLabel="#{resources.yes}"/>
-                                            <f:selectItem itemValue="0" itemLabel="#{resources.no}"/>
-                                        </h:selectOneRadio>
-                                        <h:inputHidden binding="#{indicator$NewIndicator.hiddenNodeId}" id="hiddenNodeId"/>
-                                        <h:inputHidden binding="#{indicator$NewIndicator.hiddenPathNode}" id="hiddenPathNode"/>
-                                    </h:panelGrid>
-                                </h:panelGrid>
+                                <webuijsf:tabSet id="tabSet1" lite="true" selected="tabNewIndicator" styleClass="My_panel_blue">
+                                    <webuijsf:tab id="tabNewIndicator" text="#{resources.dataIndicator}">
+                                        <h:panelGrid binding="#{indicator$NewIndicator.gridIndicator}" columns="2" id="gridIndicator" style="height: 24px" width="540">
+                                            <div id="tree" style="width:200px; float:left; " title="Indicators Tree "></div>
+                                            <h:panelGrid binding="#{indicator$NewIndicator.indicator}" columns="1" id="indicator" style="height: 124px; position: relative; width: 400px; -rave-layout: grid">
+                                                <webuijsf:label for="txIndicatorName" id="lbIndicatorName" text="#{resources.indicator_name}"/>
+                                                <webuijsf:textField columns="25" id="txIndicatorName" required="true" text="#{indicator$IndicatorSessionBean.currentIndicatorDTO.name}"/>
+                                                <webuijsf:label for="txIndicatorDescription" id="lbIndicatorDescription" text="#{resources.indicator_description}"/>
+                                                <webuijsf:textArea columns="25" id="txaIndicatorDescription" style="height: 24px;width: 189px" text="#{indicator$IndicatorSessionBean.currentIndicatorDTO.description}"/>
+                                                <webuijsf:label for="txApplyinParts" id="lbIApplyinParts" text="#{resources.applying_to_parts}"/>
+                                                <h:selectOneRadio id="myRadio" layout="pageDirection" value="#{indicator$IndicatorSessionBean.currentIndicatorDTO.appliesToParts}">
+                                                    <f:selectItem itemLabel="#{resources.yes}" itemValue="1"/>
+                                                    <f:selectItem itemLabel="#{resources.no}" itemValue="0"/>
+                                                </h:selectOneRadio>
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                    </webuijsf:tab>
+                                    <webuijsf:tab id="tabBibliographicReferences" text="#{resources.bibliographicReferences}">
+                                        <h:panelGrid binding="#{indicator$NewIndicator.gridDublinCore}">
+                                            <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">
+                                                <h:inputText binding="#{indicator$NewIndicator.txSearch}" id="txSearch" style="height: 18px; width: 408px">
+                                                    <f:validateLength maximum="100" minimum="0"/>
+                                                </h:inputText>
+                                                <h:commandButton action="#{indicator$NewIndicator.btnDublinCoreSearch_action}" binding="#{indicator$NewIndicator.btnSearch}" id="btnDublinCoreSearch"
+                                                    style="height: 25px; width: 160px" styleClass="My_Button" value="#{resources.search}"/>
+                                                <h:commandButton action="#{indicator$NewIndicator.btnAdvDublinCoreSearch_action}" binding="#{indicator$NewIndicator.btnAdvSearch}" id="btnAdvDublinCoreSearch"
+                                                    style="height: 25px; width: 160px" styleClass="My_Button" value="#{resources.advanced_search}"/>
+                                            </h:panelGrid>
+
+                                        </h:panelGrid>
+
+                                    </webuijsf:tab>
+                                </webuijsf:tabSet>
+                                <h:inputHidden binding="#{indicator$NewIndicator.hiddenNodeId}" id="hiddenNodeId"/>
+                                <h:inputHidden binding="#{indicator$NewIndicator.hiddenPathNode}" id="hiddenPathNode"/>
                                 <jsp:directive.include file="/Footer.jspf"/>
                             </h:panelGrid>
                         </webuijsf:form>
