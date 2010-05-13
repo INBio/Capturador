@@ -7,6 +7,7 @@ package org.inbio.ara.germplasm;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.Calendar;
+import com.sun.webui.jsf.component.Label;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
 import java.util.ArrayList;
@@ -73,6 +74,9 @@ public class ListSemenGathering extends AbstractPageBean {
 
     private Calendar initialGatheringDate = new Calendar();
     private Calendar finalGatheringDate = new Calendar();
+
+    private Label lbTitle = new Label();
+    
     /**
      * <p>Construct a new Page bean instance.</p>
      */
@@ -137,6 +141,10 @@ public class ListSemenGathering extends AbstractPageBean {
     @Override
     public void prerender() {
 
+        if(getgermplasm$SemenGatheringSessionBean().getSementalId() != null)
+            getLbTitle().setText(BundleHelper.getDefaultBundleValue("semen_gathering", this.getMyLocale()) + "  " +
+                    getgermplasm$SementalSessionBean().getSementalDTO().getAnimalCode());
+
         //Preguntar si la bandera de busqueda avanzada esta prendida
         if(getgermplasm$SemenGatheringSessionBean().isAdvancedSearch()){
             hourDropDown.setOptions(getHourDropDownData());
@@ -191,6 +199,10 @@ public class ListSemenGathering extends AbstractPageBean {
 
     protected SemenGatheringSessionBean getgermplasm$SemenGatheringSessionBean() {
         return (SemenGatheringSessionBean) getBean("germplasm$SemenGatheringSessionBean");
+    }
+
+    protected SementalSessionBean getgermplasm$SementalSessionBean() {
+        return (SementalSessionBean) getBean("germplasm$SementalSessionBean");
     }
 
     /**
@@ -677,6 +689,20 @@ public class ListSemenGathering extends AbstractPageBean {
      */
     public void setFinalGatheringDate(Calendar finalGatheringDate) {
         this.finalGatheringDate = finalGatheringDate;
+    }
+
+    /**
+     * @return the lbTitle
+     */
+    public Label getLbTitle() {
+        return lbTitle;
+    }
+
+    /**
+     * @param lbTitle the lbTitle to set
+     */
+    public void setLbTitle(Label lbTitle) {
+        this.lbTitle = lbTitle;
     }
 
    

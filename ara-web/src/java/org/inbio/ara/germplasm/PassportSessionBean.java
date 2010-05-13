@@ -209,6 +209,8 @@ public class PassportSessionBean extends AbstractSessionBean implements Paginati
         this.selectedTaxonomicLevel = null;
         this.arNomenclaturalGroups = new AddRemoveList();
         this.firstTime = true;
+        if(this.pagination != null)
+            this.pagination.refreshList();
 
 
     }
