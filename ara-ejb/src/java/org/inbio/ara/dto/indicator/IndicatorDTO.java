@@ -18,7 +18,7 @@
 
 package org.inbio.ara.dto.indicator;
 
-import java.io.Serializable;
+
 import org.inbio.ara.dto.GenericDTO;
 
 
