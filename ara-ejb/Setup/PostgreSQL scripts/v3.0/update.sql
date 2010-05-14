@@ -2198,3 +2198,13 @@ ALTER TABLE ARA.DUBLIN_CORE_ENTITY_SEQ OWNER TO ara;
 CREATE SEQUENCE ARA.DUBLIN_CORE_ENTITY_TYPE_SEQ;
 ALTER TABLE ARA.DUBLIN_CORE_ENTITY_TYPE ALTER COLUMN DUBLIN_CORE_ENTITY_TYPE_ID SET DEFAULT nextval('ARA.DUBLIN_CORE_ENTITY_TYPE_SEQ'::regclass);
 ALTER TABLE ARA.DUBLIN_CORE_ENTITY_TYPE_SEQ OWNER TO ara;
+
+-- Tablas tipo selection list para el módulo dublin core
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (42,'Formato Dublin Core',0,'ara','2010-05-14','ara','2010-05-14','dublin_core_format','dublin_core_format_id');
+
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (43,'Tipo',0,'ara','2010-05-14','ara','2010-05-14','dublin_core_type','dublin_core_type_id');
+
+INSERT INTO ara.list_table (list_table_id,description,obj_version,created_by,creation_date,last_modification_by,last_modification_date,name,key_field_name)
+values (44,'Tipo de entidad',0,'ara','2010-05-14','ara','2010-05-14','dublin_core_entity_type','dublin_core_entity_type_id');
