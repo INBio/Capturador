@@ -34,6 +34,7 @@ import org.inbio.ara.persistence.specimen.LifeForm;
 import org.inbio.ara.persistence.germplasm.Solvent;
 import org.inbio.ara.persistence.germplasm.SemenGatheringMethod;
 import org.inbio.ara.persistence.germplasm.Condition;
+import org.inbio.ara.persistence.indicator.DublinCoreType;
 /**
  *
  * Esta clase esta hecha para poder llegarle desde el Objeto ListTable a las
@@ -89,7 +90,8 @@ public enum SelectionListEntity {
 
     CONDITION(new Long(39), new Condition(), true,"sle_condition",Condition.class.getName()),
     SEMEN_GATHERING_METHOD(new Long(40), new SemenGatheringMethod(), true,"sle_semen_gathering_method",SemenGatheringMethod.class.getName()),
-    SOLVENT(new Long(41), new Solvent(), true,"sle_solvent",Solvent.class.getName())
+    SOLVENT(new Long(41), new Solvent(), true,"sle_solvent",Solvent.class.getName()),
+    DUBLIN_CORE_TYPE(new Long(43), new DublinCoreType(), true,"sle_dublin_core_type",DublinCoreType.class.getName())
     ;
 
     /* Class name of the entity maped with the selection list table */
