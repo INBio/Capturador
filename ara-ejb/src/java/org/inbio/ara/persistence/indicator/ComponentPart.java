@@ -21,8 +21,8 @@
 package org.inbio.ara.persistence.indicator;
 
 
-import java.math.BigDecimal;
-import java.util.Date;
+
+
 import java.util.Calendar;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -33,7 +33,6 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.inbio.ara.dto.inventory.SelectionListEntity;
-import org.inbio.ara.persistence.LogGenericEntity;
 import org.inbio.ara.persistence.SelectionListGenericEntity;
 
 /**
