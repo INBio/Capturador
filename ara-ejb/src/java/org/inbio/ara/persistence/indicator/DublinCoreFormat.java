@@ -5,18 +5,24 @@
 
 package org.inbio.ara.persistence.indicator;
 
-import java.io.Serializable;
+
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.inbio.ara.dto.inventory.SelectionListEntity;
+import org.inbio.ara.persistence.SelectionListGenericEntity;
 
 /**
  *
@@ -24,96 +30,35 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "dublin_core_format")
-@NamedQueries({@NamedQuery(name = "DublinCoreFormat.findAll", query = "SELECT d FROM DublinCoreFormat d"), @NamedQuery(name = "DublinCoreFormat.findByDublinCoreFormatId", query = "SELECT d FROM DublinCoreFormat d WHERE d.dublinCoreFormatId = :dublinCoreFormatId"), @NamedQuery(name = "DublinCoreFormat.findByName", query = "SELECT d FROM DublinCoreFormat d WHERE d.name = :name"), @NamedQuery(name = "DublinCoreFormat.findByDescription", query = "SELECT d FROM DublinCoreFormat d WHERE d.description = :description"), @NamedQuery(name = "DublinCoreFormat.findByCreationDate", query = "SELECT d FROM DublinCoreFormat d WHERE d.creationDate = :creationDate"), @NamedQuery(name = "DublinCoreFormat.findByCreatedBy", query = "SELECT d FROM DublinCoreFormat d WHERE d.createdBy = :createdBy"), @NamedQuery(name = "DublinCoreFormat.findByLastModificationDate", query = "SELECT d FROM DublinCoreFormat d WHERE d.lastModificationDate = :lastModificationDate"), @NamedQuery(name = "DublinCoreFormat.findByLastModificationBy", query = "SELECT d FROM DublinCoreFormat d WHERE d.lastModificationBy = :lastModificationBy")})
-public class DublinCoreFormat implements Serializable {
+
+public class DublinCoreFormat extends SelectionListGenericEntity {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="dublin_core_format")
+    @SequenceGenerator(name="dublin_core_format", sequenceName="dublin_core_format_seq")
     @Basic(optional = false)
     @Column(name = "dublin_core_format_id")
-    private BigDecimal dublinCoreFormatId;
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "creation_date")
-    @Temporal(TemporalType.DATE)
-    private Date creationDate;
-    @Column(name = "created_by")
-    private String createdBy;
-    @Column(name = "last_modification_date")
-    @Temporal(TemporalType.DATE)
-    private Date lastModificationDate;
-    @Column(name = "last_modification_by")
-    private String lastModificationBy;
-
+    private Long dublinCoreFormatId;
+   
     public DublinCoreFormat() {
     }
 
-    public DublinCoreFormat(BigDecimal dublinCoreFormatId) {
+    public DublinCoreFormat(Long dublinCoreFormatId) {
         this.dublinCoreFormatId = dublinCoreFormatId;
     }
 
-    public DublinCoreFormat(BigDecimal dublinCoreFormatId, String name) {
+    public DublinCoreFormat(Long dublinCoreFormatId, String name, String description, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.dublinCoreFormatId = dublinCoreFormatId;
-        this.name = name;
+    this.setName(name);
+        this.setDescription(description);
+
+        this.setCreatedBy(createdBy);
+        this.setCreationDate(creationDate);
+        this.setLastModificationBy(lastModificationBy);
+        this.setLastModificationDate(lastModificationDate);
     }
 
-    public BigDecimal getDublinCoreFormatId() {
-        return dublinCoreFormatId;
-    }
-
-    public void setDublinCoreFormatId(BigDecimal dublinCoreFormatId) {
-        this.dublinCoreFormatId = dublinCoreFormatId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getLastModificationDate() {
-        return lastModificationDate;
-    }
-
-    public void setLastModificationDate(Date lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
-    }
-
-    public String getLastModificationBy() {
-        return lastModificationBy;
-    }
-
-    public void setLastModificationBy(String lastModificationBy) {
-        this.lastModificationBy = lastModificationBy;
-    }
+  
 
     @Override
     public int hashCode() {
@@ -138,6 +83,21 @@ public class DublinCoreFormat implements Serializable {
     @Override
     public String toString() {
         return "org.inbio.ara.persistence.indicator.DublinCoreFormat[dublinCoreFormatId=" + dublinCoreFormatId + "]";
+    }
+
+    @Override
+    public Long getId() {
+        return this.dublinCoreFormatId;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.dublinCoreFormatId = id;
+    }
+
+    @Override
+    public SelectionListEntity getSelectionListEntity() {
+        return SelectionListEntity.DUBLIN_CORE_FORMAT;
     }
 
 }
