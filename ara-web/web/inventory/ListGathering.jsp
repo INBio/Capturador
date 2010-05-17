@@ -10,9 +10,7 @@
     <f:view>
         <webuijsf:page id="page1">
             <webuijsf:html id="html1">
-                <webuijsf:head binding="#{Header_Login.head1}" id="head1">
-                    <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:script id="script1" type="text/JavaScript" url="/resources/js/footer.js"/>
+                <webuijsf:head id="head1">
                     <webuijsf:link id="link2" url="/resources/css/stylesheet.css"/>
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
