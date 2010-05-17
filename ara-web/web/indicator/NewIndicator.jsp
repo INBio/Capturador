@@ -11,9 +11,8 @@
     <f:view>
         <webuijsf:page id="page1">
             <webuijsf:html id="html1">
-                <webuijsf:head binding="#{Header_Login.head1}" id="head1">
-                    <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:link id="link2" url="/resources/css/stylesheet.css"/>
+                <webuijsf:head id="head1">
+                    <webuijsf:link id="link1" url="/resources/css/stylesheet.css"/>
                     <webuijsf:link id="link3" url="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css"/>
                     <webuijsf:link id="link4" url="http://yui.yahooapis.com/2.8.0r4/build/treeview/assets/skins/sam/treeview.css"/>
                     <webuijsf:script id="script2" type="text/JavaScript" url="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"/>
