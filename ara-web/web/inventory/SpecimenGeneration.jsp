@@ -23,8 +23,11 @@
                                 styleClass="Page_title" text="#{resources.sp_gen_and_identifications}"/>
                             <!-- Inicio panel principal -->
                             <h:panelGrid columns="1" id="gridpGenerationMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="850">
+                                <h:panelGrid style="position: relative">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglGeneration" infoClass="infoMessage"
                                     style="height: 30px; width: 840px" warnClass="warnMessage"/>
+                                </h:panelGrid>
+                                <h:panelGrid style="position: relative">
                                 <webuijsf:panelGroup id="grouppBotoneraGen" style="height: 24px; width: 840px">
                                     <h:commandButton action="#{inventory$SpecimenGeneration.btnSpecimenGeneration_action}" id="btnSpecimenGeneration"
                                         style="height: 24px; width: 250px" styleClass="My_Button" value="#{resources.generate}"/>
@@ -34,7 +37,7 @@
                                 <webuijsf:panelLayout id="layoutpGenDetails" style="height: 191px; position: relative; width: 840px; -rave-layout: grid" styleClass="My_panel_blue">
                                     <webuijsf:label for="txQuantity" id="lbQuantity"
                                         style="height: 24px; left: 48px; top: 24px; position: absolute; width: 164px" text="#{resources.quantity} (*)"/>
-                                    <webuijsf:textField binding="#{inventory$SpecimenGeneration.txQuantity}" columns="22" id="txQuantity"
+                                    <webuijsf:textField required="true" binding="#{inventory$SpecimenGeneration.txQuantity}" columns="22" id="txQuantity"
                                         style="height: 24px; left: 216px; top: 24px; position: absolute; width: 120px" validatorExpression="#{util$ValidatorBean.longNumberFormatValidator}"/>
                                     <webuijsf:label for="txInitialCatalog" id="lbInitialCatalog"
                                         style="height: 24px; left: 48px; top: 1px; position: absolute; width: 168px" text="#{resources.initial_catalog_number}"/>
@@ -93,7 +96,7 @@
                                         style="height: 24px; left: 624px; top: 48px; position: absolute; width: 120px" validatorExpression="#{util$ValidatorBean.longNumberFormatValidator}"/>
                                     <webuijsf:label for="ddInstitutions" id="lbInstitutions"
                                         style="height: 24px; left: 456px; top: 72px; position: absolute; width: 168px" text="#{resources.institution} (*)"/>
-                                    <webuijsf:dropDown binding="#{inventory$SpecimenGeneration.ddInstitutions}" id="ddInstitutions"
+                                    <webuijsf:dropDown required="true" binding="#{inventory$SpecimenGeneration.ddInstitutions}" id="ddInstitutions"
                                         items="#{inventory$SpecimenGeneration.institutionsData.options}"
                                         selected="#{inventory$SpecimenGenerationSessionBean.specimenDTO.institutionId}"
                                         style="height: 24px; left: 624px; top: 72px; position: absolute" width="165px"/>
@@ -144,11 +147,11 @@
                                                 style="left: 216px; top: 48px; position: absolute" submitForm="true" width="165px"/>
                                             <webuijsf:label for="cidentificationDate" id="lbIdentificationDate"
                                                 style="height: 24px; left: 456px; top: 10px; position: absolute; width: 168px" text="#{resources.identification_date} (*)"/>
-                                            <webuijsf:calendar binding="#{inventory$SpecimenGeneration.calIdentificationDate}" columns="19"
+                                            <webuijsf:calendar required="true" binding="#{inventory$SpecimenGeneration.calIdentificationDate}" columns="19"
                                                 dateFormatPattern="yyyy-MM-dd" id="cidentificationDate" style="height: 24px; left: 614px; top: 10px; position: absolute; width: 168px"/>
                                             <webuijsf:label for="ddStatus" id="lbStatus"
                                                 style="height: 24px; left: 456px; top: 34px; position: absolute; width: 168px" text="#{resources.status} (*)"/>
-                                            <webuijsf:dropDown id="ddStatus" items="#{inventory$SpecimenGeneration.statusIdentificationData.options}"
+                                            <webuijsf:dropDown required="true" id="ddStatus" items="#{inventory$SpecimenGeneration.statusIdentificationData.options}"
                                                 selected="#{inventory$SpecimenGenerationSessionBean.identificationDTO.statusId}"
                                                 style="height: 0px; left: 624px; top: 34px; position: absolute" width="165px"/>
                                             <webuijsf:label for="ddIdentificationType" id="lbIdentificationType"
@@ -316,6 +319,7 @@
                                 </webuijsf:tabSet>
                                 <!-- Final del tab set -->
                                 <jsp:directive.include file="/Footer.jspf"/>
+                                </h:panelGrid>
                             </h:panelGrid>
                             <!-- Final panel principal -->
                         </webuijsf:form>
