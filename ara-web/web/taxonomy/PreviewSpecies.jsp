@@ -10,9 +10,8 @@
     <f:view>
         <webuijsf:page id="page1">
             <webuijsf:html id="html1">
-                <webuijsf:head binding="#{Header_Login.head1}" id="head1">
-                    <webuijsf:link binding="#{Header_Login.link1}" id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:link id="link2" url="/resources/css/stylesheet.css"/>
+                <webuijsf:head id="head1">
+                    <webuijsf:link id="link1" url="/resources/css/stylesheet.css"/>
                     <webuijsf:script type="text/javascript" url="/resources/tinymce/jscripts/tiny_mce/tiny_mce.js"/>
                     <webuijsf:script type="text/javascript">
                         tinyMCE.init({
