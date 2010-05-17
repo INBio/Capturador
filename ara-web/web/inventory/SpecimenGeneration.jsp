@@ -147,11 +147,11 @@
                                                 style="left: 216px; top: 48px; position: absolute" submitForm="true" width="165px"/>
                                             <webuijsf:label for="cidentificationDate" id="lbIdentificationDate"
                                                 style="height: 24px; left: 456px; top: 10px; position: absolute; width: 168px" text="#{resources.identification_date} (*)"/>
-                                            <webuijsf:calendar required="true" binding="#{inventory$SpecimenGeneration.calIdentificationDate}" columns="19"
+                                            <webuijsf:calendar binding="#{inventory$SpecimenGeneration.calIdentificationDate}" columns="19"
                                                 dateFormatPattern="yyyy-MM-dd" id="cidentificationDate" style="height: 24px; left: 614px; top: 10px; position: absolute; width: 168px"/>
                                             <webuijsf:label for="ddStatus" id="lbStatus"
                                                 style="height: 24px; left: 456px; top: 34px; position: absolute; width: 168px" text="#{resources.status} (*)"/>
-                                            <webuijsf:dropDown required="true" id="ddStatus" items="#{inventory$SpecimenGeneration.statusIdentificationData.options}"
+                                            <webuijsf:dropDown id="ddStatus" items="#{inventory$SpecimenGeneration.statusIdentificationData.options}"
                                                 selected="#{inventory$SpecimenGenerationSessionBean.identificationDTO.statusId}"
                                                 style="height: 0px; left: 624px; top: 34px; position: absolute" width="165px"/>
                                             <webuijsf:label for="ddIdentificationType" id="lbIdentificationType"
