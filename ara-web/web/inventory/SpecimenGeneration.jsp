@@ -25,7 +25,7 @@
                             <h:panelGrid columns="1" id="gridpGenerationMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="850">
                                 <h:panelGrid style="position: relative">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglGeneration" infoClass="infoMessage"
-                                    style="height: 30px; width: 840px" warnClass="warnMessage"/>
+                                    style="height: 60px; width: 840px" warnClass="warnMessage"/>
                                 </h:panelGrid>
                                 <h:panelGrid style="position: relative">
                                 <webuijsf:panelGroup id="grouppBotoneraGen" style="height: 24px; width: 840px">
