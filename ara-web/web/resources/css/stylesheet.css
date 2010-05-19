@@ -594,6 +594,12 @@ body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 #navbar li li a { background-image: url(../images/none)}
 #navbar li li a:hover {
     background-color: #a6c62d; color:#fff; }
+
+
+
+
+
+
 /*menu icons*/
 .taxonomy a {background: url(../images/taxonomia.png)}
 .inventory a {background: url(../images/inventario.png)}
@@ -604,4 +610,13 @@ body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 .germplasm a { background: url(../images/germplasm.png)}
 .taxonomy a, .inventory a, .administration a, .geographical a, .security a, .reports a, .germplasm a
 { background-position: 3px 3px; background-repeat:no-repeat;}
+
+
+
+#limenuPlantBank ul li, #limenuSpermBank ul li {display: none;}
+#limenuPlantBank:hover li, #limenuSpermBank:hover li {display:block}
+#limenuPlantBank #ulmenuPlantBank, #limenuSpermBank #ulmenuSpermBank {margin: -25px 0 0 6.9em;}
+#navbar .germplasm ul, #navbar .germplasm ul li {width:7em;}
+#navbar .germplasm li ul {border:0}
+
 
