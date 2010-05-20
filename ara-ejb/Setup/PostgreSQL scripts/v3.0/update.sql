@@ -2025,20 +2025,20 @@ ALTER TABLE ara.semen_gathering_seq OWNER TO ara;
 INSERT INTO ara.list_table(
             list_table_id, description, obj_version, created_by, creation_date,
             last_modification_by, last_modification_date, "name", key_field_name)
-    VALUES (39, '', 0, 'Ara', '13-4-2010',
-            'Ara', '13-4-2010', 'condition', 'condition_id');
+    VALUES (39, '', 0, 'Ara', '2010-04-13',
+            'Ara', '2010-04-13', 'condition', 'condition_id');
 
 INSERT INTO ara.list_table(
             list_table_id, description, obj_version, created_by, creation_date,
             last_modification_by, last_modification_date, "name", key_field_name)
-    VALUES (40, '', 0, 'Ara', '13-4-2010',
-            'Ara', '13-4-2010', 'semen_gathering_method', 'semen_gathering_method_id');
+    VALUES (40, '', 0, 'Ara', '2010-04-13',
+            'Ara', '2010-04-13', 'semen_gathering_method', 'semen_gathering_method_id');
 
 INSERT INTO ara.list_table(
             list_table_id, description, obj_version, created_by, creation_date,
             last_modification_by, last_modification_date, "name", key_field_name)
-    VALUES (41, '', 0, 'Ara', '13-4-2010',
-            'Ara', '13-4-2010', 'solvent', 'solvent_id');
+    VALUES (41, '', 0, 'Ara', '2010-04-13',
+            'Ara', '2010-04-13', 'solvent', 'solvent_id');
 
 --Add column current straw quantity to semen_gathering tabble
 ALTER TABLE ara.semen_gathering ADD COLUMN current_straw_quantity numeric;
