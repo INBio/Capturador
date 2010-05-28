@@ -25,6 +25,9 @@
 --  created: 2009.08.12
 --
 
+DROP LANGUAGE IF EXISTS 'plpgsql';
+CREATE LANGUAGE 'plpgsql';
+
 -- 2009.08.12
 --Cambia el tipo de la columna catalog_number a varhcar(100) pues antes era numeric
 -- y este dato pordria contenter caracteres alfanumericos
