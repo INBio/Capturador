@@ -526,7 +526,9 @@ alter table ara.dwc_snapshot add column georeferenceremarks varchar;
 alter table ara.dwc_snapshot add column footprintwkt varchar;
 alter table ara.dwc_snapshot add column footprintspatialfit  decimal;
 
--- Hata aquí quedó la versión para Panamá  --
+                --------------------------------------------------------------------------------
+                -- Hata aquí quedó la versión para Panamá  --
+                --------------------------------------------------------------------------------
 
 --2010.01.18 esmata
 -- Eliminar la tabla ara.pli_element
@@ -1161,10 +1163,14 @@ BEGIN
 END;
 ' language 'plpgsql';
 
-				-----------------------------------
-				-- TABLES FOR GERMOPLASMA MODULE --
-				-----------------------------------
+                --------------------------------------------------------------------------------
+                -- Hata aquí quedó la versión de Bután (Primer taller del 4 de febrero)  --
+                --------------------------------------------------------------------------------
 
+-----------------------------------
+-- TABLES FOR GERMOPLASMA MODULE --
+-----------------------------------
+--2010.03.01
 CREATE TABLE ara.material_type(
 material_type_id numeric not null,
 name character varying(100) NOT NULL,
@@ -1736,8 +1742,6 @@ INSERT INTO ara.accession_movement_type
 values
 ('Prestamo','','ara','2010-03-03','ara','2010-03-03');
 
-
-
 INSERT INTO ara.moisture_method_type
 (name, description,created_by,creation_date,last_modification_by,last_modification_date )
 values
@@ -1773,17 +1777,18 @@ INSERT INTO ara.germination_method_type
 values
 ('Frio','','ara','2010-03-03','ara','2010-03-03');
 
-
 --CREATE DONOR PERSON PROFILE
 INSERT INTO ara.profile (profile_id,name,description,creation_date,created_by,last_modification_date,last_modification_by)
 VALUES(21,'Responsable Person','GermPlams Responsable Person Management','2010-01-21','ara','2010-01-21','ara');
 
+                --------------------------------------------------------------------------------
+                -- Hata aquí quedó la versión de Jamaica y Perú  --
+                --------------------------------------------------------------------------------
+
+---------------------------------------------
+    -- TABLES FOR INDICATOR MODULE --
+---------------------------------------------
 --2010.04.27 gsulca
-
-                                ---------------------------------------------
-                                    -- TABLES FOR INDICATOR MODULE --
-                                ---------------------------------------------
-
 
 create table ARA.INDICATOR  (
    INDICATOR_ID         numeric not null,
@@ -1872,9 +1877,6 @@ ALTER TABLE ara.indicator_seq OWNER TO ara;
 -- Asignar dicho secuence al atributo correspondiente de la tabla
 ALTER TABLE ara.indicator ALTER COLUMN indicator_id SET DEFAULT nextval('ara.indicator_seq'::regclass);
 
-
-
-
 ------------------------------------------------
 ----GERMPLASM SEMEN MODULE----------------------
 ------------------------------------------------
@@ -1891,7 +1893,6 @@ last_modification_date date NOT NULL);
 ALTER TABLE ara.condition OWNER TO ara;
 
 ALTER TABLE ONLY ara.condition ADD CONSTRAINT "CONDITION_TYPE_ID_PK" PRIMARY KEY (condition_id);
-
 
 CREATE TABLE ara.solvent(
 solvent_id numeric not null,
@@ -1958,11 +1959,9 @@ ALTER TABLE ara.semental OWNER TO ara;
 
 ALTER TABLE ONLY ara.semental ADD CONSTRAINT "SEMENTAL_ID_PK" PRIMARY KEY (semental_id);
 
-
 ALTER TABLE ONLY ara.semental ADD CONSTRAINT breed_id_fk FOREIGN KEY (breed_id) REFERENCES ara.breed(breed_id) ON DELETE CASCADE;
 ALTER TABLE ONLY ara.semental ADD CONSTRAINT site_id_fk FOREIGN KEY (site_id) REFERENCES ara.site(site_id);
 ALTER TABLE ONLY ara.semental ADD CONSTRAINT condition_id_fk FOREIGN KEY (condition_id) REFERENCES ara.condition(condition_id);
-
 
 CREATE TABLE ara.semen_gathering(
 semen_gathering_id numeric not null,
@@ -2047,8 +2046,6 @@ INSERT INTO ara.list_table(
 ALTER TABLE ara.semen_gathering ADD COLUMN current_straw_quantity numeric;
 
 --2010.04.27 gsulca
-
-
 -- Rename table taxon_indicator_reference to taxon_indicator_dublin_core
 ALTER TABLE ARA.TAXON_INDICATOR_REFERENCE RENAME TO TAXON_INDICATOR_DUBLIN_CORE;
 -- Rename column reference_id from taxon_indicator_dublin_core to dublin_core_id
@@ -2057,7 +2054,6 @@ ALTER TABLE ARA.TAXON_INDICATOR_DUBLIN_CORE RENAME COLUMN REFERENCE_ID TO DUBLIN
 ALTER TABLE ARA.TAXON_INDICATOR_DUBLIN_CORE DROP CONSTRAINT TAXON_INDICATOR_REFERENCE_PK;
 -- Add constraint
 ALTER TABLE ONLY ARA.TAXON_INDICATOR_DUBLIN_CORE ADD CONSTRAINT TAXON_INDICATOR_DUBLIN_CORE_PK primary key (DUBLIN_CORE_ID, INDICATOR_ID, TAXON_ID);
-
 
 -- Rename table indicator_reference to indicator_dublin_core
 ALTER TABLE ARA.INDICATOR_REFERENCE RENAME TO INDICATOR_DUBLIN_CORE;
@@ -2070,8 +2066,6 @@ ALTER TABLE ONLY ARA.INDICATOR_DUBLIN_CORE add constraint INDICATOR_DUBLIN_CORE_
 -- Add constraint INDICATOR_DUBLIN_CORE_ID_FK
 ALTER TABLE ONLY ARA.INDICATOR_DUBLIN_CORE  ADD CONSTRAINT INDICATOR_DUBLIN_CORE_ID_FK FOREIGN KEY (INDICATOR_ID ) REFERENCES ARA.INDICATOR(INDICATOR_ID);
 
-
-
 --2010.05.11 --update the contraint of the passport_nomenclatural table
 ALTER TABLE ONLY ara.passport_nomenclatural_group
    DROP CONSTRAINT nomenclatural_group_id_fk;
@@ -2082,7 +2076,7 @@ ALTER TABLE ONLY ara.passport_nomenclatural_group
 ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT nomenclatural_group_id_fk FOREIGN KEY (nomenclatural_group_id) REFERENCES ara.nomenclatural_group(nomenclatural_group_id) ON DELETE CASCADE;
 ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT passport_id_fk FOREIGN KEY (passport_id) REFERENCES ara.passport(passport_id) ON DELETE CASCADE;
 
---2010-05-11 gsulca
+--2010.05.11 gsulca
 
 -- Add table DUBLIN_CORE
 create table ARA.DUBLIN_CORE  (
@@ -2174,8 +2168,7 @@ ALTER TABLE ONLY ARA.DUBLIN_CORE_ENTITY ADD CONSTRAINT DUBLIN_CORE_ENTITY_ID_PK 
 -- Add foreign key DUBLIN_CORE_TYPE_ID_FK to DUBLIN_CORE
 ALTER TABLE ONLY ARA.DUBLIN_CORE_ENTITY ADD CONSTRAINT DUBLIN_CORE_ID_FK FOREIGN KEY (DUBLIN_CORE_ID ) REFERENCES ARA.DUBLIN_CORE(DUBLIN_CORE_ID);
 
-
---2010-05-14 gsulca
+--2010.05.14 gsulca
 
 --Create sequence dublin_core
 CREATE SEQUENCE ARA.DUBLIN_CORE_SEQ;
