@@ -97,6 +97,8 @@ public class PassportDTOFactory extends BaseEntityOrDTOFactory<Passport ,Passpor
         e.setSoilColorId(dto.getSoilColorId());
         e.setSoilTextureId(dto.getSoilTextureId());
 
+        e.setTaxonId(dto.getTaxonId());
+
         return e;
     }
 }
