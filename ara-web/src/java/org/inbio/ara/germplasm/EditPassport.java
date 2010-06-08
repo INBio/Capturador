@@ -934,7 +934,13 @@ public class EditPassport extends AbstractPageBean {
 
         try {
             //assign the gathering id
-            Long selectedGathering = getSelectedGathering().getGatheringObservationId();
+            GatheringObservationDTO gdto = getSelectedGathering();
+            Long selectedGathering;
+            if(gdto != null)
+                selectedGathering = gdto.getGatheringObservationId();
+            else
+                selectedGathering = null;
+                //Long selectedGathering = getSelectedGathering().getGatheringObservationId();
             passportDTO.setGatheringId(selectedGathering);
 
             //si alguna de las 3 opciones no ha sido seleccionada avisa el error
@@ -954,6 +960,7 @@ public class EditPassport extends AbstractPageBean {
                             updatePassport(getPassportSessionBean().getPassportDTO());*/
                     getPassportSessionBean().getGermplasmFacadeRemote().
                             updatePassport(passportDTO, selectedNomenclaturalGroups);
+
                     //Notificar al usuario
                     MessageBean.setSuccessMessageFromBundle("update_success", this.getMyLocale());
 
@@ -967,6 +974,7 @@ public class EditPassport extends AbstractPageBean {
             return null;
 
         } catch (Exception e) {
+            e.printStackTrace();
             MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
             return null;
         }
