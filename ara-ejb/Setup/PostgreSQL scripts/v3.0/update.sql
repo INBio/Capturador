@@ -2054,3 +2054,7 @@ ALTER TABLE ONLY ara.passport_nomenclatural_group
 
 ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT nomenclatural_group_id_fk FOREIGN KEY (nomenclatural_group_id) REFERENCES ara.nomenclatural_group(nomenclatural_group_id) ON DELETE CASCADE;
 ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT passport_id_fk FOREIGN KEY (passport_id) REFERENCES ara.passport(passport_id) ON DELETE CASCADE;
+
+                --------------------------------------------------------------------------------
+                -- Hata aquí quedó la versión para la segunda visita a Bután 11 Junio 2010  --
+                --------------------------------------------------------------------------------
