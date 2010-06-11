@@ -212,12 +212,12 @@ public class PlinianCoreFlatEAOImpl extends BaseEAOImpl<PlinianCoreFlat,String>
                          "ara.species_standard_element_content(td.taxon_id, td.taxon_description_sequence, 'InvasivenessData', 0, ' ') as InvasivenessData,"+
                          "ara.taxon_description_audience_list(td.taxon_id, td.taxon_description_sequence ,'; ')  as TargetAudiences,"+
                          "td.taxon_description_sequence as Version ,"+
-                         "'' as URLImage1,"+
-                         "'' as CaptionImage1,"+
-                         "'' as URLImage2 ,"+
-                         "'' as CaptionImage2  ,"+
-                         "'' as URLImage3  ,"+
-                         "'' as CaptionImage3 "+
+                         "ara.species_standard_element_content(td.taxon_id, td.taxon_description_sequence, 'URLImage1', 0, '') as URLImage1,"+
+                         "ara.species_standard_element_content(td.taxon_id, td.taxon_description_sequence, 'CaptionImage1', 0, '') as CaptionImage1,"+
+                         "ara.species_standard_element_content(td.taxon_id, td.taxon_description_sequence, 'URLImage2', 0, '') as URLImage2 ,"+
+                         "ara.species_standard_element_content(td.taxon_id, td.taxon_description_sequence, 'CaptionImage2', 0, '') as CaptionImage2  ,"+
+                         "ara.species_standard_element_content(td.taxon_id, td.taxon_description_sequence, 'URLImage3', 0, '') as URLImage3  ,"+
+                         "ara.species_standard_element_content(td.taxon_id, td.taxon_description_sequence, 'CaptionImage3', 0, '') as CaptionImage3 "+
                       "from ara.taxon_description td "+
                         "left outer join ara.taxon t on (t.taxon_id = td.taxon_id)"+
                         "left outer join ara.language l on (l.language_id = td.language_id) "+
