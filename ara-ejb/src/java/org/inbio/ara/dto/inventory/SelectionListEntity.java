@@ -29,14 +29,10 @@ import org.inbio.ara.persistence.germplasm.MoistureMethodType;
 import org.inbio.ara.persistence.germplasm.SampleStatus;
 import org.inbio.ara.persistence.germplasm.SoilColor;
 import org.inbio.ara.persistence.germplasm.SoilTexture;
-import org.inbio.ara.persistence.indicator.ComponentPart;
 import org.inbio.ara.persistence.specimen.LifeForm;
 import org.inbio.ara.persistence.germplasm.Solvent;
 import org.inbio.ara.persistence.germplasm.SemenGatheringMethod;
 import org.inbio.ara.persistence.germplasm.Condition;
-import org.inbio.ara.persistence.indicator.DublinCoreEntityType;
-import org.inbio.ara.persistence.indicator.DublinCoreFormat;
-import org.inbio.ara.persistence.indicator.DublinCoreType;
 /**
  *
  * Esta clase esta hecha para poder llegarle desde el Objeto ListTable a las
@@ -64,8 +60,8 @@ public enum SelectionListEntity {
     LIFE_FORM(new Long(11),new LifeForm(), true,"sle_life_form",LifeForm.class.getName()),
     EXTRACTION_TYPE(new Long(13), new ExtractionType(), true,"sle_extraction_type",ExtractionType.class.getName()),
     
-    COMPONENT_PART(new Long(14), new ComponentPart(), true, "sle_component_part", ComponentPart.class.getName()),
-    /*
+    /*COMPONENT_PART(new Long(14), new ComponentPart(), true, "sle_component_part", ComponentPart.class.getName()),
+    
     PREPARATION_METHOD(17, new PreparationMethod(), true),
     SAMPLING_TYPE(18, new SamplingType(), true),
     TAXON_AUTHOR_CONNECTOR(19, new TaxonAuthorConnector(), true),
@@ -92,10 +88,7 @@ public enum SelectionListEntity {
 
     CONDITION(new Long(39), new Condition(), true,"sle_condition",Condition.class.getName()),
     SEMEN_GATHERING_METHOD(new Long(40), new SemenGatheringMethod(), true,"sle_semen_gathering_method",SemenGatheringMethod.class.getName()),
-    SOLVENT(new Long(41), new Solvent(), true,"sle_solvent",Solvent.class.getName()),
-    DUBLIN_CORE_FORMAT(new Long(42), new DublinCoreFormat(), true,"sle_dublin_core_format",DublinCoreFormat.class.getName()),
-    DUBLIN_CORE_TYPE(new Long(43), new DublinCoreType(), true,"sle_dublin_core_type",DublinCoreType.class.getName()),
-    DUBLIN_CORE_ENTITY_TYPE(new Long(44), new DublinCoreEntityType(), true,"sle_dublin_core_entity_type",DublinCoreEntityType.class.getName())
+    SOLVENT(new Long(41), new Solvent(), true,"sle_solvent",Solvent.class.getName())
     ;
 
     /* Class name of the entity maped with the selection list table */
