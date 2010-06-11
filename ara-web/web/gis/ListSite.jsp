@@ -5,7 +5,7 @@
     <f:view>
         <webuijsf:page binding="#{gis$ListSite.page1}" id="page1">
             <webuijsf:html binding="#{gis$ListSite.html1}" id="html1">
-                <webuijsf:head id="head1">
+                <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link id="link1" url="/resources/css/stylesheet.css"/>
                     <webuijsf:script id="script2" type="text/JavaScript" url="http://openlayers.org/api/OpenLayers.js"/>
                     <jsp:scriptlet>
