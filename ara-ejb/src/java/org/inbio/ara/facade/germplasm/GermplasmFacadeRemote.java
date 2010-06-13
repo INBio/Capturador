@@ -484,4 +484,18 @@ public interface GermplasmFacadeRemote {
      * @param semenGatheringId
      */
     public void deleteSemenGathering(Long semenGatheringId);
+
+    /**
+     * Return a list of taxon in a specify Taxonomical Range Id for a the Plantae kingdom
+     * @param taxonomicalRangeId
+     * @return
+     */
+    public List<TaxonDTO> getAllTaxonsByPlantaeKingdomAndTaxonomicalRangeId(Long taxonomicalRangeId);
+
+    /**
+     * Return a list of taxon in a specify Taxonomical Range Id for a the Animalia kingdom
+     * @param taxonomicalRangeId
+     * @return
+     */
+    public List<TaxonDTO> getAllTaxonsByAnimaliaKingdomAndTaxonomicalRangeId(Long taxonomicalRangeId);
 }

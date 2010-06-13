@@ -2260,4 +2260,14 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         SemenGathering semenGathering = semenGatheringEAOLocal.findById(SemenGathering.class, semenGatheringId);
         semenGatheringEAOLocal.delete(semenGathering);
     }
+
+    public List<TaxonDTO> getAllTaxonsByPlantaeKingdomAndTaxonomicalRangeId(Long taxonomicalRangeId) {
+        return taxonDTOFactory.createDTOList(taxonEAOLocal.
+                getTaxonsByKingdomNameAndTaxonomicalRangeId("Plantae", taxonomicalRangeId));
+    }
+
+    public List<TaxonDTO> getAllTaxonsByAnimaliaKingdomAndTaxonomicalRangeId(Long taxonomicalRangeId) {
+        return taxonDTOFactory.createDTOList(taxonEAOLocal.
+                getTaxonsByKingdomNameAndTaxonomicalRangeId("Animalia", taxonomicalRangeId));
+    }
 }
