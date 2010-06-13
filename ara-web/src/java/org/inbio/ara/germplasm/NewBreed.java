@@ -160,10 +160,14 @@ public class NewBreed extends AbstractPageBean {
      */
     public Option[] updateTaxonListAction(Long taxonomicLevel) {
 
-        List<TaxonDTO> taxonList = getgermplasm$BreedSessionBean().
+        /*List<TaxonDTO> taxonList = getgermplasm$BreedSessionBean().
                 getGermplasmFacadeRemote().
                 getAllTaxonsByCollectionIdAndTaxonomicalRangeId(
-                getAraSessionBean().getGlobalCollectionId(), taxonomicLevel);
+                getAraSessionBean().getGlobalCollectionId(), taxonomicLevel);*/
+
+        List<TaxonDTO> taxonList = getgermplasm$BreedSessionBean().
+                getGermplasmFacadeRemote().
+                getAllTaxonsByAnimaliaKingdomAndTaxonomicalRangeId(taxonomicLevel);
 
             return this.setTaxonListOptions(taxonList);
 

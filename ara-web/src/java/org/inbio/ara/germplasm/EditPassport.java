@@ -555,10 +555,15 @@ public class EditPassport extends AbstractPageBean {
      */
     public Option[] updateTaxonListAction(Long taxonomicLevel) {
 
-        List<TaxonDTO> taxonList = getPassportSessionBean().
+        /*List<TaxonDTO> taxonList = getPassportSessionBean().
                 getGermplasmFacadeRemote().
                 getAllTaxonsByCollectionIdAndTaxonomicalRangeId(
-                getAraSessionBean().getGlobalCollectionId(), taxonomicLevel);
+                getAraSessionBean().getGlobalCollectionId(), taxonomicLevel);*/
+
+
+        List<TaxonDTO> taxonList = getPassportSessionBean().
+                getGermplasmFacadeRemote().
+                getAllTaxonsByPlantaeKingdomAndTaxonomicalRangeId(taxonomicLevel);
 
         return this.setTaxonListOptions(taxonList);
 
