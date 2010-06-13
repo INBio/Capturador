@@ -149,4 +149,15 @@ public class TaxonEAOImpl extends BaseEAOImpl<Taxon,Long> implements TaxonEAOLoc
                 q.setParameter("taxonomicalRangeId", taxonomicalRangeId);
         return (List<Taxon>)q.getResultList();
     }
+
+    public List<Taxon> getTaxonsByKingdomNameAndTaxonomicalRangeId(String kingdomName, Long taxonomicalRangeId)
+    {
+        Query q = em.createQuery(" select t1 " +
+                     " from Taxon t1, Taxon t2 "+
+                     " where t1.kingdomTaxonId = t2.taxonId and " +
+                     " t2.currentName = '" + kingdomName + "' and " +
+                     " t1.taxonomicalRangeId = :taxonomicalRangeId");
+                q.setParameter("taxonomicalRangeId", taxonomicalRangeId);
+        return (List<Taxon>)q.getResultList();
+    }
 }

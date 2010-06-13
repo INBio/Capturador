@@ -50,4 +50,13 @@ public interface TaxonEAOLocal extends BaseLocalEAO<Taxon,Long> {
 
     public List<Taxon> getTaxonsByCollectionIdAndTaxonomicalRangeId(Long collectionId, Long taxonomicalRangeId);
 
+    /**
+     * This method search and retrieve all the taxons for an specify kingdom name and a
+     * taxonomical Range Id. EXAMPLES: "PLANTAE", "ANIMALIA".
+     * @param kingdomName String with the name of the kingdom
+     * @param taxonomicalRangeId Long with the value of the taxonomical Range
+     * @return List of Taxon
+     */
+    public List<Taxon> getTaxonsByKingdomNameAndTaxonomicalRangeId(String kingdomName, Long taxonomicalRangeId);
+
 }
