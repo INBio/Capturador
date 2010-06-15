@@ -2058,3 +2058,126 @@ ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT passport_id_fk 
                 --------------------------------------------------------------------------------
                 -- Hata aquí quedó la versión para la segunda visita a Bután 11 Junio 2010  --
                 --------------------------------------------------------------------------------
+
+--2010.06.15 gsulca
+--
+-- Actualizaciones para renombrar REFERENCE por DUBLIN_CORE
+--
+
+--
+-- Actualizaciones sobre taxon_indicator_reference
+--
+
+-- Rename table taxon_indicator_reference to taxon_indicator_dublin_core
+ALTER TABLE ARA.TAXON_INDICATOR_REFERENCE RENAME TO TAXON_INDICATOR_DUBLIN_CORE;
+-- Rename column reference_id from taxon_indicator_dublin_core to dublin_core_id
+ALTER TABLE ARA.TAXON_INDICATOR_DUBLIN_CORE RENAME COLUMN REFERENCE_ID TO DUBLIN_CORE_ID;
+-- Remove constraint TAXON_INDICATOR_REFERENCE_PK
+ALTER TABLE ARA.TAXON_INDICATOR_DUBLIN_CORE DROP CONSTRAINT TAXON_INDICATOR_REFERENCE_PK;
+-- Add constraint
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_DUBLIN_CORE ADD CONSTRAINT TAXON_INDICATOR_DUBLIN_CORE_PK primary key (DUBLIN_CORE_ID, INDICATOR_ID, TAXON_ID);
+
+
+--
+-- Actualizaciones sobre indicator_reference
+--
+
+-- Rename table indicator_reference to indicator_dublin_core
+ALTER TABLE ARA.INDICATOR_REFERENCE RENAME TO INDICATOR_DUBLIN_CORE;
+-- Rename column reference_id from indicator_dublin_core to dublin_core_id
+ALTER TABLE ARA.INDICATOR_DUBLIN_CORE RENAME COLUMN REFERENCE_ID TO DUBLIN_CORE_ID;
+-- Remove constraint INDICATOR_REFERENCE_PK
+ALTER TABLE ARA.INDICATOR_DUBLIN_CORE DROP CONSTRAINT INDICATOR_REFERENCE_PK;
+-- Add constraint INDICATOR_DUBLIN_CORE_pk
+ALTER TABLE ONLY ARA.INDICATOR_DUBLIN_CORE add constraint INDICATOR_DUBLIN_CORE_pk primary key (DUBLIN_CORE_ID, INDICATOR_ID);
+-- Remove constraint INDICATOR_REFERENCE_ID_FK
+ALTER TABLE ARA.INDICATOR_DUBLIN_CORE DROP CONSTRAINT INDICATOR_REFERENCE_ID_FK;
+-- Add constraint INDICATOR_DUBLIN_CORE_ID_FK
+ALTER TABLE ONLY ARA.INDICATOR_DUBLIN_CORE  ADD CONSTRAINT INDICATOR_DUBLIN_CORE_ID_FK FOREIGN KEY (INDICATOR_ID ) REFERENCES ARA.INDICATOR(INDICATOR_ID);
+
+
+
+---------------------------------------------
+    -- TABLES FOR DUBLIN_CORE MODULE --
+---------------------------------------------
+
+
+--
+-- Dublin Core Elements table
+--
+create table dublin_core_element (
+    id integer not null
+  , resource_id integer not null
+  , dublin_core_element_id integer not null
+  , value character varying(65535) not null
+  , language character varying(255) default null
+  --log fields
+  , creation_date date not null
+  , created_by character varying(255) not null
+  , last_modification_date date not null
+  , last_modification_by character varying(255) not null
+);
+
+alter table dublin_core_element add constraint dce_pkey primary key (id);
+alter table dublin_core_element add constraint dce_ukey1 unique (resource_id,dublin_core_element_id,value);
+
+
+--
+-- Dublin Core Descriptions table
+--
+create table dublin_core_description (
+    resource_id integer not null
+  , resource_type_id integer not null
+  , description character varying(255) default null
+  --log fields
+  , creation_date date not null
+  , created_by character varying(255) not null
+  , last_modification_date date not null
+  , last_modification_by character varying(255) not null
+);
+alter table dublin_core_description add constraint dcd_pkey primary key (resource_id);
+
+
+-- Agregar las nuevas tablas al SCHEMA de Ara
+ALTER TABLE dublin_core_description SET SCHEMA ara;
+ALTER TABLE dublin_core_element SET SCHEMA ara;
+
+-- Hacer OWNER a ara de las nuevas tablas
+ALTER TABLE dublin_core_description OWNER TO ara;
+ALTER TABLE dublin_core_element OWNER TO ara;
+
+
+--Create sequence dublin_core_description
+CREATE SEQUENCE ARA.DUBLIN_CORE_DESCRIPTION_SEQ;
+ALTER TABLE ARA.DUBLIN_CORE_DESCRIPTION ALTER COLUMN RESOURCE_ID SET DEFAULT nextval('ARA.DUBLIN_CORE_DESCRIPTION_SEQ'::regclass);
+ALTER TABLE ARA.DUBLIN_CORE_DESCRIPTION_SEQ OWNER TO ara;
+
+--Create sequence dublin_core_element
+CREATE SEQUENCE ARA.DUBLIN_CORE_ELEMENT_SEQ;
+ALTER TABLE ARA.DUBLIN_CORE_ELEMENT ALTER COLUMN ID SET DEFAULT nextval('ARA.DUBLIN_CORE_ELEMENT_SEQ'::regclass);
+ALTER TABLE ARA.DUBLIN_CORE_ELEMENT_SEQ OWNER TO ara;
+
+
+--
+-- Agregar columnas log files a las tablas del modulo indicadores
+--
+
+-- Add columns log fields to INDICATOR_DUBLIN_CORE
+ALTER TABLE ARA.INDICATOR_DUBLIN_CORE ADD COLUMN creation_date date not null;
+ALTER TABLE ARA.INDICATOR_DUBLIN_CORE ADD COLUMN created_by character varying(255) not null;
+ALTER TABLE ARA.INDICATOR_DUBLIN_CORE ADD COLUMN last_modification_date date not null;
+ALTER TABLE ARA.INDICATOR_DUBLIN_CORE ADD COLUMN last_modification_by character varying(255) not null;
+
+-- Add columns log fields to TAXON_INDICATOR_DUBLIN_CORE
+ALTER TABLE ARA.TAXON_INDICATOR_DUBLIN_CORE ADD COLUMN creation_date date not null;
+ALTER TABLE ARA.TAXON_INDICATOR_DUBLIN_CORE ADD COLUMN created_by character varying(255) not null;
+ALTER TABLE ARA.TAXON_INDICATOR_DUBLIN_CORE ADD COLUMN last_modification_date date not null;
+ALTER TABLE ARA.TAXON_INDICATOR_DUBLIN_CORE ADD COLUMN last_modification_by character varying(255) not null;
+
+-- Add columns log fields to TAXON_INDICATOR_COMPONENT_PART
+ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN creation_date date not null;
+ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN created_by character varying(255) not null;
+ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN last_modification_date date not null;
+ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN last_modification_by character varying(255) not null;
+
+
