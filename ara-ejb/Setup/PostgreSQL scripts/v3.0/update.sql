@@ -2055,19 +2055,158 @@ ALTER TABLE ONLY ara.passport_nomenclatural_group
 ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT nomenclatural_group_id_fk FOREIGN KEY (nomenclatural_group_id) REFERENCES ara.nomenclatural_group(nomenclatural_group_id) ON DELETE CASCADE;
 ALTER TABLE ONLY ara.passport_nomenclatural_group ADD CONSTRAINT passport_id_fk FOREIGN KEY (passport_id) REFERENCES ara.passport(passport_id) ON DELETE CASCADE;
 
+--2010.06.15 esmata
+create or replace function ara.species_standard_element_content (arg_taxon_id NUMERIC, arg_taxon_description_sequence NUMERIC,
+                                       arg_standard_concept TEXT, arg_with_label NUMERIC, arg_separator TEXT) returns text as '
+
+DECLARE
+
+--Fetch var
+aStandardConcept text;
+aElementSequence int4;
+aElementName text;
+aRecordSequence int4;
+aContentsText text;
+aContentsNum numeric;
+aTableName text;
+aMainFieldName text;
+
+-- Temp var
+aCurrentRecordSequence int4;
+aLabelTemp text;
+
+-- Result string
+aFullContent text;
+
+speciesDescription CURSOR IS
+ select tdc.standard_concept, tde.sequence as element_sequence, tde.name,
+        tdr.sequence as record_sequence, tdr.contents_text, tdr.contents_numeric,
+        tde.table_name, tde.main_field_name
+   from ara.taxon_description_category tdc, ara.taxon_description_element tde, ara.taxon_description_record tdr
+   where tdr.taxon_id = arg_taxon_id and
+         tdr.taxon_description_sequence = arg_taxon_description_sequence and
+         tdc.standard_concept = arg_standard_concept and
+         tdc.taxon_description_category_id = tde.taxon_description_category_id and
+         tde.taxon_description_element_id = tdr.taxon_description_element_id
+   order by tdc.taxon_description_category_id, tdr.taxon_description_record_id,tdr.sequence ;
+
+
+BEGIN
+   -- Procedure Name: species_standard_element_content
+
+   -- Returns the content of a species standard element.  The content could be the result of concatening
+   --    a group of records.
+   -- Nota:  En la tabla ara.taxon_description_element existe un campo que se llama table_name en el cual por error
+   --        se esta almacenando el nombre del la clase (EJB) por lo que temporalmente se alambro en el codigo el nombre
+   --        de las tablas que contienen los nombre de las listas de seleccion mientras se agrega un campo con el nombre de la tabla.
+
+   --   Los nombres alambrados corresponden a:
+   --       InteractionType
+   --       GeographicCatalogue
+   --       GeographicEntity
+   --       ReferenceType
+
+   -- Created to be use during the generation of the Plinian Core snapshot.
+
+   -- Revisión History:
+   --   December 9,  2009 - Maria  Mora
+
+   -- Arguments (input / output):
+   --    arg_taxon_id NUMBER,                    Taxon identifier
+   --    arg_taxon_description_sequence NUMBER   Species record version
+   --    arg_standard_concept text,              The concept name as defined by the used standard (currently Plinian Core)
+   --    arg_with_label                          Define if the return text must include the elements name (1=Yes, 0=no)
+   --    arg_separator                           Element separator
+
+   -- Return Values: aFullContent
+
+
+   aFullContent = '''';
+
+   OPEN speciesDescription;
+
+   FETCH speciesDescription INTO aStandardConcept, aElementSequence, aElementName, aRecordSequence,
+                                  aContentsText, aContentsNum, aTableName, aMainFieldName ;
+
+   aCurrentRecordSequence = aRecordSequence;
+
+
+   WHILE FOUND LOOP
+
+     IF aCurrentRecordSequence != aRecordSequence THEN
+        aCurrentRecordSequence = aRecordSequence;
+        aFullContent = aFullContent || ''<br>'' ;
+     END IF;
+
+     IF aContentsText is not NULL THEN
+
+        IF arg_with_label = 1 THEN
+           aFullContent = aFullContent || '' <b>'' ||aElementName  || '':</b> '' || aContentsText || arg_separator ;
+        ELSE
+           aFullContent = aFullContent  || aContentsText || arg_separator;
+        END IF;
+
+     ELSE
+         aLabelTemp = '''';
+
+         IF aContentsNum is not null and aTableName is not null THEN
+
+            IF TRIM(aTableName) = ''InteractionType'' THEN
+               SELECT name INTO aLabelTemp  FROM ara.Interaction_Type
+                 WHERE interaction_type_id = aContentsNum ;
+            END IF;
+
+            IF TRIM(aTableName) = ''GeographicCatalogue'' THEN
+               SELECT name INTO aLabelTemp  FROM ara.Geographic_Catalogue
+                 WHERE geographic_catalogue_id = aContentsNum ;
+            END IF;
+
+            IF TRIM(aTableName) = ''GeographicEntity'' THEN
+               SELECT name INTO aLabelTemp  FROM ara.Geographic_Entity
+                 WHERE geographic_entity_id = aContentsNum ;
+            END IF;
+
+            IF TRIM(aTableName) = ''ReferenceType'' THEN
+               SELECT name INTO aLabelTemp  FROM ara.Reference_Type
+                 WHERE reference_type_id = aContentsNum ;
+            END IF;
+
+            IF TRIM(aTableName) = ''Country'' THEN
+               SELECT value INTO aLabelTemp  FROM ara.Country
+                 WHERE country_id = aContentsNum ;
+            END IF;
+
+            IF arg_with_label = 1 THEN
+               aFullContent = aFullContent || '' <b>'' ||aElementName  || '':</b> '' || aLabelTemp  || arg_separator;
+            ELSE
+               aFullContent = aFullContent || aLabelTemp  || arg_separator ;
+            END IF;
+
+         END IF;
+
+     END IF;
+
+     FETCH speciesDescription INTO aStandardConcept, aElementSequence, aElementName, aRecordSequence,
+                                  aContentsText, aContentsNum, aTableName, aMainFieldName ;
+
+   END LOOP;
+
+   CLOSE speciesDescription ;
+
+   RETURN aFullContent;
+END;
+' language 'plpgsql';
+
                 --------------------------------------------------------------------------------
                 -- Hata aquí quedó la versión para la segunda visita a Bután 11 Junio 2010  --
                 --------------------------------------------------------------------------------
 
 --2010.06.15 gsulca
---
 -- Actualizaciones para renombrar REFERENCE por DUBLIN_CORE
---
 
 --
 -- Actualizaciones sobre taxon_indicator_reference
 --
-
 -- Rename table taxon_indicator_reference to taxon_indicator_dublin_core
 ALTER TABLE ARA.TAXON_INDICATOR_REFERENCE RENAME TO TAXON_INDICATOR_DUBLIN_CORE;
 -- Rename column reference_id from taxon_indicator_dublin_core to dublin_core_id
@@ -2077,11 +2216,9 @@ ALTER TABLE ARA.TAXON_INDICATOR_DUBLIN_CORE DROP CONSTRAINT TAXON_INDICATOR_REFE
 -- Add constraint
 ALTER TABLE ONLY ARA.TAXON_INDICATOR_DUBLIN_CORE ADD CONSTRAINT TAXON_INDICATOR_DUBLIN_CORE_PK primary key (DUBLIN_CORE_ID, INDICATOR_ID, TAXON_ID);
 
-
 --
 -- Actualizaciones sobre indicator_reference
 --
-
 -- Rename table indicator_reference to indicator_dublin_core
 ALTER TABLE ARA.INDICATOR_REFERENCE RENAME TO INDICATOR_DUBLIN_CORE;
 -- Rename column reference_id from indicator_dublin_core to dublin_core_id
@@ -2095,12 +2232,9 @@ ALTER TABLE ARA.INDICATOR_DUBLIN_CORE DROP CONSTRAINT INDICATOR_REFERENCE_ID_FK;
 -- Add constraint INDICATOR_DUBLIN_CORE_ID_FK
 ALTER TABLE ONLY ARA.INDICATOR_DUBLIN_CORE  ADD CONSTRAINT INDICATOR_DUBLIN_CORE_ID_FK FOREIGN KEY (INDICATOR_ID ) REFERENCES ARA.INDICATOR(INDICATOR_ID);
 
-
-
 ---------------------------------------------
     -- TABLES FOR DUBLIN_CORE MODULE --
 ---------------------------------------------
-
 
 --
 -- Dublin Core Elements table
@@ -2121,7 +2255,6 @@ create table dublin_core_element (
 alter table dublin_core_element add constraint dce_pkey primary key (id);
 alter table dublin_core_element add constraint dce_ukey1 unique (resource_id,dublin_core_element_id,value);
 
-
 --
 -- Dublin Core Descriptions table
 --
@@ -2137,7 +2270,6 @@ create table dublin_core_description (
 );
 alter table dublin_core_description add constraint dcd_pkey primary key (resource_id);
 
-
 -- Agregar las nuevas tablas al SCHEMA de Ara
 ALTER TABLE dublin_core_description SET SCHEMA ara;
 ALTER TABLE dublin_core_element SET SCHEMA ara;
@@ -2145,7 +2277,6 @@ ALTER TABLE dublin_core_element SET SCHEMA ara;
 -- Hacer OWNER a ara de las nuevas tablas
 ALTER TABLE dublin_core_description OWNER TO ara;
 ALTER TABLE dublin_core_element OWNER TO ara;
-
 
 --Create sequence dublin_core_description
 CREATE SEQUENCE ARA.DUBLIN_CORE_DESCRIPTION_SEQ;
@@ -2157,11 +2288,9 @@ CREATE SEQUENCE ARA.DUBLIN_CORE_ELEMENT_SEQ;
 ALTER TABLE ARA.DUBLIN_CORE_ELEMENT ALTER COLUMN ID SET DEFAULT nextval('ARA.DUBLIN_CORE_ELEMENT_SEQ'::regclass);
 ALTER TABLE ARA.DUBLIN_CORE_ELEMENT_SEQ OWNER TO ara;
 
-
 --
 -- Agregar columnas log files a las tablas del modulo indicadores
 --
-
 -- Add columns log fields to INDICATOR_DUBLIN_CORE
 ALTER TABLE ARA.INDICATOR_DUBLIN_CORE ADD COLUMN creation_date date not null;
 ALTER TABLE ARA.INDICATOR_DUBLIN_CORE ADD COLUMN created_by character varying(255) not null;
@@ -2179,5 +2308,3 @@ ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN creation_date date not
 ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN created_by character varying(255) not null;
 ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN last_modification_date date not null;
 ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN last_modification_by character varying(255) not null;
-
-
