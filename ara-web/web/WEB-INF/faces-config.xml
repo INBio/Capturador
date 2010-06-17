@@ -548,7 +548,29 @@
         <managed-bean-class>org.inbio.ara.germplasm.SemenGatheringSessionBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+
+     <managed-bean>
+        <managed-bean-name>indicator$EditIndicator</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.indicator.EditIndicator</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>indicator$ListIndicator</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.indicator.ListIndicator</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>indicator$IndicatorSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.indicator.IndicatorSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>indicator$NewIndicator</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.indicator.NewIndicator</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
     
+
 
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS DE NAVEGACION ENTRE LOS DIFERENTES JSP'S -->
 
@@ -679,6 +701,14 @@
             <to-view-id>/taxonomy/ListNomenclaturalGroup.jsp</to-view-id>
             <redirect/>
         </navigation-case>
+
+          <navigation-case>
+            <from-outcome>listIndicator</from-outcome>
+            <to-view-id>/indicator/ListIndicator.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+
+
 
         <!-- Germoplasma Module -->
 
@@ -1408,6 +1438,40 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+
+
+    
+      <navigation-rule>
+        <from-view-id>/indicator/ListIndicator.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/indicator/NewIndicator.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/indicator/EditIndicator.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/indicator/NewIndicator.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/indicator/ListIndicator.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/indicator/EditIndicator.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/indicator/ListIndicator.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
+
 </faces-config>
 
 
