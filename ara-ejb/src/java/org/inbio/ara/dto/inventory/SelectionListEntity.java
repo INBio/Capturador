@@ -33,6 +33,7 @@ import org.inbio.ara.persistence.specimen.LifeForm;
 import org.inbio.ara.persistence.germplasm.Solvent;
 import org.inbio.ara.persistence.germplasm.SemenGatheringMethod;
 import org.inbio.ara.persistence.germplasm.Condition;
+import org.inbio.ara.persistence.indicator.ComponentPart;
 /**
  *
  * Esta clase esta hecha para poder llegarle desde el Objeto ListTable a las
@@ -60,8 +61,8 @@ public enum SelectionListEntity {
     LIFE_FORM(new Long(11),new LifeForm(), true,"sle_life_form",LifeForm.class.getName()),
     EXTRACTION_TYPE(new Long(13), new ExtractionType(), true,"sle_extraction_type",ExtractionType.class.getName()),
     
-    /*COMPONENT_PART(new Long(14), new ComponentPart(), true, "sle_component_part", ComponentPart.class.getName()),
-    
+    COMPONENT_PART(new Long(14), new ComponentPart(), true, "sle_component_part", ComponentPart.class.getName()),
+    /*
     PREPARATION_METHOD(17, new PreparationMethod(), true),
     SAMPLING_TYPE(18, new SamplingType(), true),
     TAXON_AUTHOR_CONNECTOR(19, new TaxonAuthorConnector(), true),
