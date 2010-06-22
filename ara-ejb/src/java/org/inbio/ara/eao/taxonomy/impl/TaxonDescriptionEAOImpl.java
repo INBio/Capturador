@@ -5,11 +5,13 @@
 
 package org.inbio.ara.eao.taxonomy.impl;
 
+import java.util.List;
 import org.inbio.ara.eao.taxonomy.*;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import org.inbio.ara.eao.BaseEAOImpl;
 import org.inbio.ara.persistence.taxonomy.TaxonDescription;
+import org.inbio.ara.persistence.taxonomy.TaxonDescriptionPK;
 
 /**
  *
@@ -40,6 +42,54 @@ public class TaxonDescriptionEAOImpl  extends BaseEAOImpl<TaxonDescription,Long>
             return result;
         }
         catch(Exception e){return null;}
+    }
+
+    public List<TaxonDescriptionPK> findByTaxonName(String taxonName) {
+        Query q = em.createQuery(
+                " select td.taxonDescriptionPK " +
+                " from TaxonDescription td " +
+                " where lower(td.taxon.defaultName) like '%"+ taxonName.toLowerCase() +"%' " +
+                " order by td.taxon.defaultName");
+        return q.getResultList();
+    }
+
+    public List<TaxonDescriptionPK> findByKingdomId(Long kingdomId) {
+        Query q = em.createQuery(
+                " select td.taxonDescriptionPK " +
+                " from TaxonDescription td " +
+                " where td.taxon.kingdomTaxonId = :kingdomId " +
+                " order by td.taxon.defaultName");
+        q.setParameter("kingdomId", kingdomId);
+        return q.getResultList();
+    }
+
+    public List<TaxonDescriptionPK> findByFamilyId(Long familyId) {
+        Query q = em.createQuery(
+                " select td.taxonDescriptionPK " +
+                " from TaxonDescription td " +
+                " where td.taxon.familyTaxonId = :familyId " +
+                " order by td.taxon.defaultName");
+        q.setParameter("familyId", familyId);
+        return q.getResultList();
+    }
+
+    public List<TaxonDescriptionPK> findByCreatedBy(String createdBy) {
+        Query q = em.createQuery(
+                " select td.taxonDescriptionPK " +
+                " from TaxonDescription td " +
+                " where lower(td.createdBy) like '%"+ createdBy.toLowerCase() +"%' " +
+                " order by td.taxon.defaultName");
+        return q.getResultList();
+    }
+
+    public List<TaxonDescriptionPK> findBySequence(Long sequence) {
+        Query q = em.createQuery(
+                " select td.taxonDescriptionPK " +
+                " from TaxonDescription td " +
+                " where td.taxonDescriptionPK.taxonDescriptionSequence = :sequence " +
+                " order by td.taxon.defaultName");
+        q.setParameter("sequence", sequence);
+        return q.getResultList();
     }
  
 }

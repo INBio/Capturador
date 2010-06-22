@@ -113,6 +113,7 @@ import org.inbio.ara.persistence.taxonomy.TaxonDescriptionCategory;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionElement;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionInstitution;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionInstitutionPK;
+import org.inbio.ara.persistence.taxonomy.TaxonDescriptionPK;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionPersonProfile;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionPersonProfilePK;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionRecord;
@@ -234,6 +235,135 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
                     taxonDescriptionDTOFactory.createDTOList(tdList);
             return updateFamilyAndKingdom(dtoList);
         }
+    }
+
+    /**
+     * Get the entities for a list of Longs
+     * @param ids
+     * @param t
+     * @param base
+     * @param offset
+     * @return
+     */
+    private List getEntities(Set<TaxonDescriptionPK> ids, Class t, int base, int offset)
+    {
+        List entitiesList = new ArrayList();
+        Object[] tdids = ids.toArray();
+        TaxonDescriptionPK tdpk;
+        int baseCounter = 0;
+        int entitiesCounter = 0;
+        for (int i = 0; i < ids.size(); i++)
+        {
+
+            if (baseCounter < base)
+            {
+                baseCounter++;
+            }
+            else if(entitiesCounter < offset)
+            {
+                if(t == TaxonDescription.class)
+                {
+                    tdpk = (TaxonDescriptionPK)tdids[i];
+                    entitiesList.add(taxonDescriptionEAOImpl.
+                        findByPK(tdpk.getTaxonId(),tdpk.getTaxonDescriptionSequence()));
+                }
+                entitiesCounter++;
+            }
+        }
+        return entitiesList;
+    }
+
+    public Long countTaxonDescriptionSimpleSearch(String query)
+    {
+        Integer quantity = new Integer(unstructeredTaxonDescriptionQuery(splitQuery(query)).size());
+        return quantity.longValue();
+    }
+
+    public List<TaxonDescriptionDTO> getTaxonDescriptionSimpleSearch(String query, int firstResult, int maxResult)
+    {
+
+        Set<TaxonDescriptionPK> taxonDescriptionIds = unstructeredTaxonDescriptionQuery(splitQuery(query));
+        List<TaxonDescription> taxonDescriptionList =
+                getEntities(taxonDescriptionIds, TaxonDescription.class, firstResult, maxResult);
+        return updateFamilyAndKingdom(taxonDescriptionDTOFactory.createDTOList(taxonDescriptionList));
+    }
+
+    /**
+     * Use this method for TaxonDescription simple search:
+     * unstructuredSementalQuery: search by default name,kingdom,family,sequence,createdBy,
+     * veterinarian status,condition and animal description
+     * @param parts
+     * @return Set<Long>
+     */
+    private Set<TaxonDescriptionPK> unstructeredTaxonDescriptionQuery(String[] parts)
+    {
+        Set<TaxonDescriptionPK> list = new HashSet();
+        List<TaxonDescriptionPK> ids = null;
+
+
+
+        List<Long> taxonIds;
+        for (int i = 0; i < parts.length; i++)
+        {
+            //try to cast it
+            try
+            {
+                //find by taxon name
+                ids = taxonDescriptionEAOImpl.findByTaxonName(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by kingdom
+                taxonIds = taxonEAOImpl.findByTaxonName(parts[i]);
+                if(taxonIds != null & !taxonIds.isEmpty())
+                {
+                    for (int j = 0; j < taxonIds.size(); j++)
+                    {
+                        ids = taxonDescriptionEAOImpl.findByKingdomId(taxonIds.get(j));
+                        if(ids != null && !ids.isEmpty())
+                            list.addAll(ids);
+                    }
+                    taxonIds = null;
+                }
+
+                //find by animal family
+                taxonIds = taxonEAOImpl.findByTaxonName(parts[i]);
+                if(taxonIds != null & !taxonIds.isEmpty())
+                {
+                    for (int j = 0; j < taxonIds.size(); j++)
+                    {
+                        ids = taxonDescriptionEAOImpl.findByFamilyId(taxonIds.get(j));
+                        if(ids != null && !ids.isEmpty())
+                            list.addAll(ids);
+                    }
+                    taxonIds = null;
+                }
+
+                //find by created by
+                ids = taxonDescriptionEAOImpl.findByCreatedBy(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by sequence
+                ids = taxonDescriptionEAOImpl.findBySequence(Long.parseLong(parts[i]));
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+            }
+            catch(Exception e){}
+        }
+        return list;
+    }
+
+    /**
+     * Split the query
+     * @param query
+     * @return
+     */
+    private String[] splitQuery(String query)
+    {
+            if(query == null || query.length() == 0)
+                return null;
+            return query.split(" ");
     }
 
     private List<TaxonDescriptionDTO> updateFamilyAndKingdom(List<TaxonDescriptionDTO> dtoList) {

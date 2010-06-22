@@ -173,4 +173,20 @@ public interface TaxonomyFacadeRemote {
     public java.util.List<org.inbio.ara.dto.taxonomy.RegionDTO> getRegionsByNomenclaturalGroup(java.lang.Long ngId);
 
     public java.lang.Long getAssociatedNumenclaturalG(java.lang.Long taxonId);
+
+    /**
+     * Execute the simple search for taxon description
+     * @param query
+     * @param firstResult
+     * @param maxResult
+     * @return
+     */
+    public List<TaxonDescriptionDTO> getTaxonDescriptionSimpleSearch(String query, int firstResult, int maxResult);
+
+    /**
+     * Count the simple search results for taxon description
+     * @param query
+     * @return
+     */
+    public Long countTaxonDescriptionSimpleSearch(String query);
 }
