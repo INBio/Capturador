@@ -223,7 +223,10 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
      */
     public List<TaxonDescriptionDTO> getAllTaxonDescriptionPaginated(int first, int totalResults) {
 
-        List<TaxonDescription> tdList = taxonDescriptionEAOImpl.findAllPaginatedFilterAndOrderBy(TaxonDescription.class, first, totalResults,null,null);
+        String[] order = {"taxon.defaultName"};
+        List<TaxonDescription> tdList = taxonDescriptionEAOImpl.
+                findAllPaginatedFilterAndOrderBy(
+                TaxonDescription.class, first, totalResults,order,null);
         if (tdList == null) {
             return null;
         } else {
