@@ -106,6 +106,14 @@ implements Serializable, PaginationCoreInterface {
     //Objeto AddRemoveList para manejar los valores del tab de instituciones (ventana edit)
     private AddRemoveList arInstitutions = new AddRemoveList();
 
+
+
+    //Bandera para indicarle al paginador que trabaje en modo busqueda simple
+    private boolean queryModeSimple = false;
+    //String que indica la consulta del usuario en la busqueda simple
+    private String consultaSimple = new String("");
+
+
     /**
      * Bandera muy importante para el correcto funcionamiento de los
      * AddRemove components de la pantalla de editar
@@ -821,7 +829,67 @@ implements Serializable, PaginationCoreInterface {
     }
 
     public List getResults(int firstResult, int maxResults) {
-        return taxonomyFacadeImpl.getAllTaxonDescriptionPaginated(firstResult, maxResults);
+        
+
+        if (isQueryModeSimple()) { //En caso de que sea busqueda simple
+            try {
+            
+                return myReturn(taxonomyFacadeImpl.getTaxonDescriptionSimpleSearch
+                       (getConsultaSimple(),
+                        firstResult, maxResults));
+            } catch (Exception e) {
+                return new ArrayList<TaxonDescriptionDTO>();
+            }
+        } else //Valores default
+        {
+            try {
+                return taxonomyFacadeImpl.getAllTaxonDescriptionPaginated(firstResult, maxResults);
+
+            } catch (Exception e) {
+                return new ArrayList<TaxonDescriptionDTO>();
+            }
+        }
+    }
+
+    /**
+     * Para evitar que retorne null al data provider del paginador
+     * @param l lista retornada para el paginador
+     * @return
+     */
+    public List myReturn(List l) {
+        if (l == null) {
+            return new ArrayList<TaxonDescriptionDTO>();
+        } else {
+            return l;
+        }
+    }
+
+    /**
+     * @return the queryModeSimple
+     */
+    public boolean isQueryModeSimple() {
+        return queryModeSimple;
+    }
+
+    /**
+     * @param queryModeSimple the queryModeSimple to set
+     */
+    public void setQueryModeSimple(boolean queryModeSimple) {
+        this.queryModeSimple = queryModeSimple;
+    }
+
+    /**
+     * @return the consultaSimple
+     */
+    public String getConsultaSimple() {
+        return consultaSimple;
+    }
+
+    /**
+     * @param consultaSimple the consultaSimple to set
+     */
+    public void setConsultaSimple(String consultaSimple) {
+        this.consultaSimple = consultaSimple;
     }
 
     private class TaxonDescriptionRowDataProviderImpl

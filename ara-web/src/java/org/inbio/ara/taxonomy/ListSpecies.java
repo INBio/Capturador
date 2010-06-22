@@ -23,7 +23,9 @@ import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.faces.FacesException;
+import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import org.inbio.ara.statistics.StatisticsSessionBean;
 import org.inbio.ara.security.SystemUserSessionBean;
@@ -71,6 +73,10 @@ public class ListSpecies extends AbstractPageBean {
 
     //Variable que contiene los datos de la paginacion para ser mostrados en la tabla
     private String quantityTotal = new String();
+
+    /*Componentes de busquedas*/
+    private HtmlCommandButton btnSearchSpecies = new HtmlCommandButton(); //Boton busqueda simple
+    private HtmlInputText txSearchSpecies = new HtmlInputText(); //Input text de busqueda simple
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -398,6 +404,70 @@ public class ListSpecies extends AbstractPageBean {
             return null;
         }
     }
+
+    /**
+     * Metodo ejecutado por el boton de busqueda simple
+     * @return
+     */
+    public String btnSpeciesSearch_action() {
+        String userInput = "";
+        if(this.getTxSearchSpecies().getValue()!= null)
+            userInput = this.getTxSearchSpecies().getValue().toString();
+        userInput = userInput.trim();
+        System.out.println(1);
+        if(userInput.length()==0){
+            //Se desabilitan las banderas de busqueda simple y avanzada
+            this.gettaxonomy$SpeciesSessionBean().setQueryModeSimple(false);
+            //Finalmente se setea el data provider del paginador con los datos por default
+            this.gettaxonomy$SpeciesSessionBean().getPagination().setTotalResults
+                    (gettaxonomy$SpeciesSessionBean().getTaxonomyFacadeImpl().
+                    countTaxonDescriptions().intValue());
+        }
+        else{
+            //Setear el string para consulta simple del SessionBean
+            this.gettaxonomy$SpeciesSessionBean().setConsultaSimple(userInput);
+            //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda simple
+            this.gettaxonomy$SpeciesSessionBean().setQueryModeSimple(true);
+            
+            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
+            this.gettaxonomy$SpeciesSessionBean().getPagination().setTotalResults
+                    (gettaxonomy$SpeciesSessionBean().getTaxonomyFacadeImpl().
+                    countTaxonDescriptionSimpleSearch(
+                    userInput).intValue());
+        }
+        //set the first result of the query
+        this.gettaxonomy$SpeciesSessionBean().getPagination().firstResults();
+        return null;
+    }
+
+    /**
+     * @return the btnSearchSpecies
+     */
+    public HtmlCommandButton getBtnSearchSpecies() {
+        return btnSearchSpecies;
+    }
+
+    /**
+     * @param btnSearchSpecies the btnSearchSpecies to set
+     */
+    public void setBtnSearchSpecies(HtmlCommandButton btnSearchSpecies) {
+        this.btnSearchSpecies = btnSearchSpecies;
+    }
+
+    /**
+     * @return the txSearchSpecies
+     */
+    public HtmlInputText getTxSearchSpecies() {
+        return txSearchSpecies;
+    }
+
+    /**
+     * @param txSearchSpecies the txSearchSpecies to set
+     */
+    public void setTxSearchSpecies(HtmlInputText txSearchSpecies) {
+        this.txSearchSpecies = txSearchSpecies;
+    }
+
     
 }
 
