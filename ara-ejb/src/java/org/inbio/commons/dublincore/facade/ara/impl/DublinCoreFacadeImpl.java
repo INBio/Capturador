@@ -9,22 +9,23 @@ package org.inbio.commons.dublincore.facade.ara.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import org.inbio.commons.dublincore.dao.DublinCoreElementDAO;
 import org.inbio.commons.dublincore.dto.DublinCoreDTO;
 
 
 import org.inbio.commons.dublincore.dto.ElementTypeDTO;
-import org.inbio.commons.dublincore.dto.ReferenceDTO;
+
+import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
 import org.inbio.commons.dublincore.eao.ara.DublinCoreDescriptionEAOLocal;
 import org.inbio.commons.dublincore.eao.ara.DublinCoreElementEAOLocal;
 import org.inbio.commons.dublincore.facade.ara.DublinCoreFacadeRemote;
 import org.inbio.commons.dublincore.manager.impl.DublinCoreMetadataManagerImpl;
 import org.inbio.commons.dublincore.model.DublinCoreDescription;
-import org.inbio.commons.dublincore.model.DublinCoreElement;
 import org.inbio.commons.dublincore.model.DublinCoreElementEnum;
 import org.inbio.commons.dublincore.model.ResourceTypeEnum;
 
@@ -33,90 +34,68 @@ import org.inbio.commons.dublincore.model.ResourceTypeEnum;
  *
  * @author gsulca
  */
-@Stateless
+//@Stateless
+@Stateless(name="DublinCoreFacadeImpl")
 public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implements DublinCoreFacadeRemote{
 
-  
-        @EJB
-	DublinCoreElementEAOLocal dublinCoreElementDAOImpl;
 
-        @EJB
+        @EJB(beanName="DublinCoreElementEAOImpl")
+        DublinCoreElementEAOLocal dublinCoreElementDAOImpl;
+       
+        @EJB(beanName="DublinCoreDescriptionEAOImpl")
 	DublinCoreDescriptionEAOLocal dublinCoreDescriptionDAOImpl;
 
-
-
-	public DublinCoreDTO getMetadataByResourceKey(String key) {
-
-		System.out.println("el Key es: "+key);
-
-		DublinCoreDTO dcDTO= new DublinCoreDTO();
-		String elementName;
-                dcDTO.setResourceId(Integer.parseInt(key));
-		//List<DublinCoreElement> dceList = dublinCoreElementDAOImpl.findAllByResourceId(Integer.valueOf(key).intValue());
-		for(DublinCoreElement dce : dublinCoreElementDAOImpl.findAllByResourceId(Integer.valueOf(key).intValue())){
-			//System.out.println("Dublin Core Element> "+dce.toString());
-			elementName = DublinCoreElementEnum.getNameById(dce.getDublinCoreElementId());
-			dcDTO.addElement(elementName, dce.getValue(), dce.getLanguage());
-		}
-
-		return dcDTO;
-	}
-    
-     public Long countResourceByTypeId(int typeId) {
-        return dublinCoreDescriptionDAOImpl.countResourceByTypeId(typeId);
-    }
-
-
-
-     public Long countSimpleSearch(String query) {
-             Integer quantity = new Integer(unstructeredReferenceQuery(splitQuery(query)).size());
-             return quantity.longValue();
-        }
-
-     /**
-     * Use this method for semental simple search:
-     * unstructuredSementalQuery: search by breed name, animal name, animal code,
-     * veterinarian status,condition and animal description
-     * @param parts
-     * @return Set<Long>
-     */
-    private Set<Integer> unstructeredReferenceQuery(String[] parts)
-    {
-        Set<Integer> list = new HashSet();
-        List<Integer> ids = null;
-
-
-
-        for (int i = 0; i < parts.length; i++)
+        @PostConstruct
+        public void DublinCoreFacadeImpl()
         {
-            //try to cast it
-            try
-            {
-                //find by title
-                ids = dublinCoreElementDAOImpl.findByValue(DublinCoreElementEnum.TITLE.getId(),parts[i]);
-                if(ids != null && !ids.isEmpty())
-                    list.addAll(ids);
-
-                //find by creator
-                ids = dublinCoreElementDAOImpl.findByValue(DublinCoreElementEnum.CREATOR.getId(),parts[i]);;
-                if(ids != null && !ids.isEmpty())
-                    list.addAll(ids);
-
-                //find by date
-                ids = dublinCoreElementDAOImpl.findByValue(DublinCoreElementEnum.DATE.getId(),parts[i]);
-                if(ids != null && !ids.isEmpty())
-                    list.addAll(ids);
-
-                //find by animal code
-                ids = dublinCoreElementDAOImpl.findByValue(DublinCoreElementEnum.IDENTIFIER.getId(),parts[i]);
-                if(ids != null && !ids.isEmpty())
-                    list.addAll(ids);
-
-            }
-            catch(Exception e){}
+            super.setDublinCoreDescriptionDAOImpl(dublinCoreDescriptionDAOImpl);
+            super.setDublinCoreElementDAOImpl(dublinCoreElementDAOImpl);
         }
-        return list;
+
+
+        
+    public Long countSimpleSearch(String query) {
+         Integer quantity = new Integer(unstructeredReferenceQuery(splitQuery(query)).size());
+         return quantity.longValue();
     }
+         
+        private Set<Integer> unstructeredReferenceQuery(String[] parts)
+        {
+            Set<Integer> list = new HashSet();
+            List<Integer> ids = null;
+
+
+
+            for (int i = 0; i < parts.length; i++)
+            {
+                //try to cast it
+                try
+                {
+                    //find by title
+                    ids = dublinCoreElementDAOImpl.findByValue(DublinCoreElementEnum.TITLE.getId(),parts[i]);
+                    if(ids != null && !ids.isEmpty())
+                        list.addAll(ids);
+
+                    //find by creator
+                    ids = dublinCoreElementDAOImpl.findByValue(DublinCoreElementEnum.CREATOR.getId(),parts[i]);;
+                    if(ids != null && !ids.isEmpty())
+                        list.addAll(ids);
+
+                    //find by date
+                    ids = dublinCoreElementDAOImpl.findByValue(DublinCoreElementEnum.DATE.getId(),parts[i]);
+                    if(ids != null && !ids.isEmpty())
+                        list.addAll(ids);
+
+                    //find by animal code
+                    ids = dublinCoreElementDAOImpl.findByValue(DublinCoreElementEnum.IDENTIFIER.getId(),parts[i]);
+                    if(ids != null && !ids.isEmpty())
+                        list.addAll(ids);
+
+                }
+                catch(Exception e){}
+            }
+            return list;
+        }
 
 
        public List<DublinCoreDTO> getReferenceSimpleSearch(String query, int firstResult, int maxResult) {
@@ -166,79 +145,6 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
     }
 
 
-
-        /**
-     * Get the entities for a list of Longs
-     * @param ids
-     * @param t
-     * @param base
-     * @param offset
-     * @return
-     */
-   /*
-    private List getEntities(Set<Long> ids, Class t, int base, int offset)
-    {
-        List entitiesList = new ArrayList();
-        Object[] sortedIdentificationIds = ids.toArray();
-        java.util.Arrays.sort(sortedIdentificationIds);
-        int entitiesCounter = 0;
-        int baseCounter = 0;
-        if(sortedIdentificationIds.length > base)
-        {
-            for (Object id : sortedIdentificationIds)
-            {
-                if (baseCounter < base)
-                {
-                    baseCounter++;
-                }
-                else if(entitiesCounter < offset)
-                {
-                    if(t == Passport.class)
-                    {
-                        entitiesList.add(passportEAOLocal.
-                            findById(Passport.class, (Long)id));
-                    }
-                    else
-                    {
-                        if(t == Accession.class)
-                        {
-                            entitiesList.add(accessionEAOLocal.
-                                findById(Accession.class, (Long)id));
-                        }
-                        else
-                        {
-                            if(t == Breed.class)
-                            {
-                                entitiesList.add(breedEAOLocal.
-                                    findById(Breed.class, (Long)id));
-                            }
-                            else
-                            {
-                                if(t == Semental.class)
-                                {
-                                    entitiesList.add(sementalEAOLocal.
-                                        findById(Semental.class, (Long)id));
-                                }
-                                else
-                                {
-                                    if(t == SemenGathering.class)
-                                    {
-                                        entitiesList.add(semenGatheringEAOLocal.
-                                            findById(SemenGathering.class, (Long)id));
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    entitiesCounter++;
-                }
-
-            }
-        }
-        return entitiesList;
-    }
-*/
     public List<DublinCoreDTO> getDublinCoreAdvancedSearch(DublinCoreDTO dublinCoreDTO, int firstResult, int maxResult) {
         Set<Integer> resourceIds = getDublinCoreByCriteria(dublinCoreDTO);
 
@@ -356,7 +262,8 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
         //System.out.println("*******************************\n"+element.toString()+"*******************************\n");
 
         /*Id can't be NULL*/
-        result.setResourceId(element.getResourceId());
+        //result.setResourceId(element.getResourceId());
+        result.setKey(element.getKey());
         //System.out.println("*** En la conversion del titulo: "+element.getElementValues("title").get(0).getValue());
         
         /*If title exist*/
@@ -392,6 +299,10 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
         return result;
     }
 
+  public Long countResourceByTypeId(int typeId) {
+        return dublinCoreDescriptionDAOImpl.countResourceByTypeId(typeId);
+    }
 
+  
 
 }

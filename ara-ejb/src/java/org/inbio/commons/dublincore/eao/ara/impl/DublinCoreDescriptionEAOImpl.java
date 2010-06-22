@@ -22,8 +22,7 @@ import org.inbio.commons.dublincore.model.DublinCoreDescription;
 @Stateless
 public class DublinCoreDescriptionEAOImpl extends BaseEAOImpl<DublinCoreDescription, Long> implements DublinCoreDescriptionEAOLocal {
     
-     @PersistenceContext
-        public EntityManager em;
+    
 
 	/* (non-Javadoc)
 	 * @see org.inbio.commons.dublincore.dao.DublinCoreElementDAO#findAllByResourceId(int)
