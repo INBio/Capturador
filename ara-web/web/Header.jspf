@@ -33,6 +33,10 @@
 									<li>
 										<webuijsf:hyperlink actionExpression="#{Header.menuModuleTaxa_action}" id="menuModuleTaxa" text="#{resources.menuModuleTaxa}" visible="false"/>
 									</li>
+                                                                        <li>
+                                                                                 <webuijsf:hyperlink actionExpression="#{Header.menuModuleIndicator_action}" id="menuModuleIndicator_action"
+                                                                                text="#{resources.menuModuleIndicator}" visible="false"/>
+                                                                        </li>
 								</ul>
 							</li>
 							<li class="inventory">

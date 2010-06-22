@@ -250,6 +250,11 @@ public class Header extends AbstractFragmentBean {
         return "adminGeographicalLayers";
     }
 
+    public String menuModuleIndicator_action() {
+        this.getSessionManager().setCurrentModuleId(new Long(29));
+        return "listIndicator";
+    }
+
     //Menú seguridad
     public String menuModuleGroups_action() {
         this.getSessionManager().setCurrentModuleId(new Long(10));
