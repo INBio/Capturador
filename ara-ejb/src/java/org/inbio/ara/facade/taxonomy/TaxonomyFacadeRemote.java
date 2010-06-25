@@ -138,6 +138,8 @@ public interface TaxonomyFacadeRemote {
 
 	public void deleteTaxon(Long taxonId);
 
+    public void updateTaxon(TaxonDTO taxonDTO);
+
     public List<NomenclaturalGroupDTO> getAllNomenclaturalGroupsPaginated(int firstResult, int maxResults, Long collectionEntity);
     public Long countAllNomenclaturalGroups();
 

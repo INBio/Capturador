@@ -118,6 +118,48 @@ public class EditTaxonomy extends AbstractPageBean {
     }
 
 
+        /**
+     * update the selected taxon.
+     * @return null
+     */
+    public String btnUpdateAction(){
+
+        TaxonomySessionBean tST = null;
+        TaxonDTO currentTaxon = null;
+        String	 clickedNodeId = null;
+        String  taxonRangeName = null;
+
+        tST = this.getTaxonomySessionBean();
+
+        // Gets the current selected Tree node item
+        clickedNodeId = this.displayTree.getSelected();
+
+        //If there isn't a selected node
+        if(clickedNodeId==null){
+            MessageBean.setErrorMessageFromBundle("not_selected_node",
+                    this.getMyLocale());
+            return null;
+        }
+
+        // Gets the current taxonDTO
+        if(tST.getTaxonId() != null){
+            currentTaxon = tST.getTaxon(tST.getTaxonId());
+
+           TreeNode node = this.displayTree.getChildNode(clickedNodeId);
+           TreeNode parent = Tree.getParentTreeNode(node);
+            
+           this.updateTaxon(currentTaxon, parent.getText());
+
+			//Refresh the Tree
+            taxonRangeName = tST.getTaxonRangeName(Long.valueOf(currentTaxon.getTaxonomicalRangeId()));
+
+            node.setText(currentTaxon.getCurrentName() + " ("+taxonRangeName+")");
+            this.treeItemClickHandler();
+        }
+
+        return null;
+    }
+
     /**
      * Add a taxon under the currently selected taxon.
      * @return null
@@ -164,6 +206,52 @@ public class EditTaxonomy extends AbstractPageBean {
 
         return null;
     }
+
+
+    	/**
+	 * complete the data necesary to create a new Taxon
+	 * @param newTaxon
+	 * @return a TaxonDTO
+	 */
+	private TaxonDTO updateTaxon(TaxonDTO updatedTaxon, String parentNodeName){
+
+		TaxonomySessionBean tST = null;
+        String taxonName = null;
+        String cleanParentName = null;
+
+		tST = this.getTaxonomySessionBean();
+
+		// create the taxonDTO to create the new TreeNode
+		updatedTaxon.setAncestorId(updatedTaxon.getAncestorId());
+		updatedTaxon.setTaxonKey(updatedTaxon.getTaxonKey());
+
+        updatedTaxon.setUserName(this.getAraSessionBean().getGlobalUserName());
+		updatedTaxon.setCollectionId(tST.getSelectedCollection());
+
+        updatedTaxon.setCurrentPredecessorTimestamp(updatedTaxon.getCurrentNameTimestamp());
+        updatedTaxon.setCurrentNameTimestamp(GregorianCalendar.getInstance());
+
+        if(updatedTaxon.getTaxonomicalRangeId() == 18){ // specie
+            cleanParentName = parentNodeName.substring(0, parentNodeName.indexOf(' '));
+            taxonName = cleanParentName+" "+tST.getTaxonName();
+        }else{
+            taxonName = tST.getTaxonName();
+        }
+
+        updatedTaxon.setDefaultName(taxonName);
+        updatedTaxon.setCurrentName(tST.getTaxonName());
+
+        if(updatedTaxon == null){
+            MessageBean.setErrorMessageFromBundle("cant_add_taxon_under_this_level", this.getMyLocale());
+            return null;
+        }
+
+		// save the new taxon into the database.
+		tST.updateTaxon(updatedTaxon);
+
+		return updatedTaxon;
+	}
+
 
 	/**
 	 * complete the data necesary to create a new Taxon
@@ -318,8 +406,8 @@ public class EditTaxonomy extends AbstractPageBean {
                 TreeNode parent = TreeNode.getParentTreeNode(node);
                 parent.getChildren().clear();
                 this.displayTree.setSelected(parent.getId());
-                this.treeItemClickHandler();
                 this.addTreeItems(parent.getId());
+                this.treeItemClickHandler();
             } else { //The node has associated specimens
                 MessageBean.setErrorMessageFromBundle("has_associated_specimen",
                         this.getMyLocale());
@@ -472,7 +560,7 @@ public class EditTaxonomy extends AbstractPageBean {
 
         // Sets the information
         tST.setTaxonId(taxonDTO.getTaxonKey());
-        tST.setTaxonName(taxonDTO.getDefaultName());
+        tST.setTaxonName(taxonDTO.getCurrentName());
         tST.setTaxonomicalLevel(taxonomicalRangeName);
         tST.setSelectedCollection(taxonDTO.getCollectionId());
     }

@@ -43,6 +43,8 @@
                                     <h:commandButton action="#{taxonomy$EditTaxonomy.btnAddAction}" disabled="false" id="btnAddTaxon" styleClass="My_Button" value="#{resources.btnNew}"/>
                                     <h:commandButton action="#{taxonomy$EditTaxonomy.btnDeleteAction}" disabled="false" id="btnDeleteTaxon"
                                         styleClass="My_Button" value="#{resources.btnDelete}"/>
+                                    <h:commandButton action="#{taxonomy$EditTaxonomy.btnUpdateAction}" disabled="false" id="btnUpdateTaxon"
+                                        styleClass="My_Button" value="#{resources.btnUpdate}"/>
                                 </h:panelGrid>
                             </h:panelGrid>
                         </webuijsf:form>

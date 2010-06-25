@@ -207,6 +207,14 @@ public class TaxonomySessionBean extends AbstractSessionBean {
 		return taxonomyFacade.getNextMandatoryTaxonomicalLevel(ancestorTaxonomicalLevel);
 	}
 
+     /**
+     * Send to persis a TaxonDTO to the database
+     * @param aDTO
+     */
+    public void updateTaxon(TaxonDTO aDTO){
+        this.taxonomyFacade.updateTaxon(aDTO);
+    }
+
     /**
      * Send to persis a TaxonDTO to the database
      * @param aDTO

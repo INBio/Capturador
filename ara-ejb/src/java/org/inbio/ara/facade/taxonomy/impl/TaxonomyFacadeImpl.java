@@ -1131,6 +1131,18 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     }
 
     /**
+     * convert the taxon DTO into an Taxon Entity and persist it
+     * @param taxonDTO
+     */
+    public void updateTaxon(TaxonDTO taxonDTO) {
+
+        Taxon t = taxonEAOImpl.findById(Taxon.class, taxonDTO.getTaxonKey());
+        t = this.taxonDTOFactory.updatePlainEntity(taxonDTO, t);
+        this.taxonEAOImpl.update(t);
+    }
+
+
+    /**
      * Delete the Taxon specified by TaxonId
      * @param taxonId
      */
