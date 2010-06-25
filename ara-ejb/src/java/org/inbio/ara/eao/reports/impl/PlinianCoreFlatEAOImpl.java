@@ -177,7 +177,7 @@ public class PlinianCoreFlatEAOImpl extends BaseEAOImpl<PlinianCoreFlat,String>
                          "'' as Synonyms,"+
                          "'' as AuthorYearOfScientificName,"+
                          "'' as SpeciesPublicationReference,"+
-                         "'' as CommonNames,"+
+                         "ara.taxon_nomenclatural_group_list(td.taxon_id, '; ') as CommonNames,"+
                          "'' as Typification,"+
                          "'' as Contributors,"+
                          "null as DateCreated,"+
