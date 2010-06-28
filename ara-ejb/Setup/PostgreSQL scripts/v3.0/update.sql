@@ -2312,7 +2312,7 @@ ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN last_modification_by c
 
 
 ---------------------------------------------------
-------------  MODULO DE TRANSACCIONES  ------------
+------------  MÓDULO DE TRANSACCIONES  ------------
 ---------------------------------------------------
 
 --2010.02.19 echinchilla
@@ -2360,23 +2360,27 @@ ALTER TABLE ara.transaction ALTER COLUMN creation_date SET STORAGE PLAIN;
 ALTER TABLE ara.transaction ALTER COLUMN creation_date SET NOT NULL;
 
 --2010.03.01 echinchilla
--- Agregar informacion de tabla de lista de seleccion en list_table
+-- Agregar información de tabla de lista de selección en list_table
 INSERT INTO ara.list_table(
             list_table_id, description, obj_version, created_by, creation_date,
             last_modification_by, last_modification_date, "name", key_field_name)
-    VALUES (42, 'Tipo de Transaccion', 0, 'ara', '2010-03-01',
+    VALUES (42, 'Tipo de Transacción', 0, 'ara', '2010-03-01',
             'ara', '2010-03-01', 'transaction_type', 'transaction_type_id');
 
 --2010.03.01 echinchilla
--- Agregar informacion de tabla de lista de seleccion en list_table
+-- Agregar información de tabla de lista de selección en list_table
 INSERT INTO ara.list_table(
             list_table_id, description, obj_version, created_by, creation_date,
             last_modification_by, last_modification_date, "name", key_field_name)
-    VALUES (43, 'Estado de Especimen de Transacci√≥n', 0, 'ara', '2010-03-01',
+    VALUES (43, 'Estado de Espécimen Transado', 0, 'ara', '2010-03-01',
             'ara', '2010-03-01', 'transacted_specimen_status', 'transacted_specimen_status_id');
 
 --2010.06.10 echinchilla
 -- Cambiar el tipo de la columna CREATION_DATE de DATE a TIMESTAMP
--- en la tabla TRANSACTED_SPECIMEN, para ordenar los espec√≠menes transados.
+-- en la tabla TRANSACTED_SPECIMEN, para ordenar los especímenes transados.
 ALTER TABLE ara.transacted_specimen
 	ALTER COLUMN creation_date TYPE timestamp;
+
+---------------------------------------------------
+----------  FIN MÓDULO DE TRANSACCIONES  ----------
+---------------------------------------------------
