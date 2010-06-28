@@ -257,6 +257,7 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
 
     public ReferenceDTO dublinCoreDTOToReferenceDTO (DublinCoreDTO element)
     {
+        
         ReferenceDTO result = new ReferenceDTO();
 
         //System.out.println("*******************************\n"+element.toString()+"*******************************\n");
@@ -299,7 +300,7 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
         return result;
     }
 
-  public Long countResourceByTypeId(int typeId) {
+    public Long countResourceByTypeId(int typeId) {
         return dublinCoreDescriptionDAOImpl.countResourceByTypeId(typeId);
     }
 

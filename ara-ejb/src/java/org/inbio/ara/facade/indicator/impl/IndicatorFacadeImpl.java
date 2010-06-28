@@ -19,6 +19,8 @@ import org.inbio.ara.eao.indicator.IndicatorDublinCoreEAOLocal;
 import org.inbio.ara.eao.indicator.IndicatorEAOLocal;
 import org.inbio.ara.persistence.indicator.Indicator;
 import org.inbio.ara.persistence.indicator.IndicatorDublinCore;
+import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
+
 
 
 /**
@@ -35,10 +37,15 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
      @EJB
      private IndicatorDublinCoreEAOLocal indicatorDublinCoreEAOImpl;
 
+     
+
     //DTO factories
     private IndicatorDTOFactory indicatorDTOFactory = new IndicatorDTOFactory();
 
     private IndicatorDublinCoreDTOFactory indicatorDublinCoreDTOFactory = new IndicatorDublinCoreDTOFactory();
+
+
+    
 
     public List<IndicatorDTO> getChildrenByIndicatorId(Long indicatorId) {
         
@@ -108,6 +115,15 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
      }
 
     public void deleteIndicator(Long IndicatorId) {
+        try
+        {
+            indicatorDublinCoreEAOImpl.deleteByIndicatorId(IndicatorId);
+        }
+        catch(Exception e)
+        {
+            System.out.println("NO TIENE RELACIONES CON DUBLIN CORE");
+        }
+
         Indicator indicator = indicatorEAOImpl.findById(Indicator.class, IndicatorId);
         indicatorEAOImpl.delete(indicator);
     }
@@ -124,6 +140,32 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
             IndicatorDublinCore indicatorDublinCore = indicatorDublinCoreDTOFactory.createPlainEntity(newDTO);
             indicatorDublinCoreEAOImpl.create(indicatorDublinCore);
         }
+
     }
- 
+
+    public void deleteIndicatorDublinCoreByIndicator(Long indicatorId)
+    {
+        indicatorDublinCoreEAOImpl.deleteByIndicatorId(indicatorId);
+        
+    }
+
+
+
+    public Long countDublinCoreByIndicator(Long indicatorId)
+    {
+        return indicatorDublinCoreEAOImpl.countDublinCoreByIndicator(indicatorId);
+    }
+
+    
+
+    public List<Long> getDublinCoreIdsByIndicator(Long indicatorId)
+    {
+        
+        return indicatorDublinCoreEAOImpl.getDublinCoreByIndicator(indicatorId);
+        
+    }
+
+
+
+
 }

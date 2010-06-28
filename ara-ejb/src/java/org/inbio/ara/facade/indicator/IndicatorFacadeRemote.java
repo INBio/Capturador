@@ -30,6 +30,10 @@ public interface IndicatorFacadeRemote {
 
     public void saveIndicatorDublinCores(Long indicatorId, List<String> dublinCoreIds, String userName);
 
+    public Long countDublinCoreByIndicator(Long indicatorId);
 
+    public List<Long> getDublinCoreIdsByIndicator(Long indicatorId);
+
+    public void deleteIndicatorDublinCoreByIndicator(Long indicatorId);
     
 }
