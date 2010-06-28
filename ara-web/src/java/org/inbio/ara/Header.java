@@ -193,6 +193,12 @@ public class Header extends AbstractFragmentBean {
         return "listSpecimen";
     }
 
+    //Módulo de transacciones
+    public String menuModuleTransactions_action() {
+        this.getSessionManager().setCurrentModuleId(new Long(29));
+        return "listTransaction";
+    }
+
     //Menú informacion geografica
     public String menuModuleLocations_action() {
         this.getSessionManager().setCurrentModuleId(new Long(5));
@@ -301,6 +307,6 @@ public class Header extends AbstractFragmentBean {
     }
 
     /**
-     * ULTIMO ID DE MODULO INGRESADO = 28
+     * ULTIMO ID DE MODULO INGRESADO = 29
      */
 }

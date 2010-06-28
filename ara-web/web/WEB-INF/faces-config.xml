@@ -569,7 +569,35 @@
         <managed-bean-class>org.inbio.ara.indicator.NewIndicator</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-    
+
+    <!-- MODULO DE TRANSACCIONES -->
+    <managed-bean>
+        <managed-bean-name>transaction$ListTransaction</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.transaction.ListTransaction</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>transaction$EditTransaction</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.transaction.EditTransaction</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>transaction$NewTransaction</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.transaction.NewTransaction</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>transaction$TransactionSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.transaction.TransactionSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>transaction$TransactedSpecimens</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.transaction.TransactedSpecimens</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <!-- FINAL MODULO DE TRANSACCIONES -->
 
 
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS DE NAVEGACION ENTRE LOS DIFERENTES JSP'S -->
@@ -617,6 +645,13 @@
             <to-view-id>/inventory/ListGathering.jsp</to-view-id>
             <redirect/>
         </navigation-case>
+        <!-- Inventory Transaction -->
+        <navigation-case>
+            <from-outcome>listTransaction</from-outcome>
+            <to-view-id>/transaction/ListTransaction.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+
         <!-- Gis localities -->
         <navigation-case>
             <from-outcome>listSite</from-outcome>
@@ -1471,6 +1506,42 @@
         </navigation-case>
     </navigation-rule>
 
+    <!-- MODULO DE TRANSACCIONES -->
+    <navigation-rule>
+        <from-view-id>/transaction/ListTransaction.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/transaction/EditTransaction.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/transaction/NewTransaction.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/transaction/EditTransaction.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/transaction/ListTransaction.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/transaction/NewTransaction.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/transaction/ListTransaction.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>editNewTransaction</from-outcome>
+            <to-view-id>/transaction/EditTransaction.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <!-- FIN MODULO DE TRANSACCIONES -->
 
 </faces-config>
 
