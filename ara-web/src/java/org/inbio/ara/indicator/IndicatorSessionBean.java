@@ -20,6 +20,7 @@ package org.inbio.ara.indicator;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,11 +30,13 @@ import org.inbio.ara.dto.indicator.IndicatorDTO;
 import org.inbio.ara.facade.indicator.IndicatorFacadeRemote;
 import org.inbio.ara.util.PaginationControllerRemix;
 import org.inbio.ara.util.PaginationCoreInterface;
-import org.inbio.commons.dublincore.dto.DublinCoreDTO;
 
+
+import org.inbio.commons.dublincore.dto.DublinCoreDTO;
 import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
 import org.inbio.commons.dublincore.facade.ara.DublinCoreFacadeRemote;
 import org.inbio.commons.dublincore.model.ResourceTypeEnum;
+
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -93,6 +96,10 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
 
     //Bandera para indicarle al paginador que trabaje en modo busqueda simple
     private boolean queryModeSimple = false;
+
+    //Bandera para indicar al paginador que trabaje solo con las relaciones existentes en la BD
+    private boolean editMode = false;
+
     //String que indica la consulta del usuario en la busqueda simple
     private String simpleConsult = new String("");
 
@@ -364,13 +371,22 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
 
 
    /**
-     * Inicializar el data provider de especimenes
+     * Inicializar el data provider
      */
     public void initDataProvider() {
        
         setPagination(new PaginationControllerRemix(getDublinCoreFacade().countResourceByTypeId(ResourceTypeEnum.REFERENCE.getId()).intValue(), getQuantity(), this));
     }
-    
+
+
+    /**
+     * Inicializar el data provider para el edit
+     */
+    public void initEditDataProvider(Long indicatorId) {
+
+        setPagination(new PaginationControllerRemix(getIndicatorFacade().countDublinCoreByIndicator(indicatorId).intValue(), getQuantity(), this));
+    }
+
     /**
      * @return the indicatorFacade
      */
@@ -423,6 +439,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     }
 
     public List getResults(int firstResult, int maxResults) {
+        System.out.println("---- Entro al getResults");
         List<DublinCoreDTO> auxResult = new ArrayList<DublinCoreDTO>();
 
         List<DublinCoreDTO> aListDTO;
@@ -435,6 +452,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
                         this.getDublinCoreFacade().getDublinCoreAdvancedSearch
                         (getQueryDublinCoreDTO(), firstResult, maxResults));
                 results = this.dublinCoreFacade.dublinCoreDTOsToReferenceDTOs(aListDTO);
+                //Seleccionar los elementos que han sido seleccionados antes
                 this.setSelectedResources(results, selectedResourcesId);
                 return results;
                 
@@ -454,7 +472,23 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
                 e.printStackTrace();
                 return auxResult;
             }
-        } else //Valores default
+        } else if(isEditMode())
+        {
+            try {
+                List<Long> dublinCoreIds = this.indicatorFacade.getDublinCoreIdsByIndicator(new Long(nodeId));
+                aListDTO = this.dublinCoreFacade.getDublinCoreDTOsByIds(dublinCoreIds);
+                results = this.dublinCoreFacade.dublinCoreDTOsToReferenceDTOs(aListDTO);
+                this.setEditRestults(results, selectedResourcesId);
+                //this.setSelectedResources(results, selectedResourcesId);
+                editMode = false;
+                return results;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return auxResult;
+            }
+
+        }
+        else//Valores default
         {
             try {
                 aListDTO =  myReturn(this.getDublinCoreFacade().getAllDublinCorePaginated(firstResult, maxResults));
@@ -468,6 +502,16 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         }
     }
 
+
+    public void setEditRestults(List<ReferenceDTO> indicatorReferences, Map<String,ReferenceDTO> selectedRef)
+    {
+        for(ReferenceDTO indicatorReference : indicatorReferences)
+        {
+            selectedRef.put(indicatorReference.getKey(), indicatorReference);
+            indicatorReference.setSelected(true);
+        }
+    }
+
     public List myReturn(List l) {
         if (l == null) {
             return new ArrayList<DublinCoreDTO>();
@@ -478,9 +522,8 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
 
     public void setSelectedResources (List<ReferenceDTO> resources, Map<String, ReferenceDTO> selectedResourcesId)
     {
-       // int n = selectedResources.getRowCount();
-      //  ArrayList<ReferenceDTO> selected = new ArrayList();
-        //for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+       System.out.println("--- Entro al setSelectedResources");
+       System.out.println(mapToString(selectedResourcesId));
         for (ReferenceDTO aux: resources) {
             //resources.setRowIndex(i);
             //ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData();
@@ -510,7 +553,31 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         this.selectedResourcesId = selectedResourcesId;
     }
 
+    /**
+     * @return the editMode
+     */
+    public boolean isEditMode() {
+        return editMode;
+    }
 
+    /**
+     * @param editMode the editMode to set
+     */
+    public void setEditMode(boolean editMode) {
+        this.editMode = editMode;
+    }
+
+
+   public String mapToString(Map<String,ReferenceDTO> map)
+   {
+        String result = "";
+        Collection<ReferenceDTO> references = map.values();
+        for(ReferenceDTO reference: references)
+        {
+            result += reference.getKey() +"\t"+reference.getTitle()+"\n";
+        }
+        return result;
+    }
 
 
     

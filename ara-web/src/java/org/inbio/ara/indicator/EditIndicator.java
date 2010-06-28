@@ -29,6 +29,7 @@ import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
 import org.inbio.commons.dublincore.model.ResourceTypeEnum;
 import java.util.ArrayList;
 import java.util.List;
+import org.inbio.ara.util.PaginationControllerRemix;
 
 /**
  * <p>Page bean that corresponds to a similarly named JSP page.  This
@@ -163,35 +164,66 @@ public class EditIndicator extends AbstractPageBean {
     @Override
     public void prerender() {
 
-        
-        hiddenNodeId.setValue(this. getindicator$IndicatorSessionBean().getNodeId());
-        hiddenPathNode.setValue(this.getindicator$IndicatorSessionBean().getPathNode());
-        hiddenAncestorNodeId.setValue(this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getIndicatorAncestorId());
+        System.out.println("===================== PRERENDER =====================");
+        System.out.println("QuantityTotal = "+ quantityTotal);
+        System.out.println("nodeId = "+this.getindicator$IndicatorSessionBean().getNodeId());
+        System.out.println("hiddenNodeId = "+hiddenNodeId.getValue());
 
+        
+        if(hiddenNodeId.getValue() == null)
+        {
+            System.out.println("inicializar los hidden porque estan nulos");
+            hiddenNodeId.setValue(this. getindicator$IndicatorSessionBean().getNodeId());
+            hiddenPathNode.setValue(this.getindicator$IndicatorSessionBean().getPathNode());
+            hiddenAncestorNodeId.setValue(this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getIndicatorAncestorId());
+        }
         
 
         
        if (this.getindicator$IndicatorSessionBean().getPagination()!=null)
-        {        
-            getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
-            Collection<ReferenceDTO> references = this.getindicator$IndicatorSessionBean().getSelectedResourcesId().values();
-            for(ReferenceDTO reference: references)
+        {
+            System.out.println("--> entra al if donde el paginador no es nulo");
+           
+            if(!(this.getindicator$IndicatorSessionBean().getNodeId()).equals(hiddenNodeId.getValue()))
             {
-                selected += reference.getTitle() + "; ";
+                System.out.println("se debe recalcular las referencias por el cambio de nodo y actualizar los valores del nodeId en el session");
+                this.getindicator$IndicatorSessionBean().setNodeId(hiddenNodeId.getValue().toString());
+                this.getindicator$IndicatorSessionBean().setEditMode(true);
+                this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String,ReferenceDTO>());
+                this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));
+                
+
+            }
+            else
+            {
+
+                getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+                Collection<ReferenceDTO> references = this.getindicator$IndicatorSessionBean().getSelectedResourcesId().values();
+                for(ReferenceDTO reference: references)
+                {
+                    selected += reference.getTitle() + "; ";
+                }
             }
 
         //    System.out.println("|-> Selected: "+this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getAllRows());
         }
         //Preguntar si la bandera de busqueda avanzada esta prendida
         if(this.getindicator$IndicatorSessionBean().isAdvancedSearch()){
+            System.out.println("--> entra al if de busqueda avanzada");
         //    System.out.println("Entro a la búsqueda avanzada");
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
         //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
         else if (this.getindicator$IndicatorSessionBean().getPagination()==null) {
+            System.out.println("--> entra al if donde el paginador es nulo");
+            this.getindicator$IndicatorSessionBean().setEditMode(true);
+            this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String,ReferenceDTO>());
+            this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));
+            
         //        System.out.println("Entro a inicializar el data Provider");
-               this.getindicator$IndicatorSessionBean().initDataProvider();
-               this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+               //this.getindicator$IndicatorSessionBean().initDataProvider();
+
+               //this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
         }
                
 
@@ -653,6 +685,7 @@ public class EditIndicator extends AbstractPageBean {
      * @return the quantityTotal
      */
     public String getQuantityTotal() {
+        quantityTotal= this.getindicator$IndicatorSessionBean().getQuantityTotal();
         return quantityTotal;
     }
 

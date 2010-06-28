@@ -258,6 +258,7 @@ public class NewIndicator extends AbstractPageBean {
      * @return String
      */
     public String btnSimpleSearch_action() {
+        System.out.println("---------------- BUSQUEDA SIMPLE ----------------");
         
         String userInput = "";
         if(this.getTxSearch().getValue()!= null)
@@ -353,6 +354,7 @@ public class NewIndicator extends AbstractPageBean {
             getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
             Collection<ReferenceDTO> references = this.getindicator$IndicatorSessionBean().getSelectedResourcesId().values();
             List<String> dublinCoreIds = new ArrayList();
+            //se puede cambiar este for por simplemente tomar el conjunto de keys del Map
             for(ReferenceDTO reference: references)
             {
                 dublinCoreIds.add(reference.getKey());
@@ -444,7 +446,8 @@ public class NewIndicator extends AbstractPageBean {
 
     public void getSelectedResourceIds (HtmlDataTable selectedResources, Map<String, ReferenceDTO> selectedResourcesId)
     {
-      //  System.out.println("Entro a getSelectedResourceIds");
+        System.out.println("--> Entro a getSelectedResourceIds");
+        System.out.println(this.getindicator$IndicatorSessionBean().mapToString(selectedResourcesId));
         int n = selectedResources.getRowCount();      
         for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
             selectedResources.setRowIndex(i);
@@ -476,6 +479,7 @@ public class NewIndicator extends AbstractPageBean {
      * @return the quantityTotal
      */
     public String getQuantityTotal() {
+        quantityTotal= this.getindicator$IndicatorSessionBean().getQuantityTotal();
         return quantityTotal;
     }
 

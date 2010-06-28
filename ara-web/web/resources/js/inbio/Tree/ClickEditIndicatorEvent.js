@@ -27,13 +27,17 @@ function setInformation(selectedNodeId)
     var indicatorChildren =indicatorChildrenXML.getElementsByTagName("indicator");
     var sname = indicatorChildren[0].getElementsByTagName("name")[0].childNodes[0].nodeValue;
     var sdescription = indicatorChildren[0].getElementsByTagName("description")[0].childNodes[0].nodeValue;
-    var sapplyToParts = indicatorChildren[0].getElementsByTagName("applyToParts")[0].childNodes[0].nodeValue;
-
-    var name = document.getElementById('contenido:form1:txIndicatorName');    
+    var sapplyToParts = indicatorChildren[0].getElementsByTagName("applyToParts")[0].childNodes[0].nodeValue;    
+    if(sdescription == 'null')
+    {
+        
+        sdescription="";
+    }
+    var name = document.getElementById('contenido:form1:tabSet1:tabNewIndicator:txIndicatorName');
     name.setProps({value: sname});
-    var description = document.getElementById('contenido:form1:txaIndicatorDescription');
+    var description = document.getElementById('contenido:form1:tabSet1:tabNewIndicator:txaIndicatorDescription');
     description.setProps({value: sdescription});
-    var applyToParts = document.getElementsByName('contenido:form1:myRadio'); 
+    var applyToParts = document.getElementsByName('contenido:form1:tabSet1:tabNewIndicator:myRadio');
     applyToParts[sapplyToParts].checked = true;
     
     
