@@ -20,8 +20,11 @@
 
 package org.inbio.ara.facade.search.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +41,8 @@ import org.inbio.ara.dto.inventory.IdentificationDTOFactory;
 import org.inbio.ara.dto.inventory.IdentifierDTO;
 import org.inbio.ara.dto.inventory.SpecimenDTO;
 import org.inbio.ara.dto.inventory.SpecimenDTOFactory;
+import org.inbio.ara.dto.transaction.TransactionDTO;
+import org.inbio.ara.dto.transaction.TransactionDTOFactory;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
 import org.inbio.ara.eao.gathering.GatheringObservationEAOLocal;
 import org.inbio.ara.eao.gis.GeoreferencedSiteEAOLocal;
@@ -47,14 +52,17 @@ import org.inbio.ara.eao.identification.IdentificationEAOLocal;
 import org.inbio.ara.eao.reports.DarwinCore14EAOLocal;
 import org.inbio.ara.eao.specimen.SpecimenEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonEAOLocal;
+import org.inbio.ara.eao.transaction.TransactionEAOLocal;
 import org.inbio.ara.facade.gis.GisFacadeRemote;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
+import org.inbio.ara.facade.transaction.TransactionFacadeRemote;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
 import org.inbio.ara.persistence.gis.GeographicLayerEntity;
 import org.inbio.ara.persistence.gis.Site;
 import org.inbio.ara.persistence.person.Person;
 import org.inbio.ara.persistence.specimen.Specimen;
 import org.inbio.ara.persistence.identification.Identification;
+import org.inbio.ara.persistence.transaction.Transaction;
 import org.inbio.ara.util.QueryNode;
 
 /**
@@ -86,6 +94,12 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     @EJB
     private DarwinCore14EAOLocal darwinCoreEAOImpl;
 
+    @EJB
+    private TransactionFacadeRemote transactionFacadeImpl;
+
+    @EJB
+    private TransactionEAOLocal transactionEAOImpl;
+
     //DTO factories
     private SiteDTOFactory siteDTOFactory =
             new SiteDTOFactory();
@@ -95,7 +109,8 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             new GatheringObservationDTOFactory();
     private SpecimenDTOFactory specimenDTOFactory = new SpecimenDTOFactory();
 
-
+    private TransactionDTOFactory transactionDTOFactory = new TransactionDTOFactory();
+    
 
     public List<SpecimenDTO> test() {
         return null;
@@ -1195,7 +1210,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     /***************************************************************************
      ************************* === VARIOS === **********************************
      **************************************************************************/
-// <editor-fold defaultstate="collapsed" desc="comment">
+    // <editor-fold defaultstate="collapsed" desc="comment">
     private String[] splitQuery(String query) {
         if(query == null || query.length() == 0)
             return null;
@@ -1223,8 +1238,10 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                                 (Long)id));
                     } else if(t == Site.class) {
                         entitiesList.add(siteEAOImpl.findById(t, (Long)id));
-                    }
+                    } else if(t == Transaction.class) {
+                        entitiesList.add(transactionEAOImpl.findById(t, (Long)id));
                     entitiesCounter++;
+                    }
                 }
 
             }
@@ -1276,4 +1293,323 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     }
 
 // </editor-fold>
+
+    /***************************************************************************
+     ********************** === TRANSACTION === ********************************
+     **************************************************************************/
+    // <editor-fold defaultstate="collapsed" desc="comment">
+    /**
+     *
+     * @param inputDTO Built in the advanced search
+     * @param base First result retrieved
+     * @param offset How many results I want
+     * @return List of transactions
+     */
+    public List<TransactionDTO> searchTransactionsByCriteria(
+            TransactionDTO inputDTO, int base, int offset) {
+        Set<Long> transactionsIds = getTransactionsIds(inputDTO);
+        List<Transaction> transactionsList = new ArrayList();
+
+        transactionsList = getEntities(transactionsIds,
+                Transaction.class, base, offset);
+        return transactionFacadeImpl.updateNames(
+                transactionDTOFactory.createDTOList(transactionsList));
+    }
+
+    /**
+     * Used to retrieve some identifications and to know the total amount of
+     * records (count)
+     * @param inputDTO Built in the advanced search
+     * @return Set of identification Ids.
+     */
+    public Set<Long> getTransactionsIds(TransactionDTO inputDTO) {
+        Set<Long> transactionIds = new HashSet();
+        boolean firstFilter = true; //helps with the intersection of data
+
+        Long collectionId = inputDTO.getCollectionId();
+
+        Long transactionId = inputDTO.getTransactionId();
+        String invoiceNumber = inputDTO.getInvoiceNumber();
+        String description = inputDTO.getDescription();
+        String catalogNumber = inputDTO.getCatalogNumber();
+        
+        Long estimatedSpecimenCount = inputDTO.getEstimatedSpecimenCount();
+        Long senderInstitutionId = inputDTO.getSenderInstitutionId();
+        Long senderPersonId = inputDTO.getSenderPersonId();
+        Long receiverInstitutionId = inputDTO.getReceiverInstitutionId();
+        Long receiverPersonId = inputDTO.getReceiverPersonId();
+        Long transactionTypeId = inputDTO.getTransactionTypeId();
+
+        Calendar initialTransactionDate = inputDTO.getTransactionDate();
+        Calendar finalTransactionDate = inputDTO.getFinalTransactionDate();
+        Calendar initialExpirationDate = inputDTO.getExpirationDate();
+        Calendar finalExpirationDate = inputDTO.getFinalExpirationDate();
+
+
+        if (transactionId != null) {
+            if (transactionEAOImpl.existsTransactionId(transactionId, collectionId)) {
+                transactionIds.add(transactionId);
+                
+            }
+            firstFilter = false;
+        }
+        if (invoiceNumber != null && !invoiceNumber.trim().isEmpty()) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByInvoiceNumber(invoiceNumber, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            } else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (description != null && !description.trim().isEmpty()) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByDescription(description, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (catalogNumber != null && !catalogNumber.trim().isEmpty()) {
+            List<Long> specimen = findSpecimenByCatalogNumber(catalogNumber);
+            List<Long> newTransactionIds = new ArrayList();
+            if (specimen.size() > 0) {
+                newTransactionIds =
+                    this.transactionEAOImpl.findBySpecimenId(collectionId, specimen.get(0));
+            }
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+
+        }
+
+        if (estimatedSpecimenCount != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByEstimatedSpecimenCount(estimatedSpecimenCount, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (senderInstitutionId != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findBySenderInstitutionId(senderInstitutionId, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (senderPersonId != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findBySenderPersonId(senderPersonId, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (receiverInstitutionId != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByReceiverInstitutionId(receiverInstitutionId, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (receiverPersonId != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByReceiverPersonId(receiverPersonId, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (transactionTypeId != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByTransactionTypeId(transactionTypeId, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (initialTransactionDate != null || finalTransactionDate != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByTransactionDateRange(initialTransactionDate, finalTransactionDate, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (initialExpirationDate != null || finalExpirationDate != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByExpirationDateRange(initialExpirationDate, finalExpirationDate, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+        
+        return transactionIds;
+    }
+
+    public Long countTransactionsByCriteria(TransactionDTO inputDTO) {
+        Integer i = new Integer(getTransactionsIds(inputDTO).size());
+        return i.longValue();
+    }
+
+    public Long countTransactionsByCriteria(String query, Long collectionId) {
+        String[] parts = this.splitQuery(query);
+        if(parts == null)
+            return 0L;
+        HashSet TransactionIds = (HashSet) unstructuredTransactionsQuery(parts, collectionId);
+        //Set intersection -> filter by collection
+        TransactionIds.retainAll(transactionEAOImpl.
+                findByCollectionId(collectionId));
+        Integer i = new Integer(TransactionIds.size());
+        return i.longValue();
+    }
+
+    public List<TransactionDTO> searchTransactionsByCriteria(String query,
+            Long collectionId, int base, int offset) {
+        List<Transaction> transactionsList = new ArrayList();
+        String[] parts = this.splitQuery(query);
+        if(parts == null)
+            transactionDTOFactory.createDTOList(transactionsList);
+
+        HashSet<Long> transactionIds = (HashSet) unstructuredTransactionsQuery(parts, collectionId);
+        //Set intersection -> filter by collection
+        transactionIds.retainAll(transactionEAOImpl.
+                findByCollectionId(collectionId));
+        //Retrieve entities
+        transactionsList = getEntities(transactionIds,
+                Transaction.class, base, offset);
+        //return gathObsDTOFactory.createDTOList(gathObsList);
+
+        return transactionFacadeImpl.updateNames(transactionDTOFactory.createDTOList(transactionsList));
+        //return inventoryFacadeImpl.updateGathObsCountryAndProvinceName(
+          //      gathObsDTOFactory.createDTOList(transactionsList));
+    }
+
+    private Set<Long> unstructuredTransactionsQuery(String[] parts, Long collectionId) {
+        HashSet<Long> finalTransactionIds = new HashSet();
+        List<String> strings = new ArrayList();
+        List<Long> numbers = new ArrayList();
+        for (String part : parts) {
+            try {
+                Long d = Long.parseLong(part);
+                numbers.add(d);
+                strings.add(d.toString());
+            } catch (Exception e){
+                strings.add(part.toLowerCase());
+            }
+        }
+
+        for (String inputString : strings) {
+
+            List<Long> listByDescription =
+                    this.transactionEAOImpl.findByDescription(inputString, collectionId);
+            finalTransactionIds.addAll(listByDescription);
+
+            List<Long> listByInvoiceNumber =
+                    this.transactionEAOImpl.findByInvoiceNumber(inputString, collectionId);
+            finalTransactionIds.addAll(listByInvoiceNumber);
+
+            List<Long> listBySenderPersonName =
+                    findTransactionBySenderPersonName(inputString, collectionId);
+            finalTransactionIds.addAll(listBySenderPersonName);
+
+            List<Long> listByReceiverPersonName =
+                    findTransactionByReceiverPersonName(inputString, collectionId);
+            finalTransactionIds.addAll(listByReceiverPersonName);
+
+            List<Long> listByInstitutionName =
+                    findTransactionByInstitutionName(inputString, collectionId);
+            finalTransactionIds.addAll(listByInstitutionName);
+        }
+        for (Long inputLong : numbers) {
+
+            if(transactionEAOImpl.existsTransactionId(inputLong, collectionId)) {
+                finalTransactionIds.add(inputLong);
+            }
+        }
+        return finalTransactionIds;
+    }
+
+    private List<Long> findTransactionBySenderPersonName(String name, Long collectionId) {
+        ArrayList<Long> finalTransactionList = new ArrayList();
+        List<Long> personList = transactionEAOImpl.findPersonIdByPersonName(name);
+        for (Long personId : personList) {
+            List<Long> transactionsBySenderPersonName =
+                    transactionEAOImpl.findBySenderPersonId(personId, collectionId);
+            finalTransactionList.addAll(transactionsBySenderPersonName);
+        }
+        return finalTransactionList;
+    }
+
+    private List<Long> findTransactionByReceiverPersonName(String name, Long collectionId) {
+        ArrayList<Long> finalTransactionList = new ArrayList();
+        List<Long> personList = transactionEAOImpl.findPersonIdByPersonName(name);
+        for (Long personId : personList) {
+            List<Long> transactionsByReceiverPersonName =
+                    transactionEAOImpl.findByReceiverPersonId(personId, collectionId);
+            finalTransactionList.addAll(transactionsByReceiverPersonName);
+        }
+        return finalTransactionList;
+    }
+
+    private List<Long> findTransactionByInstitutionName(String name, Long collectionId) {
+        ArrayList<Long> finalTransactionList = new ArrayList();
+        List<Long> institutionList = transactionEAOImpl.findInstitutionIdByInstitutionCode(name);
+        for (Long institutionId : institutionList) {
+            List<Long> transactionsByInstitutionName =
+                    transactionEAOImpl.findBySenderInstitutionId(institutionId, collectionId);
+            finalTransactionList.addAll(transactionsByInstitutionName);
+            transactionsByInstitutionName =
+                    transactionEAOImpl.findByReceiverInstitutionId(institutionId, collectionId);
+            finalTransactionList.addAll(transactionsByInstitutionName);
+        }
+        return finalTransactionList;
+    }
+
+    // </editor-fold>
 }

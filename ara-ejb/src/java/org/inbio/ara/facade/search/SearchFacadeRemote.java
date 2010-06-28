@@ -27,6 +27,7 @@ import org.inbio.ara.dto.gis.SiteDTO;
 import org.inbio.ara.dto.inventory.GatheringObservationDTO;
 import org.inbio.ara.dto.inventory.IdentificationDTO;
 import org.inbio.ara.dto.inventory.SpecimenDTO;
+import org.inbio.ara.dto.transaction.TransactionDTO;
 import org.inbio.ara.util.QueryNode;
 
 /**
@@ -164,5 +165,19 @@ public interface SearchFacadeRemote {
             (LinkedList<QueryNode> sll, int first, int amount);
 
     public Long countAllDwC();
+
+
+    /***************************************************************************
+     ********************** === TRANSACTION === ********************************
+     **************************************************************************/
+    public List<TransactionDTO> searchTransactionsByCriteria(
+            TransactionDTO inputDTO, int base, int offset);
+    
+    public List<TransactionDTO> searchTransactionsByCriteria(String query,
+            Long collectionId, int base, int offset);
+
+    public Long countTransactionsByCriteria(TransactionDTO inputDTO);
+
+    public Long countTransactionsByCriteria(String query, Long collectionId);
 
 }

@@ -34,6 +34,8 @@ import org.inbio.ara.persistence.germplasm.Solvent;
 import org.inbio.ara.persistence.germplasm.SemenGatheringMethod;
 import org.inbio.ara.persistence.germplasm.Condition;
 import org.inbio.ara.persistence.indicator.ComponentPart;
+import org.inbio.ara.persistence.transaction.TransactedSpecimenStatus;
+import org.inbio.ara.persistence.transaction.TransactionType;
 /**
  *
  * Esta clase esta hecha para poder llegarle desde el Objeto ListTable a las
@@ -89,7 +91,13 @@ public enum SelectionListEntity {
 
     CONDITION(new Long(39), new Condition(), true,"sle_condition",Condition.class.getName()),
     SEMEN_GATHERING_METHOD(new Long(40), new SemenGatheringMethod(), true,"sle_semen_gathering_method",SemenGatheringMethod.class.getName()),
-    SOLVENT(new Long(41), new Solvent(), true,"sle_solvent",Solvent.class.getName())
+    SOLVENT(new Long(41), new Solvent(), true,"sle_solvent",Solvent.class.getName()),
+    
+    /* MODULO DE TRANSACCIONES */
+    TRANSACTION_TYPE(new Long(42),new TransactionType(),true,"sle_transaction_type",TransactionType.class.getName()),
+    TRANSACTED_SPECIMEN_STATUS(new Long(43),new TransactedSpecimenStatus(),true,"sle_transacted_specimen_status",TransactedSpecimenStatus.class.getName()),
+    /* FIN MODULO DE TRANSACCIONES */
+
     ;
 
     /* Class name of the entity maped with the selection list table */
@@ -99,63 +107,64 @@ public enum SelectionListEntity {
     private String nameAsProperty; //this property should be resolved in the properties file for web display
     private String selectionListGenericEntityClass;
 
-
     /**
-	 * @param id
-	 * @param implementation
-	 */
-	private SelectionListEntity(Long id, SelectionListGenericEntity implementation, boolean editable, String nameAsProperty,String selectionListGenericEntityClass) {
-		this.id = id;
-		this.implementation = implementation;
+     * @param id
+     * @param implementation
+     */
+    private SelectionListEntity(Long id, SelectionListGenericEntity implementation, boolean editable, String nameAsProperty, String selectionListGenericEntityClass) {
+        this.id = id;
+        this.implementation = implementation;
         this.editable = editable;
         this.nameAsProperty = nameAsProperty;
-        this.selectionListGenericEntityClass =selectionListGenericEntityClass;
-	}
+        this.selectionListGenericEntityClass = selectionListGenericEntityClass;
+    }
 
     /**
-	 *
-	 * @param selectionlistClassName
-	 * @return
-	 */
-	public static SelectionListEntity getByName(String selectionlistClassName){
-		SelectionListEntity[] all = SelectionListEntity.values();
-		for(SelectionListEntity sle: all){
-			if (sle.getSelectionlistClassName().compareTo(selectionlistClassName) == 0)
-				return sle;
-		}
-		return null;
-	}
+     *
+     * @param selectionlistClassName
+     * @return
+     */
+    public static SelectionListEntity getByName(String selectionlistClassName) {
+        SelectionListEntity[] all = SelectionListEntity.values();
+        for (SelectionListEntity sle : all) {
+            if (sle.getSelectionlistClassName().compareTo(selectionlistClassName) == 0) {
+                return sle;
+            }
+        }
+        return null;
+    }
 
-	/**
-	 *
-	 * @param id
-	 * @return
-	 */
-	public static SelectionListEntity getById(int id){
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public static SelectionListEntity getById(int id) {
 
         SelectionListEntity[] all = SelectionListEntity.values();
-		for(SelectionListEntity sle: all){
-			if (sle.getId() == id)
-				return sle;
-		}
-		return null;
+        for (SelectionListEntity sle : all) {
+            if (sle.getId() == id) {
+                return sle;
+            }
+        }
+        return null;
 
-	}
+    }
 
-    public SelectionListGenericEntity getImplementationEntity() throws IllegalArgumentException{
-		try {
-			return (SelectionListGenericEntity) Class.forName(this.selectionListGenericEntityClass).newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException(e.getMessage());
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException(e.getMessage());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException(e.getMessage());
-		}
-	}
+    public SelectionListGenericEntity getImplementationEntity() throws IllegalArgumentException {
+        try {
+            return (SelectionListGenericEntity) Class.forName(this.selectionListGenericEntityClass).newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
+        }
+    }
 
 
     /**
