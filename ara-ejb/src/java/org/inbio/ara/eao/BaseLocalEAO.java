@@ -96,4 +96,17 @@ public interface BaseLocalEAO<E extends Object,I extends Object> {
      */
     public List<E> findAllPaginatedFilterAndOrderBy(Class<E> entityClass, int base,
             int offset, String[] orderByFields, Long collectionId);
+
+    /**
+     *
+     * This method does 2 things:
+     * 1. Get All the results for an Entity
+     * 2. Order the results using one o more fields.
+     *
+     * @param entityClass Type of returned elements
+     * @param orderByFields The criteria for the "order by" of the results. This
+     * will be an array of String, each one value containing the name of the field
+     * @return List of , freely order by elements
+     */
+    public List<E> findAllAndOrderBy(Class<E> entityClass, String[] orderByFields);
 }

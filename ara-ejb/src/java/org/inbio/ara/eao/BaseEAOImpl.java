@@ -65,7 +65,41 @@ public class BaseEAOImpl<E extends Object,I extends Object>
         Long result = (Long)q.getSingleResult();
         return result;
     }
-     
+
+    /**
+     *
+     * This method does 2 things:
+     * 1. Get All the results for an Entity
+     * 2. Order the results using one o more fields.
+     *
+     * @param entityClass Type of returned elements
+     * @param orderByFields The criteria for the "order by" of the results. This
+     * will be an array of String, each one value containing the name of the field
+     * @return List of , freely order by elements
+     */
+    public List<E> findAllAndOrderBy(Class<E> entityClass, String[] orderByFields) {
+        StringBuffer query = new StringBuffer();
+        boolean firstField = true;
+
+        query.append("from " + entityClass.getName() + " as e");
+
+
+        if(orderByFields != null){
+          query.append(" order by ");
+          for (String field : orderByFields) {
+            if(firstField) {
+                query.append("e."+field + " asc");
+                firstField = false;
+            } else {
+                query.append(", e."+field + " asc");
+            }
+          }
+        }
+
+        //System.out.println(query.toString());
+        Query q = em.createQuery(query.toString());
+        return q.getResultList();
+    }
 
     /**
      *
