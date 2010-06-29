@@ -278,7 +278,11 @@ public class ListIndicator extends AbstractPageBean {
         this.getIndicatorSessionBean().setPathNode(this.hiddenPathNode.getValue().toString());
         //IndicatorDTO indicatorEdit = this.getIndicatorSessionBean().getIndicatorDTOByIndicatorId(new Long(this.getIndicatorSessionBean().getNodeId()));
         this.getIndicatorSessionBean().setCurrentIndicatorDTO(this.getIndicatorSessionBean().getIndicatorDTOByIndicatorId(new Long(this.getIndicatorSessionBean().getNodeId())));
-        
+
+        if(this.getIndicatorSessionBean().getPagination() != null)
+        {
+            this.getIndicatorSessionBean().setPagination(null);
+        }
         return "edit";
         
     }

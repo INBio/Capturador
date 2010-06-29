@@ -1,6 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* Ara - capture species and specimen data
+ *
+ * Copyright (C) 2009  INBio (Instituto Nacional de Biodiversidad)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.indicator;
@@ -27,9 +40,7 @@ import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
 import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
 import org.inbio.commons.dublincore.model.ResourceTypeEnum;
-import java.util.ArrayList;
-import java.util.List;
-import org.inbio.ara.util.PaginationControllerRemix;
+import org.inbio.commons.dublincore.dto.DublinCoreDTO;
 
 /**
  * <p>Page bean that corresponds to a similarly named JSP page.  This
@@ -56,11 +67,13 @@ public class EditIndicator extends AbstractPageBean {
 
     // </editor-fold>
 
-     //Contexto utilizado para obtener el current locale
+    //Contexto utilizado para obtener el current locale
     private FacesContext context;
+    //Contiene la localidad para el idioma
     private Locale myLocale;
-
+    //contiene el String con las cantidades mostrado para la paginación
     private String quantityTotal = new String();
+    //
     private String selected = new String();
 
     private RadioButtonGroup radioButtonGroup = new RadioButtonGroup();
@@ -204,8 +217,7 @@ public class EditIndicator extends AbstractPageBean {
                     selected += reference.getTitle() + "; ";
                 }
             }
-
-        //    System.out.println("|-> Selected: "+this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getAllRows());
+        
         }
         //Preguntar si la bandera de busqueda avanzada esta prendida
         if(this.getindicator$IndicatorSessionBean().isAdvancedSearch()){
@@ -218,12 +230,8 @@ public class EditIndicator extends AbstractPageBean {
             System.out.println("--> entra al if donde el paginador es nulo");
             this.getindicator$IndicatorSessionBean().setEditMode(true);
             this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String,ReferenceDTO>());
-            this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));
-            
-        //        System.out.println("Entro a inicializar el data Provider");
-               //this.getindicator$IndicatorSessionBean().initDataProvider();
-
-               //this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+            this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));           
+        
         }
                
 
@@ -232,31 +240,23 @@ public class EditIndicator extends AbstractPageBean {
 
     public void getSelectedResourceIds (HtmlDataTable selectedResources, Map<String, ReferenceDTO> selectedResourcesId)
     {
-      //  System.out.println("Entro a getSelectedResourceIds");
+      
         int n = selectedResources.getRowCount();
         for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
             selectedResources.setRowIndex(i);
             ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData();
-        //    System.out.println("\t\t"+aux.getResourceId()+" "+ aux.isSelected()+" "+aux.getTitle());
-
-            //System.out.println(" * "+aux.getResourceId()+" = "+selectedResourcesId.containsKey(aux.getResourceId()));
-
-            if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) {
-          //      System.out.println("Se debe seleccionar "+aux.getResourceId());
-                selectedResourcesId.put(aux.getKey(), aux);
-                //System.out.println("\t\t"+aux.getResourceId()+" "+aux.getTitle());
-
+            if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) {          
+                selectedResourcesId.put(aux.getKey(), aux);               
             }
             else
             {
                 if((!aux.isSelected()) && selectedResourcesId.containsKey(aux.getKey()))
-                {
-            //        System.out.println("Se debe deseleccionar "+aux.getResourceId());
+                {        
                     selectedResourcesId.remove(aux.getKey());
                 }
             }
         }
-        //System.out.println(selected.toString());
+        
     }
  
 
@@ -281,13 +281,16 @@ public class EditIndicator extends AbstractPageBean {
         }
         userInput = userInput.trim();
 
+        if(!this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().isEmpty())
+        {
+            getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+        }
+
         if(userInput.length()==0){
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getindicator$IndicatorSessionBean().setQueryModeSimple(false);
             this.getindicator$IndicatorSessionBean().setQueryMode(false);
-
-            //System.out.println("Cantidad de elementos tipo Referencia = "+getindicator$IndicatorSessionBean().getDublinCoreFacade().countResourceByTypeId(ResourceTypeEnum.REFERENCE.getId()));
-            //System.out.println("Paginador = "+getindicator$IndicatorSessionBean().getPagination());
+            
             //Actualiza el data provider del paginador con los datos por default
             this.getindicator$IndicatorSessionBean().getPagination().setTotalResults
                     (getindicator$IndicatorSessionBean().getDublinCoreFacade().countResourceByTypeId(ResourceTypeEnum.REFERENCE.getId()).intValue());
@@ -310,6 +313,12 @@ public class EditIndicator extends AbstractPageBean {
     }
 
     public String btnAdvSearch_action() {
+
+        if(!this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().isEmpty())
+        {
+            getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+        }
+
         boolean advanced = this.getindicator$IndicatorSessionBean().isAdvancedSearch();
         if(advanced==false){ //Mostrar panel de busqueda avanzada
             this.getindicator$IndicatorSessionBean().setAdvancedSearch(true);
@@ -338,46 +347,68 @@ public class EditIndicator extends AbstractPageBean {
     }
 
     public String btnProceedSearch_action() {
-         //Create a new indicator
-        try{
 
-            /*
-             *      CREAR UN NUEVO INDICADOR
-             */
-
-            /*Obtiene el valor del nodo ancestro*/
-            Long ancestorId = new Long(this.hiddenNodeId.getValue().toString());
-            /*Se completa la información del IndicatorDTO, como el usuario y el ancestorId*/
-            this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setUserName(getAraSessionBean().getGlobalUserName());
-            this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setIndicatorAncestorId(ancestorId);
-            /*Guarda el nuevo Indicador*/
-            this.getindicator$IndicatorSessionBean().saveNewIndicator();
-            /*Actualiza los valores del NodeId y el NodePath para las variables hidden*/
-            Long newNodeId = this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getIndicatorId();
-            String newPath = this.getindicator$IndicatorSessionBean().getPathNode()+","+newNodeId;
-            this.getindicator$IndicatorSessionBean().setNodeId(newNodeId.toString());
-            this.getindicator$IndicatorSessionBean().setPathNode(newPath);
-
-            /*
-             *      CREAR LAS RELACIONES INDICADOR-DUBLIN_CORE
-             */
+        if(!this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().isEmpty())
+        {
             getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
-            Collection<ReferenceDTO> references = this.getindicator$IndicatorSessionBean().getSelectedResourcesId().values();
-            List<String> dublinCoreIds = new ArrayList();
-            for(ReferenceDTO reference: references)
-            {
-                dublinCoreIds.add(reference.getKey());
-            }
-            this.getindicator$IndicatorSessionBean().saveIndicatorDublinCoreIds(newNodeId, dublinCoreIds,
-                    getAraSessionBean().getGlobalUserName());
-            this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+        }
+      
+        /*
+         * ARMAR EL DTO PARA REALIZAR LA BUSQUEDA
+         */
 
-            return "back";
+        this.getindicator$IndicatorSessionBean().setQueryDublinCoreDTO(new DublinCoreDTO());
+        //System.out.println("DublinCoreDTO del SessionBean = "+this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().toString());
+
+        if(this.getTxTitle().getText() != null && this.getTxTitle().getText() != "")
+        {
+            System.out.println("TxTitle = "+(String)this.getTxTitle().getText());
+            this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("title",
+                                                                                    this.getTxTitle().getText().toString(), "Español");
         }
-        catch(Exception e){
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-            return null;
+
+        if(this.getTxCreator().getText() != null && this.getTxCreator().getText() != "")
+        {
+
+            System.out.println("TxCreator = "+(String)this.getTxCreator().getText());
+            this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("creator",
+                                                                                    this.getTxCreator().getText().toString(), null);
         }
+
+        if(this.getTxIdentifier().getText() != null && this.getTxIdentifier().getText() != "")
+        {
+            System.out.println("TxIdentifier = "+(String)this.getTxIdentifier().getText());
+            this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("identifier",
+                                                                                    this.getTxIdentifier().getText().toString(), null);
+        }
+
+
+       if(this.getTxYear().getText() != null && this.getTxYear().getText() != "")
+       {
+           System.out.println("TxDate = "+(String)this.getTxYear().getText());
+            this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("date",
+                                                                                    this.getTxYear().getText().toString(), null);
+       }
+
+         //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
+        this.getindicator$IndicatorSessionBean().setQueryMode(true);
+        //Desabilitar la bandera de busqueda simple
+        this.getindicator$IndicatorSessionBean().setQueryModeSimple(false);
+        //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
+        this.getindicator$IndicatorSessionBean().getPagination().setTotalResults(
+                this.getindicator$IndicatorSessionBean().
+                getDublinCoreFacade().
+                countDublinCoreAdvancedSearch(
+                getindicator$IndicatorSessionBean().
+                getQueryDublinCoreDTO()).intValue());
+
+        this.getindicator$IndicatorSessionBean().getPagination().firstResults();
+        this.getindicator$IndicatorSessionBean().getPagination().refreshList();
+
+        this.getTxSearch().setValue("");
+
+        return null;
+
 
     }
 

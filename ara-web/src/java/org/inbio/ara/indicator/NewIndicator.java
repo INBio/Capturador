@@ -447,9 +447,7 @@ public class NewIndicator extends AbstractPageBean {
 
         this.getTxSearch().setValue("");
 
-        return null;
-
-        
+        return null;        
     }
 
 

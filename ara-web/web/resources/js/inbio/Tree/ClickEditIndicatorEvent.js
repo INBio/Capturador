@@ -38,7 +38,16 @@ function setInformation(selectedNodeId)
     var description = document.getElementById('contenido:form1:tabSet1:tabNewIndicator:txaIndicatorDescription');
     description.setProps({value: sdescription});
     var applyToParts = document.getElementsByName('contenido:form1:tabSet1:tabNewIndicator:myRadio');
-    applyToParts[sapplyToParts].checked = true;
+    
+    if(sapplyToParts == 0)
+    {
+        applyToParts[1].checked = true;
+    }
+    else
+    {
+        applyToParts[0].checked = true;
+    }
+    
     
     
 }
