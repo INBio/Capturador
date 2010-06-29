@@ -525,13 +525,9 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
        System.out.println("--- Entro al setSelectedResources");
        System.out.println(mapToString(selectedResourcesId));
         for (ReferenceDTO aux: resources) {
-            //resources.setRowIndex(i);
-            //ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData();
-            //System.out.println(" * "+aux.getResourceId()+" = "+selectedResourcesId.containsKey(aux.getResourceId()));
+            
             if(selectedResourcesId.containsKey(aux.getKey()))
-            {
-              //      System.out.println("Se debe deseleccionar "+aux.getResourceId());
-                    //selectedResourcesId.remove(aux.getResourceId());
+            {            
                 aux.setSelected(true);
             }
 

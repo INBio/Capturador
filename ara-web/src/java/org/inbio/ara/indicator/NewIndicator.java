@@ -266,6 +266,11 @@ public class NewIndicator extends AbstractPageBean {
             userInput = this.getTxSearch().getValue().toString();
         }
         userInput = userInput.trim();
+
+        if(!this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().isEmpty())
+        {
+            getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+        }
         
         if(userInput.length()==0){
             //Se desabilitan las banderas de busqueda simple y avanzada
@@ -297,6 +302,11 @@ public class NewIndicator extends AbstractPageBean {
 
     public String btnAdvSearch_action() {
 
+        if(!this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().isEmpty())
+        {
+            getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+        }
+        
         boolean advanced = this.getindicator$IndicatorSessionBean().isAdvancedSearch();
         if(advanced==false){ //Mostrar panel de busqueda avanzada
             this.getindicator$IndicatorSessionBean().setAdvancedSearch(true);
@@ -378,6 +388,10 @@ public class NewIndicator extends AbstractPageBean {
     public String btnProceedSearch_action() {
 
 
+        if(!this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().isEmpty())
+        {
+            getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+        }
 
         /*
          * ARMAR EL DTO PARA REALIZAR LA BUSQUEDA
@@ -447,7 +461,7 @@ public class NewIndicator extends AbstractPageBean {
     public void getSelectedResourceIds (HtmlDataTable selectedResources, Map<String, ReferenceDTO> selectedResourcesId)
     {
         System.out.println("--> Entro a getSelectedResourceIds");
-        System.out.println(this.getindicator$IndicatorSessionBean().mapToString(selectedResourcesId));
+        
         int n = selectedResources.getRowCount();      
         for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
             selectedResources.setRowIndex(i);
@@ -471,6 +485,7 @@ public class NewIndicator extends AbstractPageBean {
                 }
             }
         }
+        System.out.println(this.getindicator$IndicatorSessionBean().mapToString(selectedResourcesId));
         //System.out.println(selected.toString());
     }
 
