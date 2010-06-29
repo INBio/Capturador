@@ -2315,51 +2315,51 @@ ALTER TABLE ARA.TAXON_INDICATOR_COMPONENT_PART ADD COLUMN last_modification_by c
 ------------  MÓDULO DE TRANSACCIONES  ------------
 ---------------------------------------------------
 
---2010.02.19 echinchilla
+--2010.06.28 echinchilla
 -- Eliminando la columna obj_version de la tabla ara.transaction
 alter table ara.transaction drop column obj_version;
 
---2010.02.19 echinchilla
+--2010.06.28 echinchilla
 -- Eliminando la columna obj_version de la tabla ara.transaction_type
 alter table ara.transaction_type drop column obj_version;
 
---2010.02.19 echinchilla
+--2010.06.28 echinchilla
 -- Eliminando la columna obj_version de la tabla ara.transacted_specimen_status
 alter table ara.transacted_specimen_status drop column obj_version;
 
---2010.02.19 echinchilla
+--2010.06.28 echinchilla
 -- Eliminando la columna obj_version de la tabla ara.transacted_specimen
 alter table ara.transacted_specimen drop column obj_version;
 
 
---2010.02.19 echinchilla
+--2010.06.28 echinchilla
 -- Nuevo sequence para la tabla de transaction
 CREATE SEQUENCE ara.transaction_seq;
 ALTER TABLE ara.transaction_seq OWNER TO ara;
 -- Asignar dicho sequence al atributo correspondiente de la tabla
 ALTER TABLE ara.transaction  ALTER COLUMN transaction_id SET DEFAULT nextval('ara.transaction_seq'::regclass);
 
---2010.02.19 echinchilla
+--2010.06.28 echinchilla
 -- Nuevo sequence para la tabla de transaction_type
 CREATE SEQUENCE ara.transaction_type_seq;
 ALTER TABLE ara.transaction_type_seq OWNER TO ara;
 -- Asignar dicho sequence al atributo correspondiente de la tabla
 ALTER TABLE ara.transaction_type  ALTER COLUMN transaction_type_id SET DEFAULT nextval('ara.transaction_type_seq'::regclass);
 
---2010.02.23 echinchilla
+--2010.06.28 echinchilla
 -- Nuevo sequence para la tabla de transacted_specimen_status
 CREATE SEQUENCE ara.transacted_specimen_status_seq;
 ALTER TABLE ara.transacted_specimen_status_seq OWNER TO ara;
 -- Asignar dicho sequence al atributo correspondiente de la tabla
 ALTER TABLE ara.transacted_specimen_status  ALTER COLUMN transacted_specimen_status_id SET DEFAULT nextval('ara.transacted_specimen_status_seq'::regclass);
 
---2010.02.23 echinchilla
+--2010.06.28 echinchilla
 -- Agregar columna faltante a tabla de transacciones
 ALTER TABLE ara.transaction ADD COLUMN creation_date date;
 ALTER TABLE ara.transaction ALTER COLUMN creation_date SET STORAGE PLAIN;
 ALTER TABLE ara.transaction ALTER COLUMN creation_date SET NOT NULL;
 
---2010.03.01 echinchilla
+--2010.06.28 echinchilla
 -- Agregar información de tabla de lista de selección en list_table
 INSERT INTO ara.list_table(
             list_table_id, description, obj_version, created_by, creation_date,
@@ -2367,7 +2367,7 @@ INSERT INTO ara.list_table(
     VALUES (42, 'Tipo de Transacción', 0, 'ara', '2010-03-01',
             'ara', '2010-03-01', 'transaction_type', 'transaction_type_id');
 
---2010.03.01 echinchilla
+--2010.06.28 echinchilla
 -- Agregar información de tabla de lista de selección en list_table
 INSERT INTO ara.list_table(
             list_table_id, description, obj_version, created_by, creation_date,
@@ -2375,7 +2375,7 @@ INSERT INTO ara.list_table(
     VALUES (43, 'Estado de Espécimen Transado', 0, 'ara', '2010-03-01',
             'ara', '2010-03-01', 'transacted_specimen_status', 'transacted_specimen_status_id');
 
---2010.06.10 echinchilla
+--2010.06.28 echinchilla
 -- Cambiar el tipo de la columna CREATION_DATE de DATE a TIMESTAMP
 -- en la tabla TRANSACTED_SPECIMEN, para ordenar los especímenes transados.
 ALTER TABLE ara.transacted_specimen
