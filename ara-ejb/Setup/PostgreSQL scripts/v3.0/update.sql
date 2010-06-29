@@ -2381,6 +2381,11 @@ INSERT INTO ara.list_table(
 ALTER TABLE ara.transacted_specimen
 	ALTER COLUMN creation_date TYPE timestamp;
 
+--2010.06.29 echinchilla
+-- Agregar columna de descripción para transacted_specimen, necesario para botánica.
+ALTER TABLE ara.transacted_specimen
+    ADD COLUMN description character varying(500);
+
 ---------------------------------------------------
 ----------  FIN MÓDULO DE TRANSACCIONES  ----------
 ---------------------------------------------------
