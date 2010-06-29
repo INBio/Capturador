@@ -326,8 +326,10 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     public List<GatheringObservationDTO>
             getAllGatheringObservationPaginated(int first, int totalResults,
             Long collectionId) {
-        List<GatheringObservation> gList = gatheringObservationEAOImpl.findAllPaginatedFilterAndOrderBy(GatheringObservation.class,
-                first, totalResults, null, collectionId);
+        String[] orderByFields = {"gatheringObservationId"};
+        List<GatheringObservation> gList = gatheringObservationEAOImpl.
+                findAllPaginatedFilterAndOrderBy(GatheringObservation.class,
+                first, totalResults, orderByFields, collectionId);
         if (gList == null)
             return null;
         return updateGathObsCountryAndProvinceName(
@@ -846,8 +848,11 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      * @return
      */
     public List<PersonDTO> getAllPersonPaginated(int firstResult, int maxResults) {
+        String[] orderByFields = {"firstName", "lastName"};
         return personDTOFactory.createDTOList(
-                personEAOImpl.findAllPaginatedFilterAndOrderBy(Person.class, firstResult, maxResults, null,null));
+                personEAOImpl.
+                findAllPaginatedFilterAndOrderBy(
+                Person.class, firstResult, maxResults, orderByFields,null));
     }
 
     public Long countPerson() {
@@ -1407,8 +1412,10 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      */
     public List<CollectionDTO> getAllCollectionPaginated(int firstResult,
             int maxResults) {
+        String[] orderByFields = {"name"};
         List<Collection> cList = collectionEAOImpl.
-                findAllPaginatedFilterAndOrderBy(Collection.class, firstResult, maxResults,null,null);
+                findAllPaginatedFilterAndOrderBy(
+                Collection.class, firstResult, maxResults,orderByFields,null);
         if (cList == null)
             return null;
         return collectionDTOFactory.createDTOList(cList);

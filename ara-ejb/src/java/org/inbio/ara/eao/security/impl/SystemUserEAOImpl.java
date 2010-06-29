@@ -56,7 +56,8 @@ public class SystemUserEAOImpl extends BaseEAOImpl<SystemUser,Long> implements S
      */
     public List<SystemUser> getAllUserEnabledPaginated(int first, int totalResults){
         String query = "from SystemUser su where " +
-                       "su.enabled = 1";
+                       "su.enabled = 1 " +
+                       "order by su.username, su.fullname";
         Query q = em.createQuery(query);
         q.setFirstResult(first);
         q.setMaxResults(totalResults);

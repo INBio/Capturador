@@ -406,7 +406,8 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     }
 
     public List<TaxonDTO> getAllTaxon() {
-        return taxonDTOFactory.createDTOList(taxonEAOImpl.findAll(Taxon.class));
+        String[] orderByFields = {"defaultName"};
+        return taxonDTOFactory.createDTOList(taxonEAOImpl.findAllAndOrderBy(Taxon.class,orderByFields));
     }
 
     public List<TaxonDTO> getTaxonsByNomenclaturalGroup(Long ngId){
@@ -1171,13 +1172,14 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     public List<NomenclaturalGroupDTO> getAllNomenclaturalGroupsPaginated(
                                             int firstResult
                                             , int maxResults
-											, Long collectionId){
+                                            , Long collectionId){
+        String[] orderByFields = {"name"};
         List<NomenclaturalGroup> entityList =
             nomenclaturalGroupEAOImpl.findAllPaginatedFilterAndOrderBy(
                 NomenclaturalGroup.class
                 , firstResult
                 , maxResults
-                , null
+                , orderByFields
                 , collectionId);
 
         return nomenclaturalGroupDTOFatory.createDTOList(entityList);

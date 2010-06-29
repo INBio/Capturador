@@ -110,8 +110,10 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
      * Metodo que retorna la lista completa de instituciones paginada
      */
     public List<InstitutionDTO> getAllInstitutionsPaginated(int firstResult,int maxResults){
-        List<Institution> entityList =  institutionEAOImpl.findAllPaginatedFilterAndOrderBy(Institution.class,
-                firstResult, maxResults,null,null);
+        String[] orderByFields = {"institutionCode", "name"};
+        List<Institution> entityList =  institutionEAOImpl.
+                findAllPaginatedFilterAndOrderBy(Institution.class,
+                firstResult, maxResults,orderByFields,null);
         return institutionDTOFactory.createDTOList(entityList);
     }
 
@@ -126,8 +128,11 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
      * Metodo que retorna la lista completa de audiencias paginada
      */
     public List<AudienceDTO> getAllAudiencesPaginated(int firstResult,int maxResults){
-        List<Audience> entityList =  audienceEAOImpl.findAllPaginatedFilterAndOrderBy(Audience.class,
-                firstResult, maxResults,null,null);
+        String[] orderByFields = {"name"};
+        List<Audience> entityList =  audienceEAOImpl.
+                findAllPaginatedFilterAndOrderBy(
+                Audience.class,
+                firstResult, maxResults,orderByFields,null);
         return audienceDTOFactory.createDTOList(entityList);
     }
 
@@ -150,8 +155,10 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
      * Metodo que retorna la lista completa de perfiles paginada
      */
     public List<ProfileDTO> getAllProfilesPaginated(int firstResult,int maxResults){
-        List<Profile> entityList =  profileEAOImpl.findAllPaginatedFilterAndOrderBy(Profile.class,
-                firstResult, maxResults,null,null);
+        String[] orderByFields = {"name"};
+        List<Profile> entityList =  profileEAOImpl.
+                findAllPaginatedFilterAndOrderBy(Profile.class,
+                firstResult, maxResults,orderByFields,null);
         return profileDTOFactory.createDTOList(entityList);
     }
 

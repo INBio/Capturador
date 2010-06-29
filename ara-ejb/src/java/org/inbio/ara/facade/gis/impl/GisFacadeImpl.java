@@ -111,16 +111,19 @@ public class GisFacadeImpl implements GisFacadeRemote {
      * Listado de todos los site calculation methods
      */
     public List<SiteCalculationMethodDTO> getAllSiteCalculationMethods(){
+        String[] orderByFields = {"name"};
         return siteCalculationMethodDTOFactory.createDTOList
-                (siteCalculationMethodEAOImpl.findAll(SiteCalculationMethod.class));
+                (siteCalculationMethodEAOImpl.findAllAndOrderBy(
+                SiteCalculationMethod.class, orderByFields));
     }
 
     /**
      * Listado de todos las projections
      */
     public List<ProjectionDTO> getAllProjection(){
+        String[] orderByFields = {"name"};
         return projectionDTOFactory.createDTOList
-                (projectionEAOImpl.findAll(Projection.class));
+                (projectionEAOImpl.findAllAndOrderBy(Projection.class, orderByFields));
     }
 
     public List<ProvinceDTO> getAllProvincesForContry(Long cId){
@@ -132,7 +135,8 @@ public class GisFacadeImpl implements GisFacadeRemote {
      * Retorna un listado de la sitios
      */
     public List<SiteDTO> getAllSitePaginated(int first, int totalResults) {
-        List<Site> sList = siteEAOImpl.findAllPaginatedFilterAndOrderBy(Site.class, first, totalResults,null,null);
+        String[] orderByFields = {"description"};
+        List<Site> sList = siteEAOImpl.findAllPaginatedFilterAndOrderBy(Site.class, first, totalResults,orderByFields,null);
         if (sList == null) {
             return null;
         } else {
@@ -147,13 +151,15 @@ public class GisFacadeImpl implements GisFacadeRemote {
     /**
      * Metodo que retorna la lista completa de paises
      */
+    @Deprecated
     public List<GeographicLayerDTO> getAllCountries(){
         return countryEAOImpl.getAllCountries();
     }
 
     public List<CountryDTO> findAllCountries(){
+        String[] orderByFields = {"value"};
         return countryDTOFactory.createDTOList
-                (countryEAOImpl.findAll(Country.class));
+                (countryEAOImpl.findAllAndOrderBy(Country.class, orderByFields));
     }
 
     public CountryDTO getCountryForSite(Long siteId) {
