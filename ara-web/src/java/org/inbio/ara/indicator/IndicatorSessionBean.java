@@ -74,17 +74,19 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     }
     // </editor-fold>
 
-    //
+    //Nodo actual sobre el que se efectua la acción
     private String nodeId = "0"; //
+    //Ruta para llegar al nodo actual desde la raíz
     private String pathNode = "0"; //
 
     //Seleccion del estandar a utilizar
     private Long resultRadioGroup = 1L;
 
+    //Contiene el IndicatorDTO sobre que que se efectúa la acción
     private IndicatorDTO currentIndicatorDTO = new IndicatorDTO();
 
 
-    //Objeto que controla la paginacion de la informacion de passport
+    //Objeto que controla la paginacion de las referencias
     private PaginationControllerRemix pagination = null;
 
     //Bandera para saber si se activo el panel de busqueda avanzada
@@ -93,20 +95,25 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     private int quantity = 10; //Por defecto se mostraran 10 elementos
     //Bandera para indicarle al paginador que trabaje en modo busqueda avanzada
     private boolean queryMode = false;
-
     //Bandera para indicarle al paginador que trabaje en modo busqueda simple
     private boolean queryModeSimple = false;
-
     //Bandera para indicar al paginador que trabaje solo con las relaciones existentes en la BD
     private boolean editMode = false;
-
     //String que indica la consulta del usuario en la busqueda simple
     private String simpleConsult = new String("");
-
+    //Objeto usado para la consulta del usuario en la búsqueda avanzada
     private DublinCoreDTO queryDublinCoreDTO = new DublinCoreDTO();
 
-
+    //contiene las referencias seleccionadas por el usuario
     private Map<String, ReferenceDTO> selectedResourcesId = new HashMap<String, ReferenceDTO>();
+
+    /*
+     * Contiene 3 map utilizados para distinguir operaciones con los elementos en el edit
+     *  -> Map[0] contiene las relaciones existentes en la bd, se carga al cambiar de indicador
+     *  -> Map[1] contiene las relaciones nuevas que deben almacenarse en la bd
+     *  -> Map[2] contiene las relaciones que se deben borrar de la bd
+     */
+    private Map<String, ReferenceDTO> editReference[] = new HashMap[3];
 
 
     /**
@@ -150,13 +157,18 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         // TODO - add your own initialization code here
     }
 
-
-      public String getQuantityTotal() {
+    /*
+     * Calcula el String con la información de paginación
+     * registro inicial en la pagina - registro final en la pagina | total de resultado a mostrar
+     */
+    public String getQuantityTotal() {
         int actualPage = this.getPagination().getActualPage();
         int resultsPerPage = this.getPagination().getResultsPerPage();
         int totalResults = this.getPagination().getTotalResults();
         return "  " + (actualPage + 1) + " - " + (actualPage + resultsPerPage) + "  | " + totalResults + "  ";
     }
+
+    
     /**
      * <p>This method is called when the session containing it is about to be
      * passivated.  Typically, this occurs in a distributed servlet container
@@ -287,14 +299,14 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     }
 
     /**
-     * @return the consultaSimple
+     * @return the simpleConsult
      */
     public String getSimpleConsult() {
         return simpleConsult;
     }
 
     /**
-     * @param consultaSimple the consultaSimple to set
+     * @param simpleConsult the simpleConsult to set
      */
     public void setSimpleConsult(String simpleConsult) {
         this.simpleConsult = simpleConsult;
@@ -316,25 +328,31 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
 
 
     /**
-     * @return the currentSiteDTO
+     * @return the currentIndicatorDTO
      */
     public IndicatorDTO getCurrentIndicatorDTO() {
         return currentIndicatorDTO;
     }
 
     /**
-     * @param currentSiteDTO the currentSiteDTO to set
+     * @param currentIndicatorDTO the currentIndicatorDTO to set
      */
     public void setCurrentIndicatorDTO(IndicatorDTO currentIndicatorDTO) {
         this.currentIndicatorDTO = currentIndicatorDTO;
     }
 
+
+    /*
+     * Cuenta la cantidad de Indicadores relacionados con un Indicador Padre
+     */
     public Long countChildrenByIndicatorId(Long indicatorId) {
        return this.indicatorFacade.countChildrenByIndicatorId(indicatorId);
     }
 
 
-
+    /*
+     * Crea un nuevo indicador
+     */
     public void saveNewIndicator(){
       //  System.out.println("ancestor id (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getIndicatorAncestorId());
         IndicatorDTO newDTO = this.getIndicatorFacade().saveNewIndicator(this.getCurrentIndicatorDTO());
@@ -342,28 +360,45 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     }
 
 
-     public void updateIndicator(){
+    /*
+     * Actualiza la información de un indicador
+     */
+    public void updateIndicator(){
       
         this.getIndicatorFacade().updateIndicator(this.getCurrentIndicatorDTO());
       
     }
 
-     public void deleteIndicator(Long indicatorId)
-     {
-         this.indicatorFacade.deleteIndicator(indicatorId);
-     }
+    /*
+     * Borra un indicador de acuerdo a su id
+     */
+    public void deleteIndicator(Long indicatorId)
+    {
+        this.indicatorFacade.deleteIndicator(indicatorId);
+    }
 
 
-     public void saveIndicatorDublinCoreIds (Long indicatorId, List<String> dublinCoreIds, String userName)
-     {
-         this.getIndicatorFacade().saveIndicatorDublinCores(indicatorId, dublinCoreIds, userName);
-     }
+    /*
+     * Crea las n relaciones de acuerdo a las n referencias que escogio el usuario
+     * y al id del indicador con el que se está trabajando
+     */
+    public void saveIndicatorDublinCoreIds (Long indicatorId, List<String> dublinCoreIds, String userName)
+    {
+        this.getIndicatorFacade().saveIndicatorDublinCores(indicatorId, dublinCoreIds, userName);
+    }
 
+    /*
+     * Obtener los datos de un indicador de acuerdo al id
+     */
     public IndicatorDTO getIndicatorDTOByIndicatorId(Long indicatorId)
     {
        return indicatorFacade.getIndicatorByIndicatorId(indicatorId);
     }
 
+
+    /*
+     * Obtener los datos de una Referencia en formato dublin core de acuerdo al id del recurso
+     */
     public DublinCoreDTO getDublinCoreMetadataByResourceId(Long resuorceId)
     {
        return dublinCoreFacade.getMetadataByResourceKey(resuorceId.toString());
@@ -438,21 +473,32 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         this.queryDublinCoreDTO = queryDublinCoreDTO;
     }
 
+    /*
+     * Retorna la lista de elementos que se van a mostrar en la tabla paginada
+     */
     public List getResults(int firstResult, int maxResults) {
         System.out.println("---- Entro al getResults");
-        List<DublinCoreDTO> auxResult = new ArrayList<DublinCoreDTO>();
 
+
+        List<ReferenceDTO> auxResult = new ArrayList<ReferenceDTO>();
+
+        //Contiene el resultado de las busquedas
         List<DublinCoreDTO> aListDTO;
+
+        //contiene la lista resultado que será devuelta
         List<ReferenceDTO> results = new ArrayList<ReferenceDTO>();
 
         if (isQueryMode()) { //En caso de que sea busqueda avanzada
-            //Set the collectionId into the DTO
             try {
+                //Se realiza la consulta utilizando los datos del query en un DublinCoreDTO
                 aListDTO =  myReturn(
                         this.getDublinCoreFacade().getDublinCoreAdvancedSearch
                         (getQueryDublinCoreDTO(), firstResult, maxResults));
+                /* Se convierte el resultado de la consulta de DublinCoreDTO a ReferenceDTO
+                 * para poder mostrar los datos en la tabla utilizada en la interfaz
+                */
                 results = this.dublinCoreFacade.dublinCoreDTOsToReferenceDTOs(aListDTO);
-                //Seleccionar los elementos que han sido seleccionados antes
+                //Seleccionar los elemento que han sido seleccionados antes en la interfaz
                 this.setSelectedResources(results, selectedResourcesId);
                 return results;
                 
@@ -462,9 +508,13 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
             }
         } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
             try {
-
+                //Se realiza la consulta utilizando el String que el usuario ingresó
                 aListDTO =  myReturn(this.getDublinCoreFacade().getReferenceSimpleSearch(this.getSimpleConsult(), firstResult, maxResults));
+                /* Se convierte el resultado de la consulta de DublinCoreDTO a ReferenceDTO
+                 * para poder mostrar los datos en la tabla utilizada en la interfaz
+                */
                 results = this.dublinCoreFacade.dublinCoreDTOsToReferenceDTOs(aListDTO);
+                //Seleccionar los elemento que han sido seleccionados antes en la interfaz
                 this.setSelectedResources(results, selectedResourcesId);
                 return results;
 
@@ -472,14 +522,23 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
                 e.printStackTrace();
                 return auxResult;
             }
-        } else if(isEditMode())
+        } else if(isEditMode()) //En caso de que sean relaciones Dublin Core utilizados para editar un indicador
         {
             try {
+                /*
+                 * Se realiza la consulta para traer todas las relaciones indicator-dublinCore dado
+                 * el nodo indicador actual sobre el cual se está editando
+                 */
                 List<Long> dublinCoreIds = this.indicatorFacade.getDublinCoreIdsByIndicator(new Long(nodeId));
+                //obtener la lista de DublinCoreDTO de acuerdo a la lista de DublinCoreIds
                 aListDTO = this.dublinCoreFacade.getDublinCoreDTOsByIds(dublinCoreIds);
+                /* Se convierte el resultado de la consulta de DublinCoreDTO a ReferenceDTO
+                * para poder mostrar los datos en la tabla utilizada en la interfaz
+                */
                 results = this.dublinCoreFacade.dublinCoreDTOsToReferenceDTOs(aListDTO);
+                // Seleccionar en la interfaz todas las relaciones dublin core del indicador
                 this.setEditRestults(results, selectedResourcesId);
-                //this.setSelectedResources(results, selectedResourcesId);
+                // Dejar el modo edit en false para poder hacer búsquedas
                 editMode = false;
                 return results;
             } catch (Exception e) {
@@ -491,8 +550,13 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         else//Valores default
         {
             try {
+                // Se traen todas las referencias Dublin Core
                 aListDTO =  myReturn(this.getDublinCoreFacade().getAllDublinCorePaginated(firstResult, maxResults));
+                /* Se convierte el resultado de la consulta de DublinCoreDTO a ReferenceDTO
+                * para poder mostrar los datos en la tabla utilizada en la interfaz
+                */
                 results = this.dublinCoreFacade.dublinCoreDTOsToReferenceDTOs(aListDTO);
+                // Seleccionar en la interfaz todas las relaciones dublin core del indicador
                 this.setSelectedResources(results, selectedResourcesId);
                 return results;
             } catch (Exception e) {
@@ -503,6 +567,10 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     }
 
 
+    /*
+     * Selecciona en la interfaz las relaciones existentes indicador-dublinCore que se muestran al
+     * realizar la edición de datos de un indicador.
+     */
     public void setEditRestults(List<ReferenceDTO> indicatorReferences, Map<String,ReferenceDTO> selectedRef)
     {
         for(ReferenceDTO indicatorReference : indicatorReferences)
@@ -512,6 +580,9 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         }
     }
 
+    /*
+     * Valida si la lista es nula para o no, para retornar un objeto no nulo
+     */
     public List myReturn(List l) {
         if (l == null) {
             return new ArrayList<DublinCoreDTO>();
@@ -520,6 +591,11 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         }
     }
 
+    /*
+     * Selecciona en la interfaz los elementos seleccinados por el usuario.
+     * Es utilizado cuando se hace un prerender donde se pierden los elementos que habian seleccionados desde
+     * la interfaz
+     */
     public void setSelectedResources (List<ReferenceDTO> resources, Map<String, ReferenceDTO> selectedResourcesId)
     {
        System.out.println("--- Entro al setSelectedResources");
@@ -564,6 +640,9 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     }
 
 
+   /*
+    * Convierte los datos contenido del map en un string
+    */
    public String mapToString(Map<String,ReferenceDTO> map)
    {
         String result = "";
@@ -573,6 +652,20 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
             result += reference.getKey() +"\t"+reference.getTitle()+"\n";
         }
         return result;
+    }
+
+    /**
+     * @return the editReference
+     */
+    public Map<String, ReferenceDTO>[] getEditReference() {
+        return editReference;
+    }
+
+    /**
+     * @param editReference the editReference to set
+     */
+    public void setEditReference(Map<String, ReferenceDTO>[] editReference) {
+        this.editReference = editReference;
     }
 
 

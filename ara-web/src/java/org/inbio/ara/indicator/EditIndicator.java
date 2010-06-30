@@ -73,16 +73,17 @@ public class EditIndicator extends AbstractPageBean {
     private Locale myLocale;
     //contiene el String con las cantidades mostrado para la paginación
     private String quantityTotal = new String();
-    //
+
+    
     private String selected = new String();
+  
 
-    private RadioButtonGroup radioButtonGroup = new RadioButtonGroup();
-    private SingleSelectOptionsList radioData = new SingleSelectOptionsList();
-
-
+    //valor default de selección para el applyToParts
     private Long selectedRadioButton = 1L;
 
-
+    //Elementos de la interfaz gráfica
+    private RadioButtonGroup radioButtonGroup = new RadioButtonGroup();
+    private SingleSelectOptionsList radioData = new SingleSelectOptionsList();
     private HtmlPanelGrid gridIndicator = new HtmlPanelGrid();
     private HtmlPanelGrid indicator = new HtmlPanelGrid();
     private TextField txIndicatorName = new TextField();
@@ -91,23 +92,14 @@ public class EditIndicator extends AbstractPageBean {
     private HtmlInputHidden hiddenPathNode = new HtmlInputHidden();
     private HtmlInputHidden hiddenAncestorNodeId = new HtmlInputHidden();
     private DefaultSelectItemsArray radioButtonList1DefaultItems = new DefaultSelectItemsArray();
-
-
     private HtmlPanelGrid gridDublinCore = new HtmlPanelGrid();
     private HtmlInputText txSearch = new HtmlInputText();
-
     private HtmlPanelGrid gridpAdvancedSearch = new HtmlPanelGrid();
-
     private TextField txTitle = new TextField();
-
     private TextField txYear = new TextField();
-
     private TextField txIdentifier = new TextField();
-
     private TextField txCreator = new TextField();
-
     private HtmlCommandButton btnSearch = new HtmlCommandButton();
-
     private HtmlCommandButton btnAdvSearch = new HtmlCommandButton();
     private HtmlDataTable dataTableDublinCore = new HtmlDataTable();
     
@@ -182,7 +174,7 @@ public class EditIndicator extends AbstractPageBean {
         System.out.println("nodeId = "+this.getindicator$IndicatorSessionBean().getNodeId());
         System.out.println("hiddenNodeId = "+hiddenNodeId.getValue());
 
-        
+        //Se actualiza el valor del nodo indicador actual, al iniciar el editar
         if(hiddenNodeId.getValue() == null)
         {
             System.out.println("inicializar los hidden porque estan nulos");
@@ -191,26 +183,34 @@ public class EditIndicator extends AbstractPageBean {
             hiddenAncestorNodeId.setValue(this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getIndicatorAncestorId());
         }
         
-
         
-       if (this.getindicator$IndicatorSessionBean().getPagination()!=null)
+       if (this.getindicator$IndicatorSessionBean().getPagination()!=null) //Cuando el paginador no es nulo
         {
             System.out.println("--> entra al if donde el paginador no es nulo");
-           
+
+            /* Actualiza el valor del nodo indicador actual si el hiddenNode ha cambiado
+             * el hiddenNodeId es modificado por código java script, por eso cuando se realiza el
+             * prerender debe revisarse si hay un cambio de valor para recalcular las relaciones
+             * con el indicador
+             */
             if(!(this.getindicator$IndicatorSessionBean().getNodeId()).equals(hiddenNodeId.getValue()))
             {
                 System.out.println("se debe recalcular las referencias por el cambio de nodo y actualizar los valores del nodeId en el session");
+                //actualizar el nodoId
                 this.getindicator$IndicatorSessionBean().setNodeId(hiddenNodeId.getValue().toString());
+                //encender la bandera de modo Editar
                 this.getindicator$IndicatorSessionBean().setEditMode(true);
+                //inicializar el valor del map
                 this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String,ReferenceDTO>());
-                this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));
-                
-
+                //inicializar el paginador para que realice la busqueda de las relaciones indicator-dublinCore
+                this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));             
             }
-            else
+            else //si el nodeId no ha cambiado
             {
-
+                //Obtener los recursos seleccionados en la tabla de la interfaz por el usuario y almacenarlos en el map
                 getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+
+                
                 Collection<ReferenceDTO> references = this.getindicator$IndicatorSessionBean().getSelectedResourcesId().values();
                 for(ReferenceDTO reference: references)
                 {
@@ -221,15 +221,17 @@ public class EditIndicator extends AbstractPageBean {
         }
         //Preguntar si la bandera de busqueda avanzada esta prendida
         if(this.getindicator$IndicatorSessionBean().isAdvancedSearch()){
-            System.out.println("--> entra al if de busqueda avanzada");
-        //    System.out.println("Entro a la búsqueda avanzada");
+            System.out.println("--> entra al if de busqueda avanzada");  
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
         //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
         else if (this.getindicator$IndicatorSessionBean().getPagination()==null) {
             System.out.println("--> entra al if donde el paginador es nulo");
+            //Colocar el modo editar en true, es una indicación para el getResults del paginador
             this.getindicator$IndicatorSessionBean().setEditMode(true);
-            this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String,ReferenceDTO>());
+            //Seleccionar las referencias seleccionadas previamente por el usuario
+            //this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String,ReferenceDTO>());
+            //inicializar el paginador
             this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));           
         
         }
@@ -238,21 +240,24 @@ public class EditIndicator extends AbstractPageBean {
     }
 
 
+    /*
+     * Obtiene las referencias seleccionadas por el usuario, eliminar las que deselecciono
+     */
     public void getSelectedResourceIds (HtmlDataTable selectedResources, Map<String, ReferenceDTO> selectedResourcesId)
     {
       
         int n = selectedResources.getRowCount();
         for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
-            selectedResources.setRowIndex(i);
-            ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData();
-            if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) {          
-                selectedResourcesId.put(aux.getKey(), aux);               
+            selectedResources.setRowIndex(i);   //iteración en la fila i
+            ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData(); //obtener el ReferenceDTO de la fila i
+            if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) { //Si el ReferenceDTO fue seleccionado y no esta en el map
+                selectedResourcesId.put(aux.getKey(), aux); //agrega un nuevo elemento al map
             }
             else
             {
-                if((!aux.isSelected()) && selectedResourcesId.containsKey(aux.getKey()))
+                if((!aux.isSelected()) && selectedResourcesId.containsKey(aux.getKey())) // si el ReferenceDTO no fue seleccionado y está dentro del map
                 {        
-                    selectedResourcesId.remove(aux.getKey());
+                    selectedResourcesId.remove(aux.getKey()); //elimina el elemento del map
                 }
             }
         }
@@ -390,7 +395,7 @@ public class EditIndicator extends AbstractPageBean {
                                                                                     this.getTxYear().getText().toString(), null);
        }
 
-         //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
+        //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
         this.getindicator$IndicatorSessionBean().setQueryMode(true);
         //Desabilitar la bandera de busqueda simple
         this.getindicator$IndicatorSessionBean().setQueryModeSimple(false);
