@@ -2239,7 +2239,7 @@ ALTER TABLE ONLY ARA.INDICATOR_DUBLIN_CORE  ADD CONSTRAINT INDICATOR_DUBLIN_CORE
 --
 -- Dublin Core Elements table
 --
-create table dublin_core_element (
+create table ara.dublin_core_element (
     id integer not null
   , resource_id integer not null
   , dublin_core_element_id integer not null
@@ -2252,13 +2252,13 @@ create table dublin_core_element (
   , last_modification_by character varying(255) not null
 );
 
-alter table dublin_core_element add constraint dce_pkey primary key (id);
-alter table dublin_core_element add constraint dce_ukey1 unique (resource_id,dublin_core_element_id,value);
+alter table ara.dublin_core_element add constraint dce_pkey primary key (id);
+alter table ara.dublin_core_element add constraint dce_ukey1 unique (resource_id,dublin_core_element_id,value);
 
 --
 -- Dublin Core Descriptions table
 --
-create table dublin_core_description (
+create table ara.dublin_core_description (
     resource_id integer not null
   , resource_type_id integer not null
   , description character varying(255) default null
@@ -2268,15 +2268,11 @@ create table dublin_core_description (
   , last_modification_date date not null
   , last_modification_by character varying(255) not null
 );
-alter table dublin_core_description add constraint dcd_pkey primary key (resource_id);
-
--- Agregar las nuevas tablas al SCHEMA de Ara
-ALTER TABLE dublin_core_description SET SCHEMA ara;
-ALTER TABLE dublin_core_element SET SCHEMA ara;
+alter table ara.dublin_core_description add constraint dcd_pkey primary key (resource_id);
 
 -- Hacer OWNER a ara de las nuevas tablas
-ALTER TABLE dublin_core_description OWNER TO ara;
-ALTER TABLE dublin_core_element OWNER TO ara;
+ALTER TABLE ara.dublin_core_description OWNER TO ara;
+ALTER TABLE ara.dublin_core_element OWNER TO ara;
 
 --Create sequence dublin_core_description
 CREATE SEQUENCE ARA.DUBLIN_CORE_DESCRIPTION_SEQ;
