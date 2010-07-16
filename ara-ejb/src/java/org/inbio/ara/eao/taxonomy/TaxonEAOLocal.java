@@ -59,4 +59,6 @@ public interface TaxonEAOLocal extends BaseLocalEAO<Taxon,Long> {
      */
     public List<Taxon> getTaxonsByKingdomNameAndTaxonomicalRangeId(String kingdomName, Long taxonomicalRangeId);
 
+    public Taxon getTaxonRootByCollectionId(Long collectionId);
+
 }

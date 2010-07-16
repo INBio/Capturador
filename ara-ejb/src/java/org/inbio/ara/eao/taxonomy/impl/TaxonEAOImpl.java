@@ -160,4 +160,30 @@ public class TaxonEAOImpl extends BaseEAOImpl<Taxon,Long> implements TaxonEAOLoc
                 q.setParameter("taxonomicalRangeId", taxonomicalRangeId);
         return (List<Taxon>)q.getResultList();
     }
+
+    /*
+     *select t.current_name, tr.taxonomical_hierarchy_level
+            from ara.taxon t, ara.taxonomical_range tr
+            where t.taxonomical_range_id = tr.taxonomical_range_id
+            and t.collection_id = 9
+            order by tr.taxonomical_hierarchy_level
+            limit 1
+     */
+    public Taxon getTaxonRootByCollectionId(Long collectionId)
+    {
+        Query q = em.createQuery(" select t " +
+                     " from Taxon t, TaxonomicalRange tr "+
+                     " where t.taxonomicalRangeId = tr.taxonomicalRangeId and " +
+                     " t.collectionId = :collectionId " +
+                     " order by tr.taxonomicalRangeId");
+                /*Query q = em.createQuery(" select t " +
+                     " from Taxon t, TaxonomicalRange tr "+
+                     " where  " +
+                     " t.collectionId = :collectionId"
+                     );*/
+                q.setParameter("collectionId", collectionId);
+                q.setMaxResults(1);
+        return (Taxon) q.getSingleResult();
+    }
+
 }

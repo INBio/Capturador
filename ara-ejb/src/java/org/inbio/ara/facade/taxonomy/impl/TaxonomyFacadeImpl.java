@@ -1192,4 +1192,9 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     public Long countAllNomenclaturalGroups() {
         return nomenclaturalGroupEAOImpl.count(NomenclaturalGroup.class);
     }
+
+    public TaxonDTO getTaxonRootByCollectionId(Long collectionId)
+    {
+        return taxonDTOFactory.createDTO(taxonEAOImpl.getTaxonRootByCollectionId(collectionId));
+    }
 }

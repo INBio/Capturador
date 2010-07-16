@@ -191,4 +191,6 @@ public interface TaxonomyFacadeRemote {
      * @return
      */
     public Long countTaxonDescriptionSimpleSearch(String query);
+
+    public TaxonDTO getTaxonRootByCollectionId(Long collectionId);
 }
