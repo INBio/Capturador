@@ -33,11 +33,7 @@ public class DublinCoreDescriptionEAOImpl extends BaseEAOImpl<DublinCoreDescript
 				"select count(dcd) from DublinCoreDescriptionJPA as dcd"
 				+ " where dcd.resourceTypeId = :resourceTypeId");
 		query.setParameter("resourceTypeId", resourceTypeId);
-		//System.out.println("total de resultados>"+query.getResultList().size());
-		//List<DublinCoreElement> dceList = query.getResultList();
-		//for(DublinCoreElement dce : dceList){
-		//	System.out.println(dce.toString());
-		//}
+		
             return (Long)query.getSingleResult();
 	}
 
@@ -48,18 +44,14 @@ public class DublinCoreDescriptionEAOImpl extends BaseEAOImpl<DublinCoreDescript
 				"select dcd.resourceId from DublinCoreDescriptionJPA as dcd"
 				+ " where dcd.resourceTypeId = :resourceTypeId");
 		query.setParameter("resourceTypeId", resourceTypeId);
-		//System.out.println("total de resultados>"+query.getResultList().size());
-		//List<DublinCoreElement> dceList = query.getResultList();
-		//for(DublinCoreElement dce : dceList){
-		//	System.out.println(dce.toString());
-		//}
+		
             return (Long)query.getSingleResult();
 	}
 
 
         @SuppressWarnings("unchecked")
       public List<DublinCoreDescription> findAllPaginated( int resourceTypeId ,int base, int offset) {
-        //System.out.println("---------> ResourceTypeID = "+resourceTypeId+" base = "+base+" offset "+offset);
+        
         Query query = em.createQuery(
 				"select dcd from DublinCoreDescriptionJPA as dcd"
 				+ " where dcd.resourceTypeId = :resourceTypeId");

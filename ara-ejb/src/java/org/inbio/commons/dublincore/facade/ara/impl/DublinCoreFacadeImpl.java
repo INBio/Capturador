@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import org.inbio.commons.dublincore.dao.DublinCoreElementDAO;
+
 import org.inbio.commons.dublincore.dto.DublinCoreDTO;
 
 
@@ -100,9 +100,7 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
 
        public List<DublinCoreDTO> getReferenceSimpleSearch(String query, int firstResult, int maxResult) {
 
-        Set<Integer> resourceIds = unstructeredReferenceQuery(splitQuery(query));
-        //List<Semental> sementalList = getEntities(sementalIds, Semental.class, firstResult, maxResult);
-        //return updateSementalDTOListValues(sementalDTOFactory.createDTOList(sementalList));
+        Set<Integer> resourceIds = unstructeredReferenceQuery(splitQuery(query));        
         List<DublinCoreDTO> result = new ArrayList();
 
         for(Integer resourceId: resourceIds)
@@ -114,17 +112,12 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
 
 
        public List<DublinCoreDTO> getAllDublinCorePaginated(int firstResult, int maxResult) {
-        System.out.println("entro al getAllDublinCorePaginated del DublinCoreFacadeImpl ejb");
-           //String[] parts = {"breedId","name","animalCode"};
-        /*return updateSementalDTOListValues(sementalDTOFactory.createDTOList(
-                sementalEAOLocal.findAllPaginatedFilterAndOrderBy(
-                Semental.class, firstResult, maxResult, parts, null)));
-         */
+        
+          
        List<DublinCoreDTO> result = new ArrayList();
        List<DublinCoreDescription> allReferences = new ArrayList();
        allReferences = dublinCoreDescriptionDAOImpl.findAllPaginated(ResourceTypeEnum.REFERENCE.getId(), firstResult, maxResult);
-       //System.out.println(allReferences);
-       System.out.println(/*" resourceId = "+allReferences.get(0).getResourceId()+*/" description = "+allReferences.get(0).getDescription());
+       
        for(DublinCoreDescription referenceEntity: allReferences)
        {
            result.add(this.getMetadataByResourceKey(referenceEntity.getResourceId().toString()));
@@ -259,13 +252,8 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
     {
         
         ReferenceDTO result = new ReferenceDTO();
-
-        //System.out.println("*******************************\n"+element.toString()+"*******************************\n");
-
-        /*Id can't be NULL*/
-        //result.setResourceId(element.getResourceId());
+        
         result.setKey(element.getKey());
-        //System.out.println("*** En la conversion del titulo: "+element.getElementValues("title").get(0).getValue());
         
         /*If title exist*/
         if(element.getElementValues("title") != null)
@@ -276,14 +264,12 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
         /*If creator exist*/
         if(element.getElementValues("creator") != null)
         {
-            String creators = "";
-          //  System.out.println(element.getElementValues("creator"));
+            String creators = "";          
             for(ElementTypeDTO creatorName: element.getElementValues("creator"))
             {
                 creators += creatorName.getValue()+", ";
             }
-            result.setCreator(creators);
-           // System.out.println("Key = "+element.getResourceId()+"Creators = "+creators);
+            result.setCreator(creators);           
         }
 
         /*If date exist*/
