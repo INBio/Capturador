@@ -24,8 +24,10 @@ import com.sun.webui.jsf.component.RadioButtonGroup;
 import com.sun.webui.jsf.component.TextArea;
 import com.sun.webui.jsf.component.TextField;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.faces.FacesException;
@@ -67,6 +69,12 @@ public class EditIndicator extends AbstractPageBean {
 
     // </editor-fold>
 
+    /* CONSTANTES */
+    private final int DATA_BASE = 0;
+    
+    
+
+    /* VARIABLES */
     //Contexto utilizado para obtener el current locale
     private FacesContext context;
     //Contiene la localidad para el idioma
@@ -168,16 +176,10 @@ public class EditIndicator extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-
-        System.out.println("===================== PRERENDER =====================");
-        System.out.println("QuantityTotal = "+ quantityTotal);
-        System.out.println("nodeId = "+this.getindicator$IndicatorSessionBean().getNodeId());
-        System.out.println("hiddenNodeId = "+hiddenNodeId.getValue());
-
+        
         //Se actualiza el valor del nodo indicador actual, al iniciar el editar
         if(hiddenNodeId.getValue() == null)
         {
-            System.out.println("inicializar los hidden porque estan nulos");
             hiddenNodeId.setValue(this. getindicator$IndicatorSessionBean().getNodeId());
             hiddenPathNode.setValue(this.getindicator$IndicatorSessionBean().getPathNode());
             hiddenAncestorNodeId.setValue(this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getIndicatorAncestorId());
@@ -185,30 +187,35 @@ public class EditIndicator extends AbstractPageBean {
         
         
        if (this.getindicator$IndicatorSessionBean().getPagination()!=null) //Cuando el paginador no es nulo
-        {
-            System.out.println("--> entra al if donde el paginador no es nulo");
-
+        {         
             /* Actualiza el valor del nodo indicador actual si el hiddenNode ha cambiado
              * el hiddenNodeId es modificado por código java script, por eso cuando se realiza el
              * prerender debe revisarse si hay un cambio de valor para recalcular las relaciones
              * con el indicador
              */
             if(!(this.getindicator$IndicatorSessionBean().getNodeId()).equals(hiddenNodeId.getValue()))
-            {
-                System.out.println("se debe recalcular las referencias por el cambio de nodo y actualizar los valores del nodeId en el session");
+            {         
+                this.getindicator$IndicatorSessionBean().initEditReferenceMap();
                 //actualizar el nodoId
                 this.getindicator$IndicatorSessionBean().setNodeId(hiddenNodeId.getValue().toString());
                 //encender la bandera de modo Editar
                 this.getindicator$IndicatorSessionBean().setEditMode(true);
                 //inicializar el valor del map
                 this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String,ReferenceDTO>());
+                //inicializar el arreglo de maps utilizados por el edit
+                this.getindicator$IndicatorSessionBean().setDBRelationsDublinCore(new HashMap());
                 //inicializar el paginador para que realice la busqueda de las relaciones indicator-dublinCore
-                this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));             
+                this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));
+                //copiar el map con las referencias originales de la bd
+                //this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore() = this.getindicator$IndicatorSessionBean().getSelectedResourcesId();
             }
             else //si el nodeId no ha cambiado
             {
                 //Obtener los recursos seleccionados en la tabla de la interfaz por el usuario y almacenarlos en el map
-                getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+                getSelectedResourceIds(this.getDataTableDublinCore(), 
+                                        this.getindicator$IndicatorSessionBean().getSelectedResourcesId(),
+                                        this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore()
+                                        );
 
                 
                 Collection<ReferenceDTO> references = this.getindicator$IndicatorSessionBean().getSelectedResourcesId().values();
@@ -220,20 +227,22 @@ public class EditIndicator extends AbstractPageBean {
         
         }
         //Preguntar si la bandera de busqueda avanzada esta prendida
-        if(this.getindicator$IndicatorSessionBean().isAdvancedSearch()){
-            System.out.println("--> entra al if de busqueda avanzada");  
+        if(this.getindicator$IndicatorSessionBean().isAdvancedSearch()){            
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
         //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
         else if (this.getindicator$IndicatorSessionBean().getPagination()==null) {
-            System.out.println("--> entra al if donde el paginador es nulo");
+                       
             //Colocar el modo editar en true, es una indicación para el getResults del paginador
             this.getindicator$IndicatorSessionBean().setEditMode(true);
-            //Seleccionar las referencias seleccionadas previamente por el usuario
-            //this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String,ReferenceDTO>());
+            //Inicializar el map
+            this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String,ReferenceDTO>());
+            //inicializar el arreglo de maps utilizados por el edit
+            //this.getindicator$IndicatorSessionBean().setEditReference(new HashMap[3]);
+            this.getindicator$IndicatorSessionBean().initEditReferenceMap();
             //inicializar el paginador
-            this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));           
-        
+            this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));
+            
         }
                
 
@@ -243,15 +252,19 @@ public class EditIndicator extends AbstractPageBean {
     /*
      * Obtiene las referencias seleccionadas por el usuario, eliminar las que deselecciono
      */
-    public void getSelectedResourceIds (HtmlDataTable selectedResources, Map<String, ReferenceDTO> selectedResourcesId)
+     public void getSelectedResourceIds (HtmlDataTable selectedResources, Map<String, ReferenceDTO> selectedResourcesId, Map<String, ReferenceDTO> editReferences)
     {
-      
+        
+
         int n = selectedResources.getRowCount();
         for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
             selectedResources.setRowIndex(i);   //iteración en la fila i
             ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData(); //obtener el ReferenceDTO de la fila i
+          
             if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) { //Si el ReferenceDTO fue seleccionado y no esta en el map
+
                 selectedResourcesId.put(aux.getKey(), aux); //agrega un nuevo elemento al map
+          
             }
             else
             {
@@ -263,6 +276,8 @@ public class EditIndicator extends AbstractPageBean {
         }
         
     }
+
+
  
 
     /**
@@ -288,7 +303,10 @@ public class EditIndicator extends AbstractPageBean {
 
         if(!this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().isEmpty())
         {
-            getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+            getSelectedResourceIds(this.getDataTableDublinCore(), 
+                                    this.getindicator$IndicatorSessionBean().getSelectedResourcesId(),
+                                    this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore()
+                                    );
         }
 
         if(userInput.length()==0){
@@ -321,7 +339,10 @@ public class EditIndicator extends AbstractPageBean {
 
         if(!this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().isEmpty())
         {
-            getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+            getSelectedResourceIds(this.getDataTableDublinCore(), 
+                                    this.getindicator$IndicatorSessionBean().getSelectedResourcesId(),
+                                    this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore()
+                                    );
         }
 
         boolean advanced = this.getindicator$IndicatorSessionBean().isAdvancedSearch();
@@ -355,7 +376,9 @@ public class EditIndicator extends AbstractPageBean {
 
         if(!this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().isEmpty())
         {
-            getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
+            getSelectedResourceIds(this.getDataTableDublinCore(),
+                                    this.getindicator$IndicatorSessionBean().getSelectedResourcesId(),
+                                    this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore());
         }
       
         /*
@@ -366,31 +389,26 @@ public class EditIndicator extends AbstractPageBean {
         //System.out.println("DublinCoreDTO del SessionBean = "+this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().toString());
 
         if(this.getTxTitle().getText() != null && this.getTxTitle().getText() != "")
-        {
-            System.out.println("TxTitle = "+(String)this.getTxTitle().getText());
+        {            
             this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("title",
                                                                                     this.getTxTitle().getText().toString(), "Español");
         }
 
         if(this.getTxCreator().getText() != null && this.getTxCreator().getText() != "")
-        {
-
-            System.out.println("TxCreator = "+(String)this.getTxCreator().getText());
+        {         
             this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("creator",
                                                                                     this.getTxCreator().getText().toString(), null);
         }
 
         if(this.getTxIdentifier().getText() != null && this.getTxIdentifier().getText() != "")
-        {
-            System.out.println("TxIdentifier = "+(String)this.getTxIdentifier().getText());
+        {         
             this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("identifier",
                                                                                     this.getTxIdentifier().getText().toString(), null);
         }
 
 
        if(this.getTxYear().getText() != null && this.getTxYear().getText() != "")
-       {
-           System.out.println("TxDate = "+(String)this.getTxYear().getText());
+       {         
             this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("date",
                                                                                     this.getTxYear().getText().toString(), null);
        }
@@ -455,19 +473,74 @@ public class EditIndicator extends AbstractPageBean {
         this.radioButtonGroup = radioButtonGroup;
     }
 
-    public String btnSaveIndicator_action() {
-       
+    public String btnSaveIndicator_action() {      
 
         try{
+
+            /*
+            *      ACTUALIZAR EL NODO INDICADOR
+            */
+
+            /* Se prepara el DTO para realizar la actualización */
             Long ancestorId = new Long(this.hiddenAncestorNodeId.getValue().toString());
             this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setUserName(getAraSessionBean().getGlobalUserName());            
             this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().setIndicatorAncestorId(ancestorId);
+            /* Se actualiza el indicador */
             this.getindicator$IndicatorSessionBean().updateIndicator();
+            /* Se actualiza las variables hidden sobre el nodo indicador actual */
             this.getindicator$IndicatorSessionBean().setNodeId(this.hiddenNodeId.getValue().toString());
             this.getindicator$IndicatorSessionBean().setPathNode(this.hiddenPathNode.getValue().toString());
-            //System.out.println("****************** -nodeId (Edit) = "+this.getindicator$IndicatorSessionBean().getNodeId());
-            //System.out.println("****************** -pathNodeId (Edit) = "+this.getindicator$IndicatorSessionBean().getPathNode());
-            System.out.println("****************** -applyToParts (Edit) = "+this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getAppliesToParts());
+
+
+            /*
+             *      ACTUALIZAR LAS RELACIONES INDICADOR-DUBLIN_CORE
+             */
+
+            
+            /* Se obtienen los recursos seleccionados */
+            getSelectedResourceIds(this.getDataTableDublinCore(),
+                                    this.getindicator$IndicatorSessionBean().getSelectedResourcesId(),
+                                    this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore()
+                                    );
+
+            /* Se obtienen las relaciones que no existen en la bd */
+            List<String> newReference = new ArrayList<String>();
+            Collection<ReferenceDTO> visualReferences = this.getindicator$IndicatorSessionBean().getSelectedResourcesId().values();
+            for(ReferenceDTO visualReference: visualReferences)
+            {
+                /* Si la referencia existe en la bd se elminina del map que tiene el respaldo para
+                 obtener al final la lista de referencias exitentes en la bd que se deben eliminar*/
+                if(this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore().containsKey(visualReference.getKey()))
+                {
+                    this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore().remove(visualReference.getKey());
+                }
+                /* Sino existe en el respaldo de la bd entonces será una nueva relación */
+                else
+                {                    
+                    newReference.add(visualReference.getKey());
+                }
+            }  
+
+            /* Si newReference no es null entonces hay nuevas relaciones que crear*/
+            if(!newReference.isEmpty())
+            {               
+                this.getindicator$IndicatorSessionBean().saveIndicatorDublinCoreIds(this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getIndicatorId(), newReference,
+                        getAraSessionBean().getGlobalUserName());
+                this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+            }
+            /* Si quedan elementos en el map respaldo de la bd, entonces hay elementos que se deben eliminar */
+            if(!this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore().isEmpty())
+            {
+                Collection<ReferenceDTO> references = this.getindicator$IndicatorSessionBean().getDBRelationsDublinCore().values();
+                List<String> dublinCoreIds = new ArrayList<String>();
+                for(ReferenceDTO reference: references)
+                {
+                    dublinCoreIds.add(reference.getKey());
+                }
+                this.getindicator$IndicatorSessionBean().deleteIndicatorDublinCoreByIds(this.getindicator$IndicatorSessionBean().getCurrentIndicatorDTO().getIndicatorId(), dublinCoreIds);
+
+            }            
+
         }
         catch(Exception e){
             MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());

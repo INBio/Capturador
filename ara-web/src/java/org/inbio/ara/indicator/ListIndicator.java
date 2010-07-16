@@ -172,9 +172,7 @@ public class ListIndicator extends AbstractPageBean {
 
         hiddenNodeId.setValue(this.getIndicatorSessionBean().getNodeId());
         hiddenPathNode.setValue(this.getIndicatorSessionBean().getPathNode());
-
-        System.out.println("****************** -hiddenNodeId (List) = "+hiddenNodeId.getValue());
-        System.out.println("****************** -hiddenPathNodeId (List) = "+hiddenPathNode.getValue());
+        
     }
 
 
@@ -256,9 +254,8 @@ public class ListIndicator extends AbstractPageBean {
     }
 
     public String btnNewIndicator_action() {
-        // TODO: Process the button click action. Return value is a navigation
-        // case name where null will return to the same page.
-        System.out.println(this.hiddenNodeId.getValue().toString()+"->"+this.hiddenPathNode.getValue().toString());
+        
+        
         this.getIndicatorSessionBean().setCurrentIndicatorDTO(new IndicatorDTO());
         this.getIndicatorSessionBean().setNodeId(this.hiddenNodeId.getValue().toString());
         this.getIndicatorSessionBean().setPathNode(this.hiddenPathNode.getValue().toString());

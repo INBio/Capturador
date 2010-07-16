@@ -89,11 +89,11 @@
                                                     style="width: 160px" styleClass="My_Button" value="#{resources.button_proceed}"/>
                                                 </h:panelGrid>
                                             </h:panelGrid>
-                                            
+                                            <!--
                                             <h:panelGrid columns="1" id="gridSelected"  width="840" styleClass="My_subpanel_blue">
                                                     <h:outputLabel id="labelSelected" value="#{indicator$NewIndicator.selected}"/>
                                             </h:panelGrid>
-                                            
+                                            -->
                                         </h:panelGrid>
                                         <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="height: 24px" styleClass="My_table" width="840">
                                             

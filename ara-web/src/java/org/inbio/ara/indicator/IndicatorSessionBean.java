@@ -107,16 +107,14 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     //contiene las referencias seleccionadas por el usuario
     private Map<String, ReferenceDTO> selectedResourcesId = new HashMap<String, ReferenceDTO>();
 
-    /*
-     * Contiene 3 map utilizados para distinguir operaciones con los elementos en el edit
-     *  -> Map[0] contiene las relaciones existentes en la bd, se carga al cambiar de indicador
-     *  -> Map[1] contiene las relaciones nuevas que deben almacenarse en la bd
-     *  -> Map[2] contiene las relaciones que se deben borrar de la bd
+    /*     
+     * Map contiene las relaciones existentes en la bd, se carga al cambiar de indicador
      */
-    private Map<String, ReferenceDTO> editReference[] = new HashMap[3];
+    private Map<String, ReferenceDTO> dbRelationsDublinCore = new HashMap<String, ReferenceDTO>();
 
+    private final int DATA_BASE = 0;
 
-    /**
+        /**
      * <p>Construct a new session data bean instance.</p>
      */
     public IndicatorSessionBean() {
@@ -354,7 +352,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
      * Crea un nuevo indicador
      */
     public void saveNewIndicator(){
-      //  System.out.println("ancestor id (IndicatorSessionBean) "+ this.getCurrentIndicatorDTO().getIndicatorAncestorId());
+      
         IndicatorDTO newDTO = this.getIndicatorFacade().saveNewIndicator(this.getCurrentIndicatorDTO());
         this.setCurrentIndicatorDTO(newDTO);
     }
@@ -377,6 +375,11 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         this.indicatorFacade.deleteIndicator(indicatorId);
     }
 
+
+    public void deleteIndicatorDublinCoreByIds(Long indicatorId, List<String> dublinCoreIds)
+    {
+        this.indicatorFacade.deleteIndicatorDublinCoreByIds(indicatorId, dublinCoreIds);
+    }
 
     /*
      * Crea las n relaciones de acuerdo a las n referencias que escogio el usuario
@@ -420,6 +423,15 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     public void initEditDataProvider(Long indicatorId) {
 
         setPagination(new PaginationControllerRemix(getIndicatorFacade().countDublinCoreByIndicator(indicatorId).intValue(), getQuantity(), this));
+
+
+    }
+
+
+    public void initEditReferenceMap()
+    {
+        dbRelationsDublinCore = new HashMap<String, ReferenceDTO>();
+        
     }
 
     /**
@@ -477,8 +489,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
      * Retorna la lista de elementos que se van a mostrar en la tabla paginada
      */
     public List getResults(int firstResult, int maxResults) {
-        System.out.println("---- Entro al getResults");
-
+      
 
         List<ReferenceDTO> auxResult = new ArrayList<ReferenceDTO>();
 
@@ -573,9 +584,13 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
      */
     public void setEditRestults(List<ReferenceDTO> indicatorReferences, Map<String,ReferenceDTO> selectedRef)
     {
+        initEditReferenceMap();
+
+        
         for(ReferenceDTO indicatorReference : indicatorReferences)
         {
             selectedRef.put(indicatorReference.getKey(), indicatorReference);
+            dbRelationsDublinCore.put(indicatorReference.getKey(), indicatorReference);
             indicatorReference.setSelected(true);
         }
     }
@@ -597,9 +612,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
      * la interfaz
      */
     public void setSelectedResources (List<ReferenceDTO> resources, Map<String, ReferenceDTO> selectedResourcesId)
-    {
-       System.out.println("--- Entro al setSelectedResources");
-       System.out.println(mapToString(selectedResourcesId));
+    {       
         for (ReferenceDTO aux: resources) {
             
             if(selectedResourcesId.containsKey(aux.getKey()))
@@ -657,17 +670,16 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     /**
      * @return the editReference
      */
-    public Map<String, ReferenceDTO>[] getEditReference() {
-        return editReference;
+    public Map<String, ReferenceDTO> getDBRelationsDublinCore() {
+        return dbRelationsDublinCore;
     }
 
     /**
      * @param editReference the editReference to set
      */
-    public void setEditReference(Map<String, ReferenceDTO>[] editReference) {
-        this.editReference = editReference;
+    public void setDBRelationsDublinCore(Map<String, ReferenceDTO> editReference) {
+        this.dbRelationsDublinCore = editReference;
     }
-
 
     
 }

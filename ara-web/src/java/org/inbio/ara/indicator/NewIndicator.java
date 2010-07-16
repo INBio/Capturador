@@ -75,19 +75,13 @@ public class NewIndicator extends AbstractPageBean {
     
 
 
-
-    private HtmlDataTable dataTableDublinCore = new HtmlDataTable();
-
     /*
-     * Elemento de interfaz usado para ingresar indicadores nuevos
+     * Variables para interfaz gráfica
      */
+    private HtmlDataTable dataTableDublinCore = new HtmlDataTable();
+    
     private HtmlPanelGrid gridIndicator = new HtmlPanelGrid();
 
-
-    /*
-     * Elementos de la interfaz utilizado para relacionar las
-     * referencias Dublin Core con el nuevo indicador
-     */
     private HtmlPanelGrid gridDublinCore = new HtmlPanelGrid();
 
     private HtmlPanelGrid indicator = new HtmlPanelGrid();
@@ -181,8 +175,7 @@ public class NewIndicator extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        System.out.println("|--------------- PRERENDER ---------------|");
-      //  System.out.println("Cantidad de elementos almacenados en el map = "+this.getindicator$IndicatorSessionBean().getSelectedResourcesId().size());
+        
         hiddenNodeId.setValue(this. getindicator$IndicatorSessionBean().getNodeId());
         hiddenPathNode.setValue(this.getindicator$IndicatorSessionBean().getPathNode());
        
@@ -191,27 +184,21 @@ public class NewIndicator extends AbstractPageBean {
 
         if (this.getindicator$IndicatorSessionBean().getPagination()!=null)
         {
-        //    System.out.println("-->Paginador no es nulo: "+this.getindicator$IndicatorSessionBean().getPagination());
-        //    System.out.println("|->Contenido del paginador: "+this.getindicator$IndicatorSessionBean().getPagination().getActualPage());
-            //System.out.println("|->Data provider = "+this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getRowCount());
-            //System.out.println("|->Elemento de Data provider = "+((ReferenceDTO)this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getList().get(0)).isSelected());
+        
             getSelectedResourceIds(this.getDataTableDublinCore(), this.getindicator$IndicatorSessionBean().getSelectedResourcesId());
             Collection<ReferenceDTO> references = this.getindicator$IndicatorSessionBean().getSelectedResourcesId().values();
             for(ReferenceDTO reference: references)
             {
                 selected += reference.getTitle() + "; ";
             }
-
-        //    System.out.println("|-> Selected: "+this.getindicator$IndicatorSessionBean().getPagination().getDataProvider().getAllRows());
+        
         }
         //Preguntar si la bandera de busqueda avanzada esta prendida
-        if(this.getindicator$IndicatorSessionBean().isAdvancedSearch()){
-        //    System.out.println("Entro a la búsqueda avanzada");
+        if(this.getindicator$IndicatorSessionBean().isAdvancedSearch()){        
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
         //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (this.getindicator$IndicatorSessionBean().getPagination()==null) {
-        //        System.out.println("Entro a inicializar el data Provider");
+        else if (this.getindicator$IndicatorSessionBean().getPagination()==null) {        
                this.getindicator$IndicatorSessionBean().initDataProvider();
                this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
         }
@@ -258,8 +245,7 @@ public class NewIndicator extends AbstractPageBean {
      * @return String
      */
     public String btnSimpleSearch_action() {
-        System.out.println("---------------- BUSQUEDA SIMPLE ----------------");
-        
+                
         String userInput = "";
         if(this.getTxSearch().getValue()!= null)
         {
@@ -276,9 +262,7 @@ public class NewIndicator extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getindicator$IndicatorSessionBean().setQueryModeSimple(false);
             this.getindicator$IndicatorSessionBean().setQueryMode(false);
-
-            //System.out.println("Cantidad de elementos tipo Referencia = "+getindicator$IndicatorSessionBean().getDublinCoreFacade().countResourceByTypeId(ResourceTypeEnum.REFERENCE.getId()));
-            //System.out.println("Paginador = "+getindicator$IndicatorSessionBean().getPagination());
+        
             //Actualiza el data provider del paginador con los datos por default
             this.getindicator$IndicatorSessionBean().getPagination().setTotalResults
                     (getindicator$IndicatorSessionBean().getDublinCoreFacade().countResourceByTypeId(ResourceTypeEnum.REFERENCE.getId()).intValue());
@@ -327,8 +311,6 @@ public class NewIndicator extends AbstractPageBean {
             //Cambia el text del boton de busqueda avanzada
             this.getBtnAdvSearch().setValue(BundleHelper.getDefaultBundleValue("advanced_search",getMyLocale()));
 
-            //Reestablecer los valores por defecto de los textfields
-            //getgermplasm$SementalSessionBean().setQuerySementalDTO(new SementalDTO());
         }
         this.getindicator$IndicatorSessionBean().getPagination().refreshList();
         return null;
@@ -398,11 +380,10 @@ public class NewIndicator extends AbstractPageBean {
          */
 
         this.getindicator$IndicatorSessionBean().setQueryDublinCoreDTO(new DublinCoreDTO());
-        //System.out.println("DublinCoreDTO del SessionBean = "+this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().toString());
-        
+                
         if(this.getTxTitle().getText() != null && this.getTxTitle().getText() != "")
         {
-            System.out.println("TxTitle = "+(String)this.getTxTitle().getText());
+        
             this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("title",
                                                                                     this.getTxTitle().getText().toString(), "Español");
         }
@@ -410,14 +391,14 @@ public class NewIndicator extends AbstractPageBean {
         if(this.getTxCreator().getText() != null && this.getTxCreator().getText() != "")
         {
 
-            System.out.println("TxCreator = "+(String)this.getTxCreator().getText());
+        
             this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("creator",
                                                                                     this.getTxCreator().getText().toString(), null);
         }
         
         if(this.getTxIdentifier().getText() != null && this.getTxIdentifier().getText() != "")
         {
-            System.out.println("TxIdentifier = "+(String)this.getTxIdentifier().getText());
+        
             this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("identifier",
                                                                                     this.getTxIdentifier().getText().toString(), null);
         }
@@ -425,7 +406,7 @@ public class NewIndicator extends AbstractPageBean {
        
        if(this.getTxYear().getText() != null && this.getTxYear().getText() != "")
        {
-           System.out.println("TxDate = "+(String)this.getTxYear().getText());
+        
             this.getindicator$IndicatorSessionBean().getQueryDublinCoreDTO().addElement("date",
                                                                                     this.getTxYear().getText().toString(), null);
        }
@@ -458,33 +439,28 @@ public class NewIndicator extends AbstractPageBean {
 
     public void getSelectedResourceIds (HtmlDataTable selectedResources, Map<String, ReferenceDTO> selectedResourcesId)
     {
-        System.out.println("--> Entro a getSelectedResourceIds");
+        
         
         int n = selectedResources.getRowCount();      
         for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
             selectedResources.setRowIndex(i);
             ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData();
-        //    System.out.println("\t\t"+aux.getResourceId()+" "+ aux.isSelected()+" "+aux.getTitle());
-
-            //System.out.println(" * "+aux.getResourceId()+" = "+selectedResourcesId.containsKey(aux.getResourceId()));
-
+        
             if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) {
-          //      System.out.println("Se debe seleccionar "+aux.getResourceId());
+        
                 selectedResourcesId.put(aux.getKey(), aux);
-                //System.out.println("\t\t"+aux.getResourceId()+" "+aux.getTitle());
-                
+                        
             }
             else
             {
                 if((!aux.isSelected()) && selectedResourcesId.containsKey(aux.getKey()))
                 {
-            //        System.out.println("Se debe deseleccionar "+aux.getResourceId());
+        
                     selectedResourcesId.remove(aux.getKey());
                 }
             }
         }
-        System.out.println(this.getindicator$IndicatorSessionBean().mapToString(selectedResourcesId));
-        //System.out.println(selected.toString());
+        
     }
 
 
