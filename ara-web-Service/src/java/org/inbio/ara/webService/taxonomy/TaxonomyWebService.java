@@ -11,6 +11,8 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.ejb.Stateless;
+import org.inbio.ara.dto.inventory.TaxonDTO;
+import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.facade.taxonomy.TaxonomyFacadeRemote;
 
 /**
@@ -34,6 +36,46 @@ public class TaxonomyWebService {
         List<String> scientificNames = taxonFacade.getDefaultNameByGathObsId(Long.parseLong(gathObsId));
         String result = scientificNames.toString();
         return result.substring(1, result.length()-1);
+    }
+
+
+    @WebMethod(operationName = "getTaxonRootByCollectionId")
+    public String getTaxonRootByCollectionId(@WebParam(name = "collectionId")
+    String collectionId) {
+        TaxonDTO taxonRoot = taxonFacade.getTaxonRootByCollectionId(new Long(collectionId));
+        TaxonomicalRangeDTO taxonomicalName = taxonFacade.getTaxonRangeName(taxonRoot.getTaxonomicalRangeId());
+
+        String result = "<taxonRoot>";
+        if(taxonRoot != null){
+                result += "<taxon>";
+                result += "<id>"+taxonRoot.getTaxonKey()+"</id>";
+                result += "<name>"+taxonRoot.getCurrentName()+" ("+taxonomicalName.getName()+")"+"</name>";
+                result += "</taxon>\n";
+        }
+        result += "</taxonRoot>";
+        return result;
+    }
+
+
+    @WebMethod(operationName = "getChildrenByTaxonId")
+    public String getChildrenByTaxonId(@WebParam(name = "taxonId")
+    String taxonId) {
+        List<TaxonDTO> children = taxonFacade.getTaxonChildren(new Long(taxonId));
+        String result = "<taxonRoot>";
+        if(children != null){
+            for(TaxonDTO child: children)
+            {
+                TaxonomicalRangeDTO taxonomicalName = taxonFacade.getTaxonRangeName(child.getTaxonomicalRangeId());
+                result += "<taxon>";
+                result += "<id>"+child.getTaxonKey()+"</id>";
+                result += "<name>"+child.getCurrentName()+" ("+taxonomicalName.getName()+")"+"</name>";
+                result += "</taxon>\n";
+
+            }
+        }
+        result += "</taxonRoot>";
+        return result;
+
     }
 
 
