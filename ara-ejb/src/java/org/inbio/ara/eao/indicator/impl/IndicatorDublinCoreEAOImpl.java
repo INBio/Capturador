@@ -63,6 +63,17 @@ public class IndicatorDublinCoreEAOImpl extends BaseEAOImpl<IndicatorDublinCore,
         q.executeUpdate();
         em.flush();
     }
+
+    public void deleteIndicatorDublinCoreById(Long indicatorId, Long dublinCoreId)
+    {
+        Query q = em.createQuery(
+                " delete from IndicatorDublinCore idc " +
+                " where idc.indicatorDublinCorePK.indicatorId = :indicatorId and idc.indicatorDublinCorePK.dublinCoreId = :dublinCoreId");
+        q.setParameter("indicatorId", indicatorId);
+        q.setParameter("dublinCoreId", dublinCoreId);
+        q.executeUpdate();
+        em.flush();
+    }
       
  
 }

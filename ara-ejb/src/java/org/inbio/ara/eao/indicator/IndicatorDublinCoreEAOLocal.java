@@ -36,5 +36,7 @@ public interface IndicatorDublinCoreEAOLocal extends BaseLocalEAO<IndicatorDubli
             Long indicatorId);
 
     public void deleteByIndicatorId(Long indicatorId);
+
+    public void deleteIndicatorDublinCoreById(Long indicatorId, Long dublinCoreId);
     
 }

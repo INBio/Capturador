@@ -5,7 +5,7 @@
 
 package org.inbio.ara.facade.indicator.impl;
 
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -19,7 +19,7 @@ import org.inbio.ara.eao.indicator.IndicatorDublinCoreEAOLocal;
 import org.inbio.ara.eao.indicator.IndicatorEAOLocal;
 import org.inbio.ara.persistence.indicator.Indicator;
 import org.inbio.ara.persistence.indicator.IndicatorDublinCore;
-import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
+
 
 
 
@@ -150,6 +150,20 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
     }
 
 
+    public void deleteIndicatorDublinCoreById(Long indicatorId, Long dublinCoreId)
+    {
+        indicatorDublinCoreEAOImpl.deleteIndicatorDublinCoreById(indicatorId, dublinCoreId);
+    }
+
+
+    public void deleteIndicatorDublinCoreByIds(Long indicatorId, List<String> dublinCoreIds)
+    {
+        for(String dublinCoreId: dublinCoreIds)
+        {
+            indicatorDublinCoreEAOImpl.deleteIndicatorDublinCoreById(indicatorId, new Long(dublinCoreId));
+        }
+    }
+
 
     public Long countDublinCoreByIndicator(Long indicatorId)
     {
@@ -164,8 +178,6 @@ public class IndicatorFacadeImpl implements IndicatorFacadeRemote {
         return indicatorDublinCoreEAOImpl.getDublinCoreByIndicator(indicatorId);
         
     }
-
-
 
 
 }

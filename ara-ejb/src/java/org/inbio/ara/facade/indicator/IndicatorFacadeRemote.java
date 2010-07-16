@@ -48,5 +48,9 @@ public interface IndicatorFacadeRemote {
     public List<Long> getDublinCoreIdsByIndicator(Long indicatorId);
 
     public void deleteIndicatorDublinCoreByIndicator(Long indicatorId);
+
+    public void deleteIndicatorDublinCoreById(Long indicatorId, Long dublinCoreId);
+
+    public void deleteIndicatorDublinCoreByIds(Long indicatorId, List<String> dublinCoreIds);
     
 }
