@@ -190,6 +190,11 @@ public class SessionManager extends AbstractSessionBean implements Serializable 
         return this.securityFacade.getNomenclaturalGroupList(userId);
     }
 
+    public Long getCollecionByNomenclaturalGroup(Long nomenclatural)
+    {
+        return this.securityFacade.getCollecionIdByNomenclaturalGroupId(nomenclatural);
+    }
+
     /**
      * <p>Return a reference to the scoped data bean.</p>
      */

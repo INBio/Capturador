@@ -318,6 +318,8 @@ public class SelectCollection extends AbstractPageBean {
         else if(nomenclatural!=null){
             
             //this.getAraSessionBean().setGlobalCollectionId(nomenclatural);
+            this.getAraSessionBean().setGlobalCollectionId(
+                    this.getSessionManager().getCollecionByNomenclaturalGroup(nomenclatural));
             this.getAraSessionBean().setGlobalNomenclaturalGroupId(nomenclatural);
             return "next";
         }
