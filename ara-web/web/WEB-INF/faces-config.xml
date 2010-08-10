@@ -743,7 +743,11 @@
             <redirect/>
         </navigation-case>
 
-
+        <navigation-case>
+            <from-outcome>listTaxonomy</from-outcome>
+            <to-view-id>/taxonomy/ListTaxonomy.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
 
         <!-- Germoplasma Module -->
 
@@ -1506,6 +1510,30 @@
         </navigation-case>
     </navigation-rule>
 
+    <!-- TAXONOMIA -->
+    <navigation-rule>
+        <from-view-id>/taxonomy/ListTaxonomy.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/taxonomy/NewTaxonomy.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/taxonomy/EditTaxonomy.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/taxonomy/NewTaxonomy.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/taxonomy/ListTaxonomy.jsp</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
     <!-- MODULO DE TRANSACCIONES -->
     <navigation-rule>
         <from-view-id>/transaction/ListTransaction.jsp</from-view-id>
@@ -1542,8 +1570,32 @@
         </navigation-case>
     </navigation-rule>
     <!-- FIN MODULO DE TRANSACCIONES -->
-
+    <managed-bean>
+        <managed-bean-name>taxonomy$ListTaxonomy</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.taxonomy.ListTaxonomy</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>taxonomy$NewTaxonomy</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.taxonomy.NewTaxonomy</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>taxonomy$TaxonSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.taxonomy.TaxonSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>taxonomy$EditTaxonomy2</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.taxonomy.EditTaxonomy2</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>
+
+
+
+
+
 
 
 
