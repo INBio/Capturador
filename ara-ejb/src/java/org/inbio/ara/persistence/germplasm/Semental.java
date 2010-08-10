@@ -50,7 +50,6 @@ public class Semental extends LogGenericEntity {
     @Column(name = "animal_code")
     private String animalCode;
 
-    @Basic(optional = false)
     @Column(name = "color")
     private String color;
 
@@ -74,7 +73,6 @@ public class Semental extends LogGenericEntity {
     @Column(name = "breed_id")
     private Long breedId;
 
-    @Basic(optional = false)
     @Column(name = "condition_id")
     private Long conditionId;
 

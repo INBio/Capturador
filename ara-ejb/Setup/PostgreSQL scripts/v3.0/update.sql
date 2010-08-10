@@ -2385,3 +2385,11 @@ ALTER TABLE ara.transacted_specimen
 ---------------------------------------------------
 ----------  FIN MÓDULO DE TRANSACCIONES  ----------
 ---------------------------------------------------
+
+
+--
+-- CAMBIOS PARA EL MODULO DE SEMEN
+--
+
+ALTER TABLE ara.semental ALTER COLUMN color DROP NOT NULL;
+ALTER TABLE ara.semental ALTER COLUMN condition_id DROP NOT NULL;
