@@ -171,5 +171,10 @@ public class SecurityFacadeImpl implements SecurityFacadeRemote {
                     return systemUserDTOFactory.createDTOList(gList);
             }
     }
+
+    public Long getCollecionIdByNomenclaturalGroupId(Long nomenclatural) {
+        NomenclaturalGroup ng = nomenclaturalEAOImpl.findById(NomenclaturalGroup.class, nomenclatural);
+        return ng.getCollectionId();
+    }
     
 }

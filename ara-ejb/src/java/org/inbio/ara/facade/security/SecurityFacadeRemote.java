@@ -37,5 +37,7 @@ public interface SecurityFacadeRemote {
     public void saveUserTaxon(java.lang.Long taxonId, java.lang.Long userId, java.lang.Long secuence);
 
     public void saveUserNomenclaturalGroup(java.lang.Long groupId, java.lang.Long userId, java.lang.Long secuence);
+
+    public Long getCollecionIdByNomenclaturalGroupId(Long nomenclatural);
     
 }
