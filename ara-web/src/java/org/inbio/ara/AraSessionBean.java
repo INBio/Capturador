@@ -51,6 +51,7 @@ public class AraSessionBean extends AbstractSessionBean {
 
     private String globalUserName = new String();
     private Long globalCollectionId = new Long(-1);
+    private Long globalNomenclaturalGroupId = new Long(-1);
     private Long globalUserNameId = new Long(-1);
     private Locale currentLocale = new Locale("ES");
 
@@ -188,6 +189,20 @@ public class AraSessionBean extends AbstractSessionBean {
      */
     public void setCurrentLocale(Locale currentLocale) {
         this.currentLocale = currentLocale;
+    }
+
+    /**
+     * @return the globalNomenclaturalGroupId
+     */
+    public Long getGlobalNomenclaturalGroupId() {
+        return globalNomenclaturalGroupId;
+    }
+
+    /**
+     * @param globalNomenclaturalGroupId the globalNomenclaturalGroupId to set
+     */
+    public void setGlobalNomenclaturalGroupId(Long globalNomenclaturalGroupId) {
+        this.globalNomenclaturalGroupId = globalNomenclaturalGroupId;
     }
     
 }
