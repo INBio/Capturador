@@ -136,9 +136,13 @@ public class EditSemental extends AbstractPageBean {
 
         if(getgermplasm$SementalSessionBean().isFirstTime())
         {
-            birthDate.setSelectedDate(getgermplasm$SementalSessionBean().
-                    getSementalDTO().getBirthDate().getTime());
-            getgermplasm$SementalSessionBean().setFirstTime(false);
+            if(getgermplasm$SementalSessionBean().
+                    getSementalDTO().getBirthDate() != null)
+            {
+                birthDate.setSelectedDate(getgermplasm$SementalSessionBean().
+                        getSementalDTO().getBirthDate().getTime());
+                getgermplasm$SementalSessionBean().setFirstTime(false);
+            }
         }
     }
 

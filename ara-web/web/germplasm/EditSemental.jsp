@@ -54,7 +54,6 @@
                                     
                                     <webuijsf:label id="labelColor" style="width: 168px; height: 24px" text="#{resources.color}"/>
                                     <webuijsf:textField columns="27"  id="textFieldColor" style="width: 200px;"
-                                                        required="true"
                                                         text="#{germplasm$SementalSessionBean.sementalDTO.color}"/>
 
                                     <webuijsf:label id="labelSiteId" style="width: 168px; height: 24px" text="#{resources.place_of_origin}"/>
@@ -67,7 +66,7 @@
                                                         text="#{germplasm$SementalSessionBean.sementalDTO.veterinarianStatus}"/>
 
                                     <webuijsf:label id="labelConditionId" style="width: 168px; height: 24px" text="#{resources.condition}"/>
-                                    <webuijsf:dropDown id="dropdownConditionId"  width="200px" required="true"
+                                    <webuijsf:dropDown id="dropdownConditionId"  width="200px"
                                                        items="#{germplasm$EditSemental.condition.options}"
                                                        selected="#{germplasm$SementalSessionBean.sementalDTO.conditionId}"/>
 

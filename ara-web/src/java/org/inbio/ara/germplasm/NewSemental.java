@@ -227,6 +227,7 @@ public class NewSemental extends AbstractPageBean {
      */
     public Option[] getSelectionListDropDownData(Long selectionListEntityId) {
 
+        System.out.println("COLECCION= " +getAraSessionBean().getGlobalCollectionId());
         //getAllSelectionListElementsByCollection
         List<SelectionListDTO> DTOList = this.getgermplasm$AccessionSessionBean().
                 getInventoryFacadeRemote().
