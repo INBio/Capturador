@@ -206,7 +206,8 @@ public class SelectCollection extends AbstractPageBean {
         Option option;
         //Crear las opciones del list
         for(NomenclaturalGroupDTO myDTO : DTOList){
-            option = new Option(myDTO.getCollectionId(),myDTO.getName());
+            //option = new Option(myDTO.getCollectionId(),myDTO.getName());
+            option = new Option(myDTO.getNomenclaturalGroupId(),myDTO.getName());
             allOptions.add(option);
         }
         //Sets the elements in the SingleSelectedOptionList Object
@@ -304,17 +305,20 @@ public class SelectCollection extends AbstractPageBean {
 
         Long collection = this.getSelectedCollection();
         Long nomenclatural = this.getSelectedNomenclatural();
-
+        
         if(collection==null&&nomenclatural==null){
             MessageBean.setErrorMessageFromBundle("no_selected_option", this.getMyLocale());
             return null;
         }
         else if(collection!=null){
+            
             this.getAraSessionBean().setGlobalCollectionId(collection);
             return "next";
         }
         else if(nomenclatural!=null){
-            this.getAraSessionBean().setGlobalCollectionId(nomenclatural);
+            
+            //this.getAraSessionBean().setGlobalCollectionId(nomenclatural);
+            this.getAraSessionBean().setGlobalNomenclaturalGroupId(nomenclatural);
             return "next";
         }
         else
