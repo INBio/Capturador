@@ -52,7 +52,7 @@ public class SemenGatheringDTO extends GenericDTO {
 
     private Long activeDoses;
 
-    private Long strawSize;
+    private Double strawSize;
 
     private String consistency;
 
@@ -69,6 +69,63 @@ public class SemenGatheringDTO extends GenericDTO {
     private Long solventId;
 
     private String solvent;
+
+    public void imprimir()
+    {
+        System.out.println(
+
+      "  \n sgId: " + semenGatheringId
+
+     + "  \n smentalId: " + sementalId
+
+     + "  \n semenGatheringDate: " +  semenGatheringDate
+
+     + "  \n finalSemenGatheringDate: " +  finalSemenGatheringDate//just for search purpose
+
+     + "  \n semenGatheringTime: " +  semenGatheringTime
+
+     + "  \n volume: " + volume
+
+     + "  \n motility: " + motility
+
+     + "  \n concentration: " + concentration
+
+     + "  \n strawQuantity: " + strawQuantity
+
+     + "  \n currentStrawQuantity: " + currentStrawQuantity
+
+     + "  \n dilution: " +  dilution
+
+     + "  \n tankNumber: " + tankNumber
+
+     + "  \n canisterNumber: " + canisterNumber
+
+     + "  \n gobletNumber: " + gobletNumber
+
+     + "  \n strawColor: " +  strawColor
+
+     + "  \n postThawMotility: " + postThawMotility
+
+     + "  \n activeDoses: " + activeDoses
+
+     + "  \n strawSize: " + strawSize
+
+     + "  \n consistency: " +  consistency
+
+     + "  \n semenColor: " +  semenColor
+
+     + "  \n ph: " + ph
+
+     + "  \n massMotility: " + massMotility
+
+     + "  \n semenGatheringMethodId: " + semenGatheringMethodId
+
+     + "  \n semenGatheringMethod: " +  semenGatheringMethod
+
+     + "  \n solventId: " + solventId
+
+     + "  \n solvent: " +  solvent);
+    }
 
     /**
      * @return the selected
@@ -284,14 +341,14 @@ public class SemenGatheringDTO extends GenericDTO {
     /**
      * @return the strawSize
      */
-    public Long getStrawSize() {
+    public Double getStrawSize() {
         return strawSize;
     }
 
     /**
      * @param strawSize the strawSize to set
      */
-    public void setStrawSize(Long strawSize) {
+    public void setStrawSize(Double strawSize) {
         this.strawSize = strawSize;
     }
 

@@ -49,7 +49,7 @@ public interface SemenGatheringEAOLocal extends BaseLocalEAO<SemenGathering,Long
 
     public List<Long> findByActiveDoses(Long activeDoses);
 
-    public List<Long> findByStrawSize(Long strawSize);
+    public List<Long> findByStrawSize(Double strawSize);
 
     public List<Long> findBySemenGatheringMethod(Long gatheringSemenMethod);
 

@@ -50,7 +50,6 @@ public class SemenGathering  extends LogGenericEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar semenGatheringDate;
 
-    @Basic(optional = false)
     @Column(name = "semen_gathering_time")
     //@Temporal(TemporalType.TIME)
     private String semenGatheringTime;
@@ -63,70 +62,70 @@ public class SemenGathering  extends LogGenericEntity {
     @Column(name = "motility")
     private Long motility;
 
-    @Basic(optional = false)
+    
     @Column(name = "concentration")
     private Long concentration;
 
-    @Basic(optional = false)
+    
     @Column(name = "straw_quantity")
     private Long strawQuantity;
 
     @Column(name = "current_straw_quantity")
     private Long currentStrawQuantity;
 
-    @Basic(optional = false)
+    
     @Column(name = "dilution")
     private String dilution;
 
-    @Basic(optional = false)
+    
     @Column(name = "tank_number")
     private Long tankNumber;
 
-    @Basic(optional = false)
+    
     @Column(name = "canister_number")
     private Long canisterNumber;
 
-    @Basic(optional = false)
+    
     @Column(name = "goblet_number")
     private Long gobletNumber;
 
-    @Basic(optional = false)
+    
     @Column(name = "straw_color")
     private String strawColor;
 
-    @Basic(optional = false)
+    
     @Column(name = "post_thaw_motility")
     private Long postThawMotility;
 
-    @Basic(optional = false)
+    
     @Column(name = "active_doses")
     private Long activeDoses;
 
-    @Basic(optional = false)
+    
     @Column(name = "straw_size")
-    private Long strawSize;
+    private Double strawSize;
 
-    @Basic(optional = false)
+    
     @Column(name = "consistency")
     private String consistency;
 
-    @Basic(optional = false)
+    
     @Column(name = "semen_color")
     private String semenColor;
 
-    @Basic(optional = false)
+    
     @Column(name = "ph")
     private Long ph;
 
-    @Basic(optional = false)
+    
     @Column(name = "mass_motility")
     private Long massMotility;
     
-    @Basic(optional = false)
+    
     @Column(name = "semen_gathering_method_id")
     private Long semenGatheringMethodId;
 
-    @Basic(optional = false)
+    
     @Column(name = "solvent_id")
     private Long solventId;
 
@@ -137,7 +136,7 @@ public class SemenGathering  extends LogGenericEntity {
         this.semenGatheringId = semenGatheringId;
     }
 
-    public SemenGathering(Long semenGatheringId, Long sementalId, Calendar semenGatheringDate, String semenGatheringTime, Long volume, Long motility, Long concentration, Long strawQuantity, Long currentStrawQuantity, String dilution, Long tankNumber, Long canisterNumber, Long gobletNumber, String strawColor, Long postThawMotility, Long activeDoses, Long strawSize, String consistency, String semenColor, Long ph, Long massMotility, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
+    public SemenGathering(Long semenGatheringId, Long sementalId, Calendar semenGatheringDate, String semenGatheringTime, Long volume, Long motility, Long concentration, Long strawQuantity, Long currentStrawQuantity, String dilution, Long tankNumber, Long canisterNumber, Long gobletNumber, String strawColor, Long postThawMotility, Long activeDoses, Double strawSize, String consistency, String semenColor, Long ph, Long massMotility, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         
         this.semenGatheringId = semenGatheringId;
         this.sementalId = sementalId;
@@ -263,11 +262,11 @@ public class SemenGathering  extends LogGenericEntity {
         this.activeDoses = activeDoses;
     }
 
-    public Long getStrawSize() {
+    public Double getStrawSize() {
         return strawSize;
     }
 
-    public void setStrawSize(Long strawSize) {
+    public void setStrawSize(Double strawSize) {
         this.strawSize = strawSize;
     }
 

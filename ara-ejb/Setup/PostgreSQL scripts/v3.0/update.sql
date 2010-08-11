@@ -2391,5 +2391,30 @@ ALTER TABLE ara.transacted_specimen
 -- CAMBIOS PARA EL MODULO DE SEMEN
 --
 
+--quita los not null no requeriros de la tabla semental
 ALTER TABLE ara.semental ALTER COLUMN color DROP NOT NULL;
 ALTER TABLE ara.semental ALTER COLUMN condition_id DROP NOT NULL;
+
+--quita los not null no requeridos de la tabla semen_gathering
+ALTER TABLE ara.semen_gathering ALTER COLUMN semen_gathering_time DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN concentration DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN straw_quantity DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN dilution DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN tank_number DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN canister_number DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN goblet_number DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN straw_color DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN active_doses DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN straw_size DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN semen_gathering_method_id DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN consistency DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN semen_color DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN ph DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN mass_motility DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN solvent_id DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN current_straw_quantity DROP NOT NULL;
+ALTER TABLE ara.semen_gathering ALTER COLUMN post_thaw_motility DROP NOT NULL;
+
+--
+-- FIN DE LOS CAMBIOS PARA EL MODULO DE SEMEN
+--

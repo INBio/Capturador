@@ -186,7 +186,7 @@ public class SemenGatheringEAOImpl extends BaseEAOImpl<SemenGathering, Long> imp
         return  q.getResultList();
     }
 
-    public List<Long> findByStrawSize(Long strawSize) {
+    public List<Long> findByStrawSize(Double strawSize) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +

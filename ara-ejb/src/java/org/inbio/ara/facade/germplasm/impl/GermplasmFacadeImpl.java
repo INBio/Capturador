@@ -1858,7 +1858,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
                     list.addAll(ids);
 
                 //find by StrawSize
-                ids = semenGatheringEAOLocal.findByStrawSize(id);
+                ids = semenGatheringEAOLocal.findByStrawSize(Double.parseDouble(parts[i]));
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
