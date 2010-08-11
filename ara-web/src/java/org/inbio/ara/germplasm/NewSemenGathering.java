@@ -289,11 +289,16 @@ public class NewSemenGathering extends AbstractPageBean {
                 getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO().
                         setSemenGatheringDate(semenGatheringDateGC);
             }
-            String mm = getgermplasm$SemenGatheringSessionBean().getSelectedMinutes().toString();
-            if(mm.length() == 1)
-                mm = "0"+mm;
-            String hhmm = getgermplasm$SemenGatheringSessionBean().getSelectedHour() +
-                    ":"+ mm;
+            String hhmm = null;
+            if(getgermplasm$SemenGatheringSessionBean().getSelectedMinutes() != null &&
+                    getgermplasm$SemenGatheringSessionBean().getSelectedHour() != null)
+            {
+                String mm = getgermplasm$SemenGatheringSessionBean().getSelectedMinutes().toString();
+                if(mm.length() == 1)
+                    mm = "0"+mm;
+                hhmm = getgermplasm$SemenGatheringSessionBean().getSelectedHour() +
+                        ":"+ mm;
+            }
 
             getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO().
                     setSemenGatheringTime(hhmm);
@@ -323,6 +328,8 @@ public class NewSemenGathering extends AbstractPageBean {
             }
             else
             {
+                
+                getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO().imprimir();
                 getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().saveSemenGathering(
                         getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO());
                 getgermplasm$SemenGatheringSessionBean().getPagination().addItem();

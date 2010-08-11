@@ -52,37 +52,37 @@
                                         </webuijsf:textField>
 
                                         <webuijsf:label id="labelMassMotility" style="width: 168px; height: 24px" text="#{resources.mass_motility}"/>
-                                        <webuijsf:textField columns="25" id="textFieldMassMotility" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldMassMotility" style="width: 200px;" 
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.massMotility}">
                                             <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>
 
                                         <webuijsf:label id="labelConcentration" style="width: 168px; height: 24px" text="#{resources.concentration}"/>
-                                        <webuijsf:textField columns="25" id="textFieldConcentration" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldConcentration" style="width: 200px;" 
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.concentration}">
                                             <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>
 
                                         <webuijsf:label id="labelConsistency" style="width: 168px; height: 24px" text="#{resources.consistency}"/>
-                                        <webuijsf:textField columns="25" id="textFieldConsistency" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldConsistency" style="width: 200px;" 
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.consistency}"/>
 
                                         <webuijsf:label id="labelSemenColor" style="width: 168px; height: 24px" text="#{resources.semen_color}"/>
-                                        <webuijsf:textField columns="25" id="textFieldSemenColor" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldSemenColor" style="width: 200px;"
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.semenColor}"/>
 
                                         <webuijsf:label id="labelPH" style="width: 168px; height: 24px" text="#{resources.ph}"/>
-                                        <webuijsf:textField columns="25" id="textFieldPH" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldPH" style="width: 200px;" 
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.ph}">
                                             <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>
 
                                         <webuijsf:label id="labelDilution" style="width: 168px; height: 24px" text="#{resources.dilution}"/>
-                                        <webuijsf:textField columns="25" id="textFieldDilution" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldDilution" style="width: 200px;" 
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.dilution}"/>
 
                                         <webuijsf:label id="labelPTM" style="width: 168px; height: 24px" text="#{resources.post_thaw_motility}"/>
-                                        <webuijsf:textField columns="25" id="textFieldPTM" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldPTM" style="width: 200px;"
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.postThawMotility}">
                                             <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>
@@ -93,18 +93,18 @@
                                         <webuijsf:label id="labelGatheringTime" style="width: 168px; height: 24px" text="#{resources.semen_gathering_time}"/>
                                         <h:panelGrid id="panelTime" columns="3">
 
-                                            <webuijsf:dropDown id="dropdownhh"  width="43px" required="true"
+                                            <webuijsf:dropDown id="dropdownhh"  width="43px"
                                                            items="#{germplasm$NewSemenGathering.hourDropDown.options}"
                                                            selected="#{germplasm$SemenGatheringSessionBean.selectedHour}"/>
                                             <webuijsf:label id="labelDP" text=":"/>
-                                            <webuijsf:dropDown id="dropdownmm"  width="43px" required="true"
+                                            <webuijsf:dropDown id="dropdownmm"  width="43px"
                                                            items="#{germplasm$NewSemenGathering.minutesDropDown.options}"
                                                            selected="#{germplasm$SemenGatheringSessionBean.selectedMinutes}"/>
 
                                         </h:panelGrid>
 
                                         <webuijsf:label id="labelStrawQuantity" style="width: 168px; height: 24px" text="#{resources.straw_quantity}"/>
-                                        <webuijsf:textField columns="25" id="textFieldStrawQuantity" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldStrawQuantity" style="width: 200px;"
                                                         text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.strawQuantity}">
                                         <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>
@@ -116,7 +116,7 @@
                                         </webuijsf:textField>
 
                                         <webuijsf:label id="labelStrawSize" style="width: 168px; height: 24px" text="#{resources.straw_size}"/>
-                                        <webuijsf:textField columns="25" id="textFieldStrawSize" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldStrawSize" style="width: 200px;"
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.strawSize}">
                                             <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>
@@ -124,13 +124,13 @@
 
 
                                         <webuijsf:label id="labelStrawColor" style="width: 168px; height: 24px" text="#{resources.straw_color}"/>
-                                        <webuijsf:textField columns="25" id="textFieldStrawColor" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldStrawColor" style="width: 200px;"
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.strawColor}"/>
 
 
 
                                         <webuijsf:label id="labelTankNumber" style="width: 168px; height: 24px" text="#{resources.tank_number}"/>
-                                        <webuijsf:textField columns="25" id="textFieldTankNumber" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldTankNumber" style="width: 200px;"
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.tankNumber}">
                                             <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>
@@ -138,7 +138,7 @@
 
 
                                         <webuijsf:label id="labelCanisterNumber" style="width: 168px; height: 24px" text="#{resources.canister_number}"/>
-                                        <webuijsf:textField columns="25" id="textFieldCanisterNumber" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldCanisterNumber" style="width: 200px;"
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.canisterNumber}">
                                             <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>
@@ -146,7 +146,7 @@
 
 
                                         <webuijsf:label id="labelGobletNumber" style="width: 168px; height: 24px" text="#{resources.goblet_number}"/>
-                                        <webuijsf:textField columns="25" id="textFieldGobletNumber" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldGobletNumber" style="width: 200px;"
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.gobletNumber}">
                                             <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>
@@ -154,7 +154,7 @@
 
 
                                         <webuijsf:label id="labelSemenGatheringMethod" style="width: 168px; height: 24px" text="#{resources.semen_gathering_method}"/>
-                                        <webuijsf:dropDown id="dropdownSemenGatheringMethod"  width="190px" required="true"
+                                        <webuijsf:dropDown id="dropdownSemenGatheringMethod"  width="190px"
                                                            items="#{germplasm$NewSemenGathering.semenGatheringMethod.options}"
                                                            selected="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.semenGatheringMethodId}"/>
 
@@ -163,13 +163,13 @@
 
                                         <webuijsf:label id="labelSolvent" style="width: 168px; height: 24px" text="#{resources.solvent}"/>
                                         <webuijsf:dropDown id="dropdownSolvent"  width="190px"
-                                                           items="#{germplasm$NewSemenGathering.solvent.options}" required="true"
+                                                           items="#{germplasm$NewSemenGathering.solvent.options}"
                                                            selected="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.solventId}"/>
 
 
 
                                         <webuijsf:label id="labelActiveDoses" style="width: 168px; height: 24px" text="#{resources.active_doses}"/>
-                                        <webuijsf:textField columns="25" id="textFieldActiveDoses" style="width: 200px;" required="true"
+                                        <webuijsf:textField columns="25" id="textFieldActiveDoses" style="width: 200px;"
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.activeDoses}">
                                             <f:validateLongRange minimum="0"/>
                                         </webuijsf:textField>

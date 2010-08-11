@@ -132,14 +132,18 @@ public class EditSemenGathering extends AbstractPageBean {
 
         if(getgermplasm$SemenGatheringSessionBean().isFirstTime())
         {
-            String parts[] = getgermplasm$SemenGatheringSessionBean().
-                    getSemenGatheringDTO().getSemenGatheringTime().split(":");
+            if(getgermplasm$SemenGatheringSessionBean().
+                    getSemenGatheringDTO().getSemenGatheringTime() != null)
+            {
+                String parts[] = getgermplasm$SemenGatheringSessionBean().
+                        getSemenGatheringDTO().getSemenGatheringTime().split(":");
 
-            getgermplasm$SemenGatheringSessionBean().setSelectedHour(Long.parseLong(parts[0]));
-            getgermplasm$SemenGatheringSessionBean().setSelectedMinutes(Long.parseLong(parts[1]));
-            
+                getgermplasm$SemenGatheringSessionBean().setSelectedHour(Long.parseLong(parts[0]));
+                getgermplasm$SemenGatheringSessionBean().setSelectedMinutes(Long.parseLong(parts[1]));
+            }
             this.gatheringDate.setSelectedDate(getgermplasm$SemenGatheringSessionBean().
                     getSemenGatheringDTO().getSemenGatheringDate().getTime());
+
 
             getgermplasm$SemenGatheringSessionBean().setFirstTime(false);
             
@@ -305,7 +309,7 @@ public class EditSemenGathering extends AbstractPageBean {
                         setSemenGatheringDate(semenGatheringDateGC);
             }
 
-            String hhmm;
+            String hhmm = null;
 
             if(getgermplasm$SemenGatheringSessionBean().getSelectedHour() != null &&
                     getgermplasm$SemenGatheringSessionBean().getSelectedMinutes() != null)
@@ -316,8 +320,6 @@ public class EditSemenGathering extends AbstractPageBean {
                 hhmm = getgermplasm$SemenGatheringSessionBean().getSelectedHour() +
                         ":"+ mm;
             }
-            else
-                hhmm = "00:00";
 
             getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO().
                     setSemenGatheringTime(hhmm);
