@@ -57,7 +57,7 @@ public class NewSemenGathering extends AbstractPageBean {
     private SingleSelectOptionsList solvent = new SingleSelectOptionsList();
     private SingleSelectOptionsList hourDropDown = new SingleSelectOptionsList();
     private SingleSelectOptionsList minutesDropDown = new SingleSelectOptionsList();
-
+    private SingleSelectOptionsList consistency = new SingleSelectOptionsList();
 
 
 
@@ -132,6 +132,8 @@ public class NewSemenGathering extends AbstractPageBean {
 
         hourDropDown.setOptions(getHourDropDownData());
         minutesDropDown.setOptions(getMinutesDropDownData());
+
+        consistency.setOptions(getSelectionListDropDownData(SelectionListEntity.SEMEN_CONSISTENCY.getId()));
     }
 
     /**
@@ -483,6 +485,20 @@ public class NewSemenGathering extends AbstractPageBean {
      */
     public void setMinutesDropDown(SingleSelectOptionsList minutesDropDown) {
         this.minutesDropDown = minutesDropDown;
+    }
+
+    /**
+     * @return the consistency
+     */
+    public SingleSelectOptionsList getConsistency() {
+        return consistency;
+    }
+
+    /**
+     * @param consistency the consistency to set
+     */
+    public void setConsistency(SingleSelectOptionsList consistency) {
+        this.consistency = consistency;
     }
     
 }

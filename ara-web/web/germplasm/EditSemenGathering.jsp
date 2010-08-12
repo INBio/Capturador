@@ -65,8 +65,9 @@
                                         </webuijsf:textField>
 
                                         <webuijsf:label id="labelConsistency" style="width: 168px; height: 24px" text="#{resources.consistency}"/>
-                                        <webuijsf:textField columns="25" id="textFieldConsistency" style="width: 200px;" 
-                                                            text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.consistency}"/>
+                                        <webuijsf:dropDown id="dropdownConsistency"  width="190px"
+                                                           items="#{germplasm$EditSemenGathering.consistency.options}"
+                                                           selected="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.semenConsistencyId}"/>
 
                                         <webuijsf:label id="labelSemenColor" style="width: 168px; height: 24px" text="#{resources.semen_color}"/>
                                         <webuijsf:textField columns="25" id="textFieldSemenColor" style="width: 200px;" 
