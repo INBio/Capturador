@@ -1799,16 +1799,16 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return semenGatheringEAOLocal.countAllBySementalId(sementalId);
     }
 
-    public List<SemenGatheringDTO> getSemenGatheringlSimpleSearch(String query, int firstResult, int maxResult) {
+    public List<SemenGatheringDTO> getSemenGatheringlSimpleSearch(String query, Long sementalId, int firstResult, int maxResult) {
         
-        Set<Long> semengatheringIds = unstructeredSemenGatheringQuery(splitQuery(query));
+        Set<Long> semengatheringIds = unstructeredSemenGatheringQuery(splitQuery(query), sementalId);
         List<SemenGathering> semenGatheringList = getEntities(semengatheringIds, SemenGathering.class, firstResult, maxResult);
         return updateSemenGatheringDTOListValues(semenGatheringDTOFactory.createDTOList(semenGatheringList));
     }
 
-    public Long countSemenGatheringSimpleSearch(String query) {
+    public Long countSemenGatheringSimpleSearch(String query, Long sementalId) {
 
-        Integer quantity = new Integer(unstructeredSemenGatheringQuery(splitQuery(query)).size());
+        Integer quantity = new Integer(unstructeredSemenGatheringQuery(splitQuery(query), sementalId).size());
         return quantity.longValue();
     }
 
@@ -1819,7 +1819,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
      * @param parts
      * @return
      */
-    private Set<Long> unstructeredSemenGatheringQuery(String[] parts)
+    private Set<Long> unstructeredSemenGatheringQuery(String[] parts, Long sementalId)
     {
         Set<Long> list = new HashSet();
         List<Long> ids = null;
@@ -1829,7 +1829,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         for (int i = 0; i < parts.length; i++)
         {
             //find by Dilution
-            ids = semenGatheringEAOLocal.findByDilution(parts[i]);
+            ids = semenGatheringEAOLocal.findByDilution(parts[i], sementalId);
             if(ids != null && !ids.isEmpty())
                 list.addAll(ids);
             //try to cast it
@@ -1838,54 +1838,54 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
                 id = Long.parseLong(parts[i]);
 
                 //find by volume
-                ids = semenGatheringEAOLocal.findByVolume(id);
+                ids = semenGatheringEAOLocal.findByVolume(id, sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
                 //find by motility
-                ids = semenGatheringEAOLocal.findByMotility(id);
+                ids = semenGatheringEAOLocal.findByMotility(id, sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
                 //find by Concentration
-                ids = semenGatheringEAOLocal.findByConcentration(id);
+                ids = semenGatheringEAOLocal.findByConcentration(id, sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
                 //find by StrawQuantity
-                ids = semenGatheringEAOLocal.findByStrawQuantity(id);
+                ids = semenGatheringEAOLocal.findByStrawQuantity(id, sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
                 //find by StrawSize
-                ids = semenGatheringEAOLocal.findByStrawSize(Double.parseDouble(parts[i]));
+                ids = semenGatheringEAOLocal.findByStrawSize(Double.parseDouble(parts[i]), sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
                 
 
                 //find by TankNumber
-                ids = semenGatheringEAOLocal.findByTankNumber(id);
+                ids = semenGatheringEAOLocal.findByTankNumber(id, sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
                 //find by CanisterNumber
-                ids = semenGatheringEAOLocal.findByCanisterNumber(id);
+                ids = semenGatheringEAOLocal.findByCanisterNumber(id, sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
                 //find by GobletNumber
-                ids = semenGatheringEAOLocal.findByGobletNumber(id);
+                ids = semenGatheringEAOLocal.findByGobletNumber(id, sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
                 //find by PostThawMotility
-                ids = semenGatheringEAOLocal.findByPostThawMotility(id);
+                ids = semenGatheringEAOLocal.findByPostThawMotility(id, sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 
                 //find by ActiveDoses
-                ids = semenGatheringEAOLocal.findByActiveDoses(id);
+                ids = semenGatheringEAOLocal.findByActiveDoses(id, sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
             }
@@ -1894,8 +1894,8 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return list;
     }
 
-    public List<SemenGatheringDTO> getSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO, int firstResult, int maxResult) {
-        Set<Long> ids = getSemenGatheringsByCriteria(semenGatheringDTO);
+    public List<SemenGatheringDTO> getSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO, Long sementalId, int firstResult, int maxResult) {
+        Set<Long> ids = getSemenGatheringsByCriteria(semenGatheringDTO, sementalId);
 
         //Retrieve entities
         List<SemenGathering> list = getEntities(ids,
@@ -1904,8 +1904,8 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return updateSemenGatheringDTOListValues(semenGatheringDTOFactory.createDTOList(list));
     }
 
-    public Long countSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO) {
-        Integer quantity = new Integer(getSemenGatheringsByCriteria(semenGatheringDTO).size());
+    public Long countSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO, Long sementalId) {
+        Integer quantity = new Integer(getSemenGatheringsByCriteria(semenGatheringDTO, sementalId).size());
         return quantity.longValue();
     }
 
@@ -1918,7 +1918,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
      * @param semenGatheringDTO
      * @return
      */
-    public Set<Long> getSemenGatheringsByCriteria(SemenGatheringDTO semenGatheringDTO)
+    public Set<Long> getSemenGatheringsByCriteria(SemenGatheringDTO semenGatheringDTO, Long sementalId)
     {
          Set<Long> ids = new HashSet();
         boolean firstTime = true;
@@ -1928,7 +1928,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by gathering date
         if(semenGatheringDTO.getSemenGatheringDate() != null && semenGatheringDTO.getFinalSemenGatheringDate() != null)
         {
-            query = semenGatheringEAOLocal.findBySemenGatheringDate(semenGatheringDTO.getSemenGatheringDate(), semenGatheringDTO.getFinalSemenGatheringDate());
+            query = semenGatheringEAOLocal.findBySemenGatheringDate(semenGatheringDTO.getSemenGatheringDate(), semenGatheringDTO.getFinalSemenGatheringDate(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 ids.addAll(query);
@@ -1941,7 +1941,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by volume
         if(semenGatheringDTO.getVolume() != null)
         {
-            query = semenGatheringEAOLocal.findByVolume(semenGatheringDTO.getVolume());
+            query = semenGatheringEAOLocal.findByVolume(semenGatheringDTO.getVolume(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -1957,7 +1957,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by Motility
         if(semenGatheringDTO.getMotility() != null)
         {
-            query = semenGatheringEAOLocal.findByMotility(semenGatheringDTO.getMotility());
+            query = semenGatheringEAOLocal.findByMotility(semenGatheringDTO.getMotility(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -1973,7 +1973,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by concentration
         if(semenGatheringDTO.getConcentration() != null)
         {
-            query = semenGatheringEAOLocal.findByConcentration(semenGatheringDTO.getConcentration());
+            query = semenGatheringEAOLocal.findByConcentration(semenGatheringDTO.getConcentration(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -1989,7 +1989,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by straw size
         if(semenGatheringDTO.getStrawSize() != null)
         {
-            query = semenGatheringEAOLocal.findByStrawSize(semenGatheringDTO.getStrawSize());
+            query = semenGatheringEAOLocal.findByStrawSize(semenGatheringDTO.getStrawSize(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -2005,7 +2005,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by dilution
         if(semenGatheringDTO.getDilution() != null)
         {
-            query = semenGatheringEAOLocal.findByDilution(semenGatheringDTO.getDilution());
+            query = semenGatheringEAOLocal.findByDilution(semenGatheringDTO.getDilution(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -2021,7 +2021,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by tank number
         if(semenGatheringDTO.getTankNumber() != null)
         {
-            query = semenGatheringEAOLocal.findByTankNumber(semenGatheringDTO.getTankNumber());
+            query = semenGatheringEAOLocal.findByTankNumber(semenGatheringDTO.getTankNumber(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -2037,7 +2037,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by canister number
         if(semenGatheringDTO.getCanisterNumber() != null)
         {
-            query = semenGatheringEAOLocal.findByCanisterNumber(semenGatheringDTO.getCanisterNumber());
+            query = semenGatheringEAOLocal.findByCanisterNumber(semenGatheringDTO.getCanisterNumber(), sementalId);
             if(query != null && !query.isEmpty())
             {System.out.println("entro canister = " + semenGatheringDTO.getCanisterNumber());
                 if(firstTime)
@@ -2053,7 +2053,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by goblet number
         if(semenGatheringDTO.getGobletNumber() != null)
         {
-            query = semenGatheringEAOLocal.findByGobletNumber(semenGatheringDTO.getGobletNumber());
+            query = semenGatheringEAOLocal.findByGobletNumber(semenGatheringDTO.getGobletNumber(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -2069,7 +2069,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by straw color
         if(semenGatheringDTO.getStrawColor() != null)
         {
-            query = semenGatheringEAOLocal.findByStrawColor(semenGatheringDTO.getStrawColor());
+            query = semenGatheringEAOLocal.findByStrawColor(semenGatheringDTO.getStrawColor(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -2085,7 +2085,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by ptm
         if(semenGatheringDTO.getPostThawMotility() != null)
         {
-            query = semenGatheringEAOLocal.findByPostThawMotility(semenGatheringDTO.getPostThawMotility());
+            query = semenGatheringEAOLocal.findByPostThawMotility(semenGatheringDTO.getPostThawMotility(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)
@@ -2101,7 +2101,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         //find by active doses
         if(semenGatheringDTO.getActiveDoses() != null)
         {
-            query = semenGatheringEAOLocal.findByActiveDoses(semenGatheringDTO.getActiveDoses());
+            query = semenGatheringEAOLocal.findByActiveDoses(semenGatheringDTO.getActiveDoses(), sementalId);
             if(query != null && !query.isEmpty())
             {
                 if(firstTime)

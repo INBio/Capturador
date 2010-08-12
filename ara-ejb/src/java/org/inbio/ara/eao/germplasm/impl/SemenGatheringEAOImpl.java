@@ -44,221 +44,267 @@ public class SemenGatheringEAOImpl extends BaseEAOImpl<SemenGathering, Long> imp
         return  q.getResultList();
     }
 
-    public List<Long> findBySemenGatheringDate(Calendar semenGatheringDate, Calendar finalSemenGatheringDate) {
+    public List<Long> findBySemenGatheringDate(Calendar semenGatheringDate, Calendar finalSemenGatheringDate, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
                 " where s.semenGatheringDate >= :semenGatheringDate and " +
-                " s.semenGatheringDate <= :finalSemenGatheringDate"
+                " s.semenGatheringDate <= :finalSemenGatheringDate and" +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("semenGatheringDate", semenGatheringDate);
         q.setParameter("finalSemenGatheringDate", finalSemenGatheringDate);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findBySemenGatheringTime(String time) {
+    public List<Long> findBySemenGatheringTime(String time, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.semenGatheringTime = '"+time +"'"
+                " where s.semenGatheringTime = '"+time +"' and " +
+                " s.sementalId = :sementalId"
                );
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByVolume(Long volume) {
+    public List<Long> findByVolume(Long volume, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.volume = :volume "
+                " where s.volume = :volume  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("volume", volume);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByMotility(Long motility) {
+    public List<Long> findByMotility(Long motility, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.motility = :motility "
+                " where s.motility = :motility  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("motility", motility);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByConcentration(Long concentration) {
+    public List<Long> findByConcentration(Long concentration, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.concentration = :concentration "
+                " where s.concentration = :concentration  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("concentration", concentration);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByStrawQuantity(Long strawQuantity) {
+    public List<Long> findByStrawQuantity(Long strawQuantity, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.strawQuantity = :strawQuantity "
+                " where s.strawQuantity = :strawQuantity  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("strawQuantity", strawQuantity);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByDilution(String dilution) {
+    public List<Long> findByDilution(String dilution, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.dilution like '%"+ dilution+ "%'"
+                " where s.dilution like '%"+ dilution+ "%' and " +
+                " s.sementalId = :sementalId"
                );
 
+        q.setParameter("sementalId", sementalId);
+
         return  q.getResultList();
     }
 
-    public List<Long> findByTankNumber(Long tankNumber) {
+    public List<Long> findByTankNumber(Long tankNumber, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.tankNumber = :tankNumber "
+                " where s.tankNumber = :tankNumber  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("tankNumber", tankNumber);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByCanisterNumber(Long canisterNumber) {
+    public List<Long> findByCanisterNumber(Long canisterNumber, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.canisterNumber = :canisterNumber "
+                " where s.canisterNumber = :canisterNumber  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("canisterNumber", canisterNumber);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByGobletNumber(Long gobletNumber) {
+    public List<Long> findByGobletNumber(Long gobletNumber, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.gobletNumber = :gobletNumber "
+                " where s.gobletNumber = :gobletNumber  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("gobletNumber", gobletNumber);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByStrawColor(String strawColor) {
+    public List<Long> findByStrawColor(String strawColor, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
                 " where s.strawColor like '%"+strawColor + "%'"
                );
 
+        q.setParameter("sementalId", sementalId);
+
         return  q.getResultList();
     }
 
-    public List<Long> findByPostThawMotility(Long postThawMotility) {
+    public List<Long> findByPostThawMotility(Long postThawMotility, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.postThawMotility = :postThawMotility "
+                " where s.postThawMotility = :postThawMotility  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("postThawMotility", postThawMotility);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByActiveDoses(Long activeDoses) {
+    public List<Long> findByActiveDoses(Long activeDoses, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.activeDoses = :activeDoses "
+                " where s.activeDoses = :activeDoses  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("activeDoses", activeDoses);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByStrawSize(Double strawSize) {
+    public List<Long> findByStrawSize(Double strawSize, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.strawSize = :strawSize "
+                " where s.strawSize = :strawSize  and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("strawSize", strawSize);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findBySemenGatheringMethod(Long semenGatheringMethod) {
+    public List<Long> findBySemenGatheringMethod(Long semenGatheringMethod, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering s, SemenGatheringMethod sgm " +
                 " where s.semenGatheringMethodId = sgm.semenGatheringMethodId and " +
-                " sgm.semenGatheringMethod = '"+semenGatheringMethod+"'"
+                " sgm.semenGatheringMethod = '"+semenGatheringMethod+" and " +
+                " s.sementalId = :sementalId"
                );
+
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByConsistency(String consistence) {
+    public List<Long> findByConsistency(String consistence, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.consistence = '"+consistence+"'"
+                " where s.consistence = '"+consistence+"' and " +
+                " s.sementalId = :sementalId"
                );
+
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findBySemenColor(String semenColor) {
+    public List<Long> findBySemenColor(String semenColor, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.semenColor like '%"+semenColor+"%'"
+                " where s.semenColor like '%"+semenColor+"%' and " +
+                " s.sementalId = :sementalId"
                );
+
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByPH(Long ph) {
+    public List<Long> findByPH(Long ph, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.ph = :ph "
+                " where s.ph = :ph and " +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("ph", ph);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findByMassMotility(Long massMotility) {
+    public List<Long> findByMassMotility(Long massMotility, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
-                " where s.massMotility = :massMotility "
+                " where s.massMotility = :massMotility and" +
+                " s.sementalId = :sementalId"
                );
         q.setParameter("massMotility", massMotility);
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
 
-    public List<Long> findBySolvent(Long solvent) {
+    public List<Long> findBySolvent(Long solvent, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering s, Solvent so " +
                 " where s.solventId = so.solventId and " +
-                " so.name = '"+solvent+"'"
+                " so.name = '"+solvent+"' and "+
+                " so.sementalId = :sementalId"
                );
+        q.setParameter("sementalId", sementalId);
 
         return  q.getResultList();
     }
+
+    
 
 }

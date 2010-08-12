@@ -422,14 +422,14 @@ public interface GermplasmFacadeRemote {
      * @param maxResult
      * @return List<SemenGatheringDTO>
      */
-    public List<SemenGatheringDTO> getSemenGatheringlSimpleSearch(String query, int firstResult, int maxResult);
+    public List<SemenGatheringDTO> getSemenGatheringlSimpleSearch(String query, Long sementalId, int firstResult, int maxResult);
 
     /**
      * Count all semen gathering for a simple search
      * @param query
      * @return Long
      */
-    public Long countSemenGatheringSimpleSearch(String query);
+    public Long countSemenGatheringSimpleSearch(String query, Long sementalId);
 
     /**
      * Obtain a list of semen gathering for an advance search
@@ -438,14 +438,14 @@ public interface GermplasmFacadeRemote {
      * @param maxResult
      * @return List<SemenGatheringDTO>
      */
-    public List<SemenGatheringDTO> getSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO, int firstResult, int maxResult);
+    public List<SemenGatheringDTO> getSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO, Long sementalId, int firstResult, int maxResult);
 
     /**
      * Count all semen gathering for an advance search
      * @param semenGatheringDTO
      * @return Long
      */
-    public Long countSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO);
+    public Long countSemenGatheringAdvancedSearch(SemenGatheringDTO semenGatheringDTO, Long sementalId);
 
     /**
      * get All breeds
