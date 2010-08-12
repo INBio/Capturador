@@ -33,6 +33,7 @@ import org.inbio.ara.persistence.specimen.LifeForm;
 import org.inbio.ara.persistence.germplasm.Solvent;
 import org.inbio.ara.persistence.germplasm.SemenGatheringMethod;
 import org.inbio.ara.persistence.germplasm.Condition;
+import org.inbio.ara.persistence.germplasm.SemenConsistency;
 import org.inbio.ara.persistence.indicator.ComponentPart;
 import org.inbio.ara.persistence.transaction.TransactedSpecimenStatus;
 import org.inbio.ara.persistence.transaction.TransactionType;
@@ -98,6 +99,9 @@ public enum SelectionListEntity {
     TRANSACTED_SPECIMEN_STATUS(new Long(43),new TransactedSpecimenStatus(),true,"sle_transacted_specimen_status",TransactedSpecimenStatus.class.getName()),
     /* FIN MODULO DE TRANSACCIONES */
 
+    /*Agregados al modulo de semen*/
+    SEMEN_CONSISTENCY(new Long(44),new SemenConsistency(),true,"sle_semen_consistency",SemenConsistency.class.getName()),
+    /*fin de los agregados*/
     ;
 
     /* Class name of the entity maped with the selection list table */

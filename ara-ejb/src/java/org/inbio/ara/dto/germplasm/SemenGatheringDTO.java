@@ -54,7 +54,9 @@ public class SemenGatheringDTO extends GenericDTO {
 
     private Double strawSize;
 
-    private String consistency;
+    private Long semenConsistencyId;
+
+    private String semenConsistency;
 
     private String semenColor;
 
@@ -110,7 +112,9 @@ public class SemenGatheringDTO extends GenericDTO {
 
      + "  \n strawSize: " + strawSize
 
-     + "  \n consistency: " +  consistency
+     + "  \n consistency: " +  getSemenConsistencyId()
+
+     + "  \n consistency: " +  getSemenConsistency()
 
      + "  \n semenColor: " +  semenColor
 
@@ -353,20 +357,6 @@ public class SemenGatheringDTO extends GenericDTO {
     }
 
     /**
-     * @return the consistency
-     */
-    public String getConsistency() {
-        return consistency;
-    }
-
-    /**
-     * @param consistency the consistency to set
-     */
-    public void setConsistency(String consistency) {
-        this.consistency = consistency;
-    }
-
-    /**
      * @return the semenColor
      */
     public String getSemenColor() {
@@ -504,5 +494,33 @@ public class SemenGatheringDTO extends GenericDTO {
      */
     public void setFinalSemenGatheringDate(Calendar finalSemenGatheringDate) {
         this.finalSemenGatheringDate = finalSemenGatheringDate;
+    }
+
+    /**
+     * @return the semenConsistencyId
+     */
+    public Long getSemenConsistencyId() {
+        return semenConsistencyId;
+    }
+
+    /**
+     * @param semenConsistencyId the semenConsistencyId to set
+     */
+    public void setSemenConsistencyId(Long semenConsistencyId) {
+        this.semenConsistencyId = semenConsistencyId;
+    }
+
+    /**
+     * @return the semenConsistency
+     */
+    public String getSemenConsistency() {
+        return semenConsistency;
+    }
+
+    /**
+     * @param semenConsistency the semenConsistency to set
+     */
+    public void setSemenConsistency(String semenConsistency) {
+        this.semenConsistency = semenConsistency;
     }
 }

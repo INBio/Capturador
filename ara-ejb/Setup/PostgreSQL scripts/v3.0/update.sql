@@ -2415,6 +2415,42 @@ ALTER TABLE ara.semen_gathering ALTER COLUMN solvent_id DROP NOT NULL;
 ALTER TABLE ara.semen_gathering ALTER COLUMN current_straw_quantity DROP NOT NULL;
 ALTER TABLE ara.semen_gathering ALTER COLUMN post_thaw_motility DROP NOT NULL;
 
+
+CREATE TABLE ara.semen_consistency(
+semen_consistency_id numeric not null,
+name character varying(100) NOT NULL,
+description character varying(500),
+created_by character varying(20) NOT NULL,
+creation_date date NOT NULL,
+last_modification_by character varying(20) NOT NULL,
+last_modification_date date NOT NULL);
+
+ALTER TABLE ara.semen_consistency OWNER TO ara;
+
+ALTER TABLE ONLY ara.semen_consistency ADD CONSTRAINT "SEMEN_COSISTENCY_ID_PK" PRIMARY KEY (semen_consistency_id);
+
+
+--Elmina la columna consistencia y agrega la de semen_cosistency_id
+ALTER TABLE ara.semen_gathering DROP COLUMN consistency;
+ALTER TABLE ara.semen_gathering ADD COLUMN semen_consistency_id numeric;
+ALTER TABLE ONLY ara.semen_gathering ADD CONSTRAINT semen_consistency_id_fk FOREIGN KEY (semen_consistency_id) REFERENCES ara.semen_consistency(semen_consistency_id);
+
+INSERT INTO ara.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (44, '', 0, 'Ara', '2010-8-12',
+            'Ara', '2010-8-12', 'semen_consistency', 'semen_consistency_id');
+
+-- Secuence para el historico de identificadores
+CREATE SEQUENCE ara.semen_consistency_seq;
+ALTER TABLE ara.semen_consistency_seq OWNER TO ara;
+
+ALTER TABLE ara.semen_consistency ALTER COLUMN semen_consistency_id
+SET DEFAULT nextval('ara.semen_consistency_seq'::regclass);
+
+INSERT INTO ara.semen_consistency(name,description,created_by,creation_date,last_modification_by,last_modification_date)values('Creamy',NULL,'ara','2010-8-12','ara','2010-8-12');
+INSERT INTO ara.semen_consistency(name,description,created_by,creation_date,last_modification_by,last_modification_date)values('Thick creamy',NULL,'ara','2010-8-12','ara','2010-8-12');
+INSERT INTO ara.semen_consistency(name,description,created_by,creation_date,last_modification_by,last_modification_date)values('Thin creamy',NULL,'ara','2010-8-12','ara','2010-8-12');
 --
 -- FIN DE LOS CAMBIOS PARA EL MODULO DE SEMEN
 --

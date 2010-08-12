@@ -22,7 +22,7 @@ public class SemenGatheringDTOFactory  extends BaseEntityOrDTOFactory<SemenGathe
         e.setActiveDoses(dto.getActiveDoses());
         e.setCanisterNumber(dto.getCanisterNumber());
         e.setConcentration(dto.getConcentration());
-        e.setConsistency(dto.getConsistency());
+        e.setSemenConsistencyId(dto.getSemenConsistencyId());
         e.setDilution(dto.getDilution());
         e.setGobletNumber(dto.getGobletNumber());
         e.setMassMotility(dto.getMassMotility());
@@ -51,7 +51,7 @@ public class SemenGatheringDTOFactory  extends BaseEntityOrDTOFactory<SemenGathe
         e.setActiveDoses(dto.getActiveDoses());
         e.setCanisterNumber(dto.getCanisterNumber());
         e.setConcentration(dto.getConcentration());
-        e.setConsistency(dto.getConsistency());
+        e.setSemenConsistencyId(dto.getSemenConsistencyId());
         e.setDilution(dto.getDilution());
         e.setGobletNumber(dto.getGobletNumber());
         e.setMassMotility(dto.getMassMotility());
@@ -82,7 +82,7 @@ public class SemenGatheringDTOFactory  extends BaseEntityOrDTOFactory<SemenGathe
         dto.setActiveDoses(entity.getActiveDoses());
         dto.setCanisterNumber(entity.getCanisterNumber());
         dto.setConcentration(entity.getConcentration());
-        dto.setConsistency(entity.getConsistency());
+        dto.setSemenConsistencyId(entity.getSemenConsistencyId());
         dto.setDilution(entity.getDilution());
         dto.setGobletNumber(entity.getGobletNumber());
         dto.setMassMotility(entity.getMassMotility());
