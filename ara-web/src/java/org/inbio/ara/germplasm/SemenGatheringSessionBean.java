@@ -211,7 +211,7 @@ public class SemenGatheringSessionBean extends AbstractSessionBean implements Pa
             try {
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getSemenGatheringAdvancedSearch(
-                        getQuerySemenGatheringDTO(), firstResult, maxResults));
+                        getQuerySemenGatheringDTO(), getSementalId(), firstResult, maxResults));
 
                 return aListDTO;
 
@@ -225,7 +225,7 @@ public class SemenGatheringSessionBean extends AbstractSessionBean implements Pa
 
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getSemenGatheringlSimpleSearch(
-                        getConsultaSimple(), firstResult, maxResults));
+                        getConsultaSimple(), getSementalId(), firstResult, maxResults));
 
                 return aListDTO;
 

@@ -322,7 +322,8 @@ public class ListSemenGathering extends AbstractPageBean {
             //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
             this.getgermplasm$SemenGatheringSessionBean().getPagination().setTotalResults
                     (getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().
-                    countSemenGatheringSimpleSearch(userInput).intValue());
+                    countSemenGatheringSimpleSearch(userInput,
+                    getgermplasm$SemenGatheringSessionBean().getSementalId()).intValue());
         }
         //set the first result of the query
         this.getgermplasm$SemenGatheringSessionBean().getPagination().firstResults();
@@ -404,7 +405,8 @@ public class ListSemenGathering extends AbstractPageBean {
                 getGermplasmFacadeRemote().
                 countSemenGatheringAdvancedSearch(
                 getgermplasm$SemenGatheringSessionBean().
-                getQuerySemenGatheringDTO()).intValue());
+                getQuerySemenGatheringDTO(),
+                getgermplasm$SemenGatheringSessionBean().getSementalId()).intValue());
 
         this.getgermplasm$SemenGatheringSessionBean().getPagination().firstResults();
         this.getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
