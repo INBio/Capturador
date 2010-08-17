@@ -57,6 +57,7 @@ public interface BaseLocalEAO<E extends Object,I extends Object> {
 
 
     /**
+     * This method is used generally at drop downs
      * @deprecated 
      * @param entityClass
      * @return
@@ -102,7 +103,7 @@ public interface BaseLocalEAO<E extends Object,I extends Object> {
      * This method does 2 things:
      * 1. Get All the results for an Entity
      * 2. Order the results using one o more fields.
-     *
+     * This method is used generally at drop downs
      * @param entityClass Type of returned elements
      * @param orderByFields The criteria for the "order by" of the results. This
      * will be an array of String, each one value containing the name of the field
