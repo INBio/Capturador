@@ -57,7 +57,7 @@ public interface BaseLocalEAO<E extends Object,I extends Object> {
 
 
     /**
-     *
+     * @deprecated 
      * @param entityClass
      * @return
      */
