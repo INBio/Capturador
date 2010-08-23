@@ -2391,11 +2391,11 @@ ALTER TABLE ara.transacted_specimen
 -- CAMBIOS PARA EL MODULO DE SEMEN
 --
 
---quita los not null no requeriros de la tabla semental
+--2010.08.20 dasolano. quita los not null no requeriros de la tabla semental
 ALTER TABLE ara.semental ALTER COLUMN color DROP NOT NULL;
 ALTER TABLE ara.semental ALTER COLUMN condition_id DROP NOT NULL;
 
---quita los not null no requeridos de la tabla semen_gathering
+--2010.08.20 dasolano. quita los not null no requeridos de la tabla semen_gathering
 ALTER TABLE ara.semen_gathering ALTER COLUMN semen_gathering_time DROP NOT NULL;
 ALTER TABLE ara.semen_gathering ALTER COLUMN concentration DROP NOT NULL;
 ALTER TABLE ara.semen_gathering ALTER COLUMN straw_quantity DROP NOT NULL;
@@ -2430,7 +2430,7 @@ ALTER TABLE ara.semen_consistency OWNER TO ara;
 ALTER TABLE ONLY ara.semen_consistency ADD CONSTRAINT "SEMEN_COSISTENCY_ID_PK" PRIMARY KEY (semen_consistency_id);
 
 
---Elmina la columna consistencia y agrega la de semen_cosistency_id
+--2010.08.20 dasolano. Elmina la columna consistencia y agrega la de semen_cosistency_id
 ALTER TABLE ara.semen_gathering DROP COLUMN consistency;
 ALTER TABLE ara.semen_gathering ADD COLUMN semen_consistency_id numeric;
 ALTER TABLE ONLY ara.semen_gathering ADD CONSTRAINT semen_consistency_id_fk FOREIGN KEY (semen_consistency_id) REFERENCES ara.semen_consistency(semen_consistency_id);
@@ -2441,7 +2441,7 @@ INSERT INTO ara.list_table(
     VALUES (44, '', 0, 'Ara', '2010-8-12',
             'Ara', '2010-8-12', 'semen_consistency', 'semen_consistency_id');
 
--- Secuence para el historico de identificadores
+--2010.08.20 dasolano. Secuence para el historico de identificadores
 CREATE SEQUENCE ara.semen_consistency_seq;
 ALTER TABLE ara.semen_consistency_seq OWNER TO ara;
 
