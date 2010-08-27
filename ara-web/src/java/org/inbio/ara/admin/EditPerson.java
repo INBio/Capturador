@@ -480,7 +480,7 @@ public class EditPerson extends AbstractPageBean {
         Long person = psb.getCurrentPerson().getPersonKey();
 
         //Cargar datos del add remove de instituciones (Seleccionados)
-        List<InstitutionDTO> institutionsList = psb.getInventoryFacade().
+        List<InstitutionDTO> institutionsList = psb.getAdminFacade().
                 getInstitutionsByPersonId(person);
         List<Long> list = new ArrayList<Long>();
         for (InstitutionDTO myDTO : institutionsList) {
@@ -489,7 +489,7 @@ public class EditPerson extends AbstractPageBean {
         psb.getArInstitutionesEdit().setSelectedOptions(list.toArray(new Long[list.size()]));
 
         //Cargar los datos del add remove de perfiles (Seleccionados)
-        List<ProfileDTO> nomenclaturalList = psb.getInventoryFacade().getProfilesByPersonId(person);
+        List<ProfileDTO> nomenclaturalList = psb.getAdminFacade().getProfilesByPersonId(person);
         List<Long> listP = new ArrayList<Long>();
         for (ProfileDTO myDTO : nomenclaturalList) {
             listP.add(myDTO.getProfileId());
@@ -552,9 +552,9 @@ public class EditPerson extends AbstractPageBean {
         //Persistir el DTO (Merge)
         try{
             //Eliminar listas asociadas
-            this.getPersonSessionBean().getInventoryFacade().
+            this.getPersonSessionBean().getAdminFacade().
                     deleteInstitutionsByPersonId(myDTO.getPersonKey());
-            this.getPersonSessionBean().getInventoryFacade().
+            this.getPersonSessionBean().getAdminFacade().
                     deleteProfilesByPersonId(myDTO.getPersonKey());
             //Merge de la entidad
             this.getPersonSessionBean().updatePerson(myDTO);

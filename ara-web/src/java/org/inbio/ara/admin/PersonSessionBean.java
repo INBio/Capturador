@@ -181,14 +181,14 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
      * Obtener los datos para el drop down de perfiles
      */
     public List<ProfileDTO> getprofilesData(){
-            return adminFacade.getAllProfiles();
+            return getAdminFacade().getAllProfiles();
     }
 
      /**
      * Obtener los datos para el drop down de instituciones
      */
     public List<InstitutionDTO> getinstitutionsData(){
-            return adminFacade.getAllInstitutions();
+            return getAdminFacade().getAllInstitutions();
     }
 
     /**
@@ -196,21 +196,21 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
      * @param Id
      */
     public void deletePerson(Long Id){
-        this.inventoryFacade.deletePerson(Id);
+        this.adminFacade.deletePerson(Id);
     }
 
     /**
      * Persiste una nueva persona
      */
     public PersonDTO savePerson(){
-        return this.inventoryFacade.savePerson(this.getCurrentPerson());
+        return this.adminFacade.savePerson(this.getCurrentPerson());
     }
 
     /**
      * Actualiza una persona
      */
     public void updatePerson(PersonDTO dto){
-        this.inventoryFacade.updatePerson(dto);
+        this.adminFacade.updatePerson(dto);
     }
 
     /**
@@ -241,10 +241,10 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
 		}
 
 		//Save institutions
-        this.getInventoryFacade().savePersonInstitutions
+        this.getAdminFacade().savePersonInstitutions
                 (this.getCurrentPerson(), institutions);
         //Save profiles
-        this.getInventoryFacade().savePersonProfiles
+        this.getAdminFacade().savePersonProfiles
                 (this.getCurrentPerson(), profiles);
     }
 
@@ -276,9 +276,9 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
 		}
 
 		//Save institutions
-        this.getInventoryFacade().savePersonInstitutions(dto, institutions);
+        this.getAdminFacade().savePersonInstitutions(dto, institutions);
         //Save profiles
-        this.getInventoryFacade().savePersonProfiles(dto, profiles);
+        this.getAdminFacade().savePersonProfiles(dto, profiles);
     }
 
      /**
@@ -294,7 +294,7 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
      * Inicializar el data provider
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(this.getInventoryFacade().countPerson().intValue(), getQuantity(), this));
+        setPagination(new PaginationControllerRemix(this.getAdminFacade().countPerson().intValue(), getQuantity(), this));
     }
 
     /**
@@ -421,7 +421,7 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
     }
 
     public List getResults(int firstResult, int maxResults) {
-        return inventoryFacade.getAllPersonPaginated(firstResult, maxResults);
+        return adminFacade.getAllPersonPaginated(firstResult, maxResults);
     }
 
     /**
@@ -436,6 +436,20 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
      */
     public void setPagination(PaginationControllerRemix pagination) {
         this.pagination = pagination;
+    }
+
+    /**
+     * @return the adminFacade
+     */
+    public AdminFacadeRemote getAdminFacade() {
+        return adminFacade;
+    }
+
+    /**
+     * @param adminFacade the adminFacade to set
+     */
+    public void setAdminFacade(AdminFacadeRemote adminFacade) {
+        this.adminFacade = adminFacade;
     }
 
     
