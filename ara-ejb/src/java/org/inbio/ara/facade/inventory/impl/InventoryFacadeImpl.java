@@ -553,74 +553,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         return gDTO; //Lo retorno pero con gathering Id
     }
 
-    /**
-     * Metodo para persistir una nueva persona a partir de un personDTO
-     * @param pDTO
-     * @return
-     */
-    public PersonDTO savePerson(PersonDTO pDTO) {
-        Person entity = this.personDTOFactory.createPlainEntity(pDTO);
-        this.personEAOImpl.create(entity);
-        //Lo un DTO ahora con el Id asignado por la BD
-        return this.personDTOFactory.createDTO(entity);
-    }
-
-    /**
-     * Metodo para auctualizar una persona
-     * @param pDTO
-     * @return
-     */
-    public void updatePerson(PersonDTO pDTO) {
-        Person entity = this.personEAOImpl.findById(Person.class, pDTO.
-                getPersonKey());
-        entity = this.personDTOFactory.updatePlainEntity(pDTO, entity);
-        this.personEAOImpl.update(entity);
-    }
-
-    /**
-     * Para persistir las istituciones asociadas a una persona
-     */
-    public void savePersonInstitutions(PersonDTO person,
-            List<Long> institutions) {
-        Long personId = person.getPersonKey();
-        for (Long i : institutions) {
-            PersonInstitutionPK pk = new PersonInstitutionPK(personId, i);
-            PersonInstitution entity = new PersonInstitution(pk);
-            this.personInstitutionEAOImpl.create(entity);
-        }
-    }
-
-    /**
-     * Para persistir los perfiles asociadas a una persona
-     */
-    public void savePersonProfiles(PersonDTO person, List<Long> profiles) {
-        Long personId = person.getPersonKey();
-        String personShortName = person.getFirstName()+" "+person.getLastName();
-        for (Long p : profiles) {
-            PersonProfilePK pk = new PersonProfilePK(personId, p);
-            PersonProfile entity = new PersonProfile(pk);
-            entity.setShortName(personShortName);
-            this.personProfileEAOImpl.create(entity);
-        }
-    }
-
-    public List<InstitutionDTO> getInstitutionsByPersonId(Long pId) {
-        return institutionDTOFactory.createDTOList(institutionEAOImpl.
-                getInstitutionsByPerson(pId));
-    }
-
-    public List<ProfileDTO> getProfilesByPersonId(Long pId) {
-        return profileDTOFactoty.createDTOList(profileEAOImpl.
-                getProfilesByPerson(pId));
-    }
-
-    public void deleteInstitutionsByPersonId(Long pId) {
-        this.personInstitutionEAOImpl.deleteByPerson(pId);
-    }
-
-    public void deleteProfilesByPersonId(Long pId) {
-        this.personProfileEAOImpl.deleteByPerson(pId);
-    }
+    
 
     /**
      * Eliminar recolecciones por id
@@ -843,32 +776,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 findByProfile(ProfileEntity.IDENTIFIER_PROFILE.getId()));
     }
 
-    /**
-     * Retrive all people paginated
-     * @return
-     */
-    public List<PersonDTO> getAllPersonPaginated(int firstResult, int maxResults) {
-        String[] orderByFields = {"firstName", "lastName"};
-        return personDTOFactory.createDTOList(
-                personEAOImpl.
-                findAllPaginatedFilterAndOrderBy(
-                Person.class, firstResult, maxResults, orderByFields,null));
-    }
-
-    public Long countPerson() {
-        return this.personEAOImpl.count(Person.class);
-    }
-
-    /**
-     * Metodo para eliminar Personas por su id
-     * @param Id
-     */
-    public void deletePerson(Long Id) {
-        Person aux = this.personEAOImpl.findById(Person.class, Id);
-        if (aux != null) {
-            this.personEAOImpl.delete(aux);
-        }
-    }
+    
 
     /**
      * Retrive all people who have validator profile
@@ -1122,9 +1030,6 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         return identificationDTOList;
     }
 
-    public void test() {
-
-    }
 
     /**
      * This method generates specimens by specific specimen,identification,

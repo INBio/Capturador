@@ -177,29 +177,9 @@ public interface InventoryFacadeRemote {
 
     public List<SpecimenDTO> updateScientificName(List<SpecimenDTO> list);
 
-    public void test();
 
-    public java.util.List<org.inbio.ara.dto.inventory.PersonDTO> getAllPersonPaginated(int firstResult, int maxResults);
 
-    public java.lang.Long countPerson();
-
-    public void deletePerson(java.lang.Long Id);
-
-    public org.inbio.ara.dto.inventory.PersonDTO savePerson(org.inbio.ara.dto.inventory.PersonDTO pDTO);
-
-    public void savePersonInstitutions(org.inbio.ara.dto.inventory.PersonDTO person, java.util.List<java.lang.Long> institutions);
-
-    public void savePersonProfiles(org.inbio.ara.dto.inventory.PersonDTO person, java.util.List<java.lang.Long> profiles);
-
-    public java.util.List<org.inbio.ara.dto.agent.InstitutionDTO> getInstitutionsByPersonId(java.lang.Long pId);
-
-    public java.util.List<org.inbio.ara.dto.agent.ProfileDTO> getProfilesByPersonId(java.lang.Long pId);
-
-    public void deleteInstitutionsByPersonId(java.lang.Long pId);
-
-    public void deleteProfilesByPersonId(java.lang.Long pId);
-
-    public void updatePerson(org.inbio.ara.dto.inventory.PersonDTO pDTO);
+    
 
     public List<GatheringObservationDTO> getGathObsBySiteId(java.lang.Long siteId);
 }

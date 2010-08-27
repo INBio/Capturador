@@ -33,12 +33,17 @@ import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.dto.agent.InstitutionDTOFactory;
 import org.inbio.ara.dto.agent.ProfileDTO;
 import org.inbio.ara.dto.agent.ProfileDTOFactory;
+import org.inbio.ara.dto.inventory.PersonDTO;
+import org.inbio.ara.dto.inventory.PersonDTOFactory;
 import org.inbio.ara.dto.inventory.SelectionListDTOFactory;
 import org.inbio.ara.dto.inventory.SelectionListEntity;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonDTOFactory;
 import org.inbio.ara.eao.agent.AudienceEAOLocal;
 import org.inbio.ara.eao.agent.InstitutionEAOLocal;
+import org.inbio.ara.eao.agent.PersonEAOLocal;
+import org.inbio.ara.eao.agent.PersonInstitutionEAOLocal;
+import org.inbio.ara.eao.agent.PersonProfileEAOLocal;
 import org.inbio.ara.eao.agent.ProfileEAOLocal;
 import org.inbio.ara.eao.collection.CollectionEAOLocal;
 import org.inbio.ara.eao.selectionlist.SelectionListValueCollectionEAOLocal;
@@ -49,6 +54,11 @@ import org.inbio.ara.persistence.SelectionListGenericEntity;
 import org.inbio.ara.persistence.audiences.Audience;
 import org.inbio.ara.persistence.collection.Collection;
 import org.inbio.ara.persistence.institution.Institution;
+import org.inbio.ara.persistence.person.Person;
+import org.inbio.ara.persistence.person.PersonInstitution;
+import org.inbio.ara.persistence.person.PersonInstitutionPK;
+import org.inbio.ara.persistence.person.PersonProfile;
+import org.inbio.ara.persistence.person.PersonProfilePK;
 import org.inbio.ara.persistence.person.Profile;
 import org.inbio.ara.persistence.selectionlist.ListTableCollection;
 import org.inbio.ara.persistence.selectionlist.ListTableCollectionPK;
@@ -76,14 +86,22 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
     private AudienceEAOLocal audienceEAOImpl;
     @EJB
     private ProfileEAOLocal profileEAOImpl;
-
+    @EJB
+    private PersonEAOLocal personEAOImpl;
+    @EJB
+    private PersonInstitutionEAOLocal personInstitutionEAOImpl;
+    @EJB
+    private PersonProfileEAOLocal personProfileEAOImpl;
+    
     CollectionDTOFactory collectionDTOFactory = new CollectionDTOFactory();
     TaxonDTOFactory taxonDTPFactory = new TaxonDTOFactory();
     private SelectionListDTOFactory selecionListDTOFactory = new SelectionListDTOFactory();
     private InstitutionDTOFactory institutionDTOFactory = new InstitutionDTOFactory();
     private AudienceDTOFactory audienceDTOFactory = new AudienceDTOFactory();
     private ProfileDTOFactory profileDTOFactory = new ProfileDTOFactory();
-
+    
+    private ProfileDTOFactory profileDTOFactoty = new ProfileDTOFactory();
+    private PersonDTOFactory personDTOFactory = new PersonDTOFactory();
     /**
      * Metodo para obtener la lista de taxones con la que puede trabajar un
      * determinado usuario
@@ -405,7 +423,102 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
 
     }
 
+    /**
+     * Retrive all people paginated
+     * @return
+     */
+    public List<PersonDTO> getAllPersonPaginated(int firstResult, int maxResults) {
+        String[] orderByFields = {"firstName", "lastName"};
+        return personDTOFactory.createDTOList(
+                personEAOImpl.
+                findAllPaginatedFilterAndOrderBy(
+                Person.class, firstResult, maxResults, orderByFields,null));
+    }
 
+    public Long countPerson() {
+        return this.personEAOImpl.count(Person.class);
+    }
+
+    /**
+     * Metodo para eliminar Personas por su id
+     * @param Id
+     */
+    public void deletePerson(Long Id) {
+        /*Person aux = this.personEAOImpl.findById(Person.class, Id);
+        if (aux != null) {*/
+            this.personEAOImpl.delete(this.personEAOImpl.findById(Person.class, Id));
+        //}
+    }
+
+
+    /**
+     * Metodo para persistir una nueva persona a partir de un personDTO
+     * @param pDTO
+     * @return
+     */
+    public PersonDTO savePerson(PersonDTO pDTO) {
+        Person entity = this.personDTOFactory.createPlainEntity(pDTO);
+        this.personEAOImpl.create(entity);
+        //Lo un DTO ahora con el Id asignado por la BD
+        return this.personDTOFactory.createDTO(entity);
+    }
+
+    /**
+     * Metodo para auctualizar una persona
+     * @param pDTO
+     * @return
+     */
+    public void updatePerson(PersonDTO pDTO) {
+        Person entity = this.personEAOImpl.findById(Person.class, pDTO.
+                getPersonKey());
+        entity = this.personDTOFactory.updatePlainEntity(pDTO, entity);
+        this.personEAOImpl.update(entity);
+    }
+
+    /**
+     * Para persistir las istituciones asociadas a una persona
+     */
+    public void savePersonInstitutions(PersonDTO person,
+            List<Long> institutions) {
+        Long personId = person.getPersonKey();
+        for (Long i : institutions) {
+            PersonInstitutionPK pk = new PersonInstitutionPK(personId, i);
+            PersonInstitution entity = new PersonInstitution(pk);
+            this.personInstitutionEAOImpl.create(entity);
+        }
+    }
+
+    /**
+     * Para persistir los perfiles asociadas a una persona
+     */
+    public void savePersonProfiles(PersonDTO person, List<Long> profiles) {
+        Long personId = person.getPersonKey();
+        String personShortName = person.getFirstName()+" "+person.getLastName();
+        for (Long p : profiles) {
+            PersonProfilePK pk = new PersonProfilePK(personId, p);
+            PersonProfile entity = new PersonProfile(pk);
+            entity.setShortName(personShortName);
+            this.personProfileEAOImpl.create(entity);
+        }
+    }
+
+    public List<InstitutionDTO> getInstitutionsByPersonId(Long pId) {
+        return institutionDTOFactory.createDTOList(institutionEAOImpl.
+                getInstitutionsByPerson(pId));
+    }
+
+    public List<ProfileDTO> getProfilesByPersonId(Long pId) {
+        return profileDTOFactoty.createDTOList(profileEAOImpl.
+                getProfilesByPerson(pId));
+    }
+
+    public void deleteInstitutionsByPersonId(Long pId) {
+        this.personInstitutionEAOImpl.deleteByPerson(pId);
+    }
+
+    public void deleteProfilesByPersonId(Long pId) {
+        this.personProfileEAOImpl.deleteByPerson(pId);
+    }
 
     
 

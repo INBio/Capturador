@@ -86,7 +86,7 @@ public enum SelectionListEntity {
     SOIL_TEXTURE(new Long(34), new SoilTexture(), true,"sle_soil_texture",SoilTexture.class.getName()),
 
     GERMINATION_METHOD_TYPE(new Long(35), new GerminationMethodType(), true,"sle_germination_method_type",GerminationMethodType.class.getName()),
-    COLLECTION_TYPE(new Long(36), new org.inbio.ara.persistence.germplasm.CollectionType(), true,"sle_collection_type",CollectionType.class.getName()),
+    COLLECTION_TYPE(new Long(36), new org.inbio.ara.persistence.germplasm.CollectionType(), true,"sle_collection_type",org.inbio.ara.persistence.germplasm.CollectionType.class.getName()),
     MOISTURE_METHOD_TYPE(new Long(37), new MoistureMethodType(), true,"sle_moisture_method_type",MoistureMethodType.class.getName()),
     ACCESSION_MOVEMENT_TYPE(new Long(38), new AccessionMovementType(), true,"sle_accession_movement_type",MoistureMethodType.class.getName()),
 
