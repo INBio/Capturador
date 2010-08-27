@@ -2454,3 +2454,7 @@ INSERT INTO ara.semen_consistency(name,description,created_by,creation_date,last
 --
 -- FIN DE LOS CAMBIOS PARA EL MODULO DE SEMEN
 --
+
+--Insert del padre de los atributos taxonomicos (indicadores)
+--2010.08.27
+INSERT INTO ara.indicator(indicator_id, "name", description, creation_date, created_by, last_modification_date, last_modification_by, indicator_ancestor_id, applies_to_parts) VALUES (0, 'Atributos Taxonómicos', null, '2010-08-27', 'ara', '2010-08-27', 'ara', null,null);
