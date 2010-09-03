@@ -17,9 +17,11 @@
  */
 package org.inbio.ara.eao.taxonomy.impl;
 
+import java.util.List;
 import org.inbio.ara.eao.taxonomy.TaxonomicalRangeEAOLocal;
 import org.inbio.ara.eao.taxonomy.*;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import org.inbio.ara.eao.BaseEAOImpl;
 import org.inbio.ara.persistence.taxonomy.TaxonomicalRange;
 
@@ -29,5 +31,21 @@ import org.inbio.ara.persistence.taxonomy.TaxonomicalRange;
  */
 @Stateless
 public class TaxonomicalRangeEAOImpl extends BaseEAOImpl<TaxonomicalRange,Long> implements TaxonomicalRangeEAOLocal {
-         
+
+    
+    public List<TaxonomicalRange> findNextLevelsByTaxonId(Long taxonId) {
+        Query q =
+                em.createQuery(
+                " select t.taxonomicalRange" +
+                " from TaxonomicalHierarchy as t, Taxon tx" +
+                " where tx.taxonId = :taxonId and t.taxonomicalRangeAncestor.taxonomicalRangeId = tx.taxonomicalRangeId");
+
+        q.setParameter("taxonId", taxonId);
+        try {
+            return q.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

@@ -18,4 +18,6 @@ public interface TaxonomicalHierarchyEAOLocal
         extends BaseLocalEAO<TaxonomicalHierarchy, TaxonomicalHierarchyPK> {
 
     Long findMandatoryIdByAncestor(Long ancestorId);
+
+    
 }

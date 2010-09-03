@@ -61,4 +61,7 @@ public interface TaxonEAOLocal extends BaseLocalEAO<Taxon,Long> {
 
     public Taxon getTaxonRootByCollectionId(Long collectionId);
 
+    public Long findTaxonomicalRangeIdByTaxonId(Long taxonId);
+
+
 }

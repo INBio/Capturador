@@ -5,6 +5,7 @@
 
 package org.inbio.ara.eao.taxonomy;
 
+import java.util.List;
 import javax.ejb.Local;
 import org.inbio.ara.eao.BaseLocalEAO;
 import org.inbio.ara.persistence.taxonomy.TaxonomicalRange;
@@ -15,5 +16,7 @@ import org.inbio.ara.persistence.taxonomy.TaxonomicalRange;
  */
 @Local
 public interface TaxonomicalRangeEAOLocal  extends BaseLocalEAO<TaxonomicalRange,Long>  {
+
+    public List<TaxonomicalRange> findNextLevelsByTaxonId(Long ancestorId);
     
 }
