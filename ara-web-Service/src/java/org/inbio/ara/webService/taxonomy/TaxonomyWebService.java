@@ -49,7 +49,7 @@ public class TaxonomyWebService {
         if(taxonRoot != null){
                 result += "<taxon>";
                 result += "<id>"+taxonRoot.getTaxonKey()+"</id>";
-                result += "<name>"+taxonRoot.getCurrentName()+" ("+taxonomicalName.getName()+")"+"</name>";
+                result += "<name><![CDATA["+taxonRoot.getCurrentName()+" ("+taxonomicalName.getName()+")]]>"+"</name>";
                 result += "</taxon>\n";
         }
         result += "</taxonRoot>";
@@ -61,19 +61,62 @@ public class TaxonomyWebService {
     public String getChildrenByTaxonId(@WebParam(name = "taxonId")
     String taxonId) {
         List<TaxonDTO> children = taxonFacade.getTaxonChildren(new Long(taxonId));
-        String result = "<taxonRoot>";
+        String result = "<taxonomy>";
         if(children != null){
             for(TaxonDTO child: children)
             {
                 TaxonomicalRangeDTO taxonomicalName = taxonFacade.getTaxonRangeName(child.getTaxonomicalRangeId());
                 result += "<taxon>";
                 result += "<id>"+child.getTaxonKey()+"</id>";
-                result += "<name>"+child.getCurrentName()+" ("+taxonomicalName.getName()+")"+"</name>";
+                result += "<name><![CDATA["+child.getCurrentName()+" ("+taxonomicalName.getName()+")]]>"+"</name>";
                 result += "</taxon>\n";
 
             }
         }
-        result += "</taxonRoot>";
+        result += "</taxonomy>";
+        return result;
+
+    }
+
+    @WebMethod(operationName = "getAllTaxonByRange")
+    public String getAllTaxonByRange(@WebParam(name = "rangeId")
+    String rangeId) {
+
+        List<TaxonDTO> taxonDTOList = taxonFacade.getAllTaxonByRange(new Long(rangeId));
+
+        String result = "<taxonomy>";
+        if(taxonDTOList != null){
+            for(TaxonDTO taxonDTO : taxonDTOList){
+                TaxonomicalRangeDTO taxonomicalName = taxonFacade.getTaxonRangeName(taxonDTO.getTaxonomicalRangeId());
+                result += "<taxon>";
+                result += "<id>"+taxonDTO.getTaxonKey()+"</id>";
+                result += "<name>"+taxonDTO.getCurrentName()+" ("+taxonomicalName.getName()+")"+"</name>";
+                result += "</taxon>\n";
+
+            }
+        }
+        result += "</taxonomy>";
+        return result;
+
+    }
+
+
+    @WebMethod(operationName = "getNextLevelsByTaxon")
+    public String getNextLevelsByTaxon(@WebParam(name = "taxonId")
+    String taxonId) {
+
+        List<TaxonomicalRangeDTO> taxonomicalRangeDTOList = taxonFacade.getNextLevelsByTaxonId(new Long(taxonId));
+
+        String result = "<taxonomyRanges>";
+        if(taxonomicalRangeDTOList != null){
+            for(TaxonomicalRangeDTO taxonomicalRange : taxonomicalRangeDTOList){
+                result += "<taxonRange>";
+                result += "<id>"+taxonomicalRange.getTaxonomicalRangeKey()+"</id>";
+                result += "<name>"+taxonomicalRange.getName()+"</name>";
+                result += "</taxonRange>\n";
+            }
+        }
+        result += "</taxonomyRanges>";
         return result;
 
     }
