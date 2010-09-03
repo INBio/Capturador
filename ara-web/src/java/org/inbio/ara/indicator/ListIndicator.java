@@ -63,48 +63,12 @@ public class ListIndicator extends AbstractPageBean {
     //Contexto utilizado para obtener el current locale
 	private FacesContext context;
 	private Locale myLocale;
-
-   
     
     private HtmlPanelGrid gridIndicator = new HtmlPanelGrid();
-
-    public HtmlPanelGrid getGridIndicator() {
-        return gridIndicator;
-    }
-
-    public void setGridIndicator(HtmlPanelGrid hpg) {
-        this.gridIndicator = hpg;
-    }
     private HtmlPanelGrid indicator = new HtmlPanelGrid();
-
-    public HtmlPanelGrid getIndicator() {
-        return indicator;
-    }
-
-    public void setIndicator(HtmlPanelGrid hpg) {
-        this.indicator = hpg;
-    }
-    
     private HtmlInputHidden hiddenNodeId = new HtmlInputHidden();
-
-    public HtmlInputHidden getHiddenNodeId() {
-        return hiddenNodeId;
-    }
-
-    public void setHiddenNodeId(HtmlInputHidden hdn) {
-        this.hiddenNodeId = hdn;
-    }
-
-
     private HtmlInputHidden hiddenPathNode = new HtmlInputHidden();
 
-    public HtmlInputHidden getHiddenPathNode() {
-        return hiddenPathNode;
-    }
-
-    public void setHiddenPathNode(HtmlInputHidden hdn) {
-        this.hiddenPathNode = hdn;
-    }
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -255,7 +219,7 @@ public class ListIndicator extends AbstractPageBean {
 
     public String btnNewIndicator_action() {
         
-        
+       // this.getIndicatorSessionBean().setCurrentIndicatorDTO(null);
         this.getIndicatorSessionBean().setCurrentIndicatorDTO(new IndicatorDTO());
         this.getIndicatorSessionBean().setNodeId(this.hiddenNodeId.getValue().toString());
         this.getIndicatorSessionBean().setPathNode(this.hiddenPathNode.getValue().toString());
@@ -299,7 +263,43 @@ public class ListIndicator extends AbstractPageBean {
         return null;
     }
 
-    
+    public HtmlPanelGrid getGridIndicator() {
+        return gridIndicator;
+    }
+
+    public void setGridIndicator(HtmlPanelGrid hpg) {
+        this.gridIndicator = hpg;
+    }
+
+
+    public HtmlPanelGrid getIndicator() {
+        return indicator;
+    }
+
+    public void setIndicator(HtmlPanelGrid hpg) {
+        this.indicator = hpg;
+    }
+
+
+
+    public HtmlInputHidden getHiddenNodeId() {
+        return hiddenNodeId;
+    }
+
+    public void setHiddenNodeId(HtmlInputHidden hdn) {
+        this.hiddenNodeId = hdn;
+    }
+
+
+
+
+    public HtmlInputHidden getHiddenPathNode() {
+        return hiddenPathNode;
+    }
+
+    public void setHiddenPathNode(HtmlInputHidden hdn) {
+        this.hiddenPathNode = hdn;
+    }
     
 }
 
