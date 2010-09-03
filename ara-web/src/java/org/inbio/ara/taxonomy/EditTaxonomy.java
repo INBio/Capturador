@@ -59,7 +59,7 @@ public class EditTaxonomy extends AbstractPageBean {
 
     // </editor-fold>
 
-    private Tree	 displayTree		  = new Tree();
+    private Tree displayTree = new Tree();
 
     // Default Constructor
     public EditTaxonomy() {
