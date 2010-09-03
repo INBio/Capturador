@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Remote;
 import org.inbio.ara.dto.agent.CollectionDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
+import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.dto.security.NomenclaturalGroupDTO;
@@ -134,7 +135,7 @@ public interface TaxonomyFacadeRemote {
 
 	public Long getNextMandatoryTaxonomicalLevel(Long ancestorTaxonomicalLevel);
 
-	public void saveTaxon(TaxonDTO taxonDTO);
+	public TaxonDTO saveTaxon(TaxonDTO taxonDTO);
 
 	public void deleteTaxon(Long taxonId);
 
@@ -193,4 +194,16 @@ public interface TaxonomyFacadeRemote {
     public Long countTaxonDescriptionSimpleSearch(String query);
 
     public TaxonDTO getTaxonRootByCollectionId(Long collectionId);
+
+    public List<TaxonCategoryDTO> getAllTaxonCategory();
+
+    public List<TaxonomicalRangeDTO> getNextLevelsByTaxonId(Long taxonId);
+
+    public Long getTaxonomicalRangeIdByTaxonId(Long taxonId);
+
+    public void saveTaxonIndicators(Long taxonId, List<String> indicatorIds, String userName);
+
+    public void deleteTaxonIndicatorByIds(Long taxonId, List<String> indicatorIds);
+
+    public List<Long> getIndicatorIdsByTaxon(Long taxonId);
 }

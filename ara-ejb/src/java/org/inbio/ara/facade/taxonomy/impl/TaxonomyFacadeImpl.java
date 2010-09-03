@@ -34,6 +34,8 @@ import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.dto.agent.InstitutionDTOFactory;
 import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.PersonDTOFactory;
+import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
+import org.inbio.ara.dto.inventory.TaxonCategoryDTOFactory;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonDTOFactory;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
@@ -60,6 +62,8 @@ import org.inbio.ara.dto.taxonomy.TaxonDescriptionRecordDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionRecordDTOFactory;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionStageDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionStageDTOFactory;
+import org.inbio.ara.dto.taxonomy.TaxonIndicatorDTO;
+import org.inbio.ara.dto.taxonomy.TaxonIndicatorDTOFactory;
 import org.inbio.ara.eao.agent.AudienceEAOLocal;
 import org.inbio.ara.eao.agent.InstitutionEAOLocal;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
@@ -76,6 +80,7 @@ import org.inbio.ara.eao.taxonomy.NomenclaturalGroupRegionEAOLocal;
 import org.inbio.ara.eao.taxonomy.ReferenceEAOLocal;
 import org.inbio.ara.eao.taxonomy.ReferenceTypeEAOLocal;
 import org.inbio.ara.eao.taxonomy.RegionEAOLocal;
+import org.inbio.ara.eao.taxonomy.TaxonCategoryEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionAudienceEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionCategoryEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionEAOLocal;
@@ -86,6 +91,7 @@ import org.inbio.ara.eao.taxonomy.TaxonDescriptionRecordEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionRecordReferenceEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionStageEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonEAOLocal;
+import org.inbio.ara.eao.taxonomy.TaxonIndicatorEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonNomenclaturalGroupEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonomicalHierarchyEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonomicalRangeEAOLocal;
@@ -106,6 +112,7 @@ import org.inbio.ara.persistence.taxonomy.Reference;
 import org.inbio.ara.persistence.taxonomy.ReferenceType;
 import org.inbio.ara.persistence.taxonomy.Region;
 import org.inbio.ara.persistence.taxonomy.Taxon;
+import org.inbio.ara.persistence.taxonomy.TaxonCategory;
 import org.inbio.ara.persistence.taxonomy.TaxonDescription;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionAudience;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionAudiencePK;
@@ -119,6 +126,7 @@ import org.inbio.ara.persistence.taxonomy.TaxonDescriptionPersonProfilePK;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionRecord;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionRecordReference;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionStage;
+import org.inbio.ara.persistence.taxonomy.TaxonIndicator;
 import org.inbio.ara.persistence.taxonomy.TaxonNomenclaturalGroup;
 import org.inbio.ara.persistence.taxonomy.TaxonNomenclaturalGroupPK;
 import org.inbio.ara.persistence.taxonomy.TaxonomicalRange;
@@ -190,6 +198,11 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     private TaxonomicalHierarchyEAOLocal taxonomicalHierarchyEAOImpl;
     @EJB
     private RegionEAOLocal regionEAOImpl;
+    @EJB
+    private TaxonCategoryEAOLocal taxonCategoryEAOImpl;
+    @EJB
+    private TaxonIndicatorEAOLocal taxonIndicatorEAOImpl;
+
     //DTO factories
     private TaxonDescriptionDTOFactory taxonDescriptionDTOFactory =
             new TaxonDescriptionDTOFactory();
@@ -218,6 +231,8 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     private NomenclaturalGroupDTOFactory nomenclaturalGroupDTOFatory =
             new NomenclaturalGroupDTOFactory();
     private RegionDTOFactory regionDTOFactory = new RegionDTOFactory();
+    private TaxonCategoryDTOFactory taxonCategoryDTOFactory = new TaxonCategoryDTOFactory();
+    private TaxonIndicatorDTOFactory taxonIndicatorDTOFactory = new TaxonIndicatorDTOFactory();
 
     /**
      * Retorna un listado paginado de TaxonDescriptionDTO
@@ -1126,9 +1141,12 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
      * convert the taxon DTO into an Taxon Entity and persist it
      * @param taxonDTO
      */
-    public void saveTaxon(TaxonDTO taxonDTO) {
+    public TaxonDTO saveTaxon(TaxonDTO taxonDTO) {
         Taxon taxon = this.taxonDTOFactory.createPlainEntity(taxonDTO);
         this.taxonEAOImpl.create(taxon);
+
+        TaxonDTO result = taxonDTOFactory.createDTO(taxon);
+        return result;
     }
 
     /**
@@ -1197,4 +1215,62 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     {
         return taxonDTOFactory.createDTO(taxonEAOImpl.getTaxonRootByCollectionId(collectionId));
     }
+
+    public List<TaxonCategoryDTO> getAllTaxonCategory()
+    {
+        return taxonCategoryDTOFactory.createDTOList(taxonCategoryEAOImpl.findAll(TaxonCategory.class));
+    }
+
+    public List<TaxonomicalRangeDTO> getNextLevelsByTaxonId(Long taxonId)
+    {
+        return taxonomicalRangeDTOFactory.createDTOList(taxonomicalRangeEAOImpl.findNextLevelsByTaxonId(taxonId));
+    }
+
+    public Long getTaxonomicalRangeIdByTaxonId(Long taxonId)
+    {
+        return taxonEAOImpl.findTaxonomicalRangeIdByTaxonId(taxonId);
+    }
+
+
+    public void saveTaxonIndicators(Long taxonId, List<String> indicatorIds, String userName)
+    {
+        
+        
+        for(String indicatorId: indicatorIds)
+        {
+        
+            TaxonIndicatorDTO newDTO = new TaxonIndicatorDTO();
+            newDTO.setTaxonId(taxonId);
+            newDTO.setIndicatorId(new Long(indicatorId));
+            newDTO.setUserName(userName);
+            newDTO.setValuerPersonId(1L);        
+            TaxonIndicator taxonIndicator = taxonIndicatorDTOFactory.createPlainEntity(newDTO);                   
+            taxonIndicatorEAOImpl.create(taxonIndicator);
+        }
+
+    }
+
+    public void deleteTaxonIndicatorByIds(Long taxonId, List<String> indicatorIds)
+    {
+        for(String indicatorId: indicatorIds)
+        {
+            taxonIndicatorEAOImpl.deleteTaxonIndicatorById(taxonId, new Long(indicatorId));
+        }
+    }
+
+
+    public List<Long> getIndicatorIdsByTaxon(Long taxonId)
+    {
+
+        return taxonIndicatorEAOImpl.getIndicatorsByTaxonId(taxonId);
+
+    }
+
+    public void deleteTaxonIndicatorById(Long taxonId, Long indicatorId)
+    {
+        taxonIndicatorEAOImpl.deleteTaxonIndicatorById(taxonId, indicatorId);
+    }
+
+
+
 }
