@@ -28,6 +28,9 @@ public class TreeController {
 
 
         scriptString += "function initIndicators(){\n";
+
+        //scriptString += "alert('entro a crear el arbol');\n";
+        
         scriptString += "var expand = false;\n";
         scriptString += "nodeId = getHiddenNodeId();\n";
         scriptString += "var tmpPathNode = getHiddenPathNode();\n";
