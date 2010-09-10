@@ -2287,6 +2287,9 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
     public Long cumulativeStrawQuantity(Long sementalId)
     {
         Long quantity = semenGatheringEAOLocal.countCumulativeStrawQuantity(sementalId);
-        return quantity;
+        if(quantity != null)
+            return quantity;
+        else
+            return 0L;
     }
 }
