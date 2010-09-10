@@ -56,7 +56,7 @@ public class SemenGathering  extends LogGenericEntity {
 
     @Basic(optional = false)
     @Column(name = "volume")
-    private Long volume;
+    private Double volume;
 
     @Basic(optional = false)
     @Column(name = "motility")
@@ -129,6 +129,13 @@ public class SemenGathering  extends LogGenericEntity {
     @Column(name = "solvent_id")
     private Long solventId;
 
+
+    @Column(name = "total_sperm_concentration")
+    private Long totalSpermConcentration;
+
+    @Column(name = "sperm_concentration_per_straw")
+    private Long spermConcentrationPerStraw;
+
     public SemenGathering() {
     }
 
@@ -136,7 +143,7 @@ public class SemenGathering  extends LogGenericEntity {
         this.semenGatheringId = semenGatheringId;
     }
 
-    public SemenGathering(Long semenGatheringId, Long sementalId, Calendar semenGatheringDate, String semenGatheringTime, Long volume, Long motility, Long concentration, Long strawQuantity, Long currentStrawQuantity, String dilution, Long tankNumber, Long canisterNumber, Long gobletNumber, String strawColor, Long postThawMotility, Long activeDoses, Double strawSize, Long semenConsistencyId, String semenColor, Long ph, Long massMotility, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
+    public SemenGathering(Long semenGatheringId, Long sementalId, Calendar semenGatheringDate, String semenGatheringTime, Double volume, Long motility, Long concentration, Long strawQuantity, Long currentStrawQuantity, String dilution, Long tankNumber, Long canisterNumber, Long gobletNumber, String strawColor, Long postThawMotility, Long activeDoses, Double strawSize, Long semenConsistencyId, String semenColor, Long ph, Long massMotility, Long totalSpermConcentration, Long spermConcentrationPerStraw, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         
         this.semenGatheringId = semenGatheringId;
         this.sementalId = sementalId;
@@ -159,6 +166,8 @@ public class SemenGathering  extends LogGenericEntity {
         this.semenColor = semenColor;
         this.ph = ph;
         this.massMotility = massMotility;
+        this.totalSpermConcentration = totalSpermConcentration;
+        this.spermConcentrationPerStraw = spermConcentrationPerStraw;
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -174,11 +183,11 @@ public class SemenGathering  extends LogGenericEntity {
         this.semenGatheringDate = semenGatheringDate;
     }
 
-    public Long getVolume() {
+    public Double getVolume() {
         return volume;
     }
 
-    public void setVolume(Long volume) {
+    public void setVolume(Double volume) {
         this.volume = volume;
     }
 
@@ -416,6 +425,35 @@ public class SemenGathering  extends LogGenericEntity {
      */
     public void setSemenConsistencyId(Long semenConsistencyId) {
         this.semenConsistencyId = semenConsistencyId;
+    }
+
+
+    /**
+     * @return the totalSpermConcentration
+     */
+    public Long getTotalSpermConcentration() {
+        return totalSpermConcentration;
+    }
+
+    /**
+     * @param totalSpermConcentration the totalSpermConcentration to set
+     */
+    public void setTotalSpermConcentration(Long totalSpermConcentration) {
+        this.totalSpermConcentration = totalSpermConcentration;
+    }
+
+    /**
+     * @return the spermConcentrationPerStraw
+     */
+    public Long getSpermConcentrationPerStraw() {
+        return spermConcentrationPerStraw;
+    }
+
+    /**
+     * @param spermConcentrationPerStraw the spermConcentrationPerStraw to set
+     */
+    public void setSpermConcentrationPerStraw(Long spermConcentrationPerStraw) {
+        this.spermConcentrationPerStraw = spermConcentrationPerStraw;
     }
 
 }

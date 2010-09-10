@@ -53,6 +53,8 @@ public class SemenGatheringDTOFactory  extends BaseEntityOrDTOFactory<SemenGathe
         e.setStrawSize(dto.getStrawSize());
         e.setTankNumber(dto.getTankNumber());
         e.setVolume(dto.getVolume());
+        e.setTotalSpermConcentration(dto.getTotalSpermConcentration());
+        e.setSpermConcentrationPerStraw(dto.getSpermConcentrationPerStraw());
 
 
         return e;
@@ -82,7 +84,8 @@ public class SemenGatheringDTOFactory  extends BaseEntityOrDTOFactory<SemenGathe
         e.setCurrentStrawQuantity(dto.getCurrentStrawQuantity());
         e.setTankNumber(dto.getTankNumber());
         e.setVolume(dto.getVolume());
-
+        e.setTotalSpermConcentration(dto.getTotalSpermConcentration());
+        e.setSpermConcentrationPerStraw(dto.getSpermConcentrationPerStraw());
 
         return e;
     }
@@ -113,6 +116,8 @@ public class SemenGatheringDTOFactory  extends BaseEntityOrDTOFactory<SemenGathe
         dto.setCurrentStrawQuantity(entity.getCurrentStrawQuantity());
         dto.setTankNumber(entity.getTankNumber());
         dto.setVolume(entity.getVolume());
+        dto.setTotalSpermConcentration(entity.getTotalSpermConcentration());
+        dto.setSpermConcentrationPerStraw(entity.getSpermConcentrationPerStraw());
 
 
         return dto;

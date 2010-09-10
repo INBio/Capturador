@@ -40,7 +40,7 @@ public interface SemenGatheringEAOLocal extends BaseLocalEAO<SemenGathering,Long
 
     public List<Long> findBySemenGatheringTime(String time, Long sementalId);
 
-    public List<Long> findByVolume(Long volume, Long sementalId);
+    public List<Long> findByVolume(Double volume, Long sementalId);
 
     public List<Long> findByMotility(Long motility, Long sementalId);
 

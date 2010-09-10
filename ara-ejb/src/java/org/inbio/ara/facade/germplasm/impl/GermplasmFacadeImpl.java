@@ -1851,7 +1851,7 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
                 id = Long.parseLong(parts[i]);
 
                 //find by volume
-                ids = semenGatheringEAOLocal.findByVolume(id, sementalId);
+                ids = semenGatheringEAOLocal.findByVolume(Double.parseDouble(parts[i]), sementalId);
                 if(ids != null && !ids.isEmpty())
                     list.addAll(ids);
 

@@ -2458,3 +2458,13 @@ INSERT INTO ara.semen_consistency(name,description,created_by,creation_date,last
 --Insert del padre de los atributos taxonomicos (indicadores)
 --2010.08.27
 INSERT INTO ara.indicator(indicator_id, "name", description, creation_date, created_by, last_modification_date, last_modification_by, indicator_ancestor_id, applies_to_parts) VALUES (0, 'Atributos Taxonómicos', null, '2010-08-27', 'ara', '2010-08-27', 'ara', null,null);
+
+
+--
+-- Cambios modulo de semen
+--
+--2010.09.09
+--Se agregaron nuevos campos a las recolecciones de semen
+ALTER TABLE ara.semen_gathering ADD COLUMN total_sperm_concentration numeric;
+ALTER TABLE ara.semen_gathering ADD COLUMN sperm_concentration_per_straw numeric;
+--final de los cambios

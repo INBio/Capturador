@@ -41,7 +41,7 @@ public class SemenGatheringDTO extends GenericDTO {
 
     private String semenGatheringTime;
 
-    private Long volume;
+    private Double volume;
 
     private Long motility;
 
@@ -84,6 +84,11 @@ public class SemenGatheringDTO extends GenericDTO {
     private Long solventId;
 
     private String solvent;
+
+    
+    private Long totalSpermConcentration;
+
+    private Long spermConcentrationPerStraw;
 
     public void imprimir()
     {
@@ -204,14 +209,14 @@ public class SemenGatheringDTO extends GenericDTO {
     /**
      * @return the volume
      */
-    public Long getVolume() {
+    public Double getVolume() {
         return volume;
     }
 
     /**
      * @param volume the volume to set
      */
-    public void setVolume(Long volume) {
+    public void setVolume(Double volume) {
         this.volume = volume;
     }
 
@@ -535,5 +540,34 @@ public class SemenGatheringDTO extends GenericDTO {
      */
     public void setSemenConsistency(String semenConsistency) {
         this.semenConsistency = semenConsistency;
+    }
+
+
+    /**
+     * @return the totalSpermConcentration
+     */
+    public Long getTotalSpermConcentration() {
+        return totalSpermConcentration;
+    }
+
+    /**
+     * @param totalSpermConcentration the totalSpermConcentration to set
+     */
+    public void setTotalSpermConcentration(Long totalSpermConcentration) {
+        this.totalSpermConcentration = totalSpermConcentration;
+    }
+
+    /**
+     * @return the spermConcentrationPerStraw
+     */
+    public Long getSpermConcentrationPerStraw() {
+        return spermConcentrationPerStraw;
+    }
+
+    /**
+     * @param spermConcentrationPerStraw the spermConcentrationPerStraw to set
+     */
+    public void setSpermConcentrationPerStraw(Long spermConcentrationPerStraw) {
+        this.spermConcentrationPerStraw = spermConcentrationPerStraw;
     }
 }

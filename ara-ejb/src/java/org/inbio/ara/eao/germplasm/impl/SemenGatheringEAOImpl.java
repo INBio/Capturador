@@ -84,7 +84,7 @@ public class SemenGatheringEAOImpl extends BaseEAOImpl<SemenGathering, Long> imp
         return  q.getResultList();
     }
 
-    public List<Long> findByVolume(Long volume, Long sementalId) {
+    public List<Long> findByVolume(Double volume, Long sementalId) {
         Query q = em.createQuery(
                 " Select s.semenGatheringId " +
                 " from SemenGathering as s " +
