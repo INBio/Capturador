@@ -180,11 +180,11 @@
                                                            selected="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.semenGatheringMethodId}"/>
 
                                         
-                                        <webuijsf:label id="labelCurrentStrawQuantity" style="width: 168px; height: 24px" text="#{resources.current_straw_quantity}"/>
+                                        <!--<webuijsf:label id="labelCurrentStrawQuantity" style="width: 168px; height: 24px" text="#{resources.current_straw_quantity}"/>
                                         <webuijsf:textField columns="25" id="textFieldCurrentStrawQuantity" style="width: 200px;"
                                                             text="#{germplasm$SemenGatheringSessionBean.semenGatheringDTO.currentStrawQuantity}">
                                         <f:validateLongRange minimum="0"/>
-                                        </webuijsf:textField>
+                                        </webuijsf:textField> -->
 
                                         <webuijsf:label id="labelActiveDoses" style="width: 168px; height: 24px" text="#{resources.active_doses}"/>
                                         <webuijsf:textField columns="25" id="textFieldActiveDoses" style="width: 200px;"

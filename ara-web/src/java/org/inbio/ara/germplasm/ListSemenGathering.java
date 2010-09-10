@@ -143,7 +143,10 @@ public class ListSemenGathering extends AbstractPageBean {
 
         if(getgermplasm$SemenGatheringSessionBean().getSementalId() != null)
             getLbTitle().setText(BundleHelper.getDefaultBundleValue("semen_gathering", this.getMyLocale()) + "  " +
-                    getgermplasm$SementalSessionBean().getSementalDTO().getAnimalCode());
+                    getgermplasm$SementalSessionBean().getSementalDTO().getAnimalCode() + " | " +
+                    BundleHelper.getDefaultBundleValue("cumulative_straw_quantity", this.getMyLocale()) +
+                    + getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().
+                    cumulativeStrawQuantity(getgermplasm$SemenGatheringSessionBean().getSementalId()));
 
         //Preguntar si la bandera de busqueda avanzada esta prendida
         if(getgermplasm$SemenGatheringSessionBean().isAdvancedSearch()){

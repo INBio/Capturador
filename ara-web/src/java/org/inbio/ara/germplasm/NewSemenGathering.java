@@ -330,6 +330,9 @@ public class NewSemenGathering extends AbstractPageBean {
             }
             else
             {
+                //asigna el valor
+                semenGatheringDTO.setCurrentStrawQuantity(semenGatheringDTO.getStrawQuantity());
+                
                 getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().saveSemenGathering(
                         getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO());
                 getgermplasm$SemenGatheringSessionBean().getPagination().addItem();
