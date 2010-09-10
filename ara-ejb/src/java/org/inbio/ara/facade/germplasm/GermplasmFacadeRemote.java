@@ -511,4 +511,11 @@ public interface GermplasmFacadeRemote {
      * @return
      */
     public List<TaxonDTO> getAllTaxonsByAnimaliaKingdomAndTaxonomicalRangeId(Long taxonomicalRangeId);
+
+    /**
+     * return the total number of straw, for a sementalid 
+     * @param sementalId
+     * @return
+     */
+    public Long cumulativeStrawQuantity(Long sementalId);
 }

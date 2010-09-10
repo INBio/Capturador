@@ -318,6 +318,17 @@ public class SemenGatheringEAOImpl extends BaseEAOImpl<SemenGathering, Long> imp
         return  q.getResultList();
     }
 
+    public Long countCumulativeStrawQuantity(Long sementalId)
+    {
+        Query q = em.createQuery(
+                " Select sum(s.currentStrawQuantity) " +
+                " from SemenGathering as s " +
+                " where s.sementalId = :sementalId "
+               );
+        q.setParameter("sementalId", sementalId);
+
+        return  (Long)q.getSingleResult();
+    }
     
 
 }

@@ -75,4 +75,6 @@ public interface SemenGatheringEAOLocal extends BaseLocalEAO<SemenGathering,Long
     public List<Long> findByMassMotility(Long massMotility, Long sementalId);
 
     public List<Long> findBySolvent(Long solvent, Long sementalId);
+
+    public Long countCumulativeStrawQuantity(Long sementalId);
 }

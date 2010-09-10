@@ -2283,4 +2283,10 @@ public class GermplasmFacadeImpl implements GermplasmFacadeRemote {
         return taxonDTOFactory.createDTOList(taxonEAOLocal.
                 getTaxonsByKingdomNameAndTaxonomicalRangeId("Animalia", taxonomicalRangeId));
     }
+
+    public Long cumulativeStrawQuantity(Long sementalId)
+    {
+        Long quantity = semenGatheringEAOLocal.countCumulativeStrawQuantity(sementalId);
+        return quantity;
+    }
 }
