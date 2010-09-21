@@ -20,14 +20,24 @@
 
 package org.inbio.ara.webService.indicator;
 
+
+
 import java.util.List;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.ejb.Stateless;
+
+
+
 import org.inbio.ara.dto.indicator.IndicatorDTO;
 import org.inbio.ara.facade.indicator.IndicatorFacadeRemote;
+
+
+
+
+
 
 /**
  *
@@ -43,6 +53,7 @@ public class IndicatorWebService {
     /**
      * Web service operation
      */
+    /*
     @WebMethod(operationName = "getChildrenByIndicatorId")
     public String getChildrenByIndicatorId(@WebParam(name = "indicatorId")
     long indicatorId) {
@@ -58,8 +69,42 @@ public class IndicatorWebService {
                 result += "</indicator>\n";
             }
         }
-        result += "</indicatorChildren>";
+
+        
+        result += "</indicatorChildren>";     
+
+
+        
         return result;
+     
+    }
+
+*/
+
+    @WebMethod(operationName = "getChildrenByIndicatorId")
+    public List<IndicatorDTO> getChildrenByIndicatorId(@WebParam(name = "indicatorId")
+    long indicatorId) {
+        List<IndicatorDTO> indicatorChildren = indicatorFacade.getChildrenByIndicatorId(new Long(indicatorId));
+        //System.out.print("Trajo la lista de indicadores hijo al WS");
+       /* String result = "<?xml version='1.0' encoding='ISO-8859-1'?><indicatorChildren>";
+        if(indicatorChildren != null){
+            for(IndicatorDTO indicatorChild: indicatorChildren)
+            {
+                result += "<indicator>";
+                result += "<id>"+indicatorChild.getIndicatorId()+"</id>";
+                result += "<name>"+indicatorChild.getName()+"</name>";
+                result += "</indicator>\n";
+            }
+        }*/
+
+
+        //result += "</indicatorChildren>";
+
+
+
+        //return result;
+        return indicatorChildren;
+
     }
 
 
@@ -79,4 +124,6 @@ public class IndicatorWebService {
         result += "</indicatorNode>";
         return result;
     }
+
+
 }

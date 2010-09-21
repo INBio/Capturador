@@ -58,9 +58,19 @@ public class TaxonomyWebService {
 
 
     @WebMethod(operationName = "getChildrenByTaxonId")
-    public String getChildrenByTaxonId(@WebParam(name = "taxonId")
+    public List<TaxonDTO> getChildrenByTaxonId(@WebParam(name = "taxonId")
     String taxonId) {
         List<TaxonDTO> children = taxonFacade.getTaxonChildren(new Long(taxonId));
+        System.out.println("children = "+children);
+        
+        for(TaxonDTO child: children)
+        {
+            TaxonomicalRangeDTO taxonomicalName = taxonFacade.getTaxonRangeName(child.getTaxonomicalRangeId());                     
+            child.setCurrentName(child.getCurrentName()+" ("+taxonomicalName.getName()+")");            
+
+        }
+        
+        /*
         String result = "<taxonomy>";
         if(children != null){
             for(TaxonDTO child: children)
@@ -75,6 +85,8 @@ public class TaxonomyWebService {
         }
         result += "</taxonomy>";
         return result;
+         */
+        return children;
 
     }
 
