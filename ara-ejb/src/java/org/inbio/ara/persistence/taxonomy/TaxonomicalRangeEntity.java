@@ -25,12 +25,26 @@ package org.inbio.ara.persistence.taxonomy;
 public enum TaxonomicalRangeEntity {
     ROOT(new Long(0)),
     KINGDOM(new Long(1)),
-    FHYLUN(new Long(2)),
+    FHYLUM(new Long(2)),
+    SUBFHYLUM(new Long(3)),
     CLASS(new Long(4)),
+    SUBCLASS(new Long(5)),
     ORDER(new Long(6)),
+    SUBORDEN(new Long(7)),
+    SUPERFAMILY(new Long(8)),
     FAMILY(new Long(9)),
+    SUBFAMILY(new Long(10)),
+    TRIBE(new Long(11)),
+    SUBTRIBE(new Long(12)),
     GENUS(new Long(13)),
+    SUBGENUS(new Long(14)),
+    SECTION(new Long(15)),
+    SUBSECTION(new Long(16)),
+    STIRPS(new Long(17)),
     SPECIES(new Long(18)),
+    SUBSPECIES(new Long(19)),
+    VARIETY(new Long(20)),
+    FORM(new Long(22)),
     DOMAIN(new Long(23));
 
     private Long id;

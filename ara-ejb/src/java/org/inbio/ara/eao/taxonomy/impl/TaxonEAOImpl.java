@@ -119,7 +119,9 @@ public class TaxonEAOImpl extends BaseEAOImpl<Taxon,Long> implements TaxonEAOLoc
     public List<Taxon> findByAncestor(Long taxonId){
         String sql = "Select t "+
                      "from Taxon t "+
-                     "where t.ancestorId = :taxonId ";
+                     "where t.ancestorId = :taxonId "+
+                     "order by t.defaultName ";
+
         Query q = em.createQuery(sql);
 		q.setParameter("taxonId", taxonId);
         return (List<Taxon>)q.getResultList();

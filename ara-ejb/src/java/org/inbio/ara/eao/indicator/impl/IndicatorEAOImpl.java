@@ -36,10 +36,12 @@ public class IndicatorEAOImpl extends BaseEAOImpl<Indicator, Long> implements In
            Query q = em.createQuery(
                 " Select i.indicatorId " +
                 " from Indicator as i " +
-                " where i.indicatorAncestorId ="+indicatorId
+                " where i.indicatorAncestorId ="+indicatorId+
+                "order by i.name"
                );
         //q.setParameter("indicator", indicatorId);
            //System.out.println(q.getResultList().toString());
+           
         return  q.getResultList();
         //return null;
     }
