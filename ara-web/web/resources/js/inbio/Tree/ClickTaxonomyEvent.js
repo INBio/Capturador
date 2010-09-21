@@ -3,6 +3,7 @@ function onClickEvent(oArgs) {
     selectedNodeName = oArgs.node.label;
     setHiddenTaxonNodeId(selectedNodeId);
     setHiddenPathTaxonNode(getPathNode(oArgs.node));
+    setHiddenTaxonNodeName(selectedNodeName);
     if(oArgs.node.isLeaf){
         isLeaf = 'true';
     }
