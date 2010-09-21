@@ -5,6 +5,7 @@ function SOAPClient(){}
 
     SOAPClient.request = function(url, method, parameters)
     {
+        
         var req = SOAPClient.getXMLHttp();
         req.open("GET", url+"?wsdl", false);
         /*req.onreadystatechange = function()
@@ -18,6 +19,7 @@ function SOAPClient(){}
         var response;
          if (req.readyState == 4) {
 
+            
              response = SOAPClient.sendLoadRequest(url, method, parameters, req);
          }
          return response;
@@ -26,6 +28,7 @@ function SOAPClient(){}
 
 SOAPClient.sendLoadRequest = function(url, method, parameters, request)
 {
+    
     var wsdl = request.responseXML;
     var ns = (wsdl.documentElement.attributes["targetNamespace"] + "" == "undefined") ? wsdl.documentElement.attributes.getNamedItem("targetNamespace").nodeValue : wsdl.documentElement.attributes["targetNamespace"].value;    
     var sr = SOAPClient.createSOAPRequest(ns, method, parameters);
@@ -50,6 +53,7 @@ SOAPClient.sendLoadRequest = function(url, method, parameters, request)
     if (request.status == 200)
     {
         var xmlResponse =xmlHttp.responseXML;
+        
         var xmlString = xmlResponse.getElementsByTagName("return")[0].childNodes[0].nodeValue;
         //alert(xmlString);
         

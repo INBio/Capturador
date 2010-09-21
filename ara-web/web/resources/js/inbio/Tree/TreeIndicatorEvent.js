@@ -9,20 +9,31 @@ function loadNodeData(node, fnLoadComplete){
     //alert(node.data);
     parameter["indicatorId"]=node.data;
     var indicatorChildrenPost = SOAPClient.request(url, "getChildrenByIndicatorId", parameter);
-    var indicatorChildrenXML=stringToXML(indicatorChildrenPost);    
+    //alert(indicatorChildrenPost);
+    /*
+    var indicatorChildrenXML=stringToXML(indicatorChildrenPost);
+    alert(indicatorChildrenXML.getElementsByTagName("indicatorChildren"));
     var indicatorChildren =indicatorChildrenXML.getElementsByTagName("indicator");
+    */
+    //var indicatorChildren =indicatorChildrenXML.getElementsByTagName("return");
+    //alert(indicatorChildren.length);
+    //var indicatorChildren = indicatorChildrenXML.childNodes;
+    //alert(indicatorChildren);
+    //alert(indicatorChildrenXML.childNodes.length);
     var focusNode = false;
-    if(indicatorChildren.length==0){
+    if(indicatorChildrenPost.length==0){
         node.isLeaf = true;
         isLeaf = "true";
     }
     else{
         isLeaf = "false";
     }
-    for(var pos = 0; pos < indicatorChildren.length; pos++)
+    for(var pos = 0; pos < indicatorChildrenPost.length; pos++)
     {
-        var id = indicatorChildren[pos].getElementsByTagName("id")[0].childNodes[0].nodeValue;
-        var name = indicatorChildren[pos].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+        //var id = indicatorChildren[pos].getElementsByTagName("id")[0].childNodes[0].nodeValue;
+        //var name = indicatorChildren[pos].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+        var id = indicatorChildrenPost[pos].getElementsByTagName("indicatorId")[0].childNodes[0].nodeValue;
+        var name = indicatorChildrenPost[pos].getElementsByTagName("name")[0].childNodes[0].nodeValue;
         var expand = false;
         if(isPath(id))
         {
@@ -112,7 +123,9 @@ function getNode(idNode){
     //alert(node.data);
     parameter["indicatorId"]=idNode;
     var indicatorNodePost = SOAPClient.request(url, "getIndicatorByIndicatorId", parameter);
-    var indicatorNodeXML=stringToXML(indicatorNodePost);
+    //var indicatorNodeXML=stringToXML(indicatorNodePost);
+    var indicatorNodeXML=stringToXML(indicatorNodePost[0].childNodes[0].nodeValue);
+    //alert(indicatorNodePost[0].childNodes[0].nodeValue);
     var indicatorNode =indicatorNodeXML.getElementsByTagName("indicator");
     result[0] = indicatorNode[0].getElementsByTagName("id")[0].childNodes[0].nodeValue;
     result[1] = indicatorNode[0].getElementsByTagName("name")[0].childNodes[0].nodeValue;

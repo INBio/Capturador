@@ -50,7 +50,10 @@ SOAPClient.sendLoadRequest = function(url, method, parameters, request)
     if (request.status == 200)
     {
         var xmlResponse =xmlHttp.responseXML;
-        var xmlString = xmlResponse.getElementsByTagName("return")[0].childNodes[0].nodeValue;
+        //alert("Response del SOAP");
+        //alert(xmlResponse);
+        //var xmlString = xmlResponse.getElementsByTagName("return")[0].childNodes[0].nodeValue;
+        xmlString = xmlResponse.getElementsByTagName("return");
         //alert(xmlString);
         
     }

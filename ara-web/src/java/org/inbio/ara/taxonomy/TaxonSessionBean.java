@@ -9,8 +9,10 @@ import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import com.sun.webui.jsf.model.Option;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
@@ -19,8 +21,11 @@ import org.inbio.ara.dto.indicator.IndicatorDTO;
 import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
+import org.inbio.ara.dto.taxonomy.CountryDTO;
+import org.inbio.ara.facade.gis.GisFacadeRemote;
 import org.inbio.ara.facade.indicator.IndicatorFacadeRemote;
 import org.inbio.ara.facade.taxonomy.TaxonomyFacadeRemote;
+import org.inbio.ara.util.AddRemoveList;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -55,6 +60,8 @@ public class TaxonSessionBean extends AbstractSessionBean {
     private IndicatorFacadeRemote indicatorFacade;
     @EJB
     private TaxonomyFacadeRemote taxonomyFacade;
+    @EJB
+    private GisFacadeRemote gisFacade;
 
 
     private TaxonDTO currentTaxon = null;
@@ -65,10 +72,14 @@ public class TaxonSessionBean extends AbstractSessionBean {
     //Ruta para llegar al nodo actual desde la raíz
     private String pathTaxonNode = "0"; //
 
+    private String taxonNodeName="";
+
     //Nodo actual sobre el que se efectua la acción
     private String nodeId = "0"; //
     //Ruta para llegar al nodo actual desde la raíz
     private String pathNode = "0"; //
+
+
 
 
     private String collecNomenclGroupId = "0";
@@ -102,6 +113,18 @@ public class TaxonSessionBean extends AbstractSessionBean {
     private Set<Option> indicatorRelations = new HashSet<Option>();
     private Set<Option> dbIndicatorRelations = new HashSet<Option>();
     private Long elementSelected;
+
+    private Long ddIndicatorSelected = null;
+    
+    private String taxonTabSelected = "tabNewTaxonomy";
+
+    private AddRemoveList arContries = new AddRemoveList();
+    
+    
+    private Map<Long, Option[]> selectedTaxonIndicatorCountriesId = new HashMap<Long, Option[]>();
+
+
+
 
     /**
      * <p>Construct a new session data bean instance.</p>
@@ -458,7 +481,7 @@ public class TaxonSessionBean extends AbstractSessionBean {
             case 9:		// Family
                 taxon.setFamilyTaxonId(ancestorId);
                 break;
-            case 8:		//Subperfamily
+            case 8:		//Superfamily
                 taxon.setSuperfamilyTaxonId(ancestorId);
                 break;
             case 7:		//Suborder
@@ -695,6 +718,82 @@ public class TaxonSessionBean extends AbstractSessionBean {
     public void deleteTaxonIndicatorByIds(Long taxonId, List<String> indicatorIds)
     {
         this.taxonomyFacade.deleteTaxonIndicatorByIds(taxonId, indicatorIds);
+    }
+
+    /**
+     * @return the taxonNodeName
+     */
+    public String getTaxonNodeName() {
+        return taxonNodeName;
+    }
+
+    /**
+     * @param taxonNodeName the taxonNodeName to set
+     */
+    public void setTaxonNodeName(String taxonNodeName) {
+        this.taxonNodeName = taxonNodeName;
+    }
+
+    /**
+     * @return the ddIndicatorSelected
+     */
+    public Long getDdIndicatorSelected() {
+        return ddIndicatorSelected;
+    }
+
+    /**
+     * @param ddIndicatorSelected the ddIndicatorSelected to set
+     */
+    public void setDdIndicatorSelected(Long ddIndicatorSelected) {
+        this.ddIndicatorSelected = ddIndicatorSelected;
+    }
+
+    /**
+     * @return the arContries
+     */
+    public AddRemoveList getArContries() {
+        return arContries;
+    }
+
+    /**
+     * @param arContries the arContries to set
+     */
+    public void setArContries(AddRemoveList arContries) {
+        this.arContries = arContries;
+    }
+
+
+    public List<CountryDTO> getAllCountry()
+    {
+        return this.gisFacade.findAllCountries();
+    }
+
+    /**
+     * @return the taxonTabSelected
+     */
+    public String getTaxonTabSelected() {
+        return taxonTabSelected;
+    }
+
+    /**
+     * @param taxonTabSelected the taxonTabSelected to set
+     */
+    public void setTaxonTabSelected(String taxonTabSelected) {
+        this.taxonTabSelected = taxonTabSelected;
+    }
+
+    /**
+     * @return the selectedTaxonIndicatorCountriesId
+     */
+    public Map<Long, Option[]> getSelectedTaxonIndicatorCountriesId() {
+        return selectedTaxonIndicatorCountriesId;
+    }
+
+    /**
+     * @param selectedTaxonIndicatorCountriesId the selectedTaxonIndicatorCountriesId to set
+     */
+    public void setSelectedTaxonIndicatorCountriesId(Map<Long, Option[]> selectedTaxonIndicatorCountriesId) {
+        this.selectedTaxonIndicatorCountriesId = selectedTaxonIndicatorCountriesId;
     }
 
 }

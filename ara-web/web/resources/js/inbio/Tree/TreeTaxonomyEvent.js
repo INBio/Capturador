@@ -4,21 +4,23 @@ function loadNodeData(node, fnLoadComplete){
     parameter["taxonId"]=node.data;
     var taxonomyChildrenPost = SOAPClient.request(url, "getChildrenByTaxonId", parameter);
     //alert(taxonomyChildrenPost);
-    var taxonomyChildrenXML=stringToXML(taxonomyChildrenPost);
-    var taxonomyChildren =taxonomyChildrenXML.getElementsByTagName("taxon");
+    //var taxonomyChildrenXML=stringToXML(taxonomyChildrenPost);
+    //var taxonomyChildren =taxonomyChildrenXML.getElementsByTagName("taxon");
     var focusNode = false;
-    if(taxonomyChildren.length==0){
+    if(taxonomyChildrenPost.length==0){
         node.isLeaf = true;
         isLeaf = "true";
     }
     else{
         isLeaf = "false";
     }
-    for(var pos = 0; pos < taxonomyChildren.length; pos++)
+    for(var pos = 0; pos < taxonomyChildrenPost.length; pos++)
     {
-        var id = taxonomyChildren[pos].getElementsByTagName("id")[0].childNodes[0].nodeValue;
-        var name = taxonomyChildren[pos].getElementsByTagName("name")[0].childNodes[0].nodeValue;
-       //7var name = getCDATA(taxonomyChildren[pos].getElementsByTagName("name")[0]);
+        //var id = taxonomyChildren[pos].getElementsByTagName("id")[0].childNodes[0].nodeValue;
+        //var name = taxonomyChildren[pos].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+       //var name = getCDATA(taxonomyChildren[pos].getElementsByTagName("name")[0]);
+       var id = taxonomyChildrenPost[pos].getElementsByTagName("taxonKey")[0].childNodes[0].nodeValue;
+       var name = taxonomyChildrenPost[pos].getElementsByTagName("currentName")[0].childNodes[0].nodeValue;
         //alert(name);
         var expand = false;
         if(isPath(id))
@@ -60,7 +62,7 @@ function getCDATA(element){
 
         if(element.hasChildNodes){
 
-        alert(element.childNodes[0].nodeValue);
+        //alert(element.childNodes[0].nodeValue);
         returnText = element.childNodes[0].nodeValue;
         //returnText = element.texContent;
         }
@@ -85,7 +87,8 @@ function getNodeRoot(type, idCollecionNomencGroup){
         //alert("Es coleccion");
         parameter["collectionId"]=idCollecionNomencGroup;
         taxonomyRootPost = SOAPClient.request(url, "getTaxonRootByCollectionId", parameter);
-        taxonomyNodeXML=stringToXML(taxonomyRootPost);
+        //taxonomyNodeXML=stringToXML(taxonomyRootPost);
+        taxonomyNodeXML=stringToXML(taxonomyRootPost[0].childNodes[0].nodeValue);
         taxonomyRootNode =taxonomyNodeXML.getElementsByTagName("taxonRoot");
     }
     else
@@ -94,7 +97,8 @@ function getNodeRoot(type, idCollecionNomencGroup){
         parameter["rangeId"]=0; //de momento apunta a la raiz del arbol
         taxonomyRootPost = SOAPClient.request(url, "getAllTaxonByRange", parameter);
         //alert(taxonomyRootPost);
-        taxonomyNodeXML=stringToXML(taxonomyRootPost);
+        //taxonomyNodeXML=stringToXML(taxonomyRootPost)
+        taxonomyNodeXML=stringToXML(taxonomyRootPost[0].childNodes[0].nodeValue);
         taxonomyRootNode =taxonomyNodeXML.getElementsByTagName("taxon");
     }
 
@@ -135,6 +139,13 @@ function setHiddenPathTaxonNode(path)
 
 }
 
+function setHiddenTaxonNodeName(path)
+{
+    var hiddenTaxonNodeName = document.getElementById('contenido:form1:hiddenTaxonNodeName');
+    hiddenTaxonNodeName.value = path;
+
+}
+
 function getHiddenTaxonNodeId()
 {
     var hiddenTaxonNodeId = document.getElementById('contenido:form1:hiddenTaxonNodeId');
@@ -146,6 +157,13 @@ function getHiddenPathTaxonNode(path)
 {
     var hiddenPathTaxonNode = document.getElementById('contenido:form1:hiddenPathTaxonNode');
     return hiddenPathTaxonNode.value;
+
+}
+
+function getHiddenTaxonNodeName(path)
+{
+    var hiddenTaxonNodeName = document.getElementById('contenido:form1:hiddenTaxonNodeName');
+    return hiddenTaxonNodeName.value;
 
 }
 
