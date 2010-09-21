@@ -37,11 +37,12 @@
                             <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="850">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                     style="height: 50px; width: 840px" warnClass="warnMessage"/>
-                                <h:panelGrid columns="4" id="grouppBotoneraIndicator" style="height: 24px" width="540">
+                                <h:panelGrid columns="1" id="grouppBotoneraIndicator" style="height: 24px" width="540">
                                     <h:commandButton action="#{taxonomy$NewTaxonomy.btnSaveTaxon_action}" id="btnSaveTaxon" style="height: 24px; width: 175px"
                                         styleClass="My_Button" value="#{resources.btnSave}"/>
+                                    <webuijsf:label for="txFatherName" id="lbFatherName" text="#{taxonomy$TaxonSessionBean.taxonNodeName}"/>
                                 </h:panelGrid>
-                                <webuijsf:tabSet id="tabSet1" lite="true" selected="tabNewTaxonomy" styleClass="My_panel_blue">
+                                <webuijsf:tabSet id="tabSet1" binding="#{taxonomy$NewTaxonomy.taxonTabs}" lite="true" selected="#{taxonomy$TaxonSessionBean.taxonTabSelected}" styleClass="My_panel_blue">
                                     <!-- Tab para ingresar los datos de los taxones -->
                                     <webuijsf:tab id="tabNewTaxonomy" text="#{resources.dataTaxon}">
                                         <h:panelGrid binding="#{taxonomy$NewTaxonomy.gridTaxonomy}" columns="2" id="gridTaxonomy" style="height: 24px" width="540">
@@ -89,6 +90,62 @@
                                             </h:panelGrid>
                                             <webuijsf:listbox id="listbox1" items="#{taxonomy$NewTaxonomy.indicatorRelations}" selected="#{taxonomy$TaxonSessionBean.elementSelected}" />
                                         </h:panelGrid>
+                                    </webuijsf:tab>
+                                    <webuijsf:tab id="tabTaxonIndicatorCountry" rendered="true" text="#{resources.taxon_indicator_country}">
+                                        <h:panelGrid columns="1" id="gridTaxonIndicatorCountries" style="height: 24px" width="580">
+                                            <h:panelGrid columns="2" id="gridCountries" style="height: 24px">
+                                                <webuijsf:panelGroup id="groupAttributes" style="height: 24px">
+                                                    <webuijsf:label for="ddIndicators" id="lbIndicators" text="#{resources.relations_taxon_indicator}"/>
+                                                    <webuijsf:dropDown binding="#{taxonomy$NewTaxonomy.ddIndicators}"  id="ddIndicators"
+                                                        items="#{taxonomy$TaxonSessionBean.indicatorRelations}"
+                                                        selected="#{taxonomy$TaxonSessionBean.ddIndicatorSelected}"/>
+
+                                                </webuijsf:panelGroup>
+                                                <h:commandButton action="#{taxonomy$NewTaxonomy.btnAssociateCountries_action}" id="btnAssociateCountries"
+                                                                 style="width: 160px" styleClass="My_Button" value="#{resources.button_associate}"/>
+                                           </h:panelGrid>
+                                        <!-- AddRemove Component -->
+                                        <h:panelGrid cellspacing="1" columns="1" id="gridpAddRemove" style="height: 24px" styleClass="My_table">
+                                            <!-- Title -->
+                                            <h:panelGrid columns="1" id="gridpArTitle" styleClass="My_table_top" width="100%">
+                                                <h:outputLabel id="lbArTitle" value="#{taxonomy$TaxonSessionBean.arContries.lbTitle}"/>
+                                            </h:panelGrid>
+                                            <!-- Add Remove body -->
+                                            <h:panelGrid cellspacing="1" columns="3">
+                                                <!-- Available List -->
+                                                <h:panelGrid cellspacing="1" columns="1">
+																									
+                                                    <h:outputLabel id="lbAvailableTaxonOptions" styleClass="My_white_label" value="#{taxonomy$TaxonSessionBean.arContries.lbAvailable}"/>
+                                                    <h:selectManyListbox id="mlAvaibleList" size="7" style="width:154px" value="#{taxonomy$TaxonSessionBean.arContries.leftSelected}" >															
+                                                        <f:selectItems id="mlAvailableSelectItems" value="#{taxonomy$TaxonSessionBean.arContries.leftOptions}"/>
+                                                    </h:selectManyListbox>
+                                                </h:panelGrid>
+                                                <!-- Buttons Panel -->
+                                                <h:panelGrid cellspacing="1" columns="1">
+                                                    <!-- boton Agregar -->
+                                                    <h:commandButton action="#{taxonomy$TaxonSessionBean.arContries.addSelectedOptions}"
+                                                    id="btnAddOptions"
+                                                        style="margin: 2px;height: 22px" styleClass="My_Button_add"/>
+                                                    <!-- boton Remover -->
+                                                    <h:commandButton action="#{taxonomy$TaxonSessionBean.arContries.removeSelectedOptions}"
+                                                    id="btnRemoveOptions"
+                                                        style="margin: 2px;height: 22px" styleClass="My_Button_remove"/>
+                                                </h:panelGrid>
+                                                <!-- Selected List -->
+                                                <h:panelGrid cellspacing="1" columns="1">
+                                                    <h:outputLabel id="lbSelectedTaxonOptions" styleClass="My_white_label" value="#{taxonomy$TaxonSessionBean.arContries.lbSelected}"/>
+                                                    <h:selectManyListbox id="mlSelectedList" size="7" style="width:154px" value="#{taxonomy$TaxonSessionBean.arContries.rightSelected}">																				
+                                                        <f:selectItems id="mlSelectedSelectItems" value="#{taxonomy$TaxonSessionBean.arContries.rightOptions}"/>
+                                                    </h:selectManyListbox>
+                                                </h:panelGrid>
+
+
+
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                        <!-- End AddRemove Component -->
+                                       
+                                    </h:panelGrid>
                                     </webuijsf:tab>
                                 </webuijsf:tabSet>
                                 <!-- Elementos Hidden para compartir entre jsp y javascript la información del nodo seleccionado en el árbol -->

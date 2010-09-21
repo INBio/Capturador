@@ -48,6 +48,7 @@
                                     <h:panelGrid binding="#{taxonomy$ListTaxonomy.indicator}" columns="1" id="indicator">
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenTaxonNodeId}" id="hiddenTaxonNodeId"/>
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenPathTaxonNode}" id="hiddenPathTaxonNode"/>
+                                        <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenTaxonNodeName}" id="hiddenTaxonNodeName"/>
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenCollecNomenclGroupId}" id="hiddenCollecNomenclGroupId"/>
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenTypeGroup}" id="hiddenTypeGroup"/>
                                     </h:panelGrid>

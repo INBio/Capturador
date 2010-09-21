@@ -7,6 +7,8 @@ package org.inbio.ara.taxonomy;
 
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
+import com.sun.webui.jsf.component.DropDown;
+import com.sun.webui.jsf.component.TabSet;
 import com.sun.webui.jsf.model.DefaultOptionsList;
 import com.sun.webui.jsf.model.Option;
 import java.util.ArrayList;
@@ -23,6 +25,10 @@ import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.indicator.IndicatorDTO;
 import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
+import org.inbio.ara.dto.taxonomy.CountryDTO;
+import org.inbio.ara.persistence.taxonomy.TaxonomicalRangeEntity;
+import org.inbio.ara.util.AddRemoveList;
+import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
 
 /**
@@ -76,6 +82,9 @@ public class NewTaxonomy extends AbstractPageBean {
 
     private HtmlInputHidden hiddenNodeId = new HtmlInputHidden();
     private HtmlInputHidden hiddenPathNode = new HtmlInputHidden();
+
+    private DropDown ddIndicators= new DropDown();
+    private TabSet taxonTabs= new TabSet();
 
     private SelectItem[] ddRangeItems;
     private SelectItem[] ddCategoryItems;
@@ -157,32 +166,38 @@ public class NewTaxonomy extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
              System.out.println("Hizo prerender");
              //System.out.println("Antes de cambiar hiddenNodeId = "+hiddenTaxonNodeId.getValue());
-        hiddenTaxonNodeId.setValue(this.getTaxonSessionBean().getTaxonNodeId());
-        hiddenPathTaxonNode.setValue(this.getTaxonSessionBean().getPathTaxonNode());
-        hiddenCollecNomenclGroupId.setValue(this.getTaxonSessionBean().getCollecNomenclGroupId());
-        hiddenTypeGroup.setValue(this.getTaxonSessionBean().getTypeGroup());
-        //System.out.println("Valor del nodo seleccionado "+hiddenNodeId.getValue());
-        
-        hiddenNodeId.setValue(this.getTaxonSessionBean().getNodeId());
-        hiddenPathNode.setValue(this.getTaxonSessionBean().getPathNode());
+        //Set hidden value from session bean
+        hiddenTaxonNodeId.setValue(tsb.getTaxonNodeId());
+        hiddenPathTaxonNode.setValue(tsb.getPathTaxonNode());
+        hiddenCollecNomenclGroupId.setValue(tsb.getCollecNomenclGroupId());
+        hiddenTypeGroup.setValue(tsb.getTypeGroup());     
+        hiddenNodeId.setValue(tsb.getNodeId());
+        hiddenPathNode.setValue(tsb.getPathNode());
 
-        
-        //temp.add(new Option(5, "nuevo5"));
-        //temp.add(new Option(6, "nuevo6"));
-
+                
+        //Set
         Long indicatorNodeId = new Long(this.getHiddenNodeId().getValue().toString());
         if((indicatorNodeId == null) || (indicatorNodeId == 0))
         {
             listbox1DefaultOptions.setOptions(null);
         }
 
-        if(this.getTaxonSessionBean().getIndicatorRelations().size() > 0)
+        if(tsb.getIndicatorRelations().size() > 0)
         {
-            indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
-            this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
+            indicatorRelations = new Option[tsb.getIndicatorRelations().size()];
+            tsb.getIndicatorRelations().toArray(indicatorRelations);
         }
+
+        if(tsb.getTaxonTabSelected().equals("tabTaxonIndicatorCountry"))
+        {
+            loadAddRemoveData(false);
+        }
+
+
        
         
     }
@@ -324,14 +339,72 @@ public class NewTaxonomy extends AbstractPageBean {
         this.hiddenTypeGroup = hiddenTypeGroup;
     }
 
+
+    public void loadAddRemoveData(boolean reset) {
+
+        List<CountryDTO> countryList = null;
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        if (reset) {
+            tsb.getArContries().setAvailableOptions(new Option[0]);
+            tsb.getArContries().setSelectedOptions(new Long[0]);
+        }
+
+        // AddRemove de Countries
+        if (tsb.getArContries() == null || tsb.getArContries().getAvailableOptions().length == 0) {
+
+            countryList = tsb.getAllCountry();
+            this.setCountryListOptions(countryList);
+        }
+        
+        // Configura los títulos
+        tsb.getArContries().setLbTitle(
+            BundleHelper.getDefaultBundleValue("country", this.getMyLocale()));
+
+        tsb.getArContries().setLbAvailable(
+            BundleHelper.getDefaultBundleValue("available", this.getMyLocale()));
+
+        tsb.getArContries().setLbSelected(
+            BundleHelper.getDefaultBundleValue("selected", this.getMyLocale()));
+
+
+    }
+
+    private void setCountryListOptions(List<CountryDTO> taxonList) {
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+        List<Option> list = new ArrayList<Option>();
+        AddRemoveList arCountry = tsb.getArContries();
+
+        for (CountryDTO country : taxonList) {
+            list.add(new Option(country.getCountryId(), country.getValue()));
+        }
+
+        arCountry.setAvailableOptions(list.toArray(new Option[list.size()]));
+    }
+
+
+
+
+
   
     public String btnSaveTaxon_action() {
 
         /*CREATE NEW TAXON*/
 
         System.out.println("Al empezar a guardar "+this.getHiddenTaxonNodeId().getValue());
-
         TaxonSessionBean TSB = this.getTaxonSessionBean();
+        /*
+      //Validate if the node is an species //CAMBIAR AL NIVEL TAXONOMICO MAS BAJO
+        if (TSB.getCurrentTaxon().getTaxonomicalRangeId().equals
+                (TaxonomicalRangeEntity.FORM.getId())) {
+            MessageBean.setErrorMessageFromBundle("cant_add_taxon_under_this_level",
+                    this.getMyLocale());
+            return null;
+        }
+
+        */
         System.out.println("TaxonomicalRangeSelected = "+TSB.getTaxonomicalRangeSelected());
          // Gets the current taxonDTO
         Long fatherRangeId = -1L;
@@ -401,14 +474,8 @@ public class NewTaxonomy extends AbstractPageBean {
 
            
            
-            //Validate if the node is an species //CAMBIAR AL NIVEL TAXONOMICO MAS BAJO
-            /*if (currentTaxon.getTaxonomicalRangeId().equals
-                    (TaxonomicalRangeEntity.SPECIES.getId())) {
-                MessageBean.setErrorMessageFromBundle("cant_add_taxon_under_this_level",
-                        this.getMyLocale());
-                return null;
-            }
-             */
+          
+             
 
            /* CREATE NEW TAXON-INDICATOR RELATIONS*/
 
@@ -479,6 +546,24 @@ public class NewTaxonomy extends AbstractPageBean {
         this.getTaxonSessionBean().getIndicatorRelations().toArray(tmp2);
         listbox1DefaultOptions.setOptions(tmp2);
          */
+        return null;
+    }
+
+    public String btnAssociateCountries_action()
+    {
+     
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+        
+        tsb.getSelectedTaxonIndicatorCountriesId().put(tsb.getDdIndicatorSelected(), tsb.getArContries().getRightOptions());
+        System.out.println(tsb.getSelectedTaxonIndicatorCountriesId().get(tsb.getDdIndicatorSelected()).length);
+            
+        
+            
+        tsb.getArContries().setSelectedOptions(new Long[0]);
+        tsb.getArContries().setRightOptions(new Option[0]);
+        tsb.getArContries().setRightSelected(new Long[0]);
+        
+
         return null;
     }
 
@@ -635,6 +720,36 @@ public class NewTaxonomy extends AbstractPageBean {
     public Locale getMyLocale() {
         return this.getAraSessionBean().getCurrentLocale();
     }
+
+    /**
+     * @return the ddIndicators
+     */
+    public DropDown getDdIndicators() {
+        return ddIndicators;
+    }
+
+    /**
+     * @param ddIndicators the ddIndicators to set
+     */
+    public void setDdIndicators(DropDown ddIndicators) {
+        this.ddIndicators = ddIndicators;
+    }
+
+    /**
+     * @return the taxonTabs
+     */
+    public TabSet getTaxonTabs() {
+        return taxonTabs;
+    }
+
+    /**
+     * @param taxonTabs the taxonTabs to set
+     */
+    public void setTaxonTabs(TabSet taxonTabs) {
+        this.taxonTabs = taxonTabs;
+    }
+
+   
 
     
 }

@@ -11,6 +11,8 @@ import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.component.html.HtmlPanelGrid;
+import org.inbio.ara.dto.inventory.TaxonDTO;
+import org.inbio.ara.persistence.taxonomy.TaxonomicalRangeEntity;
 import org.inbio.ara.util.MessageBean;
 
 /**
@@ -45,6 +47,7 @@ public class ListTaxonomy extends AbstractPageBean {
     private HtmlInputHidden hiddenPathTaxonNode = new HtmlInputHidden();
     private HtmlInputHidden hiddenCollecNomenclGroupId = new HtmlInputHidden();
     private HtmlInputHidden hiddenTypeGroup = new HtmlInputHidden();
+    private HtmlInputHidden hiddenTaxonNodeName = new HtmlInputHidden();
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -109,18 +112,19 @@ public class ListTaxonomy extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        if(this.getAraSessionBean().getGlobalCollectionId()> -1)
-        {
-            System.out.println("Es de tipo collection "+this.getAraSessionBean().getGlobalCollectionId() );
-            this.hiddenTypeGroup.setValue(0);
-            this.hiddenCollecNomenclGroupId.setValue(this.getAraSessionBean().getGlobalCollectionId());
-
-        }
-        else
+        if(this.getAraSessionBean().getGlobalNomenclaturalGroupId()> -1)
         {
             System.out.println("Es de tipo nomenclatural "+this.getAraSessionBean().getGlobalNomenclaturalGroupId() );
             this.hiddenTypeGroup.setValue(1);
             this.hiddenCollecNomenclGroupId.setValue(this.getAraSessionBean().getGlobalNomenclaturalGroupId());
+           
+        }
+        else
+        {
+             System.out.println("Es de tipo collection "+this.getAraSessionBean().getGlobalCollectionId() );
+            this.hiddenTypeGroup.setValue(0);
+            this.hiddenCollecNomenclGroupId.setValue(this.getAraSessionBean().getGlobalCollectionId());
+
         }
         //Valor default cuando no se puede desplegar el árbol
         this.hiddenTaxonNodeId.setValue(-1);
@@ -257,22 +261,38 @@ public class ListTaxonomy extends AbstractPageBean {
     }
 
     public String btnNewIndicator_action() {
-        this.getTaxonSessionBean().setCurrentTaxon(null);
-        this.getTaxonSessionBean().setBasionymName(null);
-        this.getTaxonSessionBean().setCheckedParentheses(false);
-        this.getTaxonSessionBean().setMonthSelected(null);
-        this.getTaxonSessionBean().setTaxonName(null);
-        this.getTaxonSessionBean().setTaxonomicalCategorySelected(null);
-        this.getTaxonSessionBean().setTaxonomicalRangeSelected(null);
-        this.getTaxonSessionBean().setYear(null);
-        this.getTaxonSessionBean().setTaxonNodeId(this.hiddenTaxonNodeId.getValue().toString());
-        this.getTaxonSessionBean().setPathTaxonNode(this.hiddenPathTaxonNode.getValue().toString());
-        this.getTaxonSessionBean().setCollecNomenclGroupId(this.hiddenCollecNomenclGroupId.getValue().toString());
-        this.getTaxonSessionBean().setTypeGroup(this.hiddenTypeGroup.getValue().toString());
-        //System.out.println(" Almacenado en List Taxonomy ");
-        //System.out.println(" \tNodeId "+this.getTaxonSessionBean().getNodeId());
-        //System.out.println(" \tPath "+this.getTaxonSessionBean().getPathNode());
-        return "new";
+        String result =null;
+        TaxonDTO taxon = this.getTaxonSessionBean().getTaxon(new Long(hiddenTaxonNodeId.getValue().toString()));
+        //Validate if the node is an species //CAMBIAR AL NIVEL TAXONOMICO MAS BAJO
+        if (taxon.getTaxonomicalRangeId().equals
+                (TaxonomicalRangeEntity.FORM.getId())) {
+            MessageBean.setErrorMessageFromBundle("cant_add_taxon_under_this_level",
+                    this.getMyLocale());
+            //return null;
+        }
+        else
+        {
+
+            this.getTaxonSessionBean().setCurrentTaxon(null);
+            this.getTaxonSessionBean().setBasionymName(null);
+            this.getTaxonSessionBean().setCheckedParentheses(false);
+            this.getTaxonSessionBean().setMonthSelected(null);
+            this.getTaxonSessionBean().setTaxonName(null);
+            this.getTaxonSessionBean().setTaxonomicalCategorySelected(null);
+            this.getTaxonSessionBean().setTaxonomicalRangeSelected(null);
+            this.getTaxonSessionBean().setYear(null);
+            this.getTaxonSessionBean().setTaxonNodeId(this.hiddenTaxonNodeId.getValue().toString());
+            this.getTaxonSessionBean().setPathTaxonNode(this.hiddenPathTaxonNode.getValue().toString());
+            this.getTaxonSessionBean().setTaxonNodeName(this.hiddenTaxonNodeName.getValue().toString());
+            this.getTaxonSessionBean().setCollecNomenclGroupId(this.hiddenCollecNomenclGroupId.getValue().toString());
+            this.getTaxonSessionBean().setTypeGroup(this.hiddenTypeGroup.getValue().toString());
+            //System.out.println(" Almacenado en List Taxonomy ");
+            //System.out.println(" \tNodeId "+this.getTaxonSessionBean().getNodeId());
+            //System.out.println(" \tPath "+this.getTaxonSessionBean().getPathNode());
+            result = "new";
+        }
+
+        return result;
     }
 
     public String btnDeleteIndicator_action() {
@@ -332,6 +352,7 @@ public class ListTaxonomy extends AbstractPageBean {
         this.getTaxonSessionBean().setYear(null);
         this.getTaxonSessionBean().setTaxonNodeId(this.hiddenTaxonNodeId.getValue().toString());
         this.getTaxonSessionBean().setPathTaxonNode(this.hiddenPathTaxonNode.getValue().toString());
+        this.getTaxonSessionBean().setTaxonNodeName(this.hiddenTaxonNodeName.getValue().toString());
         this.getTaxonSessionBean().setCollecNomenclGroupId(this.hiddenCollecNomenclGroupId.getValue().toString());
         this.getTaxonSessionBean().setTypeGroup(this.hiddenTypeGroup.getValue().toString());
         this.getTaxonSessionBean().setCurrentTaxon(
@@ -345,6 +366,20 @@ public class ListTaxonomy extends AbstractPageBean {
         this.getTaxonSessionBean().setPathNode("");
         this.getTaxonSessionBean().setIndicatorRelations(null);
         return "edit";
+    }
+
+    /**
+     * @return the hiddenTaxonNodeName
+     */
+    public HtmlInputHidden getHiddenTaxonNodeName() {
+        return hiddenTaxonNodeName;
+    }
+
+    /**
+     * @param hiddenTaxonNodeName the hiddenTaxonNodeName to set
+     */
+    public void setHiddenTaxonNodeName(HtmlInputHidden hiddenTaxonNodeName) {
+        this.hiddenTaxonNodeName = hiddenTaxonNodeName;
     }
     
 }
