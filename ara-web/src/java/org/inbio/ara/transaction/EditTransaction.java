@@ -1,14 +1,27 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Ara - Capture Species and Specimen Data
+ *
+ * Copyright © 2009  INBio (Instituto Nacional de Biodiversidad).
+ * Heredia, Costa Rica.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.transaction;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.Calendar;
-import com.sun.webui.jsf.component.Checkbox;
-import com.sun.webui.jsf.component.HiddenField;
 import com.sun.webui.jsf.component.Label;
 import com.sun.webui.jsf.component.Tab;
 import com.sun.webui.jsf.component.TabSet;
@@ -20,12 +33,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import javax.faces.FacesException;
+import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlInputTextarea;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-import javax.faces.event.ValueChangeEvent;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
@@ -67,6 +80,18 @@ public class EditTransaction extends AbstractPageBean {
     private Calendar clExpirationDate = new Calendar();
     private Calendar clDeliveryDate = new Calendar();
     private Calendar clReceivingDate = new Calendar();
+
+    //Para mostrar en el título de la página el número de Transacción
+    //que se está modificando
+    private Label lbTitle = new Label();
+    private TabSet tabSet = new TabSet();
+    private Tab tabAddTransactedSpecimens = new Tab();
+    private HtmlDataTable transactedSpecimensTable = new HtmlDataTable();
+    private HtmlInputHidden deleteConfirmationText = new HtmlInputHidden();
+    private HtmlInputText txCatalogNumber = new HtmlInputText();
+    private HtmlInputTextarea transactedSpecimenDescription = new HtmlInputTextarea();
+    private HtmlSelectBooleanCheckbox cbxWaitingForReturn = new HtmlSelectBooleanCheckbox();
+    private HtmlCommandButton btnUpdate = new HtmlCommandButton();
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="OptionsList's">
@@ -74,7 +99,7 @@ public class EditTransaction extends AbstractPageBean {
      * En esta variable se setearan los datos del drop down de sender person.
      *
      * NOTA: institutionData se está usando tanto para senderInstitution como para
-     * receiverInstitution. Esto, probablemete, deba cambiar.
+     * receiverInstitution.
      */
     private SingleSelectOptionsList institutionData = new SingleSelectOptionsList();
     private SingleSelectOptionsList senderPersonData = new SingleSelectOptionsList();
@@ -84,25 +109,7 @@ public class EditTransaction extends AbstractPageBean {
     private SingleSelectOptionsList transactedSpecimenStatusData = new SingleSelectOptionsList();
     // </editor-fold>
 
-    //Para mostrar en el título de la página el número de Transacción
-    //que se está modificando
-    private Label lbTitle = new Label();
-    
-    private TabSet tabSet = new TabSet();
-    private Tab tabAddTransactedSpecimens = new Tab();
-
-    private HtmlDataTable transactedSpecimensTable = new HtmlDataTable();
     private String quantityTotal = new String();
-
-//    private HiddenField hfIsEnter = new HiddenField();
-
-    private HtmlInputHidden deleteConfirmationText = new HtmlInputHidden();
-
-    private HtmlInputText txCatalogNumber = new HtmlInputText();
-    
-    private HtmlInputTextarea transactedSpecimenDescription = new HtmlInputTextarea();
-
-
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -178,26 +185,11 @@ public class EditTransaction extends AbstractPageBean {
         this.deleteConfirmationText.setValue(BundleHelper.getDefaultBundleValue
                     ("delete_confirmation", this.getMyLocale()));
 
-
-        
-        /*if(this.getTransactionSessionBean().getCurrentTransaction().getTransactionId() == null) {
-        //this.getBtnAddSpecimens().setRendered(false);
-        this.getTabAddTransactedSpecimens().setDisabled(true);
-        this.getTabSet().setSelected("tabTransactionInfo");
-        System.out.println("TransactionID == null -> La transaccion no ha sido creada. No se debe habilitar el tab");
-        }
-        else {
-        //this.getBtnAddSpecimens().setRendered(true);
-        this.getTabAddTransactedSpecimens().setDisabled(false);
-        this.getTabSet().setSelected("tabAddTransactedSpecimen");
-        System.out.println("TransactionID != null -> La transaccion ya fue creada. Se debe habilitar el tab");
-        System.out.println(this.getTransactionSessionBean().getCurrentTransaction().getTransactionId());
-        }*/
-
         //Para drop down de personas e instituciones
         this.getInstitutionData().setOptions(setInstitutionDropDownData());
         this.getSenderPersonData().setOptions(setSenderPersonDropDownData());
         this.getReceiverPersonData().setOptions(setReceiverPersonDropDownData());
+
         //Para el DropDown/selectionList
         this.getTransactionTypeData().setOptions(getSelectionListDropDownData
                 (SelectionListEntity.TRANSACTION_TYPE.getId()));
@@ -211,27 +203,15 @@ public class EditTransaction extends AbstractPageBean {
                     getTransactionId();
             getLbTitle().setText(BundleHelper.getDefaultBundleValue
                     ("title_transaction_edit", this.getMyLocale())+"  "+tId);
-            //Mostrar datos actuales en la pantalla
-
-            /**
-             * Cuando se estaban implementando los dropdown para institution, cuando se hizo
-             * para sender institution la siguiente línea de código estaba aquí. Cuando se
-             * hace para el receiver institution no funciona más, por lo que se mueven antes del IF
-             */
-            //this.getSenderInstitutionData().setOptions(setSenderInstitutionDropDownData());
-            //this.getReceiverInstitutionData().setOptions(setReceiverInstitutionDropDownData());
-
+        
             TransactionDTO aux = this.getTransactionSessionBean().getCurrentTransaction();
             
             this.getClTransactionDate().setSelectedDate(aux.getTransactionDate().getTime());
-            // <editor-fold defaultstate="collapsed" desc="Borrar">
-            //this.getTxInvoiceNumber().setText(aux.getInvoiceNumber());
-            //this.getTxEstimatedNumberSpecimens().setText(aux.getEstimatedSpecimenCount());
-            // this.getTxDescription().setText(aux.getDescription());// </editor-fold>
+
             if (aux.getExpirationDate() != null) {
                 this.getClExpirationDate().setSelectedDate(aux.getExpirationDate().getTime());
             }
-            
+            this.cbxWaitingForReturn.setSelected(true);
             this.getTransactionSessionBean().setFirstTime(false);
         }
 
@@ -239,8 +219,6 @@ public class EditTransaction extends AbstractPageBean {
             this.getTabSet().setSelected("tabAddTransactedSpecimen");
             this.getTransactionSessionBean().setTransactionJustCreated(false);
             MessageBean.setSuccessMessageFromBundle("create_transaction_succces", this.getMyLocale());
-            //System.out.println("<><><><><><><><><><><><><><>Se pone como tab seleccionada la de agregar especímenes\n" +
-              //      this.getTabSet().getSelected());
         }
 
         if(this.getTabSet().getSelected() == null) {
@@ -248,12 +226,14 @@ public class EditTransaction extends AbstractPageBean {
         }
             
         if(this.getTabSet().getSelected().equals("tabAddTransactedSpecimen")) {
-            //System.out.println("Segunda Pestaña");
-            this.getTabSet().setStyle("height: 200px; width: 835px");
+            this.getTabSet().setStyle("height: 220px; width: 835px");
+            java.util.Calendar currentDate = java.util.Calendar.getInstance();
+            this.clDeliveryDate.setSelectedDate(currentDate.getTime());
+            this.btnUpdate.setRendered(false);
         }
         else {
-            //System.out.println("Primer Pestaña");
             this.getTabSet().setStyle("height: 220px; width: 835px");
+            this.btnUpdate.setRendered(true);
         }
     }
 
@@ -293,16 +273,11 @@ public class EditTransaction extends AbstractPageBean {
      */
     public String btnUpdateTransaction_action() {
 
-        /*if(this.hfIsEnter.getText().toString().equals("true")) {
-        this.hfIsEnter.setText("false");
-        return btnAddTransactedSpecimen_action();
-        }*/
-
         GregorianCalendar transactionDateGC = new GregorianCalendar();
-        Date transactionDateD = null;//this.getClTransactionDate().getSelectedDate();
+        Date transactionDateD = null;
 
         GregorianCalendar expirationDateGC = new GregorianCalendar();
-        Date expirationDateD = null;//this.getClExpirationDate().getSelectedDate();
+        Date expirationDateD = null;
 
         transactionDateD = this.getClTransactionDate().getSelectedDate();
         expirationDateD = this.getClExpirationDate().getSelectedDate();
@@ -369,10 +344,10 @@ public class EditTransaction extends AbstractPageBean {
     public String btnAddTransactedSpecimen_action() {
         if(this.txCatalogNumber.getValue() != null) {
             GregorianCalendar deliveryDateGC = new GregorianCalendar();
-            Date deliveryDateD = null;//this.getClTransactionDate().getSelectedDate();
+            Date deliveryDateD = null;
 
             GregorianCalendar receivingDateGC = new GregorianCalendar();
-            Date recievingDateD = null;//this.getClExpirationDate().getSelectedDate();
+            Date recievingDateD = null;
 
             deliveryDateD = this.getClDeliveryDate().getSelectedDate();
             recievingDateD = this.getClReceivingDate().getSelectedDate();
@@ -398,6 +373,7 @@ public class EditTransaction extends AbstractPageBean {
             }
 
             transactedSpecimenDTO.setCatalogNumber(this.txCatalogNumber.getValue().toString().trim());
+            transactedSpecimenDTO.setWaitingForReturn(this.cbxWaitingForReturn.isSelected());
             try {
                 if (transactedSpecimenDTO.getCatalogNumber() == null) {
                     MessageBean.setErrorMessageFromBundle("error_catalog_number", this.getMyLocale());
@@ -414,7 +390,7 @@ public class EditTransaction extends AbstractPageBean {
                 
                 TransactedSpecimenDTO tsDTO = this.getTransactionSessionBean().saveTransactedSpecimen();
                 if (tsDTO==null) {
-                    MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+                    MessageBean.setErrorMessageFromBundle("error_specimen_already_transacted", this.getMyLocale());
                     return null;
                 }
             }
@@ -427,6 +403,55 @@ public class EditTransaction extends AbstractPageBean {
 
             //Refrescar la lista de transacciones
             this.getTransactionSessionBean().getPagination().addItem();
+            this.getTransactionSessionBean().getPagination().refreshList();
+            this.txCatalogNumber.setValue(null);
+        }
+        else {
+            MessageBean.setErrorMessageFromBundle("missing_catalog_number", this.getMyLocale());
+        }
+        return null;
+    }
+
+    public String returnTransactedSpecimen() {
+        if(this.txCatalogNumber.getValue() != null) {
+            GregorianCalendar receivingDateGC = new GregorianCalendar();
+            Date recievingDateD = null;
+
+            recievingDateD = this.getClReceivingDate().getSelectedDate();
+
+            TransactedSpecimenDTO transactedSpecimenDTO = this.getTransactionSessionBean().getCurrentTransactedSpecimen();
+            if (recievingDateD != null) {
+                receivingDateGC.setTime(recievingDateD);
+                transactedSpecimenDTO.setReceivingDate(receivingDateGC);
+            }
+            else {
+                java.util.Calendar currentDate = java.util.Calendar.getInstance();
+                transactedSpecimenDTO.setReceivingDate(null);
+            }
+            
+            transactedSpecimenDTO.setCatalogNumber(this.txCatalogNumber.getValue().toString().trim());
+            try {
+                if (transactedSpecimenDTO.getCatalogNumber() == null) {
+                    MessageBean.setErrorMessageFromBundle("error_catalog_number", this.getMyLocale());
+                    return null;
+                }
+
+                else if (this.getTransactionSessionBean().getTransactedSpecimenStatusId() == null) {
+                    MessageBean.setErrorMessageFromBundle("error_transacted_specimen_status", this.getMyLocale());
+                    return null;
+                }
+
+                this.getTransactionSessionBean().returnTransactedSpecimen(this.txCatalogNumber.getValue().toString().trim());
+                
+            }
+            catch (Exception e){
+                MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+                    return null;
+            }
+
+            MessageBean.setSuccessMessageFromBundle("add_transacted_specimen_succces", this.getMyLocale());
+
+            //Refrescar la lista de transacciones
             this.getTransactionSessionBean().getPagination().refreshList();
             this.txCatalogNumber.setValue(null);
         }
@@ -452,7 +477,6 @@ public class EditTransaction extends AbstractPageBean {
             return null;
         }
         else { //En caso de que solo se seleccione un elemento
-            //TransactionDTO selected = selectedTransactedSpecimens.get(0);
             //Mandar a borrar la transaccion
             try{
                 
@@ -477,10 +501,10 @@ public class EditTransaction extends AbstractPageBean {
 
     public String btnTransactedSpecimenEdit_action() {
         GregorianCalendar deliveryDateGC = new GregorianCalendar();
-        Date deliveryDateD = null;//this.getClTransactionDate().getSelectedDate();
+        Date deliveryDateD = null;
 
         GregorianCalendar receivingDateGC = new GregorianCalendar();
-        Date recievingDateD = null;//this.getClExpirationDate().getSelectedDate();
+        Date recievingDateD = null;
 
         deliveryDateD = this.getClDeliveryDate().getSelectedDate();
         recievingDateD = this.getClReceivingDate().getSelectedDate();
@@ -524,7 +548,6 @@ public class EditTransaction extends AbstractPageBean {
             return null;
         }
         else { //En caso de que solo se seleccione un elemento
-            //TransactionDTO selected = selectedTransactedSpecimens.get(0);
             //Mandar a borrar la transaccion
             try{
                 //this.getTransactionSessionBean().deleteTransaction(selected.getTransactionId());
@@ -561,16 +584,10 @@ public class EditTransaction extends AbstractPageBean {
      */
     public Option[] getSelectionListDropDownData(Long selectionListEntityId) {
 
-        //getAllSelectionListElementsByCollection
         List<SelectionListDTO> DTOList = this.getTransactionSessionBean().
-                //getTransactionFacade().
                 getInventoryFacade().
                 getAllSelectionListElementsByCollection
                 (selectionListEntityId, getAraSessionBean().getGlobalCollectionId());
-        /*List<SelectionListDTO> DTOList = this.getPassportSessionBean().
-                getGermoplasmaFacadeRemote().getElementsForSelectionList(selectionListEntityId);*/
-
-
         ArrayList<Option> allOptions = new ArrayList<Option>();
         Option[] allOptionsInArray;
         Option option;
@@ -644,8 +661,6 @@ public class EditTransaction extends AbstractPageBean {
     public void setClReceivingDate(Calendar clReceivingDate) {
         this.clReceivingDate = clReceivingDate;
     }
-
-    
 
     /**
      * @return the transactionTypeData
@@ -796,18 +811,14 @@ public class EditTransaction extends AbstractPageBean {
         return allOptions.toArray(allOptionsInArray);
     }
 
-
     public String updateSenderPersonListAction() {
 
 	TransactionSessionBean tsb =
         this.getTransactionSessionBean();
 
 	List<PersonDTO> personList =
-            //tsb.getInventoryFacade().getInstitutionsByPersonId(tsb.getCurrentTransaction().
-            //getSenderPersonId());
               tsb.getTransactionFacade().getPersonsByInstitutionId(tsb.getCurrentTransaction().
               getSenderInstitutionId());
-        //tsb.getAllTaxonByTaxonomicalRange(tsb.getSelectedTaxonomicLevel());
         this.setSenderPersonListOptions(personList);
 
         return null;
@@ -820,8 +831,6 @@ public class EditTransaction extends AbstractPageBean {
         for (PersonDTO personDTO : personList) {
                 list.add(new Option(personDTO.getPersonKey(), personDTO.getNaturalLongName()));
         }
-
-        //tsb.getArTaxonList().setAvailableOptions(list.toArray(new Option[list.size()]));
         this.getSenderPersonData().setOptions(list.toArray(new Option[list.size()]));
     }
 
@@ -831,11 +840,8 @@ public class EditTransaction extends AbstractPageBean {
         this.getTransactionSessionBean();
 
 	List<PersonDTO> personList =
-            //tsb.getInventoryFacade().getInstitutionsByPersonId(tsb.getCurrentTransaction().
-            //getReceiverPersonId());
               tsb.getTransactionFacade().getPersonsByInstitutionId(tsb.getCurrentTransaction().
               getReceiverInstitutionId());
-        //tsb.getAllTaxonByTaxonomicalRange(tsb.getSelectedTaxonomicLevel());
         this.setReceiverPersonListOptions(personList);
 
         return null;
@@ -848,8 +854,6 @@ public class EditTransaction extends AbstractPageBean {
         for (PersonDTO personDTO : personList) {
                 list.add(new Option(personDTO.getPersonKey(), personDTO.getNaturalLongName()));
         }
-
-        //tsb.getArTaxonList().setAvailableOptions(list.toArray(new Option[list.size()]));
         this.getSenderPersonData().setOptions(list.toArray(new Option[list.size()]));
     }
 
@@ -950,6 +954,34 @@ public class EditTransaction extends AbstractPageBean {
      */
     public void setTransactedSpecimenDescription(HtmlInputTextarea transactedSpecimenDescription) {
         this.transactedSpecimenDescription = transactedSpecimenDescription;
+    }
+
+    /**
+     * @return the chbox
+     */
+    public HtmlSelectBooleanCheckbox getCbxWaitingForReturn() {
+        return cbxWaitingForReturn;
+    }
+
+    /**
+     * @param chbox the chbox to set
+     */
+    public void setCbxWaitingForReturn(HtmlSelectBooleanCheckbox cbxWaitingForReturn) {
+        this.cbxWaitingForReturn = cbxWaitingForReturn;
+    }
+
+    /**
+     * @return the btnUpdate
+     */
+    public HtmlCommandButton getBtnUpdate() {
+        return btnUpdate;
+    }
+
+    /**
+     * @param btnUpdate the btnUpdate to set
+     */
+    public void setBtnUpdate(HtmlCommandButton btnUpdate) {
+        this.btnUpdate = btnUpdate;
     }
 
 }

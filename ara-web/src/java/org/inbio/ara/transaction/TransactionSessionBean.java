@@ -1,6 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Ara - Capture Species and Specimen Data
+ *
+ * Copyright © 2009  INBio (Instituto Nacional de Biodiversidad).
+ * Heredia, Costa Rica.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.transaction;
@@ -73,6 +88,9 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
     //TransactionDTO containing the search data
     private TransactionDTO searchDataDTO = new TransactionDTO();
 
+    //TransactedSpecimenDto containing more of the search data
+    private TransactedSpecimenDTO transactedSpecimenSearchDataDTO = new TransactedSpecimenDTO();
+
     private String simpleSearchText = "";
 
     private boolean advancedSearch = false;
@@ -87,10 +105,6 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
     // true en caso de que el paginador sea el de transacción
     // false en caso de que el paginador sea el de especímenes transados
     private boolean transactionPaginator = false;
-
-    // NO SE USA??? REVISAR!
-    private boolean[] selectedTransactedSpecimens;
-
 
     private String transactedSpecimenDescription;
     private Long transactedSpecimenStatusId;
@@ -299,6 +313,20 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
     }
 
     /**
+     * @return the transactedSpecimenSearchDataDTO
+     */
+    public TransactedSpecimenDTO getTransactedSpecimenSearchDataDTO() {
+        return transactedSpecimenSearchDataDTO;
+    }
+
+    /**
+     * @param transactedSpecimenSearchDataDTO the transactedSpecimenSearchDataDTO to set
+     */
+    public void setTransactedSpecimenSearchDataDTO(TransactedSpecimenDTO transactedSpecimenSearchDataDTO) {
+        this.transactedSpecimenSearchDataDTO = transactedSpecimenSearchDataDTO;
+    }
+
+    /**
      * @return the simpleSearchText
      */
     public String getSimpleSearchText() {
@@ -361,8 +389,6 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
         else {
             int totalResults = this.getTransactionFacade().
                     countTransactedSpecimen(this.currentTransaction.getTransactionId()).intValue();
-            selectedTransactedSpecimens = new boolean[totalResults];
-
             setPagination(new PaginationControllerRemix(totalResults, this.getQuantity(), this));
         }
     }
@@ -395,10 +421,18 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
         this.transactionFacade.deleteTransaction(transactionId);
     }
 
+    /**
+     * Metodo para eliminar especímenes transados
+     * @param transactionId
+     */
     public void deleteTransactedSpecimens(ArrayList<TransactedSpecimenDTO> selectedTransactedSpecimens){
         this.transactionFacade.deleteTransactedSpecimens(selectedTransactedSpecimens);
     }
 
+    /**
+     * Metodo para actualizar especímenes transados
+     * @param transactionId
+     */
     public void editTransactedSpecimens(ArrayList<TransactedSpecimenDTO> selectedTransactedSpecimens, TransactedSpecimenDTO tsDTO){
         this.transactionFacade.editTransactedSpecimens(selectedTransactedSpecimens, tsDTO);
     }
@@ -424,7 +458,6 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
     public List<PersonDTO> setSenderPersonDropDownData(Long senderInstitutionId) {
 
         return getTransactionFacade().
-//                getPersonsByInstitutionId(this.getCurrentTransaction().getSenderInstitutionId());
                 getPersonsByInstitutionId(senderInstitutionId);
     }
 
@@ -433,15 +466,28 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
      */
     public List<PersonDTO> setReceiverPersonDropDownData(Long receiverInstitutionId) {
         return getTransactionFacade().
-//                getPersonsByInstitutionId(this.getCurrentTransaction().getReceiverInstitutionId());
                 getPersonsByInstitutionId(receiverInstitutionId);
     }
 
+    /**
+     * Método para persistir un espécimen transado
+     * @return
+     */
     public TransactedSpecimenDTO saveTransactedSpecimen() {
         this.currentTransactedSpecimen.setDescription(this.transactedSpecimenDescription);
         this.currentTransactedSpecimen.setTransactedSpecimenStatusId(this.transactedSpecimenStatusId);
+        this.currentTransactedSpecimen.setUserName(this.getAraSessionBean().getGlobalUserName());
         return this.getTransactionFacade().saveTransactedSpecimen
-                (this.getCurrentTransaction(), currentTransactedSpecimen, this.getAraSessionBean().getGlobalUserName());
+                (this.getCurrentTransaction(), currentTransactedSpecimen);
+    }
+
+    /**
+     * Método para devolver un espécimen transado
+     * @param catalogNumber
+     */
+    public void returnTransactedSpecimen(String catalogNumber) {
+        this.transactionFacade.returnTransactedSpecimen(catalogNumber,
+                currentTransactedSpecimen.getReceivingDate(), transactedSpecimenStatusId);
     }
 
     /**
@@ -516,19 +562,19 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
 
     public List getResults(int firstResult, int maxResults) {
         Long collectionId = getAraSessionBean().getGlobalCollectionId();
-        if(isTransactionPaginator()) {
+        if(isTransactionPaginator()) { // Si es el paginador para transacciones
 
             List<TransactionDTO> auxResult = new ArrayList<TransactionDTO>();
-            if (isAdvancedSearch()) {
+            if (isAdvancedSearch()) { // Si es búsqueda avanzada
                 this.searchDataDTO.setCollectionId(collectionId);
                 try {
-                    return this.searchFacade.searchTransactionsByCriteria(this.searchDataDTO, firstResult, maxResults);
+                    return this.searchFacade.searchTransactionsByCriteria(this.searchDataDTO, this.transactedSpecimenSearchDataDTO, firstResult, maxResults);
                 }
                 catch (Exception e) {
                     return auxResult;
                 }
             }
-            else if (isSimpleSearch()) {
+            else if (isSimpleSearch()) { // Si es búsqueda simple
                 try {
                     return this.searchFacade.searchTransactionsByCriteria(this.simpleSearchText, collectionId, firstResult, maxResults);
                 }
@@ -536,28 +582,13 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
                     return auxResult;
                 }
             }
-            else {
+            else { // Si no es búsqueda
                 return transactionFacade.getAllTransactionPaginated(firstResult, maxResults, collectionId);
             }
         }
-        else {
+        else { // Si es el paginador para especímenes transados
             return transactionFacade.getAllTransactedSpecimenPaginated(firstResult, maxResults, this.getCurrentTransaction().getTransactionId());
-            //throw new UnsupportedOperationException("Not supported yet.");
         }
     }
-
-    /**
-     * @return the searchResults
-     */
-    /*public List<TransactionDTO> getSearchResults() {
-    return searchResults;
-    }*/
-
-    /**
-     * @param searchResults the searchResults to set
-     */
-    /*public void setSearchResults(List<TransactionDTO> searchResults) {
-    this.searchResults = searchResults;
-    }*/
 
 }

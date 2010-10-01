@@ -1,6 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Ara - Capture Species and Specimen Data
+ *
+ * Copyright © 2009  INBio (Instituto Nacional de Biodiversidad).
+ * Heredia, Costa Rica.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.transaction;
@@ -25,6 +40,7 @@ import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.SelectionListEntity;
+import org.inbio.ara.dto.transaction.TransactedSpecimenDTO;
 import org.inbio.ara.dto.transaction.TransactionDTO;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
@@ -88,6 +104,17 @@ public class ListTransaction extends AbstractPageBean {
 
     //Variable que contiene los datos de la paginacion para ser mostrados en la tabla
     private String quantityTotal = new String();
+
+    private HtmlInputText txCatalogNumber = new HtmlInputText();
+    private Calendar clReceivingDate = new Calendar();
+    private SingleSelectOptionsList transactedSpecimenStatusData = new SingleSelectOptionsList();
+    private HtmlCommandButton btnReturnTransactedSpecimen = new HtmlCommandButton();
+
+    private Calendar clInitialDeliveryDate = new Calendar();
+    private Calendar clFinalDeliveryDate = new Calendar();
+
+    private Calendar clInitialReceivingDate = new Calendar();
+    private Calendar clFinalReceivingDate = new Calendar();
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -161,7 +188,6 @@ public class ListTransaction extends AbstractPageBean {
             this.getTransactionSessionBean().setTransactionPaginator(true);
             this.getTransactionSessionBean().initDataProvider();
         }
-        //this.getQuantityTotal();
 
         this.deleteConfirmationText.setValue(BundleHelper.getDefaultBundleValue
                     ("delete_confirmation", this.getMyLocale()));
@@ -174,6 +200,12 @@ public class ListTransaction extends AbstractPageBean {
         //Para el DropDown/selectionList
         this.getTransactionTypeData().setOptions(getSelectionListDropDownData
                 (SelectionListEntity.TRANSACTION_TYPE.getId()));
+
+        this.getTransactedSpecimenStatusData().setOptions(getSelectionListDropDownData
+                (SelectionListEntity.TRANSACTED_SPECIMEN_STATUS.getId()));
+
+        java.util.Calendar currentDate = java.util.Calendar.getInstance();
+        this.clReceivingDate.setSelectedDate(currentDate.getTime());
     }
 
     /**
@@ -418,6 +450,76 @@ public class ListTransaction extends AbstractPageBean {
     }
 
     /**
+     * @return the btnReturnTransactedSpecimen
+     */
+    public HtmlCommandButton getBtnReturnTransactedSpecimen() {
+        return btnReturnTransactedSpecimen;
+    }
+
+    /**
+     * @param btnReturnTransactedSpecimen the btnReturnTransactedSpecimen to set
+     */
+    public void setBtnReturnTransactedSpecimen(HtmlCommandButton btnReturnTransactedSpecimen) {
+        this.btnReturnTransactedSpecimen = btnReturnTransactedSpecimen;
+    }
+
+    /**
+     * @return the clInitialDeliveryDate
+     */
+    public Calendar getClInitialDeliveryDate() {
+        return clInitialDeliveryDate;
+    }
+
+    /**
+     * @param clInitialDeliveryDate the clInitialDeliveryDate to set
+     */
+    public void setClInitialDeliveryDate(Calendar clInitialDeliveryDate) {
+        this.clInitialDeliveryDate = clInitialDeliveryDate;
+    }
+
+    /**
+     * @return the clFinalDeliveryDate
+     */
+    public Calendar getClFinalDeliveryDate() {
+        return clFinalDeliveryDate;
+    }
+
+    /**
+     * @param clFinalDeliveryDate the clFinalDeliveryDate to set
+     */
+    public void setClFinalDeliveryDate(Calendar clFinalDeliveryDate) {
+        this.clFinalDeliveryDate = clFinalDeliveryDate;
+    }
+
+    /**
+     * @return the clInitialReceivingDate
+     */
+    public Calendar getClInitialReceivingDate() {
+        return clInitialReceivingDate;
+    }
+
+    /**
+     * @param clInitialReceivingDate the clInitialReceivingDate to set
+     */
+    public void setClInitialReceivingDate(Calendar clInitialReceivingDate) {
+        this.clInitialReceivingDate = clInitialReceivingDate;
+    }
+
+    /**
+     * @return the clFinalReceivingDate
+     */
+    public Calendar getClFinalReceivingDate() {
+        return clFinalReceivingDate;
+    }
+
+    /**
+     * @param clFinalReceivingDate the clFinalReceivingDate to set
+     */
+    public void setClFinalReceivingDate(Calendar clFinalReceivingDate) {
+        this.clFinalReceivingDate = clFinalReceivingDate;
+    }
+
+    /**
      * @return the myLocale
      */
     public Locale getMyLocale() {
@@ -477,6 +579,7 @@ public class ListTransaction extends AbstractPageBean {
             //Deshabilitar busqueda simple
             this.getTxSearch().setRendered(false);
             this.getBtnTransactionSearch().setRendered(false);
+            this.getBtnReturnTransactedSpecimen().setRendered(false);
             //Cambia el text del boton de busqueda avanzada
             this.getBtnAdvTransactionSearch().setValue(BundleHelper.getDefaultBundleValue("advanced_search_specimen_back",getMyLocale()));
             return null;
@@ -488,6 +591,7 @@ public class ListTransaction extends AbstractPageBean {
             //Habilitar busqueda simple
             this.getTxSearch().setRendered(true);
             this.getBtnTransactionSearch().setRendered(true);
+            this.getBtnReturnTransactedSpecimen().setRendered(true);
             //Cambia el text del boton de busqueda avanzada
             this.getBtnAdvTransactionSearch().setValue(BundleHelper.getDefaultBundleValue("advanced_search",getMyLocale()));
             //Reestablecer los valores por defecto de los drop downs
@@ -505,14 +609,22 @@ public class ListTransaction extends AbstractPageBean {
         
         GregorianCalendar gcInitialTransactionDate = new GregorianCalendar();
         GregorianCalendar gcInitialExpirationDate = new GregorianCalendar();
+        GregorianCalendar gcInitialDeliveryDate = new GregorianCalendar();
+        GregorianCalendar gcInitialReceivingDate = new GregorianCalendar();
         GregorianCalendar gcFinalTransactionDate = new GregorianCalendar();
         GregorianCalendar gcFinalExpirationDate = new GregorianCalendar();
+        GregorianCalendar gcFinalDeliveryDate = new GregorianCalendar();
+        GregorianCalendar gcFinalReceivingDate = new GregorianCalendar();
 
 
         Date dtInitialTransactionDate = this.getClInitialTransactionDate().getSelectedDate();
         Date dtInitialExpirationDate = this.getClInitialExpirationDate().getSelectedDate();
+        Date dtInitialDeliveryDate = this.getClInitialDeliveryDate().getSelectedDate();
+        Date dtInitialReceivingDate = this.getClInitialReceivingDate().getSelectedDate();
         Date dtFinalTransactionDate = this.getClFinalTransactionDate().getSelectedDate();
         Date dtFinalExpirationDate = this.getClFinalExpirationDate().getSelectedDate();
+        Date dtFinalDeliveryDate = this.getClFinalDeliveryDate().getSelectedDate();
+        Date dtFinalReceivingDate = this.getClFinalReceivingDate().getSelectedDate();
         
         if(dtInitialTransactionDate!=null) {
             gcInitialTransactionDate.setTime(dtInitialTransactionDate);
@@ -528,6 +640,21 @@ public class ListTransaction extends AbstractPageBean {
         else {
             this.getTransactionSessionBean().getSearchDataDTO().setExpirationDate(null);
         }
+        if(dtInitialDeliveryDate!=null) {
+            gcInitialDeliveryDate.setTime(dtInitialDeliveryDate);
+            this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO().setDeliveryDate(gcInitialDeliveryDate);
+        }
+        else {
+            this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO().setDeliveryDate(null);
+        }
+        if(dtInitialReceivingDate!=null) {
+            gcInitialReceivingDate.setTime(dtInitialReceivingDate);
+            this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO().setReceivingDate(gcInitialReceivingDate);
+        }
+        else {
+            this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO().setReceivingDate(null);
+        }
+
 
         if(dtFinalTransactionDate!=null) {
             gcFinalTransactionDate.setTime(dtFinalTransactionDate);
@@ -543,17 +670,30 @@ public class ListTransaction extends AbstractPageBean {
         else {
             this.getTransactionSessionBean().getSearchDataDTO().setFinalExpirationDate(null);
         }
+        if(dtFinalDeliveryDate!=null) {
+            gcFinalDeliveryDate.setTime(dtFinalDeliveryDate);
+            this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO().setFinalDeliveryDate(gcFinalDeliveryDate);
+        }
+        else {
+            this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO().setFinalDeliveryDate(null);
+        }
+        if(dtFinalReceivingDate!=null) {
+            gcFinalReceivingDate.setTime(dtFinalReceivingDate);
+            this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO().setFinalReceivingDate(gcFinalReceivingDate);
+        }
+        else {
+            this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO().setFinalReceivingDate(null);
+        }
+        this.getTransactionSessionBean().getSearchDataDTO().setCollectionId(this.getAraSessionBean().getGlobalCollectionId());
 
-        //Setear el GatheringDTO del SessionBean utilizado para realizar la consulta
-//        this.getinventory$GatheringSessionBean().setQueryGatheringDTO(consulta);
         //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
         this.getTransactionSessionBean().setAdvancedSearch(true);
         //Desabilitar la bandera de busqueda simple
         this.getTransactionSessionBean().setSimpleSearch(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-       // this.getTransactionSessionBean().getSearchFacade().
         this.getTransactionSessionBean().getPagination().setTotalResults (this.getTransactionSessionBean().getSearchFacade().
-            countTransactionsByCriteria(this.getTransactionSessionBean().getSearchDataDTO()).intValue());
+            countTransactionsByCriteria(this.getTransactionSessionBean().getSearchDataDTO(),
+                this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO()).intValue());
         this.getTransactionSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
 
@@ -584,10 +724,11 @@ public class ListTransaction extends AbstractPageBean {
         }
         else if(selectedTransactions.size() == 1){ //En caso de que solo se seleccione un elemento
             this.getTransactionSessionBean().setCurrentTransaction(selectedTransactions.get(0));
-            //Seteo los addremove
-            //this.getTransactionSessionBean().setArInstitutionesEdit(new AddRemoveList());
-            //this.getTransactionSessionBean().setArProfilesEdit(new AddRemoveList());
-            //Le indico al prerender del edit que solo cargue una ves los selected de addremove
+            
+            // Se limpian variables utilizadas en EditTransaction
+            this.getTransactionSessionBean().setTransactedSpecimenStatusId(null);
+            this.getTransactionSessionBean().setTransactedSpecimenDescription(null);
+            this.getTransactionSessionBean().setCurrentTransactedSpecimen(new TransactedSpecimenDTO());
             this.getTransactionSessionBean().setFirstTime(true);
             return "edit";
         }
@@ -595,7 +736,6 @@ public class ListTransaction extends AbstractPageBean {
             MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
             return null;
         }
-    //return null;
     }
 
     public String btnTransactionDelete_action() {
@@ -634,6 +774,10 @@ public class ListTransaction extends AbstractPageBean {
             MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
             return null;
         }
+    }
+
+    public String btnReturnTransactedSpecimen_action() {
+        return "returnSpecimen";
     }
     // </editor-fold>
 
@@ -715,16 +859,10 @@ public class ListTransaction extends AbstractPageBean {
      */
     public Option[] getSelectionListDropDownData(Long selectionListEntityId) {
 
-        //getAllSelectionListElementsByCollection
         List<SelectionListDTO> DTOList = this.getTransactionSessionBean().
-                //getTransactionFacade().
                 getInventoryFacade().
                 getAllSelectionListElementsByCollection
                 (selectionListEntityId, getAraSessionBean().getGlobalCollectionId());
-        /*List<SelectionListDTO> DTOList = this.getPassportSessionBean().
-                getGermoplasmaFacadeRemote().getElementsForSelectionList(selectionListEntityId);*/
-
-
         ArrayList<Option> allOptions = new ArrayList<Option>();
         Option[] allOptionsInArray;
         Option option;
@@ -748,11 +886,8 @@ public class ListTransaction extends AbstractPageBean {
         this.getTransactionSessionBean();
 
 	List<PersonDTO> personList =
-            //tsb.getInventoryFacade().getInstitutionsByPersonId(tsb.getCurrentTransaction().
-            //getSenderPersonId());
               tsb.getTransactionFacade().getPersonsByInstitutionId(tsb.getSearchDataDTO().
               getSenderInstitutionId());
-        //tsb.getAllTaxonByTaxonomicalRange(tsb.getSelectedTaxonomicLevel());
         this.setSenderPersonListOptions(personList);
 
         return null;
@@ -765,8 +900,6 @@ public class ListTransaction extends AbstractPageBean {
         for (PersonDTO personDTO : personList) {
                 list.add(new Option(personDTO.getPersonKey(), personDTO.getNaturalLongName()));
         }
-
-        //tsb.getArTaxonList().setAvailableOptions(list.toArray(new Option[list.size()]));
         this.getSenderPersonData().setOptions(list.toArray(new Option[list.size()]));
     }
 
@@ -776,11 +909,8 @@ public class ListTransaction extends AbstractPageBean {
         this.getTransactionSessionBean();
 
 	List<PersonDTO> personList =
-            //tsb.getInventoryFacade().getInstitutionsByPersonId(tsb.getCurrentTransaction().
-            //getReceiverPersonId());
               tsb.getTransactionFacade().getPersonsByInstitutionId(tsb.getSearchDataDTO().
               getReceiverInstitutionId());
-        //tsb.getAllTaxonByTaxonomicalRange(tsb.getSelectedTaxonomicLevel());
         this.setReceiverPersonListOptions(personList);
 
         return null;
@@ -793,9 +923,49 @@ public class ListTransaction extends AbstractPageBean {
         for (PersonDTO personDTO : personList) {
                 list.add(new Option(personDTO.getPersonKey(), personDTO.getNaturalLongName()));
         }
-
-        //tsb.getArTaxonList().setAvailableOptions(list.toArray(new Option[list.size()]));
         this.getSenderPersonData().setOptions(list.toArray(new Option[list.size()]));
+    }
+
+    /**
+     * @return the txCatalogNumber
+     */
+    public HtmlInputText getTxCatalogNumber() {
+        return txCatalogNumber;
+    }
+
+    /**
+     * @param txCatalogNumber the txCatalogNumber to set
+     */
+    public void setTxCatalogNumber(HtmlInputText txCatalogNumber) {
+        this.txCatalogNumber = txCatalogNumber;
+    }
+
+    /**
+     * @return the clReceivingDate
+     */
+    public Calendar getClReceivingDate() {
+        return clReceivingDate;
+    }
+
+    /**
+     * @param clReceivingDate the clReceivingDate to set
+     */
+    public void setClReceivingDate(Calendar clReceivingDate) {
+        this.clReceivingDate = clReceivingDate;
+    }
+
+    /**
+     * @return the transactedSpecimenStatusData
+     */
+    public SingleSelectOptionsList getTransactedSpecimenStatusData() {
+        return transactedSpecimenStatusData;
+    }
+
+    /**
+     * @param transactedSpecimenStatusData the transactedSpecimenStatusData to set
+     */
+    public void setTransactedSpecimenStatusData(SingleSelectOptionsList transactedSpecimenStatusData) {
+        this.transactedSpecimenStatusData = transactedSpecimenStatusData;
     }
     // </editor-fold>
 }

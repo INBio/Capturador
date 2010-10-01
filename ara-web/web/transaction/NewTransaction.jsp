@@ -25,12 +25,10 @@
                                 <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 650px">
                                     <h:commandButton action="#{transaction$NewTransaction.btnSaveTransaction_action}" id="btnUpdateTransaction"
                                         style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.new}"/>
-                                    <!--<h:commandButton binding="#{transaction$NewTransaction.btnAddSpecimens}" id="btnAddSpecimens"
-                                        style="height: 24px; width: 175px" styleClass="My_Button" value="Agregar Especímenes"/>-->
                                 </webuijsf:panelGroup>
                                 <webuijsf:panelLayout id="lpNewTransaction" style="height: 188px; position: relative; width: 100%; -rave-layout: grid" styleClass="My_panel_blue">
                                     <webuijsf:label for="clTransactionDate" id="lbTransactionDate"
-                                        style="height: 24px; left: 24px; top: 24px; position: absolute; width: 192px" text="#{resources.transaction_date}"/>
+                                        style="height: 24px; left: 24px; top: 24px; position: absolute; width: 192px" text="#{resources.transaction_date} *"/>
                                     <webuijsf:label for="txInvoiceNumber" id="lbInvoiceNumber"
                                         style="height: 24px; left: 24px; top: 48px; position: absolute; width: 192px" text="#{resources.invoice_number}"/>
                                     <webuijsf:label for="txEstimatedNumberSpecimens" id="lbEstimatedNumberSpecimens"
@@ -40,15 +38,15 @@
                                     <webuijsf:label for="txaDescription" id="lbDescription"
                                         style="height: 24px; left: 24px; top: 120px; position: absolute; width: 192px" text="#{resources.description}"/>
                                     <webuijsf:label for="ddSenderInstitution" id="lbSenderInstitutionId"
-                                        style="height: 24px; left: 456px; top: 24px; position: absolute; width: 192px" text="#{resources.sender_institution}"/>
+                                        style="height: 24px; left: 456px; top: 24px; position: absolute; width: 192px" text="#{resources.sender_institution} *"/>
                                     <webuijsf:label for="ddSenderPerson" id="lbSenderPersonId"
-                                        style="height: 24px; left: 456px; top: 48px; position: absolute; width: 192px" text="#{resources.sender_person}"/>
+                                        style="height: 24px; left: 456px; top: 48px; position: absolute; width: 192px" text="#{resources.sender_person} *"/>
                                     <webuijsf:label for="ddReceiverInstitutionId" id="lbReceiverInstitutionId"
                                         style="height: 24px; left: 456px; top: 72px; position: absolute; width: 192px" text="#{resources.receiver_institution}"/>
                                     <webuijsf:label for="ddReceiverPerson" id="lbReceiverPersonId"
                                         style="height: 24px; left: 456px; top: 96px; position: absolute; width: 192px" text="#{resources.receiver_person}"/>
                                     <webuijsf:label for="txTransactionTypeId" id="lbTransactionTypeId"
-                                        style="height: 24px; left: 456px; top: 120px; position: absolute; width: 192px" text="#{resources.transaction_type}"/>
+                                        style="height: 24px; left: 456px; top: 120px; position: absolute; width: 192px" text="#{resources.transaction_type} *"/>
                                     <webuijsf:calendar binding="#{transaction$NewTransaction.clTransactionDate}" columns="22" disabled="true"
                                         dateFormatPattern="#{resources.date_format}" id="clTransactionDate" style="height: 24px; left: 240px; top: 24px; position: absolute; width: 192px"/>
                                     <webuijsf:textField columns="25" id="txInvoiceNumber"

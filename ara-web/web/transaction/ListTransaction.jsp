@@ -20,7 +20,7 @@
                          *
                          * variable del HiddenField que contiene el texto de confirmación de borrado.
                          *
-                         * NOTA: Es importante cambiar estaa variable cada vez que la estructura de este JSP varíe.
+                         * NOTA: Es importante cambiar esta variable cada vez que la estructura de este JSP varíe.
                          */
                         var deleteConfirmationTextId = 'contenido:form1:grouppButtons:panelPaginacion:deleteConfirmationText';
 
@@ -43,8 +43,8 @@
                             <h:panelGrid columns="1" id="gridpMain" style="left: 24px; top: 48px; position: absolute" width="850">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                     style="height: 30px; width: 840px" warnClass="warnMessage"/>
-                                <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">
-                                    <h:inputText binding="#{transaction$ListTransaction.txSearch}" id="txSearch" style="height: 18px; width: 408px">
+                                <h:panelGrid columns="4" id="gridpSearch" style="height: 24px" width="719">
+                                    <h:inputText binding="#{transaction$ListTransaction.txSearch}" id="txSearch" style="height: 18px; width: 340px">
                                         <f:validateLength maximum="100" minimum="0"/>
                                     </h:inputText>
                                     <h:commandButton action="#{transaction$ListTransaction.btnTransactionSearch_action}" binding="#{transaction$ListTransaction.btnTransactionSearch}"
@@ -52,20 +52,18 @@
                                     <h:commandButton action="#{transaction$ListTransaction.btnAdvTransactionSearch_action}"
                                         binding="#{transaction$ListTransaction.btnAdvTransactionSearch}" id="btnAdvTransactionSearch" style="height: 25px; width: 160px"
                                         styleClass="My_Button" value="#{resources.advanced_search}"/>
+                                    <h:commandButton action="#{transaction$ListTransaction.btnReturnTransactedSpecimen_action}"
+                                        id="btnReturnTransactedSpecimen" style="height: 25px; width: 160px"
+                                        styleClass="My_Button" value="#{resources.return_transacted_specimen}"/>
                                 </h:panelGrid>
                                 <h:panelGrid binding="#{transaction$ListTransaction.pgAdvancedSearch}" columns="1" id="pgAdvancedSearch" rendered="false"
                                     style="height: 5px" styleClass="My_panel_blue" width="850">
-                                    <h:panelGrid columns="2" style="height: 5px" width="840">
+                                    <h:panelGrid columns="2" style="height: 5px" styleClass="My_subpanel_blue" width="840">
                                         <h:panelGrid columns="2" id="pgAdvancedSearchCol1" style="height: 24px" width="400" >
 
                                             <!-- ********** Transaction Number ********** -->
                                             <webuijsf:label for="txTransactionNumber" text="#{resources.transaction_number}"/>
                                             <webuijsf:textField columns="25" id="txTransactionNumber" text="#{transaction$TransactionSessionBean.searchDataDTO.transactionId}"/>
-
-                                            <!-- ********** Transaction Date ********** -->
-                                            <!--<webuijsf:label for="clTransactionDate" text="#{resources.transaction_date}"/>
-                                            <webuijsf:calendar binding="#{transaction$ListTransaction.clTransactionDate}" columns="22"
-                                                    dateFormatPattern="#{resources.date_format}" id="clTransactionDate"/>-->
 
                                             <!-- ********** Invoice Number ********** -->
                                             <webuijsf:label for="txInvoiceNumber" text="#{resources.invoice_number}"/>
@@ -75,16 +73,10 @@
                                             <webuijsf:label for="txEstimatedSpecimenCount" text="#{resources.estimated_specimen_count}"/>
                                             <webuijsf:textField columns="25" id="txEstimatedSpecimenCount" text="#{transaction$TransactionSessionBean.searchDataDTO.estimatedSpecimenCount}"/>
 
-                                            <!-- ********** Expiration Date ********** -->
-                                            <!--<webuijsf:label for="clExpirationDate" text="#{resources.expiration_date}"/>
-                                            <webuijsf:calendar binding="#{transaction$ListTransaction.clExpirationDate}" columns="22"
-                                                dateFormatPattern="#{resources.date_format}" id="clExpirationDate"/>-->
-
                                             <!-- ********** Description ********** -->
                                             <webuijsf:label for="txaDescription" text="#{resources.description}"/>
                                             <webuijsf:textArea columns="23" id="txaDescription" text="#{transaction$TransactionSessionBean.searchDataDTO.description}"/>
-                                            <!--<h:commandButton id="btnAdvSearchGO" action="#{transaction$ListTransaction.btnAdvSearchGO_action}"
-                                                style="width: 160px" styleClass="My_Button" value="#{resources.button_proceed}"/>-->
+                                            
                                         </h:panelGrid>
                                         <h:panelGrid columns="2" id="pgAdvancedSearchCol2" style="height: 24px" width="400" >
 
@@ -111,7 +103,7 @@
                                                 selected="#{transaction$TransactionSessionBean.searchDataDTO.receiverPersonId}" width="192px"/>
 
                                             <!-- ********** Transaction Type ********** -->
-                                            <webuijsf:label for="txTransactionTypeId" text="#{resources.transaction_type}"/>
+                                            <webuijsf:label for="ddTransactionType" text="#{resources.transaction_type}"/>
                                             <webuijsf:dropDown id="ddTransactionType" items="#{transaction$ListTransaction.transactionTypeData.options}"
                                                 selected="#{transaction$TransactionSessionBean.searchDataDTO.transactionTypeId}" width="192px"/>
                                         </h:panelGrid>
@@ -119,12 +111,12 @@
                                         <h:panelGrid columns="2" id="pgAdvancedSearchCol12" style="height: 24px" styleClass="My_subpanel_blue" width="400" >
 
                                             <!-- ********** Initial Transaction Date ********** -->
-                                            <webuijsf:label for="clInitialTransactionDate" text="Fecha Inicial"/>
+                                            <webuijsf:label for="clInitialTransactionDate" text="#{resources.initial_transaction_date}"/>
                                             <webuijsf:calendar binding="#{transaction$ListTransaction.clInitialTransactionDate}" columns="14"
                                                 dateFormatPattern="#{resources.date_format}" id="clInitialTransactionDate"/>
 
                                             <!-- ********** Final Transaction Date ********** -->
-                                            <webuijsf:label for="clFinalTransactionDate" text="Fecha Final"/>
+                                            <webuijsf:label for="clFinalTransactionDate" text="#{resources.final_transaction_date}"/>
                                             <webuijsf:calendar binding="#{transaction$ListTransaction.clFinalTransactionDate}" columns="14"
                                                 dateFormatPattern="#{resources.date_format}" id="clFinalTransactionDate"/>
 
@@ -132,33 +124,77 @@
                                         <h:panelGrid columns="2" id="pgAdvancedSearchCol22" style="height: 24px" styleClass="My_subpanel_blue" width="400" >
 
                                             <!-- ********** Initial Expiration Date ********** -->
-                                            <webuijsf:label for="clInitialExpirationDate" text="Fecha de Expiración Inicial"/>
+                                            <webuijsf:label for="clInitialExpirationDate" text="#{resources.initial_expiration_date}"/>
                                             <webuijsf:calendar binding="#{transaction$ListTransaction.clInitialExpirationDate}" columns="14"
                                                 dateFormatPattern="#{resources.date_format}" id="clInitialExpirationDate"/>
 
                                             <!-- ********** Final Expiration Date ********** -->
-                                            <webuijsf:label for="clFinalExpirationDate" text="Fecha de Expiración Final"/>
+                                            <webuijsf:label for="clFinalExpirationDate" text="#{resources.final_expiration_date}"/>
                                             <webuijsf:calendar binding="#{transaction$ListTransaction.clFinalExpirationDate}" columns="14"
                                                 dateFormatPattern="#{resources.date_format}" id="clFinalExpirationDate"/>
 
                                         </h:panelGrid>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="2" style="height: 5px; margin-top: 10px" styleClass="My_subpanel_blue" width="840">
+                                        <h:panelGrid columns="2" style="height: 24px" width="400" >
 
-                                            <h:panelGrid columns="2" id="pgAdvancedSearchCol31" style="height: 24px" width="400" >
-                                                <webuijsf:label for="txCatalogNumber" id="lbCatalogNumber" style="height: 24px; width: 192px" text="#{resources.catalognumber}"/>
-                                                <webuijsf:textField id="txCatalogNumber" text="#{transaction$TransactionSessionBean.searchDataDTO.catalogNumber}" columns="25"/>
-                                            </h:panelGrid>
+                                            <!-- ********** Catalog Number ********** -->
+                                            <webuijsf:label for="txCatalogNumber" id="lbCatalogNumber" style="height: 24px; width: 192px" text="#{resources.catalognumber}"/>
+                                            <webuijsf:textField id="txCatalogNumber" text="#{transaction$TransactionSessionBean.transactedSpecimenSearchDataDTO.catalogNumber}" columns="25"/>
 
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2" style="height: 24px" width="200" >
+
+                                            <!-- ********** Waiting for return ********** -->
+                                            <webuijsf:label for="cbxWaitingForReturn" id="lbWaitingForReturn" style="height: 24px; width: 192px" text="#{resources.waiting_for_return}"/>
+                                            <webuijsf:checkbox id="cbxWaitingForReturn" selected="#{transaction$TransactionSessionBean.transactedSpecimenSearchDataDTO.waitingForReturn}" />
+
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2" style="height: 24px" styleClass="My_subpanel_blue" width="400" >
+
+                                            <!-- ********** Initial Delivery Date ********** -->
+                                            <webuijsf:label for="clInitialDeliveryDate" text="#{resources.initial_delivery_date}"/>
+                                            <webuijsf:calendar binding="#{transaction$ListTransaction.clInitialDeliveryDate}"  columns="14"
+                                                dateFormatPattern="#{resources.date_format}" id="clInitialDeliveryDate"/>
+
+                                            <!-- ********** Final Delivery Date ********** -->
+                                            <webuijsf:label for="clFinalDeliveryDate" text="#{resources.final_delivery_date}"/>
+                                            <webuijsf:calendar binding="#{transaction$ListTransaction.clFinalDeliveryDate}" columns="14"
+                                                dateFormatPattern="#{resources.date_format}" id="clFinalDeliveryDate"/>
+
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2" style="height: 24px" styleClass="My_subpanel_blue" width="400" >
+
+                                            <!-- ********** Initial Receiving Date ********** -->
+                                            <webuijsf:label for="clInitialReceivingDate" text="#{resources.initial_receiving_date}"/>
+                                            <webuijsf:calendar binding="#{transaction$ListTransaction.clInitialReceivingDate}" columns="14"
+                                                dateFormatPattern="#{resources.date_format}" id="clInitialReceivingDate"/>
+
+                                            <!-- ********** Final Receiving Date ********** -->
+                                            <webuijsf:label for="clFinalReceivingDate" text="#{resources.final_receiving_date}"/>
+                                            <webuijsf:calendar binding="#{transaction$ListTransaction.clFinalReceivingDate}" columns="14"
+                                                dateFormatPattern="#{resources.date_format}" id="clFinalReceivingDate"/>
+
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2" style="height: 24px" width="400" >
+
+                                            <!-- ********** Transacted Specimen Status ********** -->
+                                            <webuijsf:label for="ddTransactedSpecimenStatus" id="lbTransactedSpecimenStatus" style="height: 24px; width: 192px" text="#{resources.transacted_specimen_status}"/>
+                                            <webuijsf:dropDown id="ddTransactedSpecimenStatus" items="#{transaction$ListTransaction.transactedSpecimenStatusData.options}"
+                                                selected="#{transaction$TransactionSessionBean.transactedSpecimenSearchDataDTO.transactedSpecimenStatusId}" width="192px"/>
+
+                                        </h:panelGrid>
+                                        <h:panelGrid columns="2" style="height: 24px" width="400" >
+
+                                            <!-- ********** Transacted Specimen Description********** -->
+                                            <webuijsf:label for="txaTransactedSpecimenDescription" id="lbTransactedSpecimenDescription" style="height: 24px; width: 192px" text="#{resources.description}"/>
+                                            <webuijsf:textArea text="#{transaction$TransactionSessionBean.transactedSpecimenSearchDataDTO.description}" columns="23" id="txaTransactedSpecimenDescription"/>
+                                            
+                                        </h:panelGrid>
                                     </h:panelGrid>
                                         
                                     <h:commandButton id="btnAdvSearchGO" action="#{transaction$ListTransaction.btnAdvSearchGO_action}"
                                         style="width: 160px" styleClass="My_Button" value="#{resources.button_proceed}"/>
-                                    <!--</h:panelGrid>-->
-
-
-
-
-
-
                                 </h:panelGrid>
                                 <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="height: 24px" styleClass="My_table" width="840">
                                     <webuijsf:panelGroup id="grouppButtons">
@@ -237,42 +273,34 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{resources.sender_person}"/>
                                             </f:facet>
-                                            <!--<h:outputText value="#{currentRow['senderPersonId']}"/>-->
                                             <h:outputText value="#{currentRow['senderPersonName']}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="#{resources.sender_institution}"/>
                                             </f:facet>
-                                            <!--<h:outputText value="#{currentRow['senderInstitutionId']}"/>-->
                                             <h:outputText value="#{currentRow['senderInstitutionName']}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="#{resources.receiver_person}"/>
                                             </f:facet>
-                                            <!--<h:outputText value="#{currentRow['receiverPersonId']}"/>-->
                                             <h:outputText value="#{currentRow['receiverPersonName']}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="#{resources.receiver_institution}"/>
                                             </f:facet>
-                                            <!--<h:outputText value="#{currentRow['receiverInstitutionId']}"/>-->
                                             <h:outputText value="#{currentRow['receiverInstitutionName']}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">
                                                 <h:outputText value="#{resources.transaction_type}"/>
                                             </f:facet>
-                                            <!--<h:outputText value="#{currentRow['transactionTypeId']}"/>-->
                                             <h:outputText value="#{currentRow['transactionType']}"/>
                                         </h:column>
-
-
                                     </h:dataTable>
                                 </h:panelGrid>
-
                                 <jsp:directive.include file="/Footer.jspf"/>
                             </h:panelGrid>
                         </webuijsf:form>

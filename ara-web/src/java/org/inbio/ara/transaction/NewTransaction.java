@@ -1,6 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Ara - Capture Species and Specimen Data
+ *
+ * Copyright © 2009  INBio (Instituto Nacional de Biodiversidad).
+ * Heredia, Costa Rica.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.transaction;
@@ -144,9 +159,6 @@ public class NewTransaction extends AbstractPageBean {
         this.clTransactionDate.setSelectedDate(currentDate.getTime());
         //<<<<<<<<<<<<<<<<<<<<<<<<< >>>>>>>>>>>>>>>>>>>>>>>>>\\
 
-        /*this.getPersonData().setOptions(setPersonDropDownData());
-        this.getSenderInstitutionData().setOptions(setSenderInstitutionDropDownData());
-        this.getReceiverInstitutionData().setOptions(setReceiverInstitutionDropDownData());*/
         //Para el DropDown/selectionList
         this.getTransactionTypeData().setOptions(getSelectionListDropDownData
                 (SelectionListEntity.TRANSACTION_TYPE.getId()));
@@ -300,18 +312,12 @@ public class NewTransaction extends AbstractPageBean {
         this.getTransactionSessionBean().getPagination().addItem();
         this.getTransactionSessionBean().getPagination().refreshList();
 
-        //Limpiar los datos de la pantalla
-        //getTransactionSessionBean().setCurrentTransaction(new TransactionDTO());
-        //this.getClTransactionDate().setSelectedDate(null);
-        //this.getClExpirationDate().setSelectedDate(null);
-
         //Notificar al usuario
         MessageBean.setSuccessMessageFromBundle("create_transaction_succces", this.getMyLocale());
 
 
         this.getTransactionSessionBean().setTransactionJustCreated(true);
         return "editNewTransaction";
-        //return null;
     }
 
     /**
@@ -322,16 +328,10 @@ public class NewTransaction extends AbstractPageBean {
      */
     public Option[] getSelectionListDropDownData(Long selectionListEntityId) {
 
-        //getAllSelectionListElementsByCollection
         List<SelectionListDTO> DTOList = this.getTransactionSessionBean().
-                //getTransactionFacade().
                 getInventoryFacade().
                 getAllSelectionListElementsByCollection
                 (selectionListEntityId, getAraSessionBean().getGlobalCollectionId());
-        /*List<SelectionListDTO> DTOList = this.getPassportSessionBean().
-                getGermoplasmaFacadeRemote().getElementsForSelectionList(selectionListEntityId);*/
-
-
         ArrayList<Option> allOptions = new ArrayList<Option>();
         Option[] allOptionsInArray;
         Option option;
@@ -465,7 +465,6 @@ public class NewTransaction extends AbstractPageBean {
                 list.add(new Option(personDTO.getPersonKey(), personDTO.getNaturalLongName()));
         }
 
-        //tsb.getArTaxonList().setAvailableOptions(list.toArray(new Option[list.size()]));
         this.getSenderPersonData().setOptions(list.toArray(new Option[list.size()]));
     }
 
@@ -475,11 +474,8 @@ public class NewTransaction extends AbstractPageBean {
         this.getTransactionSessionBean();
 
 	List<PersonDTO> personList =
-            //tsb.getInventoryFacade().getInstitutionsByPersonId(tsb.getCurrentTransaction().
-            //getSenderPersonId());
               tsb.getTransactionFacade().getPersonsByInstitutionId(tsb.getCurrentTransaction().
               getSenderInstitutionId());
-        //tsb.getAllTaxonByTaxonomicalRange(tsb.getSelectedTaxonomicLevel());
         this.setSenderPersonListOptions(personList);
 
         return null;
@@ -493,7 +489,6 @@ public class NewTransaction extends AbstractPageBean {
                 list.add(new Option(personDTO.getPersonKey(), personDTO.getNaturalLongName()));
         }
 
-        //tsb.getArTaxonList().setAvailableOptions(list.toArray(new Option[list.size()]));
         this.getSenderPersonData().setOptions(list.toArray(new Option[list.size()]));
     }
 
@@ -503,11 +498,8 @@ public class NewTransaction extends AbstractPageBean {
         this.getTransactionSessionBean();
 
 	List<PersonDTO> personList =
-            //tsb.getInventoryFacade().getInstitutionsByPersonId(tsb.getCurrentTransaction().
-            //getReceiverPersonId());
               tsb.getTransactionFacade().getPersonsByInstitutionId(tsb.getCurrentTransaction().
               getReceiverInstitutionId());
-        //tsb.getAllTaxonByTaxonomicalRange(tsb.getSelectedTaxonomicLevel());
         this.setReceiverPersonListOptions(personList);
 
         return null;

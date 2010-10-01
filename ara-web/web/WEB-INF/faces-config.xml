@@ -592,8 +592,8 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>transaction$TransactedSpecimens</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.transaction.TransactedSpecimens</managed-bean-class>
+        <managed-bean-name>transaction$ReturnSpecimen</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.transaction.ReturnSpecimen</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
@@ -1479,7 +1479,7 @@
     </navigation-rule>
 
 
-    
+
       <navigation-rule>
         <from-view-id>/indicator/ListIndicator.jsp</from-view-id>
         <navigation-case>
@@ -1556,6 +1556,11 @@
             <to-view-id>/transaction/NewTransaction.jsp</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>returnSpecimen</from-outcome>
+            <to-view-id>/transaction/ReturnSpecimen.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/transaction/EditTransaction.jsp</from-view-id>
@@ -1575,6 +1580,14 @@
         <navigation-case>
             <from-outcome>editNewTransaction</from-outcome>
             <to-view-id>/transaction/EditTransaction.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/transaction/ReturnSpecimen.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/transaction/ListTransaction.jsp</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

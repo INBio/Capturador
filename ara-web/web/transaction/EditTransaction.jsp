@@ -97,12 +97,11 @@
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                     style="height: 50px; width: 840px" warnClass="warnMessage"/>
                                 <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 650px">
-                                    <h:commandButton action="#{transaction$EditTransaction.btnUpdateTransaction_action}" id="btnUpdateTransaction"
+                                    <h:commandButton binding="#{transaction$EditTransaction.btnUpdate}" action="#{transaction$EditTransaction.btnUpdateTransaction_action}" id="btnUpdateTransaction"
                                         style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.update}"/>
                                 </webuijsf:panelGroup>
                                 <!-- Este tabSet no debe tener la propiedad selectedTab -->
                                 <webuijsf:tabSet binding="#{transaction$EditTransaction.tabSet}" id="tabSetMain" lite="true" styleClass="My_panel_blue">
-                                    <!--<webuijsf:tabSet id="tabSetMain" lite="true" selected="tabTransactionInfo" style="height: 100px; width: 835px" styleClass="My_panel_blue">-->
                                     <webuijsf:tab id="tabTransactionInfo" text="#{resources.transaction_information}">
                                         <webuijsf:panelLayout id="lpEditTransaction" style="height: 188px; position: relative; width: 835px; -rave-layout: grid">
                                             <webuijsf:label for="clTransactionDate" id="lbTransactionDate"
@@ -155,21 +154,9 @@
                                         </webuijsf:panelLayout>
                                     </webuijsf:tab>
                                     <webuijsf:tab binding="#{transaction$EditTransaction.tabAddTransactedSpecimens}" id="tabAddTransactedSpecimen" text="#{resources.add_transacted_specimen}">
-
-
-                                        <!--<webuijsf:panelLayout id="lpAddTransactedSpecimen" style="height: 188px; position: relative; width: 100%; -rave-layout: grid">
-                                            <webuijsf:label for="txAddTransactedSpecimen" id="lbAddTransactedSpecimen"
-                                                style="height: 24px; left: 24px; top: 24px; position: absolute; width: 192px" text="#{resources.catalognumber}"/>
-                                            <h:inputText onkeypress="return isEnter(event)" binding="#{transaction$EditTransaction.txCatalogNumber}" size="25" id="txAddTransactedSpecimen"
-                                                style="left: 230px; top: 24px; position: absolute; width: 192px"></h:inputText>
-                                            <h:commandButton action="#{transaction$EditTransaction.btnAddTransactedSpecimen_action}" id="btnAddTransactedSpecimen"
-                                                style="height: 24px; width: 175px; top: 24px; left: 450px; position: absolute" styleClass="My_Button" value="#{resources.add_specimen}"/>
-                                        </webuijsf:panelLayout>-->
-
-
                                         <h:panelGrid columns="1" id="pgAddTransactedSpecimen" style="height: 24px" width="800">
                                             <h:panelGrid columns="3" id="pgAddTransactedSpecimen2" style="height: 24px; margin-top: 20px; margin-left: 20px" width="700">
-                                                <webuijsf:label for="txAddTransactedSpecimen" id="lbAddTransactedSpecimen" style="height: 24px; width: 192px" text="#{resources.catalognumber}"/>
+                                                <webuijsf:label for="txAddTransactedSpecimen" id="lbAddTransactedSpecimen" style="height: 24px; width: 192px" text="#{resources.catalognumber} *"/>
                                                 <h:inputText binding="#{transaction$EditTransaction.txCatalogNumber}" id="txAddTransactedSpecimen"
                                                     onkeypress="return isEnter(event)" size="25" style="width: 192px"/>
                                                 <h:commandButton action="#{transaction$EditTransaction.btnAddTransactedSpecimen_action}"
@@ -178,7 +165,7 @@
                                             <h:panelGrid columns="4" id="pgDescription" style="height: 24px; margin-top: 10px; margin-left: 20px" width="700" styleClass="My_subpanel_blue">
 
                                                 <webuijsf:label for="clDeliveryDate" id="lbDeliveryDate"
-                                                    style="height: 24px; width: 192px" text="#{resources.delivery_date}"/>
+                                                    style="height: 24px; width: 192px" text="#{resources.delivery_date} *"/>
                                                 <webuijsf:calendar columns="22" binding="#{transaction$EditTransaction.clDeliveryDate}"
                                                     dateFormatPattern="#{resources.date_format}" id="clDeliveryDate" style="height: 24px; width: 192px"/>
                                                 <webuijsf:label for="clReceivingDate" id="lbReceivingDate"
@@ -186,7 +173,7 @@
                                                 <webuijsf:calendar columns="22" binding="#{transaction$EditTransaction.clReceivingDate}"
                                                     dateFormatPattern="#{resources.date_format}" id="clReceivingDate" style="height: 24px; width: 192px"/>
                                                 <webuijsf:label for="ddTransactedSpecimenStatus" id="lbTransactedSpecimenStatus"
-                                                    style="height: 24px; width: 192px" text="#{resources.transacted_specimen_status}"/>
+                                                    style="height: 24px; width: 192px" text="#{resources.transacted_specimen_status} *"/>
                                                 <webuijsf:dropDown id="ddTransactedSpecimenStatus" items="#{transaction$EditTransaction.transactedSpecimenStatusData.options}"
                                                     selected="#{transaction$TransactionSessionBean.transactedSpecimenStatusId}"
                                                     style="height: 24px" width="192px"/>
@@ -194,6 +181,9 @@
                                                     style="height: 24px; width: 192px" text="#{resources.description}"/>
                                                 <webuijsf:textArea columns="23" id="transactedSpecimenDescription"
                                                     style="height: 40px; width: 172px" text="#{transaction$TransactionSessionBean.transactedSpecimenDescription}"/>
+                                                <webuijsf:label for="cbxWaitingForReturn" id="lbWaitingForReturn"
+                                                    style="height: 24px; width: 192px" text="#{resources.waiting_for_return}"/>
+                                                <h:selectBooleanCheckbox id="cbxWaitingForReturn" binding="#{transaction$EditTransaction.cbxWaitingForReturn}" label="Devolver"/>
                                             </h:panelGrid>
                                         </h:panelGrid>
                                     </webuijsf:tab>
