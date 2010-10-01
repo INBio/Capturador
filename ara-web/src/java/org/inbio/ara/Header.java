@@ -257,7 +257,7 @@ public class Header extends AbstractFragmentBean {
     }
 
     public String menuModuleIndicator_action() {
-        this.getSessionManager().setCurrentModuleId(new Long(29));
+        this.getSessionManager().setCurrentModuleId(new Long(30));
         return "listIndicator";
     }
 
@@ -306,7 +306,15 @@ public class Header extends AbstractFragmentBean {
         return "sementals";
     }
 
+    public String menuModuleDublinCore_action(){
+        this.getSessionManager().setCurrentModuleId(new Long(31));
+        return "dublincore";
+    }
     /**
-     * ULTIMO ID DE MODULO INGRESADO = 29
+     * OBLIGATORIO:
+     * ESTE NUMERO A CONTINUACIÓN SE DEBE DE ACTUALIZAR CADA VEZ QUE SE INGRESE
+     * UNA NUEVA SECCION
+     * El numero representa el ultimo numero asociado para el los modulos
+     * ULTIMO ID DE MODULO INGRESADO = 31
      */
 }
