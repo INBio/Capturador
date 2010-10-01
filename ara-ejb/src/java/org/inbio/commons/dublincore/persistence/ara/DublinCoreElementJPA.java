@@ -11,13 +11,18 @@ import java.util.Calendar;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import org.inbio.commons.dublincore.model.DublinCoreElement;
 /**
  *
@@ -29,6 +34,8 @@ import org.inbio.commons.dublincore.model.DublinCoreElement;
 public class DublinCoreElementJPA extends DublinCoreElement {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO, generator="dublin_core_element")
+    @SequenceGenerator(name="dublin_core_element", sequenceName="dublin_core_element_seq")
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
@@ -45,6 +52,19 @@ public class DublinCoreElementJPA extends DublinCoreElement {
     private String language;
 
 
+    @Temporal(TemporalType.DATE)
+    @Column(name="creation_date", nullable = false)
+    private Calendar creationDate;
+
+    @Column(name="created_by", nullable = false)
+    private String createdBy;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name="last_modification_date", nullable = false)
+    private Calendar lastModificationDate;
+
+    @Column(name="last_modification_by", nullable = false)
+    private String lastModificationBy;
 
   /*
     public DublinCoreElementJPA() {
@@ -64,10 +84,8 @@ public class DublinCoreElementJPA extends DublinCoreElement {
 
     @PrePersist
     public void prePersist(){
-        this.setCreationDate(this.getLastModificationDate());
-        this.setCreatedBy(this.getLastModificationBy());
-        //this.creationDate = this.lastModificationDate;
-        //this.createdBy= this.lastModificationBy;
+        this.creationDate = this.lastModificationDate;
+        this.createdBy= this.lastModificationBy;
     }
 
 
@@ -136,6 +154,34 @@ public class DublinCoreElementJPA extends DublinCoreElement {
     @Override
     public String toString() {
         return "org.inbio.commons.dublincore.persistence.ara.DublinCoreElement[id=" + id + "]";
+    }
+
+    /**
+     * @param creationDate the creationDate to set
+     */
+    public void setCreationDate(Calendar creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    /**
+     * @param createdBy the createdBy to set
+     */
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    /**
+     * @param lastModificationDate the lastModificationDate to set
+     */
+    public void setLastModificationDate(Calendar lastModificationDate) {
+        this.lastModificationDate = lastModificationDate;
+    }
+
+    /**
+     * @param lastModificationBy the lastModificationBy to set
+     */
+    public void setLastModificationBy(String lastModificationBy) {
+        this.lastModificationBy = lastModificationBy;
     }
 
 }

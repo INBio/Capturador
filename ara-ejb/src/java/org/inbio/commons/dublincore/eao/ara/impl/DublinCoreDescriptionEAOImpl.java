@@ -29,9 +29,11 @@ public class DublinCoreDescriptionEAOImpl extends BaseEAOImpl<DublinCoreDescript
 	 */
 	@SuppressWarnings("unchecked")
 	public Long countResourceByTypeId(int resourceTypeId) {
-		Query query = em.createQuery(
-				"select count(dcd) from DublinCoreDescriptionJPA as dcd"
-				+ " where dcd.resourceTypeId = :resourceTypeId");
+            String hql = "select count(dcd) from DublinCoreDescriptionJPA as dcd ";
+            if(resourceTypeId != -1)
+                hql = " where dcd.resourceTypeId = :resourceTypeId";
+            Query query = em.createQuery(hql);
+            if(resourceTypeId != -1)
 		query.setParameter("resourceTypeId", resourceTypeId);
 		
             return (Long)query.getSingleResult();
@@ -51,19 +53,27 @@ public class DublinCoreDescriptionEAOImpl extends BaseEAOImpl<DublinCoreDescript
 
         @SuppressWarnings("unchecked")
       public List<DublinCoreDescription> findAllPaginated( int resourceTypeId ,int base, int offset) {
-        
-        Query query = em.createQuery(
-				"select dcd from DublinCoreDescriptionJPA as dcd"
-				+ " where dcd.resourceTypeId = :resourceTypeId");
-		query.setParameter("resourceTypeId", resourceTypeId);
 
-        query.setFirstResult(base);
-        query.setMaxResults(offset);
-        return query.getResultList();
+            String sql = "select dcd from DublinCoreDescriptionJPA as dcd";
+            if(resourceTypeId != -1)
+                sql+= " where dcd.resourceTypeId = :resourceTypeId";
+            Query query = em.createQuery(sql);
+            if(resourceTypeId != -1)
+                query.setParameter("resourceTypeId", resourceTypeId);
+
+            query.setFirstResult(base);
+            query.setMaxResults(offset);
+            return query.getResultList();
     }
 
-    public DublinCoreDescription findById(int arg0) {
-        return this.findById(DublinCoreDescription.class, new Long(arg0));
+    public DublinCoreDescription findById(int resourceId) {
+        //return this.findById(DublinCoreDescription.class, new Long(arg0));
+        Query query = em.createQuery(
+                        "select dcd from DublinCoreDescriptionJPA as dcd"
+                        + " where dcd.resourceId = :resourceId");
+        query.setParameter("resourceId", resourceId);
+
+        return (DublinCoreDescription) query.getSingleResult();
     }
 
 

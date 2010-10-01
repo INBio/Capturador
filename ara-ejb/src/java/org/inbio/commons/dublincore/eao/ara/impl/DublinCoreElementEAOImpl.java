@@ -48,8 +48,22 @@ public class DublinCoreElementEAOImpl extends BaseEAOImpl<DublinCoreElement, Lon
                 return query.getResultList();
 	}
 
-    public List<DublinCoreElement> findAllByResourceIdAndDCElementId(int arg0, int arg1) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<DublinCoreElement> findAllByResourceIdAndDCElementId(int resourceId, int dublinCoreElementId) {
+        Query query = em.createQuery(
+            "select dce from DublinCoreElementJPA as dce"
+            + " where dce.dublinCoreElementId = :dublinCoreElementId and " +
+            " dce.resourceId = :resourceId");
+        query.setParameter("dublinCoreElementId", dublinCoreElementId);
+        query.setParameter("resourceId", resourceId);
+        return query.getResultList();
+    }
+
+    public void deleteAllByResourceId(Long resourceId) {
+        Query query = em.createQuery(
+                " delete from DublinCoreElementJPA as dce" +
+                " where dce.resourceId = :resourceId");
+        query.setParameter("resourceId", resourceId);
+        query.getResultList();
     }
 
 

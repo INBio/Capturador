@@ -20,6 +20,6 @@ public interface DublinCoreElementEAOLocal extends DublinCoreElementDAO {
 
     //public java.util.List<org.inbio.commons.dublincore.persistence.ara.DublinCoreElement> findAllByResourceId(int resourceId);
 
-    
+    public void deleteAllByResourceId(Long resourceId);
     
 }
