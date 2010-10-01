@@ -115,6 +115,11 @@
                                         <webuijsf:hyperlink actionExpression="#{Header.menuModuleGeographicalLayers_action}" id="menuModuleGeographicalLayers_action"
                                                             text="#{resources.menuModuleGeographicalLayers}" visible="false"/>
                                     </li>
+
+                                    <li>
+                                        <webuijsf:hyperlink actionExpression="#{Header.menuModuleDublinCore_action}" id="menuModuleDublinCore_action"
+                                                            text="#{resources.menuModuleDublinCore}" visible="false"/>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="security">
