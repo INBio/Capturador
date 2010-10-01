@@ -599,6 +599,51 @@
 
     <!-- FINAL MODULO DE TRANSACCIONES -->
 
+    <managed-bean>
+        <managed-bean-name>taxonomy$ListTaxonomy</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.taxonomy.ListTaxonomy</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>taxonomy$NewTaxonomy</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.taxonomy.NewTaxonomy</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>taxonomy$TaxonSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.taxonomy.TaxonSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>taxonomy$EditTaxonomy2</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.taxonomy.EditTaxonomy2</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+
+    <!-- MODULO DE DUBLIN CORE -->
+    <managed-bean>
+        <managed-bean-name>dublincore$NewDublinCore</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.dublincore.NewDublinCore</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>dublincore$EditDublinCore</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.dublincore.EditDublinCore</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>dublincore$DublinCoreSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.dublincore.DublinCoreSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>dublincore$ListDublinCore</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.dublincore.ListDublinCore</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <!-- FIN MODULO DE DUBLIN CORE -->
 
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS DE NAVEGACION ENTRE LOS DIFERENTES JSP'S -->
 
@@ -1592,26 +1637,35 @@
         </navigation-case>
     </navigation-rule>
     <!-- FIN MODULO DE TRANSACCIONES -->
-    <managed-bean>
-        <managed-bean-name>taxonomy$ListTaxonomy</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.taxonomy.ListTaxonomy</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>taxonomy$NewTaxonomy</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.taxonomy.NewTaxonomy</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>taxonomy$TaxonSessionBean</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.taxonomy.TaxonSessionBean</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
-        <managed-bean-name>taxonomy$EditTaxonomy2</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.taxonomy.EditTaxonomy2</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <!-- MODULO DE DUBLIN CORE -->
+    <navigation-rule>
+        <from-view-id>/dublincore/ListDublinCore.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/dublincore/NewDublinCore.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/dublincore/EditDublinCore.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/dublincore/EditDublinCore.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/dublincore/ListDublinCore.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/dublincore/NewDublinCore.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/dublincore/ListDublinCore.jsp</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <!-- FIN MODULO DE DUBLIN CORE -->
 </faces-config>
 
 
