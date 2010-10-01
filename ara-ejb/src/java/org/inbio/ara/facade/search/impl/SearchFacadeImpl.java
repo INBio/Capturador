@@ -41,6 +41,7 @@ import org.inbio.ara.dto.inventory.IdentificationDTOFactory;
 import org.inbio.ara.dto.inventory.IdentifierDTO;
 import org.inbio.ara.dto.inventory.SpecimenDTO;
 import org.inbio.ara.dto.inventory.SpecimenDTOFactory;
+import org.inbio.ara.dto.transaction.TransactedSpecimenDTO;
 import org.inbio.ara.dto.transaction.TransactionDTO;
 import org.inbio.ara.dto.transaction.TransactionDTOFactory;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
@@ -1305,9 +1306,9 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      * @param offset How many results I want
      * @return List of transactions
      */
-    public List<TransactionDTO> searchTransactionsByCriteria(
-            TransactionDTO inputDTO, int base, int offset) {
-        Set<Long> transactionsIds = getTransactionsIds(inputDTO);
+    public List<TransactionDTO> searchTransactionsByCriteria(TransactionDTO inputTransactionDTO,
+            TransactedSpecimenDTO inputTransactedSpecimenDTO, int base, int offset) {
+        Set<Long> transactionsIds = getTransactionsIds(inputTransactionDTO, inputTransactedSpecimenDTO);
         List<Transaction> transactionsList = new ArrayList();
 
         transactionsList = getEntities(transactionsIds,
@@ -1322,29 +1323,39 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      * @param inputDTO Built in the advanced search
      * @return Set of identification Ids.
      */
-    public Set<Long> getTransactionsIds(TransactionDTO inputDTO) {
+    public Set<Long> getTransactionsIds(TransactionDTO inputTransactionDTO,
+            TransactedSpecimenDTO inputTransactedSpecimenDTO) {
         Set<Long> transactionIds = new HashSet();
         boolean firstFilter = true; //helps with the intersection of data
 
-        Long collectionId = inputDTO.getCollectionId();
+        Long collectionId = inputTransactionDTO.getCollectionId();
 
-        Long transactionId = inputDTO.getTransactionId();
-        String invoiceNumber = inputDTO.getInvoiceNumber();
-        String description = inputDTO.getDescription();
-        String catalogNumber = inputDTO.getCatalogNumber();
+        Long transactionId = inputTransactionDTO.getTransactionId();
+        String invoiceNumber = inputTransactionDTO.getInvoiceNumber();
+        String description = inputTransactionDTO.getDescription();
         
-        Long estimatedSpecimenCount = inputDTO.getEstimatedSpecimenCount();
-        Long senderInstitutionId = inputDTO.getSenderInstitutionId();
-        Long senderPersonId = inputDTO.getSenderPersonId();
-        Long receiverInstitutionId = inputDTO.getReceiverInstitutionId();
-        Long receiverPersonId = inputDTO.getReceiverPersonId();
-        Long transactionTypeId = inputDTO.getTransactionTypeId();
+        
+        Long estimatedSpecimenCount = inputTransactionDTO.getEstimatedSpecimenCount();
+        Long senderInstitutionId = inputTransactionDTO.getSenderInstitutionId();
+        Long senderPersonId = inputTransactionDTO.getSenderPersonId();
+        Long receiverInstitutionId = inputTransactionDTO.getReceiverInstitutionId();
+        Long receiverPersonId = inputTransactionDTO.getReceiverPersonId();
+        Long transactionTypeId = inputTransactionDTO.getTransactionTypeId();
 
-        Calendar initialTransactionDate = inputDTO.getTransactionDate();
-        Calendar finalTransactionDate = inputDTO.getFinalTransactionDate();
-        Calendar initialExpirationDate = inputDTO.getExpirationDate();
-        Calendar finalExpirationDate = inputDTO.getFinalExpirationDate();
+        Calendar initialTransactionDate = inputTransactionDTO.getTransactionDate();
+        Calendar finalTransactionDate = inputTransactionDTO.getFinalTransactionDate();
+        Calendar initialExpirationDate = inputTransactionDTO.getExpirationDate();
+        Calendar finalExpirationDate = inputTransactionDTO.getFinalExpirationDate();
 
+        // Campos del Transacted Specimen DTO
+        String catalogNumber = inputTransactedSpecimenDTO.getCatalogNumber();
+        Boolean waitingForReturn = inputTransactedSpecimenDTO.getWaitingForReturn();
+        Calendar initialDeliveryDate = inputTransactedSpecimenDTO.getDeliveryDate();
+        Calendar finalDeliveryDate = inputTransactedSpecimenDTO.getFinalDeliveryDate();
+        Calendar initialReceivingDate = inputTransactedSpecimenDTO.getReceivingDate();
+        Calendar finalReceivingDate = inputTransactedSpecimenDTO.getFinalReceivingDate();
+        Long transactedSpecimenStatusId = inputTransactedSpecimenDTO.getTransactedSpecimenStatusId();
+        String transactedSpecimenDescription = inputTransactedSpecimenDTO.getDescription();
 
         if (transactionId != null) {
             if (transactionEAOImpl.existsTransactionId(transactionId, collectionId)) {
@@ -1374,23 +1385,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             else {
                 transactionIds.retainAll(newTransactionIds);
             }
-        }
-
-        if (catalogNumber != null && !catalogNumber.trim().isEmpty()) {
-            List<Long> specimen = findSpecimenByCatalogNumber(catalogNumber);
-            List<Long> newTransactionIds = new ArrayList();
-            if (specimen.size() > 0) {
-                newTransactionIds =
-                    this.transactionEAOImpl.findBySpecimenId(collectionId, specimen.get(0));
-            }
-            if (firstFilter) {
-                transactionIds.addAll(newTransactionIds);
-                firstFilter = false;
-            }
-            else {
-                transactionIds.retainAll(newTransactionIds);
-            }
-
         }
 
         if (estimatedSpecimenCount != null) {
@@ -1488,12 +1482,77 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                 transactionIds.retainAll(newTransactionIds);
             }
         }
+
+        if (catalogNumber != null && !catalogNumber.trim().isEmpty()) {
+            List<Long> specimen = findSpecimenByCatalogNumber(catalogNumber);
+            List<Long> newTransactionIds = new ArrayList();
+            if (specimen.size() > 0) {
+                newTransactionIds =
+                    this.transactionEAOImpl.findBySpecimenId(collectionId, specimen.get(0));
+            }
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (initialDeliveryDate != null || finalDeliveryDate != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByDeliveryDateRange(initialDeliveryDate, finalDeliveryDate, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (initialReceivingDate != null || finalReceivingDate != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByReceivingDateRange(initialReceivingDate, finalReceivingDate, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (transactedSpecimenStatusId != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByTransactedSpecimenStatusId(transactedSpecimenStatusId, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (transactedSpecimenDescription != null && !transactedSpecimenDescription.trim().isEmpty()) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByTransactedSpecimenDescription(transactedSpecimenDescription, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
         
         return transactionIds;
     }
 
-    public Long countTransactionsByCriteria(TransactionDTO inputDTO) {
-        Integer i = new Integer(getTransactionsIds(inputDTO).size());
+    public Long countTransactionsByCriteria(TransactionDTO inputTransactionDTO,
+            TransactedSpecimenDTO inputTransactedSpecimenDTO) {
+        Integer i = new Integer(getTransactionsIds(inputTransactionDTO, inputTransactedSpecimenDTO).size());
         return i.longValue();
     }
 
@@ -1523,11 +1582,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         //Retrieve entities
         transactionsList = getEntities(transactionIds,
                 Transaction.class, base, offset);
-        //return gathObsDTOFactory.createDTOList(gathObsList);
-
         return transactionFacadeImpl.updateNames(transactionDTOFactory.createDTOList(transactionsList));
-        //return inventoryFacadeImpl.updateGathObsCountryAndProvinceName(
-          //      gathObsDTOFactory.createDTOList(transactionsList));
     }
 
     private Set<Long> unstructuredTransactionsQuery(String[] parts, Long collectionId) {

@@ -2382,6 +2382,23 @@ ALTER TABLE ara.transacted_specimen
 ALTER TABLE ara.transacted_specimen
     ADD COLUMN description character varying(500);
 
+--2010.07.30 echinchilla
+-- Agregar columna de En Espera de Devolución para transacted_specimen.
+ALTER TABLE ara.transacted_specimen
+   ADD COLUMN waiting_for_return boolean NOT NULL;
+
+--2010.08.05 echinchilla
+-- Cambiar el tipo de la columna CREATION_DATE de TIMESTAMP a DATE
+-- en la tabla TRANSACTED_SPECIMEN.
+ALTER TABLE ara.transacted_specimen
+	ALTER COLUMN creation_date TYPE date;
+
+--2010.08.05 echinchilla
+-- Agregar columna de fecha y hora de creación a la tabla
+-- TRANSACTED_SPECIMEN, para ordenar los especímenes.
+ALTER TABLE ara.transacted_specimen
+	ADD COLUMN creation_date_and_time timestamp NOT NULL;
+
 ---------------------------------------------------
 ----------  FIN MÓDULO DE TRANSACCIONES  ----------
 ---------------------------------------------------

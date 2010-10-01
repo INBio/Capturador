@@ -1,11 +1,27 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Ara - Capture Species and Specimen Data
+ *
+ * Copyright © 2009  INBio (Instituto Nacional de Biodiversidad).
+ * Heredia, Costa Rica.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.facade.transaction.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import org.inbio.ara.dto.agent.InstitutionDTO;
@@ -14,7 +30,6 @@ import javax.ejb.Stateless;
 import org.inbio.ara.dto.agent.InstitutionDTOFactory;
 import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.PersonDTOFactory;
-import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTOFactory;
 import org.inbio.ara.dto.transaction.TransactedSpecimenDTO;
 import org.inbio.ara.dto.transaction.TransactedSpecimenDTOFactory;
@@ -24,19 +39,16 @@ import org.inbio.ara.eao.agent.InstitutionEAOLocal;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
 import org.inbio.ara.eao.collection.CollectionEAOLocal;
 import org.inbio.ara.eao.identification.IdentificationEAOLocal;
-import org.inbio.ara.eao.identification.impl.IdentificationEAOImpl;
 import org.inbio.ara.eao.selectionlist.SelectionListValueLocalEAO;
 import org.inbio.ara.eao.specimen.SpecimenEAOLocal;
 import org.inbio.ara.eao.transaction.TransactedSpecimenEAOLocal;
 import org.inbio.ara.eao.transaction.TransactedSpecimenStatusEAOLocal;
 import org.inbio.ara.eao.transaction.TransactionEAOLocal;
 import org.inbio.ara.eao.transaction.TransactionTypeEAOLocal;
-import org.inbio.ara.persistence.SelectionListGenericEntity;
 import org.inbio.ara.persistence.collection.Collection;
 import org.inbio.ara.persistence.identification.Identification;
 import org.inbio.ara.persistence.institution.Institution;
 import org.inbio.ara.persistence.person.Person;
-import org.inbio.ara.persistence.person.PersonInstitutionPK;
 import org.inbio.ara.persistence.specimen.Specimen;
 import org.inbio.ara.persistence.transaction.TransactedSpecimen;
 import org.inbio.ara.persistence.transaction.TransactedSpecimenPK;
@@ -75,8 +87,8 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
     @EJB
     private SpecimenEAOLocal specimenEAOImpl;
 
-    @EJB
-    private SelectionListValueLocalEAO selectionListValueEAOImpl;
+    /*@EJB
+    private SelectionListValueLocalEAO selectionListValueEAOImpl;*/
 
     @EJB
     private IdentificationEAOLocal identificationEAOImpl;
@@ -91,19 +103,29 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
 
     private InstitutionDTOFactory institutionDTOFactory = new InstitutionDTOFactory();
 
-    private SelectionListDTOFactory selecionListDTOFactory =
-            new SelectionListDTOFactory();
+    /*private SelectionListDTOFactory selecionListDTOFactory =
+    new SelectionListDTOFactory();*/
 
+    /**
+     * Cuenta las transacciones asociadas a una colección
+     * @param collectionId
+     * @return
+     */
     public Long countTransaction(Long collectionId) {
         return this.transactionEAOImpl.countTransactionByCollecionId(collectionId);
     }
 
+    /**
+     * Cuenta los especímenes transados asociados a una transacción
+     * @param transactionId
+     * @return
+     */
     public Long countTransactedSpecimen(Long transactionId) {
         return this.transactedSpecimenEAOImpl.countTransactedSpecimenByTransactionId(transactionId);
     }
 
     /**
-     * Retrive all people paginated
+     * Retrive all transactions paginated
      * @return
      */
     public List<TransactionDTO> getAllTransactionPaginated(int firstResult, int maxResults, Long collectionId) {
@@ -115,12 +137,10 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
         }
         List<TransactionDTO> update = updateNames(result);
         return update;
-        //return transactionDTOFactory.createDTOList(transactionEAOImpl.
-          //      findAllPaginated(Transaction.class, firstResult, maxResults));
     }
 
     /**
-     * Retrive all people paginated
+     * Retrive all transacted specimens paginated
      * @return
      */
     public List<TransactedSpecimenDTO> getAllTransactedSpecimenPaginated(int firstResult, int maxResults, Long transactionId) {
@@ -129,17 +149,11 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
         if (result == null) {
             return null;
         }
-
         return getReadOnlyFields(result);
-        //return getSpecimenTaxon(update);
-        //return transactionDTOFactory.createDTOList(transactionEAOImpl.
-        //      findAllPaginated(Transaction.class, firstResult, maxResults));
     }
 
     /**
-     *
      * Función que llena los campos read-only para cada espécimen transado
-     *
      * @param tsDTOList
      * @return
      */
@@ -158,36 +172,7 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
     }
 
     /**
-     * To update the scientificName
-     * @param list
-     * @return
-     */
-    public List<TransactedSpecimenDTO> getSpecimenTaxon(List<TransactedSpecimenDTO> list) {
-        List<TransactedSpecimenDTO> result = new ArrayList<TransactedSpecimenDTO>();
-        for (TransactedSpecimenDTO dto : list) {
-            String taxones = "";
-
-            List<Identification> identificaciones = this.identificationEAOImpl.
-            findBySpecimenId(dto.getTransactedSpecimenPK().getSpecimenId());
-            for (int i = 1; i <= identificaciones.size(); i++) {
-                Identification aux = identificaciones.get(i - 1);
-                if (i == identificaciones.size()) {
-                    taxones += aux.getTaxon().getDefaultName();
-                }
-                else {
-                    taxones += aux.getTaxon().getDefaultName() + " , ";
-                }
-            }
-            dto.setTaxonName(taxones);
-            result.add(dto);
-        }
-        return result;
-    }
-
-    /**
-     *
      * Función que trae el nombre del taxón asociado a un SpecimenId
-     *
      * @param tsDTO
      * @return
      */
@@ -210,14 +195,11 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
     }
 
     /**
-     *
      * Función que trae el CatalogNumber asociado a un SpecimenId
-     *
      * @param transactedSpecimenDTO
      * @return
      */
     public TransactedSpecimenDTO getCatalogNumber(TransactedSpecimenDTO transactedSpecimenDTO) {
-
         Specimen specimen;
         specimen = this.specimenEAOImpl.findById(Specimen.class, transactedSpecimenDTO.getTransactedSpecimenPK().getSpecimenId());
         transactedSpecimenDTO.setCatalogNumber(specimen.getCatalogNumber());
@@ -225,14 +207,11 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
     }
 
     /**
-     *
      * Función que trae el nombre asociado a un id de TransactedSpecimenStatus
-     * 
      * @param transactedSpecimenDTO
      * @return
      */
     public TransactedSpecimenDTO getTransactedSpecimenStatus(TransactedSpecimenDTO transactedSpecimenDTO) {
-
         TransactedSpecimenStatus transactedSpecimenStatus;
         transactedSpecimenStatus = this.transactedSpecimenStatusEAOImpl.findById(TransactedSpecimenStatus.class,
                 transactedSpecimenDTO.getTransactedSpecimenStatusId());
@@ -252,9 +231,7 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
     }
 
     /**
-     * 
      * Método para eliminar una lista de especímenes transados
-     * 
      * @param selectedTransactedSpecimens
      */
     public void deleteTransactedSpecimens(ArrayList<TransactedSpecimenDTO> selectedTransactedSpecimens) {
@@ -268,9 +245,7 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
     }
 
     /**
-     *
      * Método para editar una lista de especímenes transados.
-     *
      * @param selectedTransactedSpecimens
      * @param tDTO
      */
@@ -281,15 +256,36 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
             transactionId = tsDTO.getTransactedSpecimenPK().getTransactionId();
             specimenId = tsDTO.getTransactedSpecimenPK().getSpecimenId();
             tDTO.setTransactedSpecimenPK(new TransactedSpecimenPK(specimenId, transactionId));
+            tDTO.setCrationDateAndTime(tsDTO.getCrationDateAndTime());
+            tDTO.setWaitingForReturn(tsDTO.getWaitingForReturn());
             TransactedSpecimen transactedSpecimenEntity = this.transactedSpecimenEAOImpl.getTransactedSpecimenById(transactionId, specimenId).get(0);
             transactedSpecimenEntity =  this.transactedSpecimenDTOFactory.updateEntityWithPlainValues(tDTO, transactedSpecimenEntity);
             this.transactedSpecimenEAOImpl.update(transactedSpecimenEntity);
         }
-
     }
 
     /**
-     *
+     * Método para la devolución de un espécimen
+     * @param catalogNumber
+     * @param receivingDate
+     * @param transactedSpecimenStatusId
+     */
+    public void returnTransactedSpecimen (String catalogNumber, Calendar receivingDate, Long transactedSpecimenStatusId) {
+        Long specimenId = getSpecimenIdByCatalogNumber(catalogNumber);
+
+        // traer el id de la última transacción que registró el espécimen a devolver
+        TransactedSpecimen transactedSpecimenEntity = this.transactedSpecimenEAOImpl.getWaitingForReturnTransactionId(specimenId);
+
+        TransactedSpecimenDTO tsDTO = this.transactedSpecimenDTOFactory.createDTO(transactedSpecimenEntity);
+        tsDTO.setReceivingDate(receivingDate);
+        tsDTO.setTransactedSpecimenStatusId(transactedSpecimenStatusId);
+        tsDTO.setWaitingForReturn(false);
+        transactedSpecimenEntity = this.transactedSpecimenDTOFactory.updateEntityWithPlainValues(tsDTO, transactedSpecimenEntity);
+        this.transactedSpecimenEAOImpl.update(transactedSpecimenEntity);
+    }
+
+    /**
+     * Método que setea campos read-only de una transacción
      * @param transactionDTO
      * @return
      */
@@ -326,8 +322,6 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
                 
         }
 
-
-
         collection = this.collectionEAOImpl.findById(Collection.class, transactionDTO.getCollectionId());
         transactionDTO.setCollectionName(collection.getName());
         
@@ -337,11 +331,14 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
         return transactionDTO;
     }
 
+    /**
+     * Método que recorre lista de transacciones para setear campos read-only
+     * @param tDTOList
+     * @return
+     */
     public List<TransactionDTO>
             updateNames(List<TransactionDTO> tDTOList) {
-
         List<TransactionDTO> resultTransactionDTOList = new ArrayList<TransactionDTO>();
-
         for (TransactionDTO tDTO : tDTOList) {
             resultTransactionDTOList.add(updateNames(tDTO));
         }
@@ -354,9 +351,11 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
      * @return
      */
     public void updateTransaction(TransactionDTO tDTO) {
+        //En caso de "Institución no Asociada"
         if(tDTO.getSenderInstitutionId() != null &&
            tDTO.getSenderInstitutionId() == -1)
             tDTO.setSenderInstitutionId(null);
+        //En caso de "Institución no Asociada"
         if(tDTO.getReceiverInstitutionId() != null &&
            tDTO.getReceiverInstitutionId() == -1)
             tDTO.setReceiverInstitutionId(null);
@@ -368,18 +367,10 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
     }
 
     /**
-     * @param selectionListEntityId
-     * @param collectionId
+     * Método para crear una transacción
+     * @param transactionDTO
      * @return
      */
-    /*public List<SelectionListDTO>
-    getAllSelectionListElementsByCollection(Long selectionListEntityId,
-    Long collectionId) {
-    List<SelectionListGenericEntity> slgeList = selectionListValueEAOImpl.
-    findAllByCollectionId(selectionListEntityId, collectionId);
-    return this.selecionListDTOFactory.createDTOList(slgeList);
-    }*/
-
     public TransactionDTO saveTransaction(TransactionDTO transactionDTO) {
         if(transactionDTO.getSenderInstitutionId() != null &&
            transactionDTO.getSenderInstitutionId() == -1)
@@ -400,22 +391,37 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
         return aux;
     }
 
+    /**
+     * Método
+     * @param transactionDTO
+     * @param transactedSpecimenDTO
+     * @return
+     */
     public TransactedSpecimenDTO
-            saveTransactedSpecimen(TransactionDTO transactionDTO, TransactedSpecimenDTO transactedSpecimenDTO, String createdBy) {
+            saveTransactedSpecimen(TransactionDTO transactionDTO, TransactedSpecimenDTO transactedSpecimenDTO) {
         Long specimenId = getSpecimenIdByCatalogNumber(transactedSpecimenDTO.getCatalogNumber());
-        
-        transactedSpecimenDTO.setTransactedSpecimenPK(new TransactedSpecimenPK(specimenId, transactionDTO.getTransactionId()));
-        transactedSpecimenDTO.setUserName(createdBy);
-        transactedSpecimenDTO.setTransactionTypeId(transactionDTO.getTransactionTypeId());
-
-        TransactedSpecimen entity = this.transactedSpecimenDTOFactory.createPlainEntity(transactedSpecimenDTO);
-        this.transactedSpecimenEAOImpl.create(entity);
-        return this.transactedSpecimenDTOFactory.createDTO(entity);
+        TransactedSpecimen transactedSpecimenEntity = this.transactedSpecimenEAOImpl.getWaitingForReturnTransactionId(specimenId);
+        if (transactedSpecimenEntity == null) {
+            transactedSpecimenDTO.setTransactedSpecimenPK(new TransactedSpecimenPK(specimenId, transactionDTO.getTransactionId()));
+            transactedSpecimenDTO.setTransactionTypeId(transactionDTO.getTransactionTypeId());
+            Calendar currentDateAndTime = Calendar.getInstance();
+            transactedSpecimenDTO.setCrationDateAndTime(currentDateAndTime);
+            TransactedSpecimen entity = this.transactedSpecimenDTOFactory.createPlainEntity(transactedSpecimenDTO);
+            this.transactedSpecimenEAOImpl.create(entity);
+            return this.transactedSpecimenDTOFactory.createDTO(entity);
+        }
+        else {
+            return null;
+        }
     }
 
+    /**
+     * Método que obtiene la lista de personas asociadas a una institución
+     * @param institutionId
+     * @return
+     */
     public List<PersonDTO> getPersonsByInstitutionId(Long institutionId) {
         if (institutionId == null || institutionId != -1)
-        //if (institutionId != -1)
             return personDTOFactory.createDTOList(transactionEAOImpl.
                 getPersonsByInstitution(institutionId));
         else
@@ -431,11 +437,20 @@ public class TransactionFacadeImpl implements TransactionFacadeRemote {
         return institutionDTOFactory.createDTOList(transactionEAOImpl.getAllInstitutions());
     }
 
+    /**
+     * Trae la lista de personas sin institución asociada
+     * @return
+     */
     public List<PersonDTO> getPersonsWithoutInstitution() {
         return personDTOFactory.createDTOList(transactionEAOImpl.
                 getPersonsWithoutInstitution());
     }
 
+    /**
+     * Método que obtiene el specimenId asociado a un número de catálogo
+     * @param catalogNumber
+     * @return
+     */
     public Long getSpecimenIdByCatalogNumber (String catalogNumber) {
         return specimenEAOImpl.findByCatalogNumber(catalogNumber);
     }

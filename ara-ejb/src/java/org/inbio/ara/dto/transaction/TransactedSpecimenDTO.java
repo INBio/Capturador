@@ -1,6 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Ara - Capture Species and Specimen Data
+ *
+ * Copyright © 2009  INBio (Instituto Nacional de Biodiversidad).
+ * Heredia, Costa Rica.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.dto.transaction;
@@ -18,19 +33,20 @@ public class TransactedSpecimenDTO extends GenericDTO {
     private Calendar deliveryDate;
     private Calendar receivingDate;
     private String description;
-    //private Long specimenId;
+    private Boolean waitingForReturn;
+    private Calendar crationDateAndTime;
     private Long transactedSpecimenStatusId;
-    //private Long transactionId;
     private Long transactionTypeId;
 
     private boolean selected;
 
-    // read-only
+    // <editor-fold defaultstate="collapsed" desc="Variables Read-Only">
     private String catalogNumber;
-    // read-only
     private String taxonName;
-    // read-only
     private String transactedSpecimenStatus;
+    private Calendar finalDeliveryDate;
+    private Calendar finalReceivingDate;
+    // </editor-fold>
 
     /**
      * @return the transactedSpecimenPK
@@ -89,18 +105,32 @@ public class TransactedSpecimenDTO extends GenericDTO {
     }
 
     /**
-     * @return the specimen
+     * @return the waitingForReturn
      */
-    /*public Long getSpecimenId() {
-    return specimenId;
-    }*/
+    public Boolean getWaitingForReturn() {
+        return waitingForReturn;
+    }
 
     /**
-     * @param specimen the specimen to set
+     * @param waitingForReturn the waitingForReturn to set
      */
-    /*public void setSpecimenId(Long specimenId) {
-    this.specimenId = specimenId;
-    }*/
+    public void setWaitingForReturn(Boolean waitingForReturn) {
+        this.waitingForReturn = waitingForReturn;
+    }
+
+    /**
+     * @return the crationDateAndTime
+     */
+    public Calendar getCrationDateAndTime() {
+        return crationDateAndTime;
+    }
+
+    /**
+     * @param crationDateAndTime the crationDateAndTime to set
+     */
+    public void setCrationDateAndTime(Calendar crationDateAndTime) {
+        this.crationDateAndTime = crationDateAndTime;
+    }
 
     /**
      * @return the transactedSpecimenStatusId
@@ -115,20 +145,6 @@ public class TransactedSpecimenDTO extends GenericDTO {
     public void setTransactedSpecimenStatusId(Long transactedSpecimenStatusId) {
         this.transactedSpecimenStatusId = transactedSpecimenStatusId;
     }
-
-    /**
-     * @return the transaction
-     */
-    /*public Long getTransactionId() {
-    return transactionId;
-    }*/
-
-    /**
-     * @param transaction the transaction to set
-     */
-    /*public void setTransactionId(Long transactionId) {
-    this.transactionId = transactionId;
-    }*/
 
     /**
      * @return the transactionTypeId
@@ -198,5 +214,33 @@ public class TransactedSpecimenDTO extends GenericDTO {
      */
     public void setTransactedSpecimenStatus(String transactedSpecimenStatus) {
         this.transactedSpecimenStatus = transactedSpecimenStatus;
+    }
+
+    /**
+     * @return the finalDeliveryDate
+     */
+    public Calendar getFinalDeliveryDate() {
+        return finalDeliveryDate;
+    }
+
+    /**
+     * @param finalDeliveryDate the finalDeliveryDate to set
+     */
+    public void setFinalDeliveryDate(Calendar finalDeliveryDate) {
+        this.finalDeliveryDate = finalDeliveryDate;
+    }
+
+    /**
+     * @return the finalReceivingDate
+     */
+    public Calendar getFinalReceivingDate() {
+        return finalReceivingDate;
+    }
+
+    /**
+     * @param finalReceivingDate the finalReceivingDate to set
+     */
+    public void setFinalReceivingDate(Calendar finalReceivingDate) {
+        this.finalReceivingDate = finalReceivingDate;
     }
 }

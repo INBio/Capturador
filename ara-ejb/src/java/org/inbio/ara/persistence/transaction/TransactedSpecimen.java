@@ -1,6 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Ara - Capture Species and Specimen Data
+ *
+ * Copyright © 2009  INBio (Instituto Nacional de Biodiversidad).
+ * Heredia, Costa Rica.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.persistence.transaction;
@@ -10,14 +25,10 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.inbio.ara.persistence.LogGenericEntity;
-import org.inbio.ara.persistence.specimen.Specimen;
 
 /**
  *
@@ -38,29 +49,15 @@ public class TransactedSpecimen extends LogGenericEntity {
     private Calendar receivingDate;
     @Column(name = "description")
     private String description;
+    @Column(name = "waiting_for_return")
+    private Boolean waitingForReturn;
+    @Column(name = "creation_date_and_time")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Calendar creationDateAndTime;
 
-    /*@JoinColumn(name = "specimen_id", referencedColumnName = "specimen_id", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Specimen specimen;*/
-
-    /*@Column (name = "specimen_id")
-    private Long specimenId;*/
-
-    /*@JoinColumn(name = "transacted_specimen_status_id", referencedColumnName = "transacted_specimen_status_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private TransactedSpecimenStatus transactedSpecimenStatusId;*/
     @Column (name = "transacted_specimen_status_id")
     private Long transactedSpecimenStatusId;
 
-    /*@JoinColumn(name = "transaction_id", referencedColumnName = "transaction_id", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Transaction transaction;*/
-    /*@Column (name = "transaction_id")
-    private Long transactionId;*/
-
-    /*@JoinColumn(name = "transaction_type_id", referencedColumnName = "transaction_type_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TransactionType transactionTypeId;*/
     @Column(name = "transaction_type_id")
     private Long transactionTypeId;
 
@@ -80,26 +77,44 @@ public class TransactedSpecimen extends LogGenericEntity {
         this.transactedSpecimenPK = new TransactedSpecimenPK(specimenId, transactionId);
     }
 
+    /**
+     * @return the transactedSpecimenPK
+     */
     public TransactedSpecimenPK getTransactedSpecimenPK() {
         return transactedSpecimenPK;
     }
 
+    /**
+     * @param transactedSpecimenPK the transactedSpecimenPK to set
+     */
     public void setTransactedSpecimenPK(TransactedSpecimenPK transactedSpecimenPK) {
         this.transactedSpecimenPK = transactedSpecimenPK;
     }
 
+    /**
+     * @return the deliveryDate
+     */
     public Calendar getDeliveryDate() {
         return deliveryDate;
     }
 
+    /**
+     * @param deliveryDate the deliveryDate to set
+     */
     public void setDeliveryDate(Calendar deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
+    /**
+     * @return the receivingDate
+     */
     public Calendar getReceivingDate() {
         return receivingDate;
     }
 
+    /**
+     * @param receivingDate the receivingDate to set
+     */
     public void setReceivingDate(Calendar receivingDate) {
         this.receivingDate = receivingDate;
     }
@@ -118,34 +133,60 @@ public class TransactedSpecimen extends LogGenericEntity {
         this.description = description;
     }
 
-    /*public Long getSpecimenId() {
-    return specimenId;
+    /**
+     *
+     * @return the waitingForReturn
+     */
+    public Boolean getWaitingForReturn() {
+        return waitingForReturn;
     }
 
-    public void setSpecimenId(Long specimenId) {
-    this.specimenId = specimenId;
-    }*/
+    /**
+     *
+     * @param waitingForReturn the waitingForReturn to set
+     */
+    public void setWaitingForReturn(Boolean waitingForReturn) {
+        this.waitingForReturn = waitingForReturn;
+    }
 
+    /**
+     * @return the creationDateAndTime
+     */
+    public Calendar getCreationDateAndTime() {
+        return creationDateAndTime;
+    }
+
+    /**
+     * @param creationDateAndTime the creationDateAndTime to set
+     */
+    public void setCreationDateAndTime(Calendar creationDateAndTime) {
+        this.creationDateAndTime = creationDateAndTime;
+    }
+
+    /**
+     * @return the transactedSpecimenStatusId
+     */
     public Long getTransactedSpecimenStatusId() {
         return transactedSpecimenStatusId;
     }
 
+    /**
+     * @param transactedSpecimenStatusId the transactedSpecimenStatusId to set
+     */
     public void setTransactedSpecimenStatusId(Long transactedSpecimenStatusId) {
         this.transactedSpecimenStatusId = transactedSpecimenStatusId;
     }
 
-    /*public Long getTransactionId() {
-    return transactionId;
-    }
-
-    public void setTransactionId(Long transactionId) {
-    this.transactionId = transactionId;
-    }*/
-
+    /**
+     * @return the transactionTypeId
+     */
     public Long getTransactionTypeId() {
         return transactionTypeId;
     }
 
+    /**
+     * @param transactionTypeId the transactionTypeId to set
+     */
     public void setTransactionTypeId(Long transactionTypeId) {
         this.transactionTypeId = transactionTypeId;
     }

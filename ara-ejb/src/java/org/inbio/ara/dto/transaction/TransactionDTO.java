@@ -1,6 +1,21 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Ara - Capture Species and Specimen Data
+ *
+ * Copyright © 2009  INBio (Instituto Nacional de Biodiversidad).
+ * Heredia, Costa Rica.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.dto.transaction;
@@ -40,7 +55,6 @@ public class TransactionDTO extends GenericDTO {
     //Variables utilizadas para búsqueda avanzada
     private Calendar finalTransactionDate;
     private Calendar finalExpirationDate;
-    private String catalogNumber;
 // </editor-fold>
 
     /**
@@ -335,19 +349,5 @@ public class TransactionDTO extends GenericDTO {
      */
     public void setFinalExpirationDate(Calendar finalExpirationDate) {
         this.finalExpirationDate = finalExpirationDate;
-    }
-
-    /**
-     * @return the catalogNumber
-     */
-    public String getCatalogNumber() {
-        return catalogNumber;
-    }
-
-    /**
-     * @param catalogNumber the catalogNumber to set
-     */
-    public void setCatalogNumber(String catalogNumber) {
-        this.catalogNumber = catalogNumber;
     }
 }

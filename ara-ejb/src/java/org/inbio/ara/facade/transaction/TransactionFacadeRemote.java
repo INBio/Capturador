@@ -1,16 +1,31 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Ara - Capture Species and Specimen Data
+ *
+ * Copyright © 2009  INBio (Instituto Nacional de Biodiversidad).
+ * Heredia, Costa Rica.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 package org.inbio.ara.facade.transaction;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.Remote;
 import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
-import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.transaction.TransactedSpecimenDTO;
 import org.inbio.ara.dto.transaction.TransactionDTO;
 
@@ -32,7 +47,7 @@ public interface TransactionFacadeRemote {
     public TransactionDTO saveTransaction(org.inbio.ara.dto.transaction.TransactionDTO transactionDTO);
 
     public TransactedSpecimenDTO saveTransactedSpecimen(org.inbio.ara.dto.transaction.TransactionDTO transactionDTO,
-            org.inbio.ara.dto.transaction.TransactedSpecimenDTO transactedSpecimenDTO, String createdBy);
+            org.inbio.ara.dto.transaction.TransactedSpecimenDTO transactedSpecimenDTO);
 
     public void deleteTransaction(java.lang.Long transactionId);
 
@@ -40,31 +55,16 @@ public interface TransactionFacadeRemote {
 
     public void editTransactedSpecimens(ArrayList<TransactedSpecimenDTO> selectedTransactedSpecimens, TransactedSpecimenDTO ts);
 
+    public void returnTransactedSpecimen (String catalogNumber, Calendar receivingDate, Long transactedSpecimenStatusId);
+
     public TransactionDTO updateNames(org.inbio.ara.dto.transaction.TransactionDTO dto);
 
     public List<TransactionDTO> updateNames(List<org.inbio.ara.dto.transaction.TransactionDTO> dto);
 
     public void updateTransaction(org.inbio.ara.dto.transaction.TransactionDTO tDTO);
 
-    /**
-     * @param selectionListEntityId look for the Id of a element of the ENUM SelectionListEntity
-     * @param collectionId corresponds to the Id of the current collection
-     * @return
-     * @see org.inbio.ara.dto.inventory.SelectionListEntity
-     */
-//    public List<SelectionListDTO> getAllSelectionListElementsByCollection(Long selectionListEntityId, Long collectionId);
-
-    /**
-     * 
-     * @param institutionId institutionId por el cual se va a filtrar la lista de personas
-     * @return lista de personas asociadas a dicho institutionId
-     */
     public List<PersonDTO> getPersonsByInstitutionId(Long institutionId);
 
-    /**
-     *
-     * @return Lista de todas las instituciones registradas en el sistema
-     */
     public List<InstitutionDTO> getAllInstitutions();
 
 }
