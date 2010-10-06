@@ -31,7 +31,8 @@ public class DublinCoreDescriptionEAOImpl extends BaseEAOImpl<DublinCoreDescript
 	public Long countResourceByTypeId(int resourceTypeId) {
             String hql = "select count(dcd) from DublinCoreDescriptionJPA as dcd ";
             if(resourceTypeId != -1)
-                hql = " where dcd.resourceTypeId = :resourceTypeId";
+                hql += " where dcd.resourceTypeId = :resourceTypeId";
+                
             Query query = em.createQuery(hql);
             if(resourceTypeId != -1)
 		query.setParameter("resourceTypeId", resourceTypeId);
