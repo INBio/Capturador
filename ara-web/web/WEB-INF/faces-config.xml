@@ -642,7 +642,6 @@
         <managed-bean-class>org.inbio.ara.dublincore.ListDublinCore</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-
     <!-- FIN MODULO DE DUBLIN CORE -->
 
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS DE NAVEGACION ENTRE LOS DIFERENTES JSP'S -->
@@ -814,6 +813,12 @@
         <navigation-case>
             <from-outcome>breeds</from-outcome>
             <to-view-id>/germplasm/ListBreed.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <!-- Dublin Core -->
+        <navigation-case>
+            <from-outcome>dublincore</from-outcome>
+            <to-view-id>/dublincore/ListDublinCore.jsp</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
@@ -1638,7 +1643,8 @@
     </navigation-rule>
     <!-- FIN MODULO DE TRANSACCIONES -->
         <!-- MODULO DE DUBLIN CORE -->
-    <navigation-rule>
+
+      <navigation-rule>
         <from-view-id>/dublincore/ListDublinCore.jsp</from-view-id>
         <navigation-case>
             <from-outcome>new</from-outcome>
@@ -1667,6 +1673,7 @@
     </navigation-rule>
     <!-- FIN MODULO DE DUBLIN CORE -->
 </faces-config>
+
 
 
 
