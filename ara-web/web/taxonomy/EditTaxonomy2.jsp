@@ -14,10 +14,10 @@
             <webuijsf:html id="html1">
                 <webuijsf:head id="head1">
                     <webuijsf:link id="link1" url="/resources/css/stylesheet.css"/>
-                    <webuijsf:link id="link3" url="http://yui.yahooapis.com/2.8.0r4/build/fonts/fonts-min.css"/>
-                    <webuijsf:link id="link4" url="http://yui.yahooapis.com/2.8.0r4/build/treeview/assets/skins/sam/treeview.css"/>
-                    <webuijsf:script id="script2" type="text/JavaScript" url="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"/>
-                    <webuijsf:script id="script3" type="text/JavaScript" url="http://yui.yahooapis.com/2.8.0r4/build/treeview/treeview-min.js"/>
+                    <webuijsf:link id="link3" url="/resources/js/yui/build/fonts/fonts-min.css"/>
+                    <webuijsf:link id="link4" url="/resources/js/yui/build/treeview/assets/skins/sam/treeview.css"/>
+                    <webuijsf:script id="script2" type="text/JavaScript" url="/resources/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"/>
+                    <webuijsf:script id="script3" type="text/JavaScript" url="/resources/js/yui/build/treeview/treeview-min.js"/>
                     <webuijsf:script id="script7" type="text/JavaScript" url="/resources/js/inbio/Tree/TreeIndicatorEvent.js"/>
                     <webuijsf:script id="script5" type="text/JavaScript" url="/resources/js/inbio/SOAP/SOAPClient.js"/>
                     <webuijsf:script id="script8" type="text/JavaScript" url="/resources/js/inbio/Tree/ClickIndicatorEvent.js"/>
@@ -42,9 +42,9 @@
                                         styleClass="My_Button" value="#{resources.btnSave}"/>
                                     <webuijsf:label for="lbTaxonNodeName" id="lbTaxonNodeName" text="#{taxonomy$TaxonSessionBean.taxonNodeName}"/>
                                 </h:panelGrid>
-                                <webuijsf:tabSet id="tabSet1" lite="true" selected="tabNewTaxonomy" styleClass="My_panel_blue">
+                                <webuijsf:tabSet id="tabSet1" lite="true" selected="#{taxonomy$TaxonSessionBean.taxonTabSelected}" styleClass="My_panel_blue">
                                     <!-- Tab para ingresar los datos de los taxones -->
-                                    <webuijsf:tab id="tabNewTaxonomy" text="#{resources.dataTaxon}">
+                                    <webuijsf:tab id="tabEditTaxonomy" text="#{resources.dataTaxon}">
                                         <h:panelGrid binding="#{taxonomy$EditTaxonomy2.gridTaxonomy}" columns="2" id="gridTaxonomy" style="height: 24px" width="540">
                                             <!--
                                             <div id="tree" style="width:200px; float:left; " title="Taxonomy Tree "></div>
@@ -90,7 +90,7 @@
                                         </h:panelGrid>
                                     </webuijsf:tab>
                                     <!-- Tab para relación entre taxon - indicador -->
-                                    <webuijsf:tab id="tabTaxonIndicatorReferences" rendered="true" text="#{resources.relations_taxon_indicator}">
+                                    <webuijsf:tab id="tabTaxonIndicatorReferences" rendered="true" text="#{resources.relations_taxon_indicator}" visible="#{taxonomy$TaxonSessionBean.ableTabTaxonIndicator}">
                                         <h:panelGrid columns="3" id="taxonIndicator">
                                             <div id="tree" style="width:200px; float:left; " title="Taxonomy Tree "></div>
                                             <h:panelGrid columns="1" id="panelAddRemoveAction">
@@ -98,6 +98,187 @@
                                                 <h:commandButton id="btnRemoveElement" action="#{taxonomy$EditTaxonomy2.btnRemoveTaxonIndicator_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.remove}"/>
                                             </h:panelGrid>
                                             <webuijsf:listbox id="listbox1" items="#{taxonomy$EditTaxonomy2.indicatorRelations}" selected="#{taxonomy$TaxonSessionBean.elementSelected}" />
+                                        </h:panelGrid>
+                                    </webuijsf:tab>
+
+                                    <!-- Tab para relación entre taxon - indicador - regionalidad -->
+                                    <webuijsf:tab id="tabTaxonIndicatorCountry" text="#{resources.taxon_indicator_country}" visible="#{taxonomy$TaxonSessionBean.ableTabTaxonIndicatorCountry}">
+                                        <h:panelGrid columns="1" id="gridTaxonIndicatorCountries" style="height: 24px" width="580">
+                                            <h:panelGrid columns="2" id="gridCountries" style="height: 24px">
+                                                <webuijsf:panelGroup id="groupAttributes" style="height: 24px">
+                                                    <webuijsf:label for="ddIndicators" id="lbIndicators" text="#{resources.relations_taxon_indicator}"/>
+                                                    <webuijsf:dropDown binding="#{taxonomy$EditTaxonomy2.ddIndicators}" id="ddIndicators"
+                                                        items="#{taxonomy$TaxonSessionBean.indicatorRelations}"
+                                                        selected="#{taxonomy$TaxonSessionBean.ddIndicatorSelected}"
+                                                        actionExpression="#{taxonomy$EditTaxonomy2.updateRightList}"
+                                                        submitForm="true"
+                                                        />
+
+                                                </webuijsf:panelGroup>
+                                                <h:commandButton action="#{taxonomy$EditTaxonomy2.btnAssociateCountries_action}" id="btnAssociateCountries"
+                                                                 style="width: 160px" styleClass="My_Button" value="#{resources.button_associate}"/>
+                                           </h:panelGrid>
+                                        <!-- AddRemove Component -->
+                                        <h:panelGrid cellspacing="1" columns="1" id="gridpAddRemove" style="height: 24px" styleClass="My_table">
+                                            <!-- Title -->
+                                            <h:panelGrid columns="1" id="gridpArTitle" styleClass="My_table_top" width="100%">
+                                                <h:outputLabel id="lbArTitle" value="#{taxonomy$TaxonSessionBean.arContries.lbTitle}"/>
+                                            </h:panelGrid>
+                                            <!-- Add Remove body -->
+                                            <h:panelGrid cellspacing="1" columns="3">
+                                                <!-- Available List -->
+                                                <h:panelGrid cellspacing="1" columns="1">
+
+                                                    <h:outputLabel id="lbAvailableTaxonOptions" styleClass="My_white_label" value="#{taxonomy$TaxonSessionBean.arContries.lbAvailable}"/>
+                                                    <h:selectManyListbox id="mlAvaibleList" size="7" style="width:154px" value="#{taxonomy$TaxonSessionBean.arContries.leftSelected}" >
+                                                        <f:selectItems id="mlAvailableSelectItems" value="#{taxonomy$TaxonSessionBean.arContries.leftOptions}"/>
+                                                    </h:selectManyListbox>
+                                                </h:panelGrid>
+                                                <!-- Buttons Panel -->
+                                                <h:panelGrid cellspacing="1" columns="1">
+                                                    <!-- boton Agregar -->
+                                                    <h:commandButton action="#{taxonomy$TaxonSessionBean.arContries.addSelectedOptions}"
+                                                    id="btnAddOptions"
+                                                        style="margin: 2px;height: 22px" styleClass="My_Button_add"/>
+                                                    <!-- boton Remover -->
+                                                    <h:commandButton action="#{taxonomy$TaxonSessionBean.arContries.removeSelectedOptions}"
+                                                    id="btnRemoveOptions"
+                                                        style="margin: 2px;height: 22px" styleClass="My_Button_remove"/>
+                                                </h:panelGrid>
+                                                <!-- Selected List -->
+                                                <h:panelGrid cellspacing="1" columns="1">
+                                                    <h:outputLabel id="lbSelectedTaxonOptions" styleClass="My_white_label" value="#{taxonomy$TaxonSessionBean.arContries.lbSelected}"/>
+                                                    <h:selectManyListbox id="mlSelectedList" size="7" style="width:154px" value="#{taxonomy$TaxonSessionBean.arContries.rightSelected}">
+                                                        <f:selectItems id="mlSelectedSelectItems" value="#{taxonomy$TaxonSessionBean.arContries.rightOptions}"/>
+                                                    </h:selectManyListbox>
+                                                </h:panelGrid>
+
+
+
+                                            </h:panelGrid>
+                                        </h:panelGrid>
+                                        <!-- End AddRemove Component -->
+
+                                    </h:panelGrid>
+                                    </webuijsf:tab>
+                                    <!-- Tab para relación de referencias bibliográficas -->
+                                    <webuijsf:tab id="tabBibliographicReferences" text="#{resources.bibliographicReferences}" visible="#{taxonomy$TaxonSessionBean.ableTabTaxonIndicatorDublinCore}">
+
+                                        <h:panelGrid binding="#{taxonomy$EditTaxonomy2.gridDublinCore}">
+                                            <!-- Panel de indicadores -->
+                                            <h:panelGrid columns="2" id="gridIndicatorDublinCore" style="height: 24px">
+                                                <webuijsf:panelGroup id="groupAttributesDublinCore" style="height: 24px">
+                                                    <webuijsf:label for="ddIndicatorsDublinCore" id="lbIndicatorsDublinCore" text="#{resources.relations_taxon_indicator}"/>
+                                                    <webuijsf:dropDown binding="#{taxonomy$EditTaxonomy2.ddIndicatorsDublinCore}" id="ddIndicatorsDublinCore"
+                                                        items="#{taxonomy$TaxonSessionBean.indicatorRelations}"
+                                                        selected="#{taxonomy$TaxonSessionBean.ddIndicatorDCSelected}"
+                                                        actionExpression="#{taxonomy$EditTaxonomy2.updateIndicatorDCSelected}"
+                                                        submitForm="true"
+                                                        />
+
+                                                </webuijsf:panelGroup>
+                                                <h:commandButton action="#{taxonomy$EditTaxonomy2.btnAssociateDublinCore_action}" id="btnAssociateDublinCore"
+                                                                 style="width: 160px" styleClass="My_Button" value="#{resources.button_associate}"/>
+                                           </h:panelGrid>
+                                            <!-- panelGrid que contiene los botones de búsquedas -->
+                                            <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">
+                                                <h:inputText binding="#{taxonomy$EditTaxonomy2.txSearch}" id="txSearch" style="height: 18px; width: 408px">
+                                                    <f:validateLength maximum="100" minimum="0"/>
+                                                </h:inputText>
+                                                <h:commandButton action="#{taxonomy$EditTaxonomy2.btnSimpleSearch_action}" binding="#{taxonomy$EditTaxonomy2.btnSearch}" id="btnDublinCoreSearch"
+                                                    style="height: 25px; width: 160px" styleClass="My_Button" value="#{resources.search}"/>
+                                                <h:commandButton action="#{taxonomy$EditTaxonomy2.btnAdvSearch_action}" binding="#{taxonomy$EditTaxonomy2.btnAdvSearch}" id="btnAdvDublinCoreSearch"
+                                                    style="height: 25px; width: 160px" styleClass="My_Button" value="#{resources.advanced_search}"/>
+                                            </h:panelGrid>
+                                            <!-- panelGrid que contiene los elementos para la búsqueda avanzada -->
+                                            <h:panelGrid binding="#{taxonomy$EditTaxonomy2.gridpAdvancedSearch}" columns="1" id="gridpAdvancedSearch" rendered="false"
+                                                style="height: 5px" styleClass="My_panel_blue" width="680">
+                                                <!-- formulario para la búsqueda avanzada -->
+                                                <h:panelGrid columns="4" id="gridpAdvancedSearch1" style="height: 24px"  width="670px">
+                                                    <webuijsf:label for="txTitle" id="lbTitle" text="#{resources.title_dublin_core}"/>
+                                                    <webuijsf:textField binding="#{taxonomy$EditTaxonomy2.txTitle}" id="txTitle" />
+                                                    <webuijsf:label for="txCreator" id="lbCreator" text="#{resources.author_dublin_core}"/>
+                                                    <webuijsf:textField binding="#{taxonomy$EditTaxonomy2.txCreator}" id="txCreator" />
+                                                    <webuijsf:label for="txDate" id="lbDate" text="#{resources.year_dublin_core}"/>
+                                                    <webuijsf:textField binding="#{taxonomy$EditTaxonomy2.txYear}" id="txYear" />
+                                                    <webuijsf:label for="txIdentifier" id="lbIdentifier" text="#{resources.identifier_dublin_core}"/>
+                                                    <webuijsf:textField binding="#{taxonomy$EditTaxonomy2.txIdentifier}" id="txIdentifier" />
+                                                </h:panelGrid>
+                                                <!-- panelGrid que con el botón "Proceder" -->
+                                                <h:panelGrid columns="2" id="gridpAS2" style="height: 24px" width="390">
+                                                    <h:commandButton action="#{taxonomy$EditTaxonomy2.btnProceedSearch_action}" id="btnAdvSearchGO"
+                                                    style="width: 160px" styleClass="My_Button" value="#{resources.button_proceed}"/>
+                                                </h:panelGrid>
+                                            </h:panelGrid>
+                                            <!--
+                                            <h:panelGrid columns="1" id="gridSelected"  width="840" styleClass="My_subpanel_blue">
+                                                <h:outputLabel id="labelSelected" value="#{taxonomy$EditTaxonomy2.selected}"/>
+                                            </h:panelGrid>
+                                            -->
+                                        </h:panelGrid>
+                                        <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="height: 24px" styleClass="My_table" width="840">
+
+                                            <webuijsf:panelGroup id="grouppButtons">
+
+                                                <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" width="840">
+                                                    <h:outputLabel id="labelQuantity" value="#{taxonomy$NewTaxonomy.quantityTotal}"/>
+                                                </h:panelGrid>
+
+                                                <webuijsf:panelGroup id="panelPaginacion" separator=" " style="margin-left:70px;">
+
+
+                                                    <!-- Botones de paginacion -->
+                                                    <h:commandButton action="#{taxonomy$TaxonSessionBean.pagination.firstResults}" id="btnFirst"
+                                                                     rendered="#{taxonomy$TaxonSessionBean.pagination.isVisiblePrevious}"
+                                                        style="margin: 2px;height: 22px" styleClass="My_Button_first" value="#{resources.pagination_first}"/>
+                                                    <h:commandButton action="#{taxonomy$TaxonSessionBean.pagination.previousResults}" id="btnPrevious"
+                                                                     rendered="#{taxonomy$TaxonSessionBean.pagination.isVisiblePrevious}"
+                                                        style="margin: 2px;height: 22px" styleClass="My_Button_previous" value="#{resources.pagination_previous}"/>
+                                                    <h:commandButton action="#{taxonomy$TaxonSessionBean.pagination.nextResults}" id="btnNext"
+                                                                     rendered="#{taxonomy$TaxonSessionBean.pagination.isVisibleNext}" style="margin: 2px; height: 22px"
+                                                        styleClass="My_Button_next" value="#{resources.pagination_next}"/>
+                                                    <h:commandButton action="#{taxonomy$TaxonSessionBean.pagination.lastResults}" id="btnLast"
+                                                                     rendered="#{taxonomy$TaxonSessionBean.pagination.isVisibleNext}" style="margin: 2px;height: 22px"
+                                                        styleClass="My_Button_last" value="#{resources.pagination_last}"/>
+                                                </webuijsf:panelGroup>
+                                            </webuijsf:panelGroup>
+
+                                                    <h:dataTable binding="#{taxonomy$EditTaxonomy2.dataTableDublinCore}" cellspacing="0" columnClasses="list-columns"
+                                                headerClass="list-header" id="dataTablegathering" rowClasses="list-row-even,list-row-odd"
+                                                rows="#{taxonomy$TaxonSessionBean.pagination.resultsPerPage}"
+                                                style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
+                                                value="#{taxonomy$TaxonSessionBean.pagination.dataProvider.list}" var="currentRow" width="839">
+                                                <h:column>
+                                                    <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow.selected}"/>
+                                                </h:column>
+
+                                               <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{resources.title_dublin_core}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{currentRow.title}"/>
+                                                </h:column>
+
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{resources.author_dublin_core}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{currentRow.creator}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{resources.identifier_dublin_core}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{currentRow.identifier}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{resources.year_dublin_core}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{currentRow.date}"/>
+                                                </h:column>
+
+                                            </h:dataTable>
                                         </h:panelGrid>
                                     </webuijsf:tab>
                                 </webuijsf:tabSet>
