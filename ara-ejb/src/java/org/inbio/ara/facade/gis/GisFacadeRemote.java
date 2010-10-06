@@ -84,5 +84,7 @@ public interface GisFacadeRemote {
             List<GeoreferencedSitePKDTO> georefSiteList);
 
     public void deleteSite(Long Id);
+
+    public CountryDTO getCountryByCountryId(Long countryId);
     
 }

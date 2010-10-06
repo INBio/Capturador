@@ -571,4 +571,20 @@ public class GisFacadeImpl implements GisFacadeRemote {
         return true;
     }
 
+    public CountryDTO getCountryByCountryId(Long countryId)
+    {
+        CountryDTO result;
+        Country country =  (Country) countryEAOImpl.findById (Country.class, countryId);
+        if(country !=null)
+        {
+         result = countryDTOFactory.createDTO(country);
+        }
+        else
+        {
+            result = null;
+        }
+        
+        return result;
+    }
+
 }
