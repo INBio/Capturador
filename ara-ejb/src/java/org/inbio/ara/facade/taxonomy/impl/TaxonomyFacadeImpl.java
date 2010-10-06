@@ -62,8 +62,12 @@ import org.inbio.ara.dto.taxonomy.TaxonDescriptionRecordDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionRecordDTOFactory;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionStageDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionStageDTOFactory;
+import org.inbio.ara.dto.taxonomy.TaxonIndicatorCountryDTO;
+import org.inbio.ara.dto.taxonomy.TaxonIndicatorCountryDTOFactory;
 import org.inbio.ara.dto.taxonomy.TaxonIndicatorDTO;
 import org.inbio.ara.dto.taxonomy.TaxonIndicatorDTOFactory;
+import org.inbio.ara.dto.taxonomy.TaxonIndicatorDublinCoreDTO;
+import org.inbio.ara.dto.taxonomy.TaxonIndicatorDublinCoreDTOFactory;
 import org.inbio.ara.eao.agent.AudienceEAOLocal;
 import org.inbio.ara.eao.agent.InstitutionEAOLocal;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
@@ -91,6 +95,8 @@ import org.inbio.ara.eao.taxonomy.TaxonDescriptionRecordEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionRecordReferenceEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionStageEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonEAOLocal;
+import org.inbio.ara.eao.taxonomy.TaxonIndicatorCountryEAOLocal;
+import org.inbio.ara.eao.taxonomy.TaxonIndicatorDublinCoreEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonIndicatorEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonNomenclaturalGroupEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonomicalHierarchyEAOLocal;
@@ -127,6 +133,8 @@ import org.inbio.ara.persistence.taxonomy.TaxonDescriptionRecord;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionRecordReference;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionStage;
 import org.inbio.ara.persistence.taxonomy.TaxonIndicator;
+import org.inbio.ara.persistence.taxonomy.TaxonIndicatorCountry;
+import org.inbio.ara.persistence.taxonomy.TaxonIndicatorDublinCore;
 import org.inbio.ara.persistence.taxonomy.TaxonNomenclaturalGroup;
 import org.inbio.ara.persistence.taxonomy.TaxonNomenclaturalGroupPK;
 import org.inbio.ara.persistence.taxonomy.TaxonomicalRange;
@@ -202,6 +210,10 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     private TaxonCategoryEAOLocal taxonCategoryEAOImpl;
     @EJB
     private TaxonIndicatorEAOLocal taxonIndicatorEAOImpl;
+    @EJB
+    private TaxonIndicatorCountryEAOLocal taxonIndicatorCountryEAOImpl;
+    @EJB
+    private TaxonIndicatorDublinCoreEAOLocal taxonIndicatorDublinCoreEAOImpl;
 
     //DTO factories
     private TaxonDescriptionDTOFactory taxonDescriptionDTOFactory =
@@ -233,6 +245,8 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     private RegionDTOFactory regionDTOFactory = new RegionDTOFactory();
     private TaxonCategoryDTOFactory taxonCategoryDTOFactory = new TaxonCategoryDTOFactory();
     private TaxonIndicatorDTOFactory taxonIndicatorDTOFactory = new TaxonIndicatorDTOFactory();
+    private TaxonIndicatorCountryDTOFactory taxonIndicatorCountryDTOFactory = new TaxonIndicatorCountryDTOFactory();
+    private TaxonIndicatorDublinCoreDTOFactory taxonIndicatorDublinCoreDTOFactory = new TaxonIndicatorDublinCoreDTOFactory();
 
     /**
      * Retorna un listado paginado de TaxonDescriptionDTO
@@ -1243,11 +1257,55 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
             newDTO.setTaxonId(taxonId);
             newDTO.setIndicatorId(new Long(indicatorId));
             newDTO.setUserName(userName);
-            newDTO.setValuerPersonId(1L);        
+            //newDTO.setValuerPersonId(1L);
             TaxonIndicator taxonIndicator = taxonIndicatorDTOFactory.createPlainEntity(newDTO);                   
             taxonIndicatorEAOImpl.create(taxonIndicator);
         }
 
+    }
+
+    public void saveTaxonIndicator(Long taxonId, String indicatorId, String userName)
+    {
+
+            TaxonIndicatorDTO newDTO = new TaxonIndicatorDTO();
+            newDTO.setTaxonId(taxonId);
+            newDTO.setIndicatorId(new Long(indicatorId));
+            newDTO.setUserName(userName);
+            //newDTO.setValuerPersonId(4L);//ALAMBRADO CAMBIAR LA PROPIEDAD EN LA BD PARA QUE DEJE DE SER NOT NULL
+            TaxonIndicator taxonIndicator = taxonIndicatorDTOFactory.createPlainEntity(newDTO);
+            taxonIndicatorEAOImpl.create(taxonIndicator);
+
+    }
+
+
+    public void saveTaxonIndicatorCountries(Long taxonId, Long indicatorId ,List<Long> countryIds, String userName)
+    {
+
+
+        for(Long countryId: countryIds)
+        {
+
+            TaxonIndicatorCountryDTO newDTO = new TaxonIndicatorCountryDTO();
+            newDTO.setTaxonId(taxonId);
+            newDTO.setIndicatorId(new Long(indicatorId));
+            newDTO.setCountryId(countryId);
+            newDTO.setUserName(userName);
+            TaxonIndicatorCountry taxonIndicatorCountry = taxonIndicatorCountryDTOFactory.createPlainEntity(newDTO);
+            taxonIndicatorCountryEAOImpl.create(taxonIndicatorCountry);
+        }
+
+    }
+
+
+    public void saveTaxonIndicatorCountry(Long taxonId, Long indicatorId ,Long countryId, String userName)
+    {
+            TaxonIndicatorCountryDTO newDTO = new TaxonIndicatorCountryDTO();
+            newDTO.setTaxonId(taxonId);
+            newDTO.setIndicatorId(new Long(indicatorId));
+            newDTO.setCountryId(countryId);
+            newDTO.setUserName(userName);
+            TaxonIndicatorCountry taxonIndicatorCountry = taxonIndicatorCountryDTOFactory.createPlainEntity(newDTO);
+            taxonIndicatorCountryEAOImpl.create(taxonIndicatorCountry);
     }
 
     public void deleteTaxonIndicatorByIds(Long taxonId, List<String> indicatorIds)
@@ -1257,6 +1315,26 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
             taxonIndicatorEAOImpl.deleteTaxonIndicatorById(taxonId, new Long(indicatorId));
         }
     }
+
+    public void deleteTaxonIndicatorById(Long taxonId, String indicatorId)
+    {
+
+        taxonIndicatorEAOImpl.deleteTaxonIndicatorById(taxonId, new Long(indicatorId));
+
+    }
+
+
+    public void deleteTaxonIndicatorByTaxonId(Long taxonId)
+    {
+        taxonIndicatorEAOImpl.deleteTaxonIndicatorByTaxonId(taxonId);
+    }
+
+
+    public void deleteTaxonIndicatorCountryByTaxonId(Long taxonId)
+    {
+        taxonIndicatorCountryEAOImpl.deleteTaxonIndicatorCountryByTaxonId(taxonId);
+    }
+
 
 
     public List<Long> getIndicatorIdsByTaxon(Long taxonId)
@@ -1271,6 +1349,59 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
         taxonIndicatorEAOImpl.deleteTaxonIndicatorById(taxonId, indicatorId);
     }
 
+
+    public List<Long> getCountriesByTaxonIndicatorIds(Long taxon, Long indicator)
+    {
+        return taxonIndicatorCountryEAOImpl.findCountriesByTaxonIndicatorIds(taxon, indicator);
+    }
+
+
+    public void deleteTaxonIndicatorCountryByIds(Long taxonId, Long indicatorId, List<Long> countryIds)
+    {
+        for(Long countryId: countryIds)
+        {
+            taxonIndicatorCountryEAOImpl.deleteTaxonIndicatorCountryById(taxonId, indicatorId, countryId);
+        }
+    }
+
+
+    public void saveTaxonIndicatorDublinCoreIds(Long taxonId, Long indicatorId ,List<String> dublinCoreIds, String userName)
+    {
+
+
+        for(String dublinCoreId: dublinCoreIds )
+        {
+
+            TaxonIndicatorDublinCoreDTO newDTO = new TaxonIndicatorDublinCoreDTO();
+            newDTO.setTaxonId(taxonId);
+            newDTO.setIndicatorId(indicatorId);
+            newDTO.setDublinCoreId(new Long(dublinCoreId));
+            newDTO.setUserName(userName);
+            TaxonIndicatorDublinCore taxonIndicatorDublinCore = taxonIndicatorDublinCoreDTOFactory.createPlainEntity(newDTO);
+            taxonIndicatorDublinCoreEAOImpl.create(taxonIndicatorDublinCore);
+        }
+        
+    }
+
+    public List<Long> getDublinCoreByTaxonIndicatorIds(Long taxonId, Long indicatorId)
+    {
+        return taxonIndicatorDublinCoreEAOImpl.findDublinCoreByTaxonIndicatorIds(taxonId, indicatorId);
+    }
+
+
+    public void deleteTaxonIndicatorDublinCoreIds(Long taxonId, Long indicatorId, List<String> dublinCoreIds)
+    {
+        for(String dublinCoreId: dublinCoreIds)
+        {
+            taxonIndicatorDublinCoreEAOImpl.deleteTaxonIndicatorDublinCoreById(taxonId, indicatorId, new Long(dublinCoreId));
+        }
+    }
+
+
+    public void deleteTaxonIndicatorDublinCoreByTaxonId(Long taxonId)
+    {
+        taxonIndicatorDublinCoreEAOImpl.deleteTaxonIndicatorDublinCoreByTaxonId(taxonId);
+    }
 
 
 }

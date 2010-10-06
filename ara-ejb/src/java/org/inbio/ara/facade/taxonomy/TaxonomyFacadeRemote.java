@@ -204,6 +204,31 @@ public interface TaxonomyFacadeRemote {
     public void saveTaxonIndicators(Long taxonId, List<String> indicatorIds, String userName);
 
     public void deleteTaxonIndicatorByIds(Long taxonId, List<String> indicatorIds);
+    
+    public void deleteTaxonIndicatorById(Long taxonId, String indicatorId);
 
     public List<Long> getIndicatorIdsByTaxon(Long taxonId);
+
+    public void saveTaxonIndicator(Long taxonId, String indicatorId, String userName);
+
+    public void saveTaxonIndicatorCountries(Long taxonId, Long indicatorId ,List<Long> countryIds, String userName);
+    
+    public void saveTaxonIndicatorCountry(Long taxonId, Long indicatorId ,Long countryId, String userName);
+
+    public List<Long> getCountriesByTaxonIndicatorIds(Long taxon, Long indicator);
+
+    public void deleteTaxonIndicatorCountryByIds(Long taxonId, Long indicatorId, List<Long> countryIds);
+
+    public void saveTaxonIndicatorDublinCoreIds(Long taxonId, Long indicatorId ,List<String> dublinCoreIds, String userName);
+
+    public List<Long> getDublinCoreByTaxonIndicatorIds(Long taxonId, Long indicatorId);
+
+    public void deleteTaxonIndicatorDublinCoreIds(Long taxonId, Long indicatorId, List<String> dublinCoreIds);
+
+    public void deleteTaxonIndicatorByTaxonId(Long taxonId);
+
+    public void deleteTaxonIndicatorCountryByTaxonId(Long taxonId);
+
+    public void deleteTaxonIndicatorDublinCoreByTaxonId(Long taxonId);
+
 }

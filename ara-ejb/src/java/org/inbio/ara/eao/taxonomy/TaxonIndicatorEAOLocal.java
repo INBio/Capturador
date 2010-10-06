@@ -21,5 +21,7 @@ public interface TaxonIndicatorEAOLocal extends BaseLocalEAO<TaxonIndicator,Long
 
     public void deleteTaxonIndicatorById(Long taxonId, Long indicatorId);
 
+    public void deleteTaxonIndicatorByTaxonId(Long taxonId);
+
     
 }

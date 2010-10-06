@@ -19,8 +19,6 @@ import org.inbio.ara.persistence.taxonomy.TaxonIndicator;
 @Stateless
 public class TaxonIndicatorEAOImpl extends BaseEAOImpl<TaxonIndicator, Long> implements TaxonIndicatorEAOLocal {
     
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method" or "Web Service > Add Operation")
 
     public List<Long> getIndicatorsByTaxonId(Long taxonId)
     {
@@ -38,6 +36,16 @@ public class TaxonIndicatorEAOImpl extends BaseEAOImpl<TaxonIndicator, Long> imp
                 " delete from TaxonIndicator ti " +
                 " where ti.taxonIndicatorPK.indicatorId = :indicatorId and ti.taxonIndicatorPK.taxonId = :taxonId");
         q.setParameter("indicatorId", indicatorId);
+        q.setParameter("taxonId", taxonId);
+        q.executeUpdate();
+        em.flush();
+    }
+
+    public void deleteTaxonIndicatorByTaxonId(Long taxonId)
+    {
+        Query q = em.createQuery(
+                " delete from TaxonIndicator ti " +
+                " where ti.taxonIndicatorPK.taxonId = :taxonId");
         q.setParameter("taxonId", taxonId);
         q.executeUpdate();
         em.flush();
