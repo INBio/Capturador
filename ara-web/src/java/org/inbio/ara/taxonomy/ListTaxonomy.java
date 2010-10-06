@@ -7,13 +7,18 @@ package org.inbio.ara.taxonomy;
 
 import org.inbio.ara.*;
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
+import com.sun.webui.jsf.model.Option;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.component.html.HtmlPanelGrid;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.persistence.taxonomy.TaxonomicalRangeEntity;
+import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.MessageBean;
+import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
 
 /**
  * <p>Page bean that corresponds to a similarly named JSP page.  This
@@ -286,9 +291,28 @@ public class ListTaxonomy extends AbstractPageBean {
             this.getTaxonSessionBean().setTaxonNodeName(this.hiddenTaxonNodeName.getValue().toString());
             this.getTaxonSessionBean().setCollecNomenclGroupId(this.hiddenCollecNomenclGroupId.getValue().toString());
             this.getTaxonSessionBean().setTypeGroup(this.hiddenTypeGroup.getValue().toString());
-            //System.out.println(" Almacenado en List Taxonomy ");
-            //System.out.println(" \tNodeId "+this.getTaxonSessionBean().getNodeId());
-            //System.out.println(" \tPath "+this.getTaxonSessionBean().getPathNode());
+            
+
+            //this.getTaxonSessionBean().setDbIndicatorRelations(new HashSet<Option>());
+            this.getTaxonSessionBean().setIndicatorRelations(new HashSet<Option>());
+            this.getTaxonSessionBean().setSelectedTaxonIndicatorCountriesId(new HashMap<Long, Option[]>());
+            this.getTaxonSessionBean().setIndicatorRelations(new HashSet<Option>());
+            this.getTaxonSessionBean().setIndicatorRelationIds(new HashSet<Long>());
+            this.getTaxonSessionBean().setArContries(new AddRemoveList());
+            this.getTaxonSessionBean().setTaxonTabSelected("tabNewTaxonomy");
+
+
+            this.getTaxonSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+            if(this.getTaxonSessionBean().getPagination() != null)
+            {
+                this.getTaxonSessionBean().getPagination().refreshList();
+                this.getTaxonSessionBean().getPagination().firstResults();
+            }
+
+            this.getTaxonSessionBean().setAbleTabTaxonIndicator(false);
+            this.getTaxonSessionBean().setAbleTabTaxonIndicatorCountry(false);
+            this.getTaxonSessionBean().setAbleTabTaxonIndicatorDublinCore(false);
+
             result = "new";
         }
 
@@ -321,7 +345,12 @@ public class ListTaxonomy extends AbstractPageBean {
             if (TSB.getAssociatedSpecimenCount(taxonId) <= 0) {
                 //Proceed to delete the node
                 try {
+                    TSB.deleteTaxonIndicatorCountryByTaxonId(taxonId);
+                    TSB.deleteTaxonIndicatorDublinCoreByTaxonId(taxonId);
+                    TSB.deleteTaxonIndicatorByTaxonId(taxonId);
                     TSB.removeTaxon(taxonId);
+                    MessageBean.setSuccessMessageFromBundle("taxon_delete", this.getMyLocale());
+
                 } catch (Exception e) {
                     MessageBean.setErrorMessageFromBundle("imposible_to_delete",
                             this.getMyLocale());
@@ -344,11 +373,8 @@ public class ListTaxonomy extends AbstractPageBean {
 
         this.getTaxonSessionBean().setCurrentTaxon(null);
         this.getTaxonSessionBean().setBasionymName(null);
-        this.getTaxonSessionBean().setCheckedParentheses(false);
-        //this.getTaxonSessionBean().setMonthSelected(null);
-        this.getTaxonSessionBean().setTaxonName(null);
-        //this.getTaxonSessionBean().setTaxonomicalCategorySelected(null);
-        //this.getTaxonSessionBean().setTaxonomicalRangeSelected(null);
+        this.getTaxonSessionBean().setCheckedParentheses(false);        
+        this.getTaxonSessionBean().setTaxonName(null);        
         this.getTaxonSessionBean().setYear(null);
         this.getTaxonSessionBean().setTaxonNodeId(this.hiddenTaxonNodeId.getValue().toString());
         this.getTaxonSessionBean().setPathTaxonNode(this.hiddenPathTaxonNode.getValue().toString());
@@ -365,6 +391,27 @@ public class ListTaxonomy extends AbstractPageBean {
         this.getTaxonSessionBean().setNodeId("0");
         this.getTaxonSessionBean().setPathNode("");
         this.getTaxonSessionBean().setIndicatorRelations(null);
+        this.getTaxonSessionBean().setIndicatorRelationIds(new HashSet<Long>());
+        this.getTaxonSessionBean().setSelectedTaxonIndicatorCountriesId(new HashMap<Long, Option[]>());
+        this.getTaxonSessionBean().setdBTaxonIndicatorCountriesId(new HashMap<Long, Option[]>());
+        this.getTaxonSessionBean().setArContries(new AddRemoveList());
+        this.getTaxonSessionBean().setTaxonTabSelected("tabNewTaxonomy");
+
+        this.getTaxonSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+        if(this.getTaxonSessionBean().getPagination() != null)
+        {
+            this.getTaxonSessionBean().getPagination().refreshList();
+            this.getTaxonSessionBean().getPagination().firstResults();
+        }
+
+        this.getTaxonSessionBean().setAbleTabTaxonIndicator(false);
+        this.getTaxonSessionBean().setAbleTabTaxonIndicatorCountry(false);
+        this.getTaxonSessionBean().setAbleTabTaxonIndicatorDublinCore(false);
+
+        this.getTaxonSessionBean().setdBTaxonIndicatorDublinCoreId(null);
+        this.getTaxonSessionBean().setSelectedTaxonIndicatorDublinCoreId(null);
+
+        this.getTaxonSessionBean().setDdIndicatorDCSelected(null);
         return "edit";
     }
 

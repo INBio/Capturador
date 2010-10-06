@@ -174,7 +174,8 @@ public class Header extends AbstractFragmentBean {
 
     public String menuModuleTaxa_action() {
         this.getSessionManager().setCurrentModuleId(new Long(6));
-        return "editTaxonomy";
+        //return "editTaxonomy";
+        return "listTaxonomy";
     }
 
     //Menú inventario

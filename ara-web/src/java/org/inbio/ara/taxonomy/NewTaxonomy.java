@@ -9,16 +9,24 @@ package org.inbio.ara.taxonomy;
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.DropDown;
 import com.sun.webui.jsf.component.TabSet;
+import com.sun.webui.jsf.component.TextField;
 import com.sun.webui.jsf.model.DefaultOptionsList;
 import com.sun.webui.jsf.model.Option;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import javax.faces.FacesException;
+import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlInputHidden;
+import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.model.SelectItem;
 import org.inbio.ara.AraSessionBean;
@@ -30,6 +38,9 @@ import org.inbio.ara.persistence.taxonomy.TaxonomicalRangeEntity;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
+import org.inbio.commons.dublincore.dto.DublinCoreDTO;
+import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
+import org.inbio.commons.dublincore.model.ResourceTypeEnum;
 
 /**
  * <p>Page bean that corresponds to a similarly named JSP page.  This
@@ -67,6 +78,9 @@ public class NewTaxonomy extends AbstractPageBean {
 
     private HtmlPanelGrid taxonomy = new HtmlPanelGrid();
 
+    private String quantityTotal = new String();
+    private String selected = new String();
+
 
     /*
      * Elementos de la página web utilizados para almacenar la información del
@@ -84,6 +98,8 @@ public class NewTaxonomy extends AbstractPageBean {
     private HtmlInputHidden hiddenPathNode = new HtmlInputHidden();
 
     private DropDown ddIndicators= new DropDown();
+    private DropDown ddRanges= new DropDown();
+    private DropDown ddIndicatorsDublinCore= new DropDown();
     private TabSet taxonTabs= new TabSet();
 
     private SelectItem[] ddRangeItems;
@@ -93,11 +109,30 @@ public class NewTaxonomy extends AbstractPageBean {
     private SelectItem[] ddPruebaRange;
     private String tmpSelected = "";
 
-    private Option[] indicatorRelations;
+    private Option[] indicatorRelations = new Option[0];
 
     private DefaultOptionsList listbox1DefaultOptions = new DefaultOptionsList();
 
-    
+    private HtmlPanelGrid gridDublinCore = new HtmlPanelGrid();
+
+    private HtmlPanelGrid gridpAdvancedSearch = new HtmlPanelGrid();
+
+    private HtmlInputText txSearch = new HtmlInputText();
+
+    private TextField txTitle = new TextField();
+
+    private TextField txYear = new TextField();
+
+    private TextField txIdentifier = new TextField();
+
+    private TextField txCreator = new TextField();
+
+    private HtmlCommandButton btnSearch = new HtmlCommandButton();
+
+    private HtmlCommandButton btnAdvSearch = new HtmlCommandButton();
+
+    private HtmlDataTable dataTableDublinCore = new HtmlDataTable();
+
 
     
 
@@ -168,8 +203,8 @@ public class NewTaxonomy extends AbstractPageBean {
     public void prerender() {
 
         TaxonSessionBean tsb = this.getTaxonSessionBean();
-             System.out.println("Hizo prerender");
-             //System.out.println("Antes de cambiar hiddenNodeId = "+hiddenTaxonNodeId.getValue());
+        System.out.println("Hizo prerender");
+             
         //Set hidden value from session bean
         hiddenTaxonNodeId.setValue(tsb.getTaxonNodeId());
         hiddenPathTaxonNode.setValue(tsb.getPathTaxonNode());
@@ -178,29 +213,97 @@ public class NewTaxonomy extends AbstractPageBean {
         hiddenNodeId.setValue(tsb.getNodeId());
         hiddenPathNode.setValue(tsb.getPathNode());
 
-                
-        //Set
+        List<TaxonomicalRangeDTO> tmpTaxonomicalRange = this.getTaxonSessionBean().getNextLevelsByTaxon(new Long(this.getHiddenTaxonNodeId().getValue().toString()));
+        
+        tsb.setDbRanges(new HashSet<Option>());
+        for(int pos = 0; pos < tmpTaxonomicalRange.size(); pos++)
+        {
+            TaxonomicalRangeDTO tmpRange = tmpTaxonomicalRange.get(pos);
+            tsb.getDbRanges().add(new Option(tmpRange.getTaxonomicalRangeKey(),tmpRange.getName()));
+        }
+       
+
+       if(tsb.getTaxonomicalRangeSelected() == null)
+       {
+           tsb.setTaxonomicalRangeSelected((Long)((Option)tsb.getDbRanges().toArray()[0]).getValue());
+           setVisibleIndicator();
+       }
+
+
+        //Clear Indicator ListBox
         Long indicatorNodeId = new Long(this.getHiddenNodeId().getValue().toString());
         if((indicatorNodeId == null) || (indicatorNodeId == 0))
         {
             listbox1DefaultOptions.setOptions(null);
         }
-
+       
+        //Set Taxon-Indicator relations
         if(tsb.getIndicatorRelations().size() > 0)
         {
             indicatorRelations = new Option[tsb.getIndicatorRelations().size()];
             tsb.getIndicatorRelations().toArray(indicatorRelations);
         }
 
+        //On focus tabTaxonIndicatorCountry:
         if(tsb.getTaxonTabSelected().equals("tabTaxonIndicatorCountry"))
         {
+            //Load countries
             loadAddRemoveData(false);
+            //Set default indicator value selected
+            if(tsb.getDdIndicatorSelected() == null && indicatorRelations.length>0)
+            {
+                tsb.setDdIndicatorSelected((Long)indicatorRelations[0].getValue());
+            
+            }
+
+
         }
 
+        //On focus tabTaxonIndicatorReferences:
+        if(tsb.getTaxonTabSelected().equals("tabBibliographicReferences"))
+        {
 
+           if(tsb.getDdIndicatorDCSelected() == null && indicatorRelations.length>0)
+            {
+                tsb.setDdIndicatorDCSelected((Long)indicatorRelations[0].getValue());
+
+            }
+            if (this.getTaxonSessionBean().getPagination()!=null)
+            {
+
+                getSelectedResourceIds(this.getDataTableDublinCore(), this.getTaxonSessionBean().getSelectedResourcesId());
+                Collection<ReferenceDTO> references = this.getTaxonSessionBean().getSelectedResourcesId().values();
+                for(ReferenceDTO reference: references)
+                {
+                    setSelected(getSelected() + reference.getTitle() + "; ");
+                }
+
+            }
+            //Preguntar si la bandera de busqueda avanzada esta prendida
+            if(this.getTaxonSessionBean().isAdvancedSearch()){
+                this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
+            }
+            //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
+            else if (this.getTaxonSessionBean().getPagination()==null) {
+                   this.getTaxonSessionBean().initDataProvider();
+                   this.getTaxonSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+            }
        
-        
+        }
+
+        if(tsb.getIndicatorRelations().size()>0)
+        {
+            tsb.setAbleTabTaxonIndicatorCountry(true);
+            tsb.setAbleTabTaxonIndicatorDublinCore(true);
+        }
+        else
+        {
+            tsb.setAbleTabTaxonIndicatorCountry(false);
+            tsb.setAbleTabTaxonIndicatorDublinCore(false);
+        }
+
     }
+    
     /**
      * <p>Callback method that is called after rendering is completed for
      * this request, if <code>init()</code> was called (regardless of whether
@@ -391,21 +494,13 @@ public class NewTaxonomy extends AbstractPageBean {
   
     public String btnSaveTaxon_action() {
 
+        String message ="";
+
         /*CREATE NEW TAXON*/
 
-        System.out.println("Al empezar a guardar "+this.getHiddenTaxonNodeId().getValue());
-        TaxonSessionBean TSB = this.getTaxonSessionBean();
-        /*
-      //Validate if the node is an species //CAMBIAR AL NIVEL TAXONOMICO MAS BAJO
-        if (TSB.getCurrentTaxon().getTaxonomicalRangeId().equals
-                (TaxonomicalRangeEntity.FORM.getId())) {
-            MessageBean.setErrorMessageFromBundle("cant_add_taxon_under_this_level",
-                    this.getMyLocale());
-            return null;
-        }
-
-        */
-        System.out.println("TaxonomicalRangeSelected = "+TSB.getTaxonomicalRangeSelected());
+        
+        TaxonSessionBean TSB = this.getTaxonSessionBean();    
+        
          // Gets the current taxonDTO
         Long fatherRangeId = -1L;
         Long fatherTaxonId = -1L;        
@@ -416,8 +511,7 @@ public class NewTaxonomy extends AbstractPageBean {
            TSB.setCurrentTaxon(TSB.getTaxon(fatherTaxonId));
            //backup fatherRangeId
            fatherRangeId = TSB.getCurrentTaxon().getTaxonomicalRangeId();
-           //set taxonomicalRangeId
-           //TSB.getCurrentTaxon().setTaxonomicalRangeId(new Long(TSB.getTaxonomicalRangeSelected()));
+           //set taxonomicalRangeId        
            TSB.getCurrentTaxon().setTaxonomicalRangeId(TSB.getTaxonomicalRangeSelected());
            //set key like antecesor
            TSB.getCurrentTaxon().setAncestorId(TSB.getCurrentTaxon().getTaxonKey());
@@ -446,9 +540,7 @@ public class NewTaxonomy extends AbstractPageBean {
            TSB.getCurrentTaxon().setDefaultName(defaultTaxonName);
            //set currentName
            TSB.getCurrentTaxon().setCurrentName(TSB.getTaxonName());
-          // System.out.println("Current Name "+TSB.getCurrentTaxon().getCurrentName());
-           //System.out.println("Default Name "+TSB.getCurrentTaxon().getDefaultName());
-
+          
            //set taxonCategoryId
            TSB.getCurrentTaxon().setTaxonCategoryId(TSB.getTaxonomicalCategorySelected());
 
@@ -483,16 +575,53 @@ public class NewTaxonomy extends AbstractPageBean {
            for(Option elementIndicator: TSB.getIndicatorRelations())
            {
                indicatorIds.add(elementIndicator.getValue().toString());
-               System.out.println("--> indicatorId = "+elementIndicator.getValue());
-           }
-           System.out.println("==> TaxonId = "+TSB.getCurrentTaxon().getTaxonKey());
-           TSB.saveTaxonIndicatorIds(TSB.getCurrentTaxon().getTaxonKey(), indicatorIds, this.getAraSessionBean().getGlobalUserName());
+          
+               try{
+                   Long indicatorId = new Long(elementIndicator.getValue().toString());
+                    //new relation taxon-indicator
+                    TSB.saveTaxonIndicatorId(TSB.getCurrentTaxon().getTaxonKey(), elementIndicator.getValue().toString(), this.getAraSessionBean().getGlobalUserName());
+                    if(TSB.getSelectedTaxonIndicatorCountriesId().containsKey(indicatorId))
+                    {
+                        List<Long> countryIds = new ArrayList<Long>();
+                        Option[] countriesSelected = TSB.getSelectedTaxonIndicatorCountriesId().get(indicatorId);
+                        for(int pos = 0; pos < countriesSelected.length;pos++)
+                        {
+                            countryIds.add((Long)countriesSelected[pos].getValue());
+                        }
 
+                        TSB.saveTaxonIndicatorCountries(TSB.getCurrentTaxon().getTaxonKey(), indicatorId, countryIds, this.getAraSessionBean().getGlobalUserName());
+                    }
+
+                    if(TSB.getSelectedTaxonIndicatorDublinCoreId().containsKey(indicatorId))
+                    {
+          
+                        Map<String, ReferenceDTO> tmpRef = TSB.getSelectedTaxonIndicatorDublinCoreId().get(indicatorId);
+                        Set<String> referenceIds = tmpRef.keySet();
+                        List<String> newReferences = new ArrayList<String>();
+                        for(String referenceId:referenceIds)
+                        {
+          
+                            newReferences.add(referenceId);
+                        }
+                        TSB.saveTaxonIndicatorDublinCoreIds(TSB.getCurrentTaxon().getTaxonKey(), indicatorId ,newReferences, this.getAraSessionBean().getGlobalUserName());
+                    }
+
+
+
+               }
+               catch(Exception e)
+               {
+                   message += elementIndicator.getLabel()+"\n";
+                   System.out.println("ERROR-- almacenando una relacion taxon-indicador");
+               }
+           }
+          
 
         }
 
 
        /* CLEAR */
+        //Taxon
        TSB.setCurrentTaxon(null);
        TSB.setBasionymName(null);
        TSB.setCheckedParentheses(false);
@@ -502,8 +631,18 @@ public class NewTaxonomy extends AbstractPageBean {
        TSB.setTaxonomicalRangeSelected(null);
        TSB.setYear(null);
 
+       //Taxon-Indicator
        TSB.getIndicatorRelations().clear();
+       TSB.getIndicatorRelationIds().clear();
        TSB.setElementSelected(null);
+
+       //Taxon-Indicator-Conutry
+       TSB.setSelectedTaxonIndicatorCountriesId(null);
+       TSB.setArContries(null);
+       TSB.setDdIndicatorSelected(null);
+       TSB.setIndicatorRelations(null);
+       TSB.setElementSelected(null);
+       
 
         return "back";
     }
@@ -511,19 +650,23 @@ public class NewTaxonomy extends AbstractPageBean {
 
     public String btnAddTaxonIndicator_action()
     {
-        //System.out.println("Indicador seleccionado = "+this.getHiddenNodeId().getValue());
+        
         this.getTaxonSessionBean().setNodeId(this.getHiddenNodeId().getValue().toString());
         Long indicatorNodeId = new Long(this.getHiddenNodeId().getValue().toString());
         if(this.getTaxonSessionBean().isLeaf(indicatorNodeId)){
-            IndicatorDTO infoNodo = this.getTaxonSessionBean().getIndicatorDTOByIndicatorId(indicatorNodeId);
-            this.getTaxonSessionBean().getIndicatorRelations().add(new Option(indicatorNodeId, infoNodo.getName() ));
-            /*
-            Option[] tmp2 = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
-            this.getTaxonSessionBean().getIndicatorRelations().toArray(tmp2);
-            listbox1DefaultOptions.setOptions(tmp2);
-             */
-            indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
-            this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
+            if(!this.getTaxonSessionBean().getIndicatorRelationIds().contains(indicatorNodeId))
+            {
+                this.getTaxonSessionBean().getIndicatorRelationIds().add(indicatorNodeId);
+                IndicatorDTO infoNodo = this.getTaxonSessionBean().getIndicatorDTOByIndicatorId(indicatorNodeId);
+                this.getTaxonSessionBean().getIndicatorRelations().add(new Option(indicatorNodeId, infoNodo.getName() ));
+        
+                indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
+                this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
+            }
+            else
+            {
+                MessageBean.setErrorMessageFromBundle("error_taxon_indicator_exist",this.getMyLocale());
+            }
         }
         else
         {
@@ -535,35 +678,300 @@ public class NewTaxonomy extends AbstractPageBean {
 
     public String btnRemoveTaxonIndicator_action()
     {
-        //System.out.println("Indicador seleccionado = "+this.getHiddenNodeId().getValue());
-       System.out.println("Se debe eliminar = "+this.getTaxonSessionBean().getElementSelected());
+        
         
         this.getTaxonSessionBean().removeOption(this.getTaxonSessionBean().getElementSelected());
         indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
         this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
-        /*
-        Option[] tmp2 = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
-        this.getTaxonSessionBean().getIndicatorRelations().toArray(tmp2);
-        listbox1DefaultOptions.setOptions(tmp2);
-         */
+        
         return null;
     }
 
     public String btnAssociateCountries_action()
     {
-     
+
+
         TaxonSessionBean tsb = this.getTaxonSessionBean();
         
         tsb.getSelectedTaxonIndicatorCountriesId().put(tsb.getDdIndicatorSelected(), tsb.getArContries().getRightOptions());
-        System.out.println(tsb.getSelectedTaxonIndicatorCountriesId().get(tsb.getDdIndicatorSelected()).length);
-            
         
             
-        tsb.getArContries().setSelectedOptions(new Long[0]);
-        tsb.getArContries().setRightOptions(new Option[0]);
-        tsb.getArContries().setRightSelected(new Long[0]);
+        return null;
+    }
+
+
+    public String btnAssociateDublinCore_action()
+    {
+        
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        getSelectedResourceIds(this.getDataTableDublinCore(), tsb.getSelectedResourcesId());
+        tsb.getSelectedTaxonIndicatorDublinCoreId().put(tsb.getDdIndicatorDCSelected(), new HashMap<String, ReferenceDTO>());
+        Map<String, ReferenceDTO> ref = tsb.getSelectedTaxonIndicatorDublinCoreId().get(tsb.getDdIndicatorDCSelected());
+        
+        Set<Entry<String, ReferenceDTO>> copiaRef = tsb.getSelectedResourcesId().entrySet();
+        for(Entry element: copiaRef)
+        {
+            ref.put((String)element.getKey(),(ReferenceDTO)element.getValue());
+        }
+
         
 
+         return null;
+     }
+
+
+    /**
+     * <p>Acción que se realiza al presionar el botón de búsqueda simple</p>
+     *
+     * @return String
+     */
+    public String btnSimpleSearch_action() {
+
+        String userInput = "";
+        if(this.getTxSearch().getValue()!= null)
+        {
+            userInput = this.getTxSearch().getValue().toString();
+        }
+        userInput = userInput.trim();
+
+        if(!this.getTaxonSessionBean().getPagination().getDataProvider().getList().isEmpty())
+        {
+            getSelectedResourceIds(this.getDataTableDublinCore(), this.getTaxonSessionBean().getSelectedResourcesId());
+        }
+
+        if(userInput.length()==0){
+            //Se desabilitan las banderas de busqueda simple y avanzada
+            this.getTaxonSessionBean().setQueryModeSimple(false);
+            this.getTaxonSessionBean().setQueryMode(false);
+
+            //Actualiza el data provider del paginador con los datos por default
+            this.getTaxonSessionBean().getPagination().setTotalResults
+                    (getTaxonSessionBean().getDublinCoreFacade().countResourceByTypeId(ResourceTypeEnum.REFERENCE.getId()).intValue());
+        }
+        else{
+            //Actualizar el valor del string para consulta simple del SessionBean
+            this.getTaxonSessionBean().setSimpleConsult(userInput);
+            //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda simple
+            this.getTaxonSessionBean().setQueryModeSimple(true);
+            //Desabilitar la bandera de busqueda avanzada
+            this.getTaxonSessionBean().setQueryMode(false);
+            //Finalmente se inicializa el Total Results del data provider del paginador con la cantidad de resultados de la consulta
+            this.getTaxonSessionBean().getPagination().setTotalResults
+                    (getTaxonSessionBean().getDublinCoreFacade().countSimpleSearch(userInput).intValue());
+        }
+        //set the first result of the query
+        this.getTaxonSessionBean().getPagination().firstResults();
+
+        return null;
+    }
+
+    public String btnAdvSearch_action() {
+
+        if(!this.getTaxonSessionBean().getPagination().getDataProvider().getList().isEmpty())
+        {
+            getSelectedResourceIds(this.getDataTableDublinCore(), this.getTaxonSessionBean().getSelectedResourcesId());
+        }
+
+        boolean advanced = this.getTaxonSessionBean().isAdvancedSearch();
+        if(advanced==false){ //Mostrar panel de busqueda avanzada
+            this.getTaxonSessionBean().setAdvancedSearch(true);
+            //Deshabilitar busqueda simple
+            this.getTxSearch().setRendered(false);
+            this.getBtnSearch().setRendered(false);
+            //Cambia el text del boton de busqueda avanzada
+            this.getBtnAdvSearch().setValue(BundleHelper.getDefaultBundleValue("advanced_search_specimen_back",getMyLocale()));
+            return null;
+        }
+        else if(advanced==true){
+            this.getTaxonSessionBean().setAdvancedSearch(false);
+            //Ocultar el panel
+            this.gridpAdvancedSearch.setRendered(false);
+            //Habilitar busqueda simple
+            this.getTxSearch().setRendered(true);
+            this.getBtnSearch().setRendered(true);
+            //Cambia el text del boton de busqueda avanzada
+            this.getBtnAdvSearch().setValue(BundleHelper.getDefaultBundleValue("advanced_search",getMyLocale()));
+
+        }
+        this.getTaxonSessionBean().getPagination().refreshList();
+        return null;
+    }
+
+    public String btnProceedSearch_action() {
+
+
+        if(!this.getTaxonSessionBean().getPagination().getDataProvider().getList().isEmpty())
+        {
+            getSelectedResourceIds(this.getDataTableDublinCore(), this.getTaxonSessionBean().getSelectedResourcesId());
+        }
+
+        /*
+         * ARMAR EL DTO PARA REALIZAR LA BUSQUEDA
+         */
+
+        this.getTaxonSessionBean().setQueryDublinCoreDTO(new DublinCoreDTO());
+
+        if(this.getTxTitle().getText() != null && this.getTxTitle().getText() != "")
+        {
+
+            this.getTaxonSessionBean().getQueryDublinCoreDTO().addElement("title",
+                                                                                    this.getTxTitle().getText().toString(), "Español");
+        }
+
+        if(this.getTxCreator().getText() != null && this.getTxCreator().getText() != "")
+        {
+
+
+            this.getTaxonSessionBean().getQueryDublinCoreDTO().addElement("creator",
+                                                                                    this.getTxCreator().getText().toString(), null);
+        }
+
+        if(this.getTxIdentifier().getText() != null && this.getTxIdentifier().getText() != "")
+        {
+
+            this.getTaxonSessionBean().getQueryDublinCoreDTO().addElement("identifier",
+                                                                                    this.getTxIdentifier().getText().toString(), null);
+        }
+
+
+       if(this.getTxYear().getText() != null && this.getTxYear().getText() != "")
+       {
+
+            this.getTaxonSessionBean().getQueryDublinCoreDTO().addElement("date",
+                                                                                    this.getTxYear().getText().toString(), null);
+       }
+
+         //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
+        this.getTaxonSessionBean().setQueryMode(true);
+        //Desabilitar la bandera de busqueda simple
+        this.getTaxonSessionBean().setQueryModeSimple(false);
+        //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
+        this.getTaxonSessionBean().getPagination().setTotalResults(
+                this.getTaxonSessionBean().
+                getDublinCoreFacade().
+                countDublinCoreAdvancedSearch(
+                getTaxonSessionBean().
+                getQueryDublinCoreDTO()).intValue());
+
+        this.getTaxonSessionBean().getPagination().firstResults();
+        this.getTaxonSessionBean().getPagination().refreshList();
+
+        this.getTxSearch().setValue("");
+
+        return null;
+    }
+
+
+
+
+
+    public void getSelectedResourceIds (HtmlDataTable selectedResources, Map<String, ReferenceDTO> selectedResourcesId)
+    {
+
+        int n = selectedResources.getRowCount();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            selectedResources.setRowIndex(i);
+            ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData();
+
+            if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) {
+                System.out.println("Seleccionado "+ aux.getTitle());
+                selectedResourcesId.put(aux.getKey(), aux);
+
+            }
+            else
+            {
+                if((!aux.isSelected()) && selectedResourcesId.containsKey(aux.getKey()))
+                {
+
+                    selectedResourcesId.remove(aux.getKey());
+                }
+            }
+        }
+
+    }
+
+    public String setVisibleIndicator()
+    {
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+        if(tsb.getTaxonomicalRangeSelected().equals
+                (TaxonomicalRangeEntity.SPECIES.getId()))
+        {
+            tsb.setAbleTabTaxonIndicator(true);
+        }
+        else
+        {
+            tsb.setAbleTabTaxonIndicator(false);
+            tsb.setAbleTabTaxonIndicatorCountry(false);
+            tsb.setAbleTabTaxonIndicatorDublinCore(false);
+        }
+        return null;
+    }
+
+    public String updateIndicatorDCSelected()
+    {
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();       
+        if(tsb.getSelectedTaxonIndicatorDublinCoreId().containsKey(tsb.getDdIndicatorDCSelected()))
+        {
+
+            tsb.setSelectedResourcesId( new HashMap<String, ReferenceDTO>());
+          
+            Set<Entry<String, ReferenceDTO>> copiaRef = tsb.getSelectedTaxonIndicatorDublinCoreId().get(tsb.getDdIndicatorDCSelected()).entrySet();
+            for(Entry element: copiaRef)
+            {
+                tsb.getSelectedResourcesId().put((String)element.getKey(),(ReferenceDTO)element.getValue());
+            }
+
+            tsb.deselectedResources(tsb.getPagination().getDataProvider().getList());
+            tsb.setSelectedResources(tsb.getPagination().getDataProvider().getList(), tsb.getSelectedResourcesId());
+        }
+        else
+        {
+            tsb.setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+            tsb.deselectedResources(tsb.getPagination().getDataProvider().getList());
+
+        }
+
+
+        return null;
+    }
+
+
+    public String updateRightList()
+    {
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        //move elements to left
+        int size = tsb.getArContries().getRightOptions().length;
+        Long[] optionsSelected = new Long[size];
+        for(int pos = 0; pos < size; pos++)
+        {
+            optionsSelected[pos]=(Long)tsb.getArContries().getRightOptions()[pos].getValue();
+        }
+        tsb.getArContries().setRightSelected(optionsSelected);
+        tsb.getArContries().removeSelectedOptions();
+
+        //move elements to right
+        if(tsb.getSelectedTaxonIndicatorCountriesId().containsKey(tsb.getDdIndicatorSelected()))
+        {            
+            Option[] elements = tsb.getSelectedTaxonIndicatorCountriesId().get(tsb.getDdIndicatorSelected());
+            
+            tsb.getArContries().setRightOptions(new Option[0]);
+
+
+            int arraySize = elements.length;
+            Long[] arrayOptionsSelected = new Long[arraySize];
+            for(int pos = 0; pos < arraySize; pos++)
+            {
+                arrayOptionsSelected[pos]=(Long)elements[pos].getValue();
+            }
+            tsb.getArContries().setLeftSelected(arrayOptionsSelected);
+            tsb.getArContries().addSelectedOptions();
+            
+        }
+
+      
         return null;
     }
 
@@ -571,16 +979,7 @@ public class NewTaxonomy extends AbstractPageBean {
      * @return the ddRangeItems
      */
     public SelectItem[] getDdRangeItems() 
-    {
-        System.out.println("Node Id "+ this.getHiddenTaxonNodeId().getValue().toString());
-        String hiddenNodeValue = this.getHiddenTaxonNodeId().getValue().toString();
-         List<TaxonomicalRangeDTO> tmpTaxonomicalRange = this.getTaxonSessionBean().getNextLevelsByTaxon(new Long(this.getHiddenTaxonNodeId().getValue().toString()));
-        ddRangeItems = new SelectItem[tmpTaxonomicalRange.size()];
-        for(int pos = 0; pos < tmpTaxonomicalRange.size(); pos++)
-        {
-            TaxonomicalRangeDTO tmpRange = tmpTaxonomicalRange.get(pos);
-            ddRangeItems[pos] = new SelectItem(tmpRange.getTaxonomicalRangeKey(),tmpRange.getName());
-        }
+    {        
         return ddRangeItems;
     }
 
@@ -747,6 +1146,202 @@ public class NewTaxonomy extends AbstractPageBean {
      */
     public void setTaxonTabs(TabSet taxonTabs) {
         this.taxonTabs = taxonTabs;
+    }
+
+    /**
+     * @return the gridDublinCore
+     */
+    public HtmlPanelGrid getGridDublinCore() {
+        return gridDublinCore;
+    }
+
+    /**
+     * @param gridDublinCore the gridDublinCore to set
+     */
+    public void setGridDublinCore(HtmlPanelGrid gridDublinCore) {
+        this.gridDublinCore = gridDublinCore;
+    }
+
+    /**
+     * @return the gridpAdvancedSearch
+     */
+    public HtmlPanelGrid getGridpAdvancedSearch() {
+        return gridpAdvancedSearch;
+    }
+
+    /**
+     * @param gridpAdvancedSearch the gridpAdvancedSearch to set
+     */
+    public void setGridpAdvancedSearch(HtmlPanelGrid gridpAdvancedSearch) {
+        this.gridpAdvancedSearch = gridpAdvancedSearch;
+    }
+
+    /**
+     * @return the txSearch
+     */
+    public HtmlInputText getTxSearch() {
+        return txSearch;
+    }
+
+    /**
+     * @param txSearch the txSearch to set
+     */
+    public void setTxSearch(HtmlInputText txSearch) {
+        this.txSearch = txSearch;
+    }
+
+    /**
+     * @return the txTitle
+     */
+    public TextField getTxTitle() {
+        return txTitle;
+    }
+
+    /**
+     * @param txTitle the txTitle to set
+     */
+    public void setTxTitle(TextField txTitle) {
+        this.txTitle = txTitle;
+    }
+
+    /**
+     * @return the txYear
+     */
+    public TextField getTxYear() {
+        return txYear;
+    }
+
+    /**
+     * @param txYear the txYear to set
+     */
+    public void setTxYear(TextField txYear) {
+        this.txYear = txYear;
+    }
+
+    /**
+     * @return the txIdentifier
+     */
+    public TextField getTxIdentifier() {
+        return txIdentifier;
+    }
+
+    /**
+     * @param txIdentifier the txIdentifier to set
+     */
+    public void setTxIdentifier(TextField txIdentifier) {
+        this.txIdentifier = txIdentifier;
+    }
+
+    /**
+     * @return the txCreator
+     */
+    public TextField getTxCreator() {
+        return txCreator;
+    }
+
+    /**
+     * @param txCreator the txCreator to set
+     */
+    public void setTxCreator(TextField txCreator) {
+        this.txCreator = txCreator;
+    }
+
+    /**
+     * @return the btnSearch
+     */
+    public HtmlCommandButton getBtnSearch() {
+        return btnSearch;
+    }
+
+    /**
+     * @param btnSearch the btnSearch to set
+     */
+    public void setBtnSearch(HtmlCommandButton btnSearch) {
+        this.btnSearch = btnSearch;
+    }
+
+    /**
+     * @return the btnAdvSearch
+     */
+    public HtmlCommandButton getBtnAdvSearch() {
+        return btnAdvSearch;
+    }
+
+    /**
+     * @param btnAdvSearch the btnAdvSearch to set
+     */
+    public void setBtnAdvSearch(HtmlCommandButton btnAdvSearch) {
+        this.btnAdvSearch = btnAdvSearch;
+    }
+
+    /**
+     * @return the dataTableDublinCore
+     */
+    public HtmlDataTable getDataTableDublinCore() {
+        return dataTableDublinCore;
+    }
+
+    /**
+     * @param dataTableDublinCore the dataTableDublinCore to set
+     */
+    public void setDataTableDublinCore(HtmlDataTable dataTableDublinCore) {
+        this.dataTableDublinCore = dataTableDublinCore;
+    }
+
+    /**
+     * @return the quantityTotal
+     */
+    public String getQuantityTotal() {
+        return quantityTotal;
+    }
+
+    /**
+     * @param quantityTotal the quantityTotal to set
+     */
+    public void setQuantityTotal(String quantityTotal) {
+        this.quantityTotal = quantityTotal;
+    }
+
+    /**
+     * @return the selected
+     */
+    public String getSelected() {
+        return selected;
+    }
+
+    /**
+     * @param selected the selected to set
+     */
+    public void setSelected(String selected) {
+        this.selected = selected;
+    }
+
+    /**
+     * @return the ddIndicatorsDublinCore
+     */
+    public DropDown getDdIndicatorsDublinCore() {
+        return ddIndicatorsDublinCore;
+    }
+
+    /**
+     * @param ddIndicatorsDublinCore the ddIndicatorsDublinCore to set
+     */
+    public void setDdIndicatorsDublinCore(DropDown ddIndicatorsDublinCore) {
+        this.ddIndicatorsDublinCore = ddIndicatorsDublinCore;
+    }
+
+    /**
+     * @return the ddRanges
+     */
+    public DropDown getDdRanges() {
+        return ddRanges;
+    }
+
+    /**
+     * @param ddRanges the ddRanges to set
+     */
+    public void setDdRanges(DropDown ddRanges) {
+        this.ddRanges = ddRanges;
     }
 
    
