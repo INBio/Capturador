@@ -2485,3 +2485,811 @@ INSERT INTO ara.indicator(indicator_id, "name", description, creation_date, crea
 ALTER TABLE ara.semen_gathering ADD COLUMN total_sperm_concentration numeric;
 ALTER TABLE ara.semen_gathering ADD COLUMN sperm_concentration_per_straw numeric;
 --final de los cambios
+
+
+--2010.09.16 gsulca
+/* A */
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AF','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AX','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AL','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('DZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AS','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AD','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AQ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AW','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AU','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* B */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BS','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BH','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BD','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BB','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BY','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BJ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BW','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BV','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('IO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BF','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* C */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KH','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CV','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KY','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CF','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TD','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CL','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CX','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CC','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CD','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CK','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('HR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CU','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CY','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* D */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('DK','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('DJ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('DM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('DO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* E */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('EC','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('EG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SV','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GQ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ER','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('EE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ET','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* F */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('FK','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('FO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('FJ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('FI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('FR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GF','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PF','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TF','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* G */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('DE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GH','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GL','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GD','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GP','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GU','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GW','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GY','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* H */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('HT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('HM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('VA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('HN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('HK','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('HU','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* I */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('IS','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('IN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ID','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('IR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('IQ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('IE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('IM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('IL','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('IT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* J */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('JM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('JP','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('JE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('JO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* K */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KP','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KW','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* L */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LV','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LB','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LS','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LY','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LU','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* M */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MK','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MW','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MY','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MV','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ML','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MH','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MQ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MU','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('YT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MX','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('FM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MD','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MC','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ME','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MS','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* N */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NP','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NL','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NC','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NU','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NF','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MP','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('NO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* O */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('OM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* P */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PK','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PW','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PS','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PY','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PH','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PL','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* Q */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('QA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* R */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('RE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('RO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('RU','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('RW','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+
+/* S */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('BL','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SH','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('KN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LC','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('MF','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('PM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('VC','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('WS','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ST','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('RS','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SC','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SL','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SK','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SB','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ZA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GS','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ES','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('LK','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SD','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SJ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('CH','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('SY','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* T */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TW','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TJ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TH','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TL','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TK','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TO','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TT','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TR','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TC','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('TV','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* U */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('UG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('UA','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('AE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('GB','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('US','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('UM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('UY','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('UZ','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* V */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('VU','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('VE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('VN','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('VG','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('VI','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* W */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('WF','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('EH','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* Y */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('YE','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+/* Z */
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ZM','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+INSERT INTO ara.country("value", creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('ZW','2010-09-13' , 'admin', '2010-09-13', 'admin');
+
+
+
+create table ARA.TAXON_INDICATOR_COUNTRY  (
+   COUNTRY_ID    	numeric NOT NULL,
+   INDICATOR_ID         numeric NOT NULL,
+   TAXON_ID             numeric NOT NULL,
+   created_by character varying(20) NOT NULL,
+   creation_date date NOT NULL,
+   last_modification_by character varying(20) NOT NULL,
+   last_modification_date date NOT NULL);
+
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_COUNTRY ADD CONSTRAINT TAXON_INDICATOR_COUNTRY_ID_PK PRIMARY KEY (COUNTRY_ID,INDICATOR_ID, TAXON_ID);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_COUNTRY ADD CONSTRAINT TAXON_INDICATOR_COUNTRY_fk FOREIGN KEY (INDICATOR_ID, TAXON_ID) REFERENCES ARA.TAXON_INDICATOR(INDICATOR_ID, TAXON_ID);
+ALTER TABLE ONLY ARA.TAXON_INDICATOR_COUNTRY OWNER TO ara;
