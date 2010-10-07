@@ -728,7 +728,7 @@ public class EditTaxonomy2 extends AbstractPageBean {
         //SAVE TAXON
         TaxonSessionBean TSB = this.getTaxonSessionBean();
         //set userName
-         TSB.getCurrentTaxon().setUserName(this.getAraSessionBean().getGlobalUserName());
+        TSB.getCurrentTaxon().setUserName(this.getAraSessionBean().getGlobalUserName());
         //setCurrentPredecessorTimestamp
          TSB.getCurrentTaxon().setCurrentPredecessorTimestamp(TSB.getCurrentTaxon().getCurrentNameTimestamp());
         //setCurrentNameTimestamp
@@ -829,7 +829,7 @@ public class EditTaxonomy2 extends AbstractPageBean {
             {
                 Long indicatorId = new Long(indicatorOption.getValue().toString());
                 //si contiene relaciones taxon-indicator-country
-                if(TSB.getSelectedTaxonIndicatorDublinCoreId().containsKey(indicatorId))
+                if(TSB.getSelectedTaxonIndicatorDublinCoreId() != null && TSB.getSelectedTaxonIndicatorDublinCoreId().containsKey(indicatorId))
                 {
                     if(TSB.getdBTaxonIndicatorDublinCoreId().containsKey(indicatorId))
                     {
@@ -962,6 +962,8 @@ public class EditTaxonomy2 extends AbstractPageBean {
             //Elminina las relaciones deseleccionadas            
             for(String deleteIndicator: copiaDb)
             {   Long indicatorId = new Long(deleteIndicator);                
+                
+                /*
                 if(TSB.getdBTaxonIndicatorCountriesId().containsKey(indicatorId))
                 {
                     List<Long> deleteCountryIds = new ArrayList<Long>();
@@ -972,18 +974,23 @@ public class EditTaxonomy2 extends AbstractPageBean {
                     TSB.deleteTaxonIndicatorCountryByIds(taxonId, indicatorId, deleteCountryIds);
 
                 }
+
                 if(TSB.getdBTaxonIndicatorDublinCoreId().containsKey(indicatorId))
                 {
                     List<String> deleteDublinCoreIds = new ArrayList<String>();
-                    Set<String> deleted = TSB.getdBTaxonIndicatorDublinCoreId().get(indicatorId).keySet();
-                    for(String dublinCore: deleted)
+                    //Set<String> deleted = TSB.getdBTaxonIndicatorDublinCoreId().get(indicatorId).keySet();
+                    Collection<ReferenceDTO> deleted = TSB.getdBTaxonIndicatorDublinCoreId().get(indicatorId).values();
+                    for(ReferenceDTO dublinCore: deleted)
                     {
-                        deleteDublinCoreIds.add(dublinCore);
+                        deleteDublinCoreIds.add(dublinCore.getKey());
                     }
                     TSB.deleteTaxonIndicatorDublinCoreIds(taxonId, indicatorId, deleteDublinCoreIds);
 
-                }
-                TSB.deleteTaxonIndicatorById(taxonId, deleteIndicator);
+                }*/
+                System.out.println("borrar taxon "+taxonId+" indicator "+indicatorId);
+                TSB.deleteTaxonIndicatorCountryByTaxonIndicator(taxonId, indicatorId);
+                TSB.deleteTaxonIndicatorDublinCoreByTaxonIndicator(taxonId, indicatorId);
+                TSB.deleteTaxonIndicatorById(taxonId, indicatorId.toString());
             }
 
         }

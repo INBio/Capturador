@@ -1436,4 +1436,16 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
         this.taxonomyFacade.deleteTaxonIndicatorDublinCoreByTaxonId(taxonId);
     }
 
+
+    public void deleteTaxonIndicatorDublinCoreByTaxonIndicator(Long taxonId, Long indicatorId)
+    {
+        this.taxonomyFacade.deleteTaxonIndicatorDublinCoreByTaxonIndicator(taxonId, indicatorId);
+    }
+
+    public void deleteTaxonIndicatorCountryByTaxonIndicator(Long taxonId, Long indicatorId)
+    {
+        this.taxonomyFacade.deleteTaxonIndicatorCountryByTaxonIndicator(taxonId, indicatorId);
+    }
+
+
 }
