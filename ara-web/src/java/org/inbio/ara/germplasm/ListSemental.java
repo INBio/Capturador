@@ -251,6 +251,7 @@ public class ListSemental extends AbstractPageBean {
     public String btn_new_action()
     {
         getgermplasm$SementalSessionBean().resetValues();
+        getgermplasm$SemenGatheringSessionBean().resetPagination();
         return "new";
     }
 
@@ -279,6 +280,8 @@ public class ListSemental extends AbstractPageBean {
 
             getgermplasm$SementalSessionBean().setSementalDTO(selected.get(0));
 
+            getgermplasm$SemenGatheringSessionBean().resetPagination();
+            
             //Llamada al jsp encargado de la edicion de accessiones
             return "edit";
 

@@ -95,6 +95,11 @@ public class SemenGatheringSessionBean extends AbstractSessionBean implements Pa
         setFirstTime(true);
     }
 
+    public void resetPagination()
+    {
+        setPagination(null);
+    }
+
     /**
      * @return un String que contiene el detalle de la paginacion
      */

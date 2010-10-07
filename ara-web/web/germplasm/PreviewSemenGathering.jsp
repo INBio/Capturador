@@ -47,7 +47,7 @@
                                         columnClasses="list-columns" headerClass="list-header" id="dataTablegathering"
                                         rowClasses="list-row-even,list-row-odd" rows="#{germplasm$SemenGatheringSessionBean.pagination.resultsPerPage}"
                                         style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
-                                        value="#{germplasm$SemenGatheringSessionBean.pagination.dataProvider.list}" var="currentRow" >
+                                        value="#{germplasm$SemenGatheringSessionBean.pagination.dataProvider.list}" var="currentRow" width="600">
                                         <h:column>
                                             <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow['selected']}"/>
                                         </h:column>
