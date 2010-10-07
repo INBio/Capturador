@@ -57,4 +57,16 @@ public class TaxonIndicatorDublinCoreEAOImpl extends BaseEAOImpl<TaxonIndicatorD
         em.flush();
     }
 
+
+    public void deleteTaxonIndicatorDublinCoreByTaxonIndicator(Long taxonId, Long indicatorId)
+    {
+        Query q = em.createQuery(
+                " delete from TaxonIndicatorDublinCore tidc " +
+                " where tidc.taxonIndicatorDublinCorePK.indicatorId = :indicatorId and tidc.taxonIndicatorDublinCorePK.taxonId = :taxonId");
+        q.setParameter("indicatorId", indicatorId);
+        q.setParameter("taxonId", taxonId);
+        q.executeUpdate();
+        em.flush();
+    }
+
 }

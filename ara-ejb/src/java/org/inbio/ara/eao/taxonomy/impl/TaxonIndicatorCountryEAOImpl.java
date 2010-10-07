@@ -60,5 +60,18 @@ public class TaxonIndicatorCountryEAOImpl extends BaseEAOImpl<TaxonIndicatorCoun
         em.flush();
     }
 
+    public void deleteTaxonIndicatorCountryByTaxonIndicator(Long taxonId, Long indicatorId)
+    {
+        Query q = em.createQuery(
+                " delete from TaxonIndicatorCountry tic " +
+                " where tic.taxonIndicatorCountryPK.indicatorId = :indicatorId"+
+                " and tic.taxonIndicatorCountryPK.taxonId = :taxonId");
+
+        q.setParameter("indicatorId", indicatorId);
+        q.setParameter("taxonId", taxonId);
+        q.executeUpdate();
+        em.flush();
+    }
+
 
 }

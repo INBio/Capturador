@@ -1403,5 +1403,16 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
         taxonIndicatorDublinCoreEAOImpl.deleteTaxonIndicatorDublinCoreByTaxonId(taxonId);
     }
 
+    public void deleteTaxonIndicatorCountryByTaxonIndicator(Long taxonId, Long indicatorId)
+    {
+        taxonIndicatorCountryEAOImpl.deleteTaxonIndicatorCountryByTaxonIndicator(taxonId, indicatorId);
+    }
+
+    public void deleteTaxonIndicatorDublinCoreByTaxonIndicator(Long taxonId, Long indicatorId)
+    {
+        taxonIndicatorDublinCoreEAOImpl.deleteTaxonIndicatorDublinCoreByTaxonIndicator(taxonId, indicatorId);
+    }
+
+
 
 }

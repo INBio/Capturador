@@ -22,5 +22,7 @@ public interface TaxonIndicatorDublinCoreEAOLocal extends BaseLocalEAO<TaxonIndi
     public void deleteTaxonIndicatorDublinCoreById(Long taxonId, Long indicatorId, Long dublinCoreId);
 
     public void deleteTaxonIndicatorDublinCoreByTaxonId(Long taxonId);
+
+    public void deleteTaxonIndicatorDublinCoreByTaxonIndicator(Long taxonId, Long indicatorId);
     
 }

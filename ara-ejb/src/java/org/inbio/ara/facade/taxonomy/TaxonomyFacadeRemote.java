@@ -231,4 +231,8 @@ public interface TaxonomyFacadeRemote {
 
     public void deleteTaxonIndicatorDublinCoreByTaxonId(Long taxonId);
 
+    public void deleteTaxonIndicatorCountryByTaxonIndicator(Long taxonId, Long indicatorId);
+
+    public void deleteTaxonIndicatorDublinCoreByTaxonIndicator(Long taxonId, Long indicatorId);
+
 }
