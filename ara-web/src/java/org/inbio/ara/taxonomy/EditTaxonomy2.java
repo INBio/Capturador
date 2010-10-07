@@ -737,7 +737,7 @@ public class EditTaxonomy2 extends AbstractPageBean {
          String defaultTaxonName ="";
          if(TSB.getCurrentTaxon().getTaxonomicalRangeId() == 18){ // specie
              String[] names = TSB.getCurrentTaxon().getDefaultName().split(" ");
-             defaultTaxonName = names[0]+TSB.getCurrentTaxon().getCurrentName();
+             defaultTaxonName = names[0]+" "+TSB.getCurrentTaxon().getCurrentName();
          }else{
              defaultTaxonName = TSB.getCurrentTaxon().getCurrentName();
          }

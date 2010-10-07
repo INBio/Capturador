@@ -52,14 +52,16 @@ public class TaxonTreeController {
         scriptString += "{\n";
 
         //scriptString += "alert('nodeId == -1');\n";
-
+        scriptString += "setHiddenRootNodeId(rootInformation[0]);\n";
+        scriptString += "setHiddenTaxonNodeId(rootInformation[0]);\n";
+        scriptString += "setHiddenTaxonNodeName(rootInformation[1]);\n";
         scriptString += "nodeId = rootInformation[1];\n";
         scriptString += "}\n";
                 //If is different to root expand
         scriptString += "if(nodeId != rootInformation[1])\n";
         scriptString += "{\n";
 
-        scriptString += "alert('nodeId != root, se debe expandir');\n";
+        //scriptString += "alert('nodeId != root, se debe expandir');\n";
 
         scriptString += "expand = true;\n";
         scriptString += "}\n";

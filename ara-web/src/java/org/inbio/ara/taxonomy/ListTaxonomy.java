@@ -53,6 +53,7 @@ public class ListTaxonomy extends AbstractPageBean {
     private HtmlInputHidden hiddenCollecNomenclGroupId = new HtmlInputHidden();
     private HtmlInputHidden hiddenTypeGroup = new HtmlInputHidden();
     private HtmlInputHidden hiddenTaxonNodeName = new HtmlInputHidden();
+    private HtmlInputHidden hiddenRootNodeId = new HtmlInputHidden();
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -266,8 +267,22 @@ public class ListTaxonomy extends AbstractPageBean {
     }
 
     public String btnNewIndicator_action() {
+
+        System.out.println("El nodoId es "+hiddenTaxonNodeId.getValue().toString());
+        System.out.println("El nodoRoot es "+hiddenRootNodeId.getValue().toString());
         String result =null;
-        TaxonDTO taxon = this.getTaxonSessionBean().getTaxon(new Long(hiddenTaxonNodeId.getValue().toString()));
+        TaxonDTO taxon;
+        Long nodeId=new Long(hiddenTaxonNodeId.getValue().toString());
+        if(nodeId == -1)
+        {
+            //taxon = this.getTaxonSessionBean().getTaxon(new Long(hiddenRootNodeId.getValue().toString()));
+            this.getHiddenTaxonNodeId().setValue(this.getHiddenRootNodeId().getValue());
+
+        }
+        
+        taxon = this.getTaxonSessionBean().getTaxon(new Long(hiddenTaxonNodeId.getValue().toString()));
+        //this.getHiddenTaxonNodeName().setValue(taxon.getDefaultName());
+        
         //Validate if the node is an species //CAMBIAR AL NIVEL TAXONOMICO MAS BAJO
         if (taxon.getTaxonomicalRangeId().equals
                 (TaxonomicalRangeEntity.FORM.getId())) {
@@ -427,6 +442,20 @@ public class ListTaxonomy extends AbstractPageBean {
      */
     public void setHiddenTaxonNodeName(HtmlInputHidden hiddenTaxonNodeName) {
         this.hiddenTaxonNodeName = hiddenTaxonNodeName;
+    }
+
+    /**
+     * @return the hiddenRootNodeId
+     */
+    public HtmlInputHidden getHiddenRootNodeId() {
+        return hiddenRootNodeId;
+    }
+
+    /**
+     * @param hiddenRootNodeId the hiddenRootNodeId to set
+     */
+    public void setHiddenRootNodeId(HtmlInputHidden hiddenRootNodeId) {
+        this.hiddenRootNodeId = hiddenRootNodeId;
     }
     
 }

@@ -132,6 +132,14 @@ function setHiddenTaxonNodeId(idNode)
     //alert(document.getElementById('contenido:form1:hiddenNodeId').value);
 }
 
+function setHiddenRootNodeId(idNode)
+{
+    //alert("entro a Cambiar la variable NodeId");
+    var hiddenRootNodeId = document.getElementById('contenido:form1:hiddenRootNodeId');
+    hiddenRootNodeId.value = idNode;
+    //alert(document.getElementById('contenido:form1:hiddenNodeId').value);
+}
+
 function setHiddenPathTaxonNode(path)
 {
     var hiddenPathTaxonNode = document.getElementById('contenido:form1:hiddenPathTaxonNode');
@@ -152,6 +160,14 @@ function getHiddenTaxonNodeId()
     return hiddenTaxonNodeId.value;
     //alert(document.getElementById('contenido:form1:hiddenNodeId').value);
 }
+
+function getHiddenRootNodeId()
+{
+    var hiddenRootNodeId = document.getElementById('contenido:form1:hiddenRootNodeId');
+    return hiddenRootNodeId.value;
+    //alert(document.getElementById('contenido:form1:hiddenNodeId').value);
+}
+
 
 function getHiddenPathTaxonNode(path)
 {

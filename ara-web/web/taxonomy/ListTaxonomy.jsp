@@ -51,6 +51,7 @@
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenTaxonNodeName}" id="hiddenTaxonNodeName"/>
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenCollecNomenclGroupId}" id="hiddenCollecNomenclGroupId"/>
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenTypeGroup}" id="hiddenTypeGroup"/>
+                                        <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenRootNodeId}" id="hiddenRootNodeId"/>
                                     </h:panelGrid>
                                 </h:panelGrid>
                                 <jsp:directive.include file="/Footer.jspf"/>
