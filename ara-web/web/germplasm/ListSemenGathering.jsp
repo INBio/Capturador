@@ -107,6 +107,8 @@
                                                     style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnEdit}"/>
                                                 <h:commandButton action="#{germplasm$ListSemenGathering.btn_delete_action}" id="btn_delete"
                                                         style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnDelete}"/>
+                                                <h:commandButton action="#{germplasm$ListSemenGathering.btn_view_action}" id="btn_preview"
+                                                        style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.view}"/>
                                                 <!-- Botones de paginacion -->
                                                 <h:commandButton action="#{germplasm$SemenGatheringSessionBean.pagination.firstResults}" id="btnFirst"
                                                     rendered="#{germplasm$SemenGatheringSessionBean.pagination.isVisiblePrevious}"

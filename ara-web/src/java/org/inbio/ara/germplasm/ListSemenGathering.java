@@ -295,6 +295,11 @@ public class ListSemenGathering extends AbstractPageBean {
         }
     }
 
+    public String btn_view_action()
+    {
+        return "view";
+    }
+
     /**
      * Performed the simple search for semen gathering
      * @return

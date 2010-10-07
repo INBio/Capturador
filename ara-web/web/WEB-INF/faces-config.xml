@@ -534,6 +534,11 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
+        <managed-bean-name>germplasm$PreviewSemenGathering</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.germplasm.PreviewSemenGathering</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
         <managed-bean-name>germplasm$BreedSessionBean</managed-bean-name>
         <managed-bean-class>org.inbio.ara.germplasm.BreedSessionBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
@@ -1510,6 +1515,11 @@
             <to-view-id>/germplasm/EditSemenGathering.jsp</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>view</from-outcome>
+            <to-view-id>/germplasm/PreviewSemenGathering.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/germplasm/EditSemenGathering.jsp</from-view-id>
@@ -1527,6 +1537,15 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/germplasm/PreviewSemenGathering.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/germplasm/ListSemenGathering.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
 
 
 
@@ -1672,7 +1691,11 @@
         </navigation-case>
     </navigation-rule>
     <!-- FIN MODULO DE DUBLIN CORE -->
+    
 </faces-config>
+
+
+
 
 
 
