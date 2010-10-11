@@ -66,6 +66,10 @@ public class DublinCoreElementEAOImpl extends BaseEAOImpl<DublinCoreElement, Lon
         query.getResultList();
     }
 
+    public List<Integer> findByValue(int arg0, String arg1, boolean arg2) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 
 
 

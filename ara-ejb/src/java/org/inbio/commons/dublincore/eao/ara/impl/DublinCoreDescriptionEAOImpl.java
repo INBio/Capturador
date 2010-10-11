@@ -7,6 +7,7 @@ package org.inbio.commons.dublincore.eao.ara.impl;
 
 import java.util.List;
 
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -75,6 +76,18 @@ public class DublinCoreDescriptionEAOImpl extends BaseEAOImpl<DublinCoreDescript
         query.setParameter("resourceId", resourceId);
 
         return (DublinCoreDescription) query.getSingleResult();
+    }
+
+    public List<DublinCoreDescription> findAllByResourceTypeId(int arg0) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public List<DublinCoreDescription> findAllByResourceTypeIdAndParamsPaginated(int arg0, Map<Integer, String> arg1, int arg2, int arg3) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Long countAllByResourceTypeIdAndParams(int arg0, Map<Integer, String> arg1) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 
