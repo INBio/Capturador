@@ -279,13 +279,13 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
         result.setKey(element.getKey());
         
         /*If title exist*/
-        if(element.getElementValues("title") != null)
+        if(element.getElementValues("title") != null && element.getElementValues("title").size() > 0)
         {
             result.setTitle(element.getElementValues("title").get(0).getValue());
         }
 
         /*If creator exist*/
-        if(element.getElementValues("creator") != null)
+        if(element.getElementValues("creator") != null && element.getElementValues("creator").size() > 0)
         {
             String creators = "";          
             for(ElementTypeDTO creatorName: element.getElementValues("creator"))
@@ -296,14 +296,15 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
         }
 
         /*If date exist*/
-        if(element.getElementValues("date") != null)
+        if(element.getElementValues("date") != null && element.getElementValues("date").size() > 0)
         {
             result.setDate(element.getElementValues("date").get(0).getValue());
         }
 
         /*If identifier exist*/        
-        if(element.getElementValues("identifier") != null)
+        if(element.getElementValues("identifier") != null && element.getElementValues("identifier").size() > 0)
         {
+            
             result.setIdentifier(element.getElementValues("identifier").get(0).getValue());
         }
         return result;
