@@ -49,7 +49,7 @@ public class SemenGatheringDTOFactory  extends BaseEntityOrDTOFactory<SemenGathe
         e.setSolventId(dto.getSolventId());
         e.setStrawColor(dto.getStrawColor());
         e.setStrawQuantity(dto.getStrawQuantity());
-        e.setCurrentStrawQuantity(dto.getCurrentStrawQuantity());
+        e.setCurrentStrawQuantity(dto.getStrawQuantity());
         e.setStrawSize(dto.getStrawSize());
         e.setTankNumber(dto.getTankNumber());
         e.setVolume(dto.getVolume());
