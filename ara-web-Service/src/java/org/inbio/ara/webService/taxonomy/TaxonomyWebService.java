@@ -61,7 +61,7 @@ public class TaxonomyWebService {
     public List<TaxonDTO> getChildrenByTaxonId(@WebParam(name = "taxonId")
     String taxonId) {
         List<TaxonDTO> children = taxonFacade.getTaxonChildren(new Long(taxonId));
-        System.out.println("children = "+children);
+        //System.out.println("children = "+children);
         
         for(TaxonDTO child: children)
         {
