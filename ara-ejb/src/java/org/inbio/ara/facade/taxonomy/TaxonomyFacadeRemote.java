@@ -235,4 +235,14 @@ public interface TaxonomyFacadeRemote {
 
     public void deleteTaxonIndicatorDublinCoreByTaxonIndicator(Long taxonId, Long indicatorId);
 
+    public List<Long> getComponentPartByTaxonIndicatorIds(Long taxon, Long indicator);
+
+    public void saveTaxonIndicatorComponentPartIds(Long taxonId, Long indicatorId ,List<Long> componentPartIds, String userName);
+
+    public void deleteTaxonIndicatorComponentPartIds(Long taxonId, Long indicatorId, List<Long> componentPartIds);
+
+    public void deleteTaxonIndicatorComponentPartByTaxonId(Long taxonId);
+
+    public void deleteTaxonIndicatorComponentPartByTaxonIndicator(Long taxonId, Long indicatorId);
+
 }

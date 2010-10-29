@@ -62,6 +62,8 @@ import org.inbio.ara.dto.taxonomy.TaxonDescriptionRecordDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionRecordDTOFactory;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionStageDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionStageDTOFactory;
+import org.inbio.ara.dto.taxonomy.TaxonIndicatorComponentPartDTO;
+import org.inbio.ara.dto.taxonomy.TaxonIndicatorComponentPartDTOFactory;
 import org.inbio.ara.dto.taxonomy.TaxonIndicatorCountryDTO;
 import org.inbio.ara.dto.taxonomy.TaxonIndicatorCountryDTOFactory;
 import org.inbio.ara.dto.taxonomy.TaxonIndicatorDTO;
@@ -95,6 +97,7 @@ import org.inbio.ara.eao.taxonomy.TaxonDescriptionRecordEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionRecordReferenceEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionStageEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonEAOLocal;
+import org.inbio.ara.eao.taxonomy.TaxonIndicatorComponentPartEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonIndicatorCountryEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonIndicatorDublinCoreEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonIndicatorEAOLocal;
@@ -133,6 +136,7 @@ import org.inbio.ara.persistence.taxonomy.TaxonDescriptionRecord;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionRecordReference;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionStage;
 import org.inbio.ara.persistence.taxonomy.TaxonIndicator;
+import org.inbio.ara.persistence.taxonomy.TaxonIndicatorComponentPart;
 import org.inbio.ara.persistence.taxonomy.TaxonIndicatorCountry;
 import org.inbio.ara.persistence.taxonomy.TaxonIndicatorDublinCore;
 import org.inbio.ara.persistence.taxonomy.TaxonNomenclaturalGroup;
@@ -214,6 +218,8 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     private TaxonIndicatorCountryEAOLocal taxonIndicatorCountryEAOImpl;
     @EJB
     private TaxonIndicatorDublinCoreEAOLocal taxonIndicatorDublinCoreEAOImpl;
+    @EJB
+    private TaxonIndicatorComponentPartEAOLocal taxonIndicatorComponentPartEAOImpl;
 
     //DTO factories
     private TaxonDescriptionDTOFactory taxonDescriptionDTOFactory =
@@ -247,6 +253,7 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     private TaxonIndicatorDTOFactory taxonIndicatorDTOFactory = new TaxonIndicatorDTOFactory();
     private TaxonIndicatorCountryDTOFactory taxonIndicatorCountryDTOFactory = new TaxonIndicatorCountryDTOFactory();
     private TaxonIndicatorDublinCoreDTOFactory taxonIndicatorDublinCoreDTOFactory = new TaxonIndicatorDublinCoreDTOFactory();
+    private TaxonIndicatorComponentPartDTOFactory taxonIndicatorComponentPartDTOFactory = new TaxonIndicatorComponentPartDTOFactory();
 
     /**
      * Retorna un listado paginado de TaxonDescriptionDTO
@@ -1414,5 +1421,46 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     }
 
 
+    public List<Long> getComponentPartByTaxonIndicatorIds(Long taxon, Long indicator)
+    {
+        return taxonIndicatorComponentPartEAOImpl.findComponentPartByTaxonIndicatorIds(taxon, indicator);
+    }
+
+    public void saveTaxonIndicatorComponentPartIds(Long taxonId, Long indicatorId ,List<Long> componentPartIds, String userName)
+    {
+
+
+        for(Long componentPartId: componentPartIds )
+        {
+
+            TaxonIndicatorComponentPartDTO newDTO = new TaxonIndicatorComponentPartDTO();
+            newDTO.setTaxonId(taxonId);
+            newDTO.setIndicatorId(indicatorId);
+            newDTO.setComponentPartId(new Long(componentPartId));
+            newDTO.setUserName(userName);
+            TaxonIndicatorComponentPart taxonIndicatorComponentPart = taxonIndicatorComponentPartDTOFactory.createPlainEntity(newDTO);
+            taxonIndicatorComponentPartEAOImpl.create(taxonIndicatorComponentPart);
+        }
+
+    }
+
+    public void deleteTaxonIndicatorComponentPartIds(Long taxonId, Long indicatorId, List<Long> componentPartIds)
+    {
+        for(Long componentPartId: componentPartIds)
+        {
+            taxonIndicatorComponentPartEAOImpl.deleteTaxonIndicatorComponentPartById(taxonId, indicatorId, new Long(componentPartId));
+        }
+    }
+
+
+    public void deleteTaxonIndicatorComponentPartByTaxonId(Long taxonId)
+    {
+        taxonIndicatorComponentPartEAOImpl.deleteTaxonIndicatorComponentPartByTaxonId(taxonId);
+    }
+
+    public void deleteTaxonIndicatorComponentPartByTaxonIndicator(Long taxonId, Long indicatorId)
+    {
+        taxonIndicatorComponentPartEAOImpl.deleteTaxonIndicatorComponentPartByTaxonIndicator(taxonId, indicatorId);
+    }
 
 }

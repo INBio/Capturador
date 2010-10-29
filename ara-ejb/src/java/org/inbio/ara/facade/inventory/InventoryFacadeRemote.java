@@ -182,5 +182,7 @@ public interface InventoryFacadeRemote {
     
 
     public List<GatheringObservationDTO> getGathObsBySiteId(java.lang.Long siteId);
+
+    public SelectionListDTO getSelectionListElementById(Long selectionListEntityId, Long selectionListValueId);
 }
 

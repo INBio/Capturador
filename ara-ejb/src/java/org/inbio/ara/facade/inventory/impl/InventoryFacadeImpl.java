@@ -455,6 +455,19 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         return this.selecionListDTOFactory.createDTOList(slgeList);
     }
 
+
+/**
+     * @param selectionListEntityId
+     * @return
+     */
+    public SelectionListDTO
+            getSelectionListElementById(Long selectionListEntityId, Long selectionListValueId) {
+        SelectionListGenericEntity slge = selectionListValueEAOImpl.
+                findById(selectionListEntityId, selectionListValueId);
+        return this.selecionListDTOFactory.createDTO(slge);
+    }
+
+
     /**
      * @param selectionListEntityId
      * @param collectionId
