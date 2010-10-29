@@ -18,12 +18,15 @@ import javax.ejb.EJB;
 import javax.faces.FacesException;
 import javax.faces.model.SelectItem;
 import org.inbio.ara.dto.indicator.IndicatorDTO;
+import org.inbio.ara.dto.inventory.SelectionListDTO;
+import org.inbio.ara.dto.inventory.SelectionListEntity;
 import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.dto.taxonomy.CountryDTO;
 import org.inbio.ara.facade.gis.GisFacadeRemote;
 import org.inbio.ara.facade.indicator.IndicatorFacadeRemote;
+import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.taxonomy.TaxonomyFacadeRemote;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.PaginationControllerRemix;
@@ -70,6 +73,8 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
     private GisFacadeRemote gisFacade;
     @EJB
     private DublinCoreFacadeRemote dublinCoreFacade;
+    @EJB
+    private InventoryFacadeRemote inventoryFacade;
 
     //Objeto que controla la paginacion de las referencias
     private PaginationControllerRemix pagination = null;
@@ -148,6 +153,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
 
 
     private Set<Option> indicatorRelations = new HashSet<Option>();
+    private Set<Option> indicatorRelationsAP = new HashSet<Option>();
     private Set<Long> indicatorRelationIds = new HashSet<Long>();
     private Set<Option> dbIndicatorRelations = new HashSet<Option>();
     private Set<Option> dbRanges = new HashSet<Option>();
@@ -155,16 +161,21 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
 
     private Long ddIndicatorSelected = null;
     private Long ddIndicatorDCSelected = null;
+    private Long ddIndicatorCPSelected = null;
     
     private String taxonTabSelected = "tabNewTaxonomy";
 
     private AddRemoveList arContries = new AddRemoveList();
+    private AddRemoveList arComponentPart = new AddRemoveList();
     
-    
+    //Country
     private Map<Long, Option[]> selectedTaxonIndicatorCountriesId = new HashMap<Long, Option[]>();
     private Map<Long, Option[]> dBTaxonIndicatorCountriesId = new HashMap<Long, Option[]>();
+    //Component Part
+    private Map<Long, Option[]> selectedTaxonIndicatorComponentPartId = new HashMap<Long, Option[]>();
+    private Map<Long, Option[]> dBTaxonIndicatorComponentPartId = new HashMap<Long, Option[]>();
 
-
+    //Dublin Core
     private Map<Long, Map<String,ReferenceDTO>> selectedTaxonIndicatorDublinCoreId = new HashMap<Long, Map<String,ReferenceDTO>>();
     private Map<Long, Map<String,ReferenceDTO>> dBTaxonIndicatorDublinCoreId = new HashMap<Long, Map<String,ReferenceDTO>>();
 
@@ -172,6 +183,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
     private boolean ableTabTaxonIndicator = false;
     private boolean ableTabTaxonIndicatorCountry = false;
     private boolean ableTabTaxonIndicatorDublinCore = false;
+    private boolean ableTabTaxonIndicatorComponentPart = false;
 
 
 
@@ -677,9 +689,9 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
         this.indicatorRelations = indicatorRelations;
     }
 
-    public void  removeOption(Long elementDeleted)
+    public void  removeOption(Long elementDeleted, Set<Option> indicators)
     {
-        for(Option element: indicatorRelations)
+        for(Option element: indicators)
         {
             Long idElement = new Long(element.getValue().toString());
             
@@ -775,6 +787,24 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
             indicatorRelationIds.add(indicatorId);
         }
 
+        
+        return result;
+    }
+
+    public Set<Option> getIndicatorAPByTaxon(Long taxonId)
+    {
+        
+        Set <Option> result = new HashSet<Option>();
+        List<Long> dbindicatorIds = taxonomyFacade.getIndicatorIdsByTaxon(taxonId);
+        
+        for(Long indicatorId: dbindicatorIds)
+        {
+            IndicatorDTO indicator = indicatorFacade.getIndicatorByIndicatorId(indicatorId);
+            if(indicator.getAppliesToParts() ==1)
+            {
+                result.add(new Option(indicatorId,indicator.getName()));                
+            }
+        }
         
         return result;
     }
@@ -1445,6 +1475,141 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
     public void deleteTaxonIndicatorCountryByTaxonIndicator(Long taxonId, Long indicatorId)
     {
         this.taxonomyFacade.deleteTaxonIndicatorCountryByTaxonIndicator(taxonId, indicatorId);
+    }
+
+
+    public List<SelectionListDTO> getAllComponetPartByCollectionId(Long collectionId)
+    {
+        return this.inventoryFacade.getAllSelectionListElementsByCollection(SelectionListEntity.COMPONENT_PART.getId(), collectionId);
+    }
+
+    /**
+     * @return the inventoryFacade
+     */
+    public InventoryFacadeRemote getInventoryFacade() {
+        return inventoryFacade;
+    }
+
+    /**
+     * @param inventoryFacade the inventoryFacade to set
+     */
+    public void setInventoryFacade(InventoryFacadeRemote inventoryFacade) {
+        this.inventoryFacade = inventoryFacade;
+    }
+
+    /**
+     * @return the ableTabTaxonIndicatorComponentPart
+     */
+    public boolean isAbleTabTaxonIndicatorComponentPart() {
+        return ableTabTaxonIndicatorComponentPart;
+    }
+
+    /**
+     * @param ableTabTaxonIndicatorComponentPart the ableTabTaxonIndicatorComponentPart to set
+     */
+    public void setAbleTabTaxonIndicatorComponentPart(boolean ableTabTaxonIndicatorComponentPart) {
+        this.ableTabTaxonIndicatorComponentPart = ableTabTaxonIndicatorComponentPart;
+    }
+
+    /**
+     * @return the ddIndicatorCPSelected
+     */
+    public Long getDdIndicatorCPSelected() {
+        return ddIndicatorCPSelected;
+    }
+
+    /**
+     * @param ddIndicatorCPSelected the ddIndicatorCPSelected to set
+     */
+    public void setDdIndicatorCPSelected(Long ddIndicatorCPSelected) {
+        this.ddIndicatorCPSelected = ddIndicatorCPSelected;
+    }
+
+    /**
+     * @return the arComponentPart
+     */
+    public AddRemoveList getArComponentPart() {
+        return arComponentPart;
+    }
+
+    /**
+     * @param arComponentPart the arComponentPart to set
+     */
+    public void setArComponentPart(AddRemoveList arComponentPart) {
+        this.arComponentPart = arComponentPart;
+    }
+
+    /**
+     * @return the selectedTaxonIndicatorComponentPartId
+     */
+    public Map<Long, Option[]> getSelectedTaxonIndicatorComponentPartId() {
+        return selectedTaxonIndicatorComponentPartId;
+    }
+
+    /**
+     * @param selectedTaxonIndicatorComponentPartId the selectedTaxonIndicatorComponentPartId to set
+     */
+    public void setSelectedTaxonIndicatorComponentPartId(Map<Long, Option[]> selectedTaxonIndicatorComponentPartId) {
+        this.selectedTaxonIndicatorComponentPartId = selectedTaxonIndicatorComponentPartId;
+    }
+
+    /**
+     * @return the dBTaxonIndicatorComponentPartId
+     */
+    public Map<Long, Option[]> getdBTaxonIndicatorComponentPartId() {
+        return dBTaxonIndicatorComponentPartId;
+    }
+
+    /**
+     * @param dBTaxonIndicatorComponentPartId the dBTaxonIndicatorComponentPartId to set
+     */
+    public void setdBTaxonIndicatorComponentPartId(Map<Long, Option[]> dBTaxonIndicatorComponentPartId) {
+        this.dBTaxonIndicatorComponentPartId = dBTaxonIndicatorComponentPartId;
+    }
+
+    /**
+     * @return the indicatorRelationsAP
+     */
+    public Set<Option> getIndicatorRelationsAP() {
+        return indicatorRelationsAP;
+    }
+
+    /**
+     * @param indicatorRelationsAP the indicatorRelationsAP to set
+     */
+    public void setIndicatorRelationsAP(Set<Option> indicatorRelationsAP) {
+        this.indicatorRelationsAP = indicatorRelationsAP;
+    }
+
+
+    public List<Long> getComponentPartByTaxonIndicatorIds(Long taxon, Long indicator)
+    {
+        return this.getTaxonomyFacade().getComponentPartByTaxonIndicatorIds(taxon, indicator);
+    }
+
+    public void saveTaxonIndicatorComponentPartIds(Long taxonId, Long indicatorId ,List<Long> componentPartIds, String userName)
+    {
+        this.getTaxonomyFacade().saveTaxonIndicatorComponentPartIds(taxonId, indicatorId, componentPartIds, userName);
+    }
+
+    public void deleteTaxonIndicatorComponentPartIds(Long taxonId, Long indicatorId, List<Long> componentPartIds)
+    {
+        this.getTaxonomyFacade().deleteTaxonIndicatorComponentPartIds(taxonId, indicatorId, componentPartIds);
+    }
+
+    public void deleteTaxonIndicatorComponentPartByTaxonId(Long taxonId)
+    {
+        this.getTaxonomyFacade().deleteTaxonIndicatorComponentPartByTaxonId(taxonId);
+    }
+
+    public void deleteTaxonIndicatorComponentPartByTaxonIndicator(Long taxonId, Long indicatorId)
+    {
+        this.getTaxonomyFacade().deleteTaxonIndicatorComponentPartByTaxonIndicator(taxonId, indicatorId);
+    }
+
+    public SelectionListDTO  getSelectionListElementById(Long selectionListEntityId, Long selectionListValueId)
+    {
+        return this.getInventoryFacade().getSelectionListElementById(selectionListEntityId, selectionListValueId);
     }
 
 

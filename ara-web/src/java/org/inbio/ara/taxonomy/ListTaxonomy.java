@@ -11,6 +11,7 @@ import com.sun.webui.jsf.model.Option;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.component.html.HtmlPanelGrid;
@@ -309,11 +310,14 @@ public class ListTaxonomy extends AbstractPageBean {
             
 
             //this.getTaxonSessionBean().setDbIndicatorRelations(new HashSet<Option>());
-            this.getTaxonSessionBean().setIndicatorRelations(new HashSet<Option>());
+            //this.getTaxonSessionBean().setIndicatorRelations(new HashSet<Option>());
             this.getTaxonSessionBean().setSelectedTaxonIndicatorCountriesId(new HashMap<Long, Option[]>());
+            this.getTaxonSessionBean().setSelectedTaxonIndicatorComponentPartId(new HashMap<Long, Option[]>());
             this.getTaxonSessionBean().setIndicatorRelations(new HashSet<Option>());
+            this.getTaxonSessionBean().setIndicatorRelationsAP(new HashSet<Option>());
             this.getTaxonSessionBean().setIndicatorRelationIds(new HashSet<Long>());
             this.getTaxonSessionBean().setArContries(new AddRemoveList());
+            this.getTaxonSessionBean().setArComponentPart(new AddRemoveList());
             this.getTaxonSessionBean().setTaxonTabSelected("tabNewTaxonomy");
 
 
@@ -324,9 +328,12 @@ public class ListTaxonomy extends AbstractPageBean {
                 this.getTaxonSessionBean().getPagination().firstResults();
             }
 
+            this.getTaxonSessionBean().setSelectedTaxonIndicatorDublinCoreId(new HashMap<Long, Map<String, ReferenceDTO>>());
+
             this.getTaxonSessionBean().setAbleTabTaxonIndicator(false);
             this.getTaxonSessionBean().setAbleTabTaxonIndicatorCountry(false);
             this.getTaxonSessionBean().setAbleTabTaxonIndicatorDublinCore(false);
+            this.getTaxonSessionBean().setAbleTabTaxonIndicatorComponentPart(false);
 
             result = "new";
         }
@@ -361,6 +368,7 @@ public class ListTaxonomy extends AbstractPageBean {
                 //Proceed to delete the node
                 try {
                     TSB.deleteTaxonIndicatorCountryByTaxonId(taxonId);
+                    TSB.deleteTaxonIndicatorComponentPartByTaxonId(taxonId);
                     TSB.deleteTaxonIndicatorDublinCoreByTaxonId(taxonId);
                     TSB.deleteTaxonIndicatorByTaxonId(taxonId);
                     TSB.removeTaxon(taxonId);
@@ -405,11 +413,22 @@ public class ListTaxonomy extends AbstractPageBean {
 
         this.getTaxonSessionBean().setNodeId("0");
         this.getTaxonSessionBean().setPathNode("");
+
+
         this.getTaxonSessionBean().setIndicatorRelations(null);
         this.getTaxonSessionBean().setIndicatorRelationIds(new HashSet<Long>());
         this.getTaxonSessionBean().setSelectedTaxonIndicatorCountriesId(new HashMap<Long, Option[]>());
         this.getTaxonSessionBean().setdBTaxonIndicatorCountriesId(new HashMap<Long, Option[]>());
         this.getTaxonSessionBean().setArContries(new AddRemoveList());
+
+
+        this.getTaxonSessionBean().setIndicatorRelationsAP(null);
+        //this.getTaxonSessionBean().setIndicatorRelationIds(new HashSet<Long>());
+        this.getTaxonSessionBean().setSelectedTaxonIndicatorComponentPartId(new HashMap<Long, Option[]>());
+        this.getTaxonSessionBean().setdBTaxonIndicatorComponentPartId(new HashMap<Long, Option[]>());
+        this.getTaxonSessionBean().setArComponentPart(new AddRemoveList());
+
+
         this.getTaxonSessionBean().setTaxonTabSelected("tabNewTaxonomy");
 
         this.getTaxonSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
@@ -422,6 +441,7 @@ public class ListTaxonomy extends AbstractPageBean {
         this.getTaxonSessionBean().setAbleTabTaxonIndicator(false);
         this.getTaxonSessionBean().setAbleTabTaxonIndicatorCountry(false);
         this.getTaxonSessionBean().setAbleTabTaxonIndicatorDublinCore(false);
+        this.getTaxonSessionBean().setAbleTabTaxonIndicatorComponentPart(false);
 
         this.getTaxonSessionBean().setdBTaxonIndicatorDublinCoreId(null);
         this.getTaxonSessionBean().setSelectedTaxonIndicatorDublinCoreId(null);

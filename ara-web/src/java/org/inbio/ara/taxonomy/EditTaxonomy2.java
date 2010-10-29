@@ -27,6 +27,7 @@ import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.model.SelectItem;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.indicator.IndicatorDTO;
+import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.indicator.IndicatorSessionBean;
 import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
@@ -101,7 +102,11 @@ public class EditTaxonomy2 extends AbstractPageBean {
 
     private Option[] indicatorRelations;
 
+    private Option[] indicatorRelationsAP = new Option[0];
+
     private DropDown ddIndicators= new DropDown();
+
+    private DropDown ddIndicatorsComponentPart= new DropDown();
 
 
 
@@ -224,10 +229,14 @@ public class EditTaxonomy2 extends AbstractPageBean {
                     tsb.getIndicatorByTaxon(tsb.getCurrentTaxon().getTaxonKey()));
             tsb.setDbIndicatorRelations(
                     tsb.getIndicatorByTaxon(tsb.getCurrentTaxon().getTaxonKey()));
+            tsb.setIndicatorRelationsAP(
+                    tsb.getIndicatorAPByTaxon(tsb.getCurrentTaxon().getTaxonKey()));
+
         
         }
         
         indicatorRelations = new Option[tsb.getIndicatorRelations().size()];
+
         
         tsb.getIndicatorRelations().toArray(indicatorRelations);
 
@@ -283,6 +292,42 @@ public class EditTaxonomy2 extends AbstractPageBean {
             
         }
 
+        //On focus tabTaxonIndicatorComponentPart:
+        if(tsb.getTaxonTabSelected().equals("tabTaxonIndicatorComponentPart"))
+        {
+            //Load componentPart
+            loadAddRemoveComponentPartData(false);
+            //Set default indicator value selected
+            if(tsb.getDdIndicatorCPSelected() == null && indicatorRelations.length>0)
+            {
+                tsb.setDdIndicatorCPSelected((Long)indicatorRelations[0].getValue());
+
+            }
+
+            if(tsb.getDbIndicatorRelations() == null || (tsb.getdBTaxonIndicatorComponentPartId() == null || tsb.getdBTaxonIndicatorComponentPartId().size()<=0))
+            {
+
+                for(Option indicatorId: tsb.getIndicatorRelationsAP())
+                {
+                    Long indicator = new Long(indicatorId.getValue().toString());
+                    List<Long> componentPart = tsb.getComponentPartByTaxonIndicatorIds(tsb.getCurrentTaxon().getTaxonKey(), indicator);
+                    Option[] componentPartOp = new Option[componentPart.size()];
+                    for(int pos = 0; pos < componentPartOp.length; pos++)
+                    {
+
+                        SelectionListDTO componentPartDTO = tsb.getSelectionListElementById(this.getAraSessionBean().getGlobalCollectionId(),componentPart.get(pos));
+                        componentPartOp[pos] = new Option(componentPart.get(pos), componentPartDTO.getValueName());
+                    }
+
+                    tsb.getSelectedTaxonIndicatorComponentPartId().put(indicator, componentPartOp);
+                    tsb.getdBTaxonIndicatorComponentPartId().put(indicator, componentPartOp);
+                }
+                updateRightComponentPartList();
+            }
+
+
+        }
+
         //On focus tabTaxonIndicatorReferences:
         if(tsb.getTaxonTabSelected().equals("tabBibliographicReferences"))
         {
@@ -327,11 +372,20 @@ public class EditTaxonomy2 extends AbstractPageBean {
         if(tsb.getIndicatorRelations().size()>0)
         {
             tsb.setAbleTabTaxonIndicatorCountry(true);
+            if(tsb.getIndicatorRelationsAP().size()>0)
+            {
+                tsb.setAbleTabTaxonIndicatorComponentPart(true);
+            }
+            else
+            {
+                tsb.setAbleTabTaxonIndicatorComponentPart(false);
+            }
             tsb.setAbleTabTaxonIndicatorDublinCore(true);
         }
         else
         {
             tsb.setAbleTabTaxonIndicatorCountry(false);
+            tsb.setAbleTabTaxonIndicatorComponentPart(false);
             tsb.setAbleTabTaxonIndicatorDublinCore(false);
         }
   
@@ -365,6 +419,38 @@ public class EditTaxonomy2 extends AbstractPageBean {
             BundleHelper.getDefaultBundleValue("available", this.getMyLocale()));
 
         tsb.getArContries().setLbSelected(
+            BundleHelper.getDefaultBundleValue("selected", this.getMyLocale()));
+
+
+    }
+
+
+    public void loadAddRemoveComponentPartData(boolean reset) {
+
+        List<SelectionListDTO> componentPartList = null;
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        if (reset) {
+            tsb.getArComponentPart().setAvailableOptions(new Option[0]);
+            tsb.getArComponentPart().setSelectedOptions(new Long[0]);
+        }
+
+        // AddRemove de Countries
+        if (tsb.getArComponentPart() == null || tsb.getArComponentPart().getAvailableOptions().length == 0) {
+
+            componentPartList = tsb.getAllComponetPartByCollectionId(this.getAraSessionBean().getGlobalCollectionId());
+            this.setComponentPartListOptions(componentPartList);
+        }
+
+        // Configura los títulos
+        tsb.getArComponentPart().setLbTitle(
+            BundleHelper.getDefaultBundleValue("sle_component_part", this.getMyLocale()));
+
+        tsb.getArComponentPart().setLbAvailable(
+            BundleHelper.getDefaultBundleValue("available", this.getMyLocale()));
+
+        tsb.getArComponentPart().setLbSelected(
             BundleHelper.getDefaultBundleValue("selected", this.getMyLocale()));
 
 
@@ -414,6 +500,21 @@ public class EditTaxonomy2 extends AbstractPageBean {
         }
 
         arCountry.setAvailableOptions(list.toArray(new Option[list.size()]));
+    }
+
+
+    private void setComponentPartListOptions(List<SelectionListDTO> componentPartList)
+    {
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+        List<Option> list = new ArrayList<Option>();
+        AddRemoveList arComponentPart = tsb.getArComponentPart();
+
+        for (SelectionListDTO componentPart : componentPartList) {
+            list.add(new Option(componentPart.getValueId(), componentPart.getValueName()));
+        }
+
+        arComponentPart.setAvailableOptions(list.toArray(new Option[list.size()]));
     }
 
 
@@ -692,6 +793,44 @@ public class EditTaxonomy2 extends AbstractPageBean {
         return null;
     }
 
+    public String updateRightComponentPartList()
+    {
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        //move elements to left
+        int size = tsb.getArComponentPart().getRightOptions().length;
+        Long[] optionsSelected = new Long[size];
+        for(int pos = 0; pos < size; pos++)
+        {
+            optionsSelected[pos]=(Long)tsb.getArComponentPart().getRightOptions()[pos].getValue();
+        }
+        tsb.getArComponentPart().setRightSelected(optionsSelected);
+        tsb.getArComponentPart().removeSelectedOptions();
+
+        //move elements to right
+        if(tsb.getSelectedTaxonIndicatorComponentPartId().containsKey(tsb.getDdIndicatorCPSelected()))
+        {
+            Option[] elements = tsb.getSelectedTaxonIndicatorComponentPartId().get(tsb.getDdIndicatorCPSelected());
+
+            tsb.getArComponentPart().setRightOptions(new Option[0]);
+
+
+            int arraySize = elements.length;
+            Long[] arrayOptionsSelected = new Long[arraySize];
+            for(int pos = 0; pos < arraySize; pos++)
+            {
+                arrayOptionsSelected[pos]=(Long)elements[pos].getValue();
+            }
+            tsb.getArComponentPart().setLeftSelected(arrayOptionsSelected);
+            tsb.getArComponentPart().addSelectedOptions();
+
+        }
+
+
+        return null;
+    }
+
+
 
     public String updateIndicatorDCSelected()
     {
@@ -819,6 +958,72 @@ public class EditTaxonomy2 extends AbstractPageBean {
         }
 
 
+        //PREPARE TAXON-INDICATOR-COMPONENT_PART
+        Map<Long,List<Long>> newTaxonIndicatorComponentPart = new HashMap<Long, List<Long>>();
+        Map<Long,List<Long>> deleteTaxonIndicatorComponentPart = new HashMap<Long, List<Long>>();
+
+        if(TSB.getIndicatorRelationsAP().size()>0)
+        {
+            for(Option indicatorOption: TSB.getIndicatorRelationsAP())
+            {
+
+                Long indicatorId = new Long(indicatorOption.getValue().toString());
+
+                //si contiene relaciones taxon-indicator-country
+                if(TSB.getSelectedTaxonIndicatorComponentPartId().containsKey(indicatorId))
+                {
+                    if(TSB.getdBTaxonIndicatorComponentPartId().containsKey(indicatorId))
+                    {
+
+                        //Convert database country relations
+                        List<Long> dbComponentParts = new ArrayList<Long>();
+                        for(Option dbComponentPart: TSB.getdBTaxonIndicatorComponentPartId().get(indicatorId))
+                        {
+                            dbComponentParts.add((Long)dbComponentPart.getValue());
+                        }
+                        //Convert selected country relations
+                        List<Long> selectedComponentParts = new ArrayList<Long>();
+                        for(Option sComponentPart: TSB.getSelectedTaxonIndicatorComponentPartId().get(indicatorId))
+                        {
+                            selectedComponentParts.add((Long)sComponentPart.getValue());
+                        }
+
+                        //Filter new relation and delet relations
+                        List<Long> newComponentPart = new ArrayList<Long>();
+                        for(Long  componentPart: selectedComponentParts)
+                        {
+                            if(dbComponentParts.contains(componentPart))//not changes on relacion, exist
+                            {
+
+                                  dbComponentParts.remove(componentPart);
+                            }
+                            else
+                            {
+
+                                newComponentPart.add(componentPart);
+                            }
+                        }
+                        newTaxonIndicatorComponentPart.put(indicatorId,newComponentPart);
+                        deleteTaxonIndicatorComponentPart.put(indicatorId,dbComponentParts);
+                    }
+                    else
+                    {
+
+                        //Prepare all new relation from a new taxon-indicator
+                        List<Long> tmp  = new ArrayList<Long>();
+                        for(Option tmpComponentPart :TSB.getSelectedTaxonIndicatorComponentPartId().get(indicatorId))
+                        {
+                            tmp.add(new Long(tmpComponentPart.getValue().toString()));
+                        }
+                        newTaxonIndicatorComponentPart.put(indicatorId, tmp);
+
+                    }
+                }
+
+            }
+        }
+
+
         //PREPARE TAXON-INDICATOR-DUBLIN_CORE
         Map<Long,List<String>> newTaxonIndicatorDublinCore = new HashMap<Long, List<String>>();
         Map<Long,List<String>> deleteTaxonIndicatorDublinCore = new HashMap<Long, List<String>>();
@@ -933,6 +1138,10 @@ public class EditTaxonomy2 extends AbstractPageBean {
                 {
                     TSB.saveTaxonIndicatorCountries(taxonId, indicatorId, newTaxonIndicatorCountry.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
                 }
+                if(newTaxonIndicatorComponentPart.containsKey(indicatorId))
+                {
+                    TSB.saveTaxonIndicatorComponentPartIds(taxonId, indicatorId, newTaxonIndicatorComponentPart.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
+                }
                 if(newTaxonIndicatorDublinCore.containsKey(indicatorId))
                 {
                     TSB.saveTaxonIndicatorDublinCoreIds(taxonId, indicatorId, newTaxonIndicatorDublinCore.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
@@ -945,6 +1154,10 @@ public class EditTaxonomy2 extends AbstractPageBean {
                 {
                     TSB.saveTaxonIndicatorCountries(taxonId, indicatorId, newTaxonIndicatorCountry.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
                 }
+                if(newTaxonIndicatorComponentPart.containsKey(indicatorId))
+                {
+                    TSB.saveTaxonIndicatorComponentPartIds(taxonId, indicatorId, newTaxonIndicatorComponentPart.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
+                }
                 if(newTaxonIndicatorDublinCore.containsKey(indicatorId))
                 {
                     TSB.saveTaxonIndicatorDublinCoreIds(taxonId, indicatorId, newTaxonIndicatorDublinCore.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
@@ -952,6 +1165,10 @@ public class EditTaxonomy2 extends AbstractPageBean {
                 if(deleteTaxonIndicatorCountry.containsKey(indicatorId))
                 {
                     TSB.deleteTaxonIndicatorCountryByIds(taxonId, indicatorId, deleteTaxonIndicatorCountry.get(indicatorId) );
+                }
+                if(deleteTaxonIndicatorComponentPart.containsKey(indicatorId))
+                {
+                    TSB.deleteTaxonIndicatorComponentPartIds(taxonId, indicatorId, deleteTaxonIndicatorComponentPart.get(indicatorId) );
                 }
                 if(deleteTaxonIndicatorDublinCore.containsKey(indicatorId))
                 {
@@ -963,32 +1180,10 @@ public class EditTaxonomy2 extends AbstractPageBean {
             for(String deleteIndicator: copiaDb)
             {   Long indicatorId = new Long(deleteIndicator);                
                 
-                /*
-                if(TSB.getdBTaxonIndicatorCountriesId().containsKey(indicatorId))
-                {
-                    List<Long> deleteCountryIds = new ArrayList<Long>();
-                    for(Option dCountry: TSB.getdBTaxonIndicatorCountriesId().get(indicatorId))
-                    {
-                        deleteCountryIds.add((Long)dCountry.getValue());
-                    }
-                    TSB.deleteTaxonIndicatorCountryByIds(taxonId, indicatorId, deleteCountryIds);
-
-                }
-
-                if(TSB.getdBTaxonIndicatorDublinCoreId().containsKey(indicatorId))
-                {
-                    List<String> deleteDublinCoreIds = new ArrayList<String>();
-                    //Set<String> deleted = TSB.getdBTaxonIndicatorDublinCoreId().get(indicatorId).keySet();
-                    Collection<ReferenceDTO> deleted = TSB.getdBTaxonIndicatorDublinCoreId().get(indicatorId).values();
-                    for(ReferenceDTO dublinCore: deleted)
-                    {
-                        deleteDublinCoreIds.add(dublinCore.getKey());
-                    }
-                    TSB.deleteTaxonIndicatorDublinCoreIds(taxonId, indicatorId, deleteDublinCoreIds);
-
-                }*/
+                
                 System.out.println("borrar taxon "+taxonId+" indicator "+indicatorId);
                 TSB.deleteTaxonIndicatorCountryByTaxonIndicator(taxonId, indicatorId);
+                TSB.deleteTaxonIndicatorComponentPartByTaxonIndicator(taxonId, indicatorId);
                 TSB.deleteTaxonIndicatorDublinCoreByTaxonIndicator(taxonId, indicatorId);
                 TSB.deleteTaxonIndicatorById(taxonId, indicatorId.toString());
             }
@@ -1011,17 +1206,27 @@ public class EditTaxonomy2 extends AbstractPageBean {
        TSB.setElementSelected(null);
 
        //Taxon-Indicator-Conutry
-       TSB.setSelectedTaxonIndicatorCountriesId(null);
+       TSB.setSelectedTaxonIndicatorCountriesId(null);       
        TSB.setdBTaxonIndicatorCountriesId(null);
+       
        TSB.setArContries(null);
        TSB.setDdIndicatorSelected(null);
        TSB.setIndicatorRelations(null);
        TSB.getIndicatorRelationIds().clear();
+       TSB.setIndicatorRelationsAP(null);
        TSB.setElementSelected(null);
 
+       //Dublin Core
        TSB.setSelectedTaxonIndicatorDublinCoreId(null);
        TSB.setdBTaxonIndicatorDublinCoreId(null);
        TSB.setDdIndicatorDCSelected(null);
+
+       //Component Part
+        TSB.setdBTaxonIndicatorComponentPartId(null);
+        TSB.setSelectedTaxonIndicatorComponentPartId(null);
+        TSB.setArComponentPart(null);
+        TSB.setDdIndicatorCPSelected(null);
+        TSB.setIndicatorRelationsAP(null);
 
 
        return "back";
@@ -1036,9 +1241,21 @@ public class EditTaxonomy2 extends AbstractPageBean {
             {
                 IndicatorDTO infoNodo = this.getTaxonSessionBean().getIndicatorDTOByIndicatorId(indicatorNodeId);
                 this.getTaxonSessionBean().getIndicatorRelations().add(new Option(indicatorNodeId, infoNodo.getName() ));
-                this.getTaxonSessionBean().getIndicatorRelationIds().add(indicatorNodeId);                
+                this.getTaxonSessionBean().getIndicatorRelationIds().add(indicatorNodeId);
+
+                System.out.println("Aplica a partes? "+ infoNodo.getAppliesToParts());
+                if(infoNodo.getAppliesToParts() == 1)
+                {
+                    this.getTaxonSessionBean().getIndicatorRelationsAP().add(new Option(indicatorNodeId, infoNodo.getName() ));
+                }
+
                 indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
                 this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
+
+                //asigna la lista de indicadores que aplican a partes de componentes al elemento grafico drop down
+                indicatorRelationsAP = new Option[this.getTaxonSessionBean().getIndicatorRelationsAP().size()];
+                this.getTaxonSessionBean().getIndicatorRelationsAP().toArray(indicatorRelationsAP);
+
             }
              else
             {
@@ -1056,7 +1273,7 @@ public class EditTaxonomy2 extends AbstractPageBean {
 
     public String btnRemoveTaxonIndicator_action()
     {
-        this.getTaxonSessionBean().removeOption(this.getTaxonSessionBean().getElementSelected());
+        this.getTaxonSessionBean().removeOption(this.getTaxonSessionBean().getElementSelected(), this.getTaxonSessionBean().getIndicatorRelations());
         indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
         this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
         return null;
@@ -1088,6 +1305,20 @@ public class EditTaxonomy2 extends AbstractPageBean {
 
          return null;
      }
+
+
+    public String btnAssociateComponentPart_action()
+    {
+
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        tsb.getSelectedTaxonIndicatorComponentPartId().put(tsb.getDdIndicatorCPSelected(), tsb.getArComponentPart().getRightOptions());
+
+
+        return null;
+    }
+
 
      /**
      * <p>Acción que se realiza al presionar el botón de búsqueda simple</p>
@@ -1527,6 +1758,34 @@ public class EditTaxonomy2 extends AbstractPageBean {
      */
     public void setDdIndicatorsDublinCore(DropDown ddIndicatorsDublinCore) {
         this.ddIndicatorsDublinCore = ddIndicatorsDublinCore;
+    }
+
+    /**
+     * @return the ddIndicatorsComponentPart
+     */
+    public DropDown getDdIndicatorsComponentPart() {
+        return ddIndicatorsComponentPart;
+    }
+
+    /**
+     * @param ddIndicatorsComponentPart the ddIndicatorsComponentPart to set
+     */
+    public void setDdIndicatorsComponentPart(DropDown ddIndicatorsComponentPart) {
+        this.ddIndicatorsComponentPart = ddIndicatorsComponentPart;
+    }
+
+    /**
+     * @return the indicatorRelationsAP
+     */
+    public Option[] getIndicatorRelationsAP() {
+        return indicatorRelationsAP;
+    }
+
+    /**
+     * @param indicatorRelationsAP the indicatorRelationsAP to set
+     */
+    public void setIndicatorRelationsAP(Option[] indicatorRelationsAP) {
+        this.indicatorRelationsAP = indicatorRelationsAP;
     }
 
 

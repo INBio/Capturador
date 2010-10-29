@@ -31,6 +31,7 @@ import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.model.SelectItem;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.indicator.IndicatorDTO;
+import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.dto.taxonomy.CountryDTO;
@@ -100,6 +101,7 @@ public class NewTaxonomy extends AbstractPageBean {
     private DropDown ddIndicators= new DropDown();
     private DropDown ddRanges= new DropDown();
     private DropDown ddIndicatorsDublinCore= new DropDown();
+    private DropDown ddIndicatorsComponentPart= new DropDown();
     private TabSet taxonTabs= new TabSet();
 
     private SelectItem[] ddRangeItems;
@@ -110,6 +112,8 @@ public class NewTaxonomy extends AbstractPageBean {
     private String tmpSelected = "";
 
     private Option[] indicatorRelations = new Option[0];
+
+    private Option[] indicatorRelationsAP = new Option[0];
 
     private DefaultOptionsList listbox1DefaultOptions = new DefaultOptionsList();
 
@@ -242,6 +246,8 @@ public class NewTaxonomy extends AbstractPageBean {
         {
             indicatorRelations = new Option[tsb.getIndicatorRelations().size()];
             tsb.getIndicatorRelations().toArray(indicatorRelations);
+            indicatorRelationsAP = new Option[tsb.getIndicatorRelationsAP().size()];
+            tsb.getIndicatorRelationsAP().toArray(indicatorRelationsAP);
         }
 
         //On focus tabTaxonIndicatorCountry:
@@ -254,6 +260,21 @@ public class NewTaxonomy extends AbstractPageBean {
             {
                 tsb.setDdIndicatorSelected((Long)indicatorRelations[0].getValue());
             
+            }
+
+
+        }
+
+        //On focus tabTaxonIndicatorComponentPart:
+        if(tsb.getTaxonTabSelected().equals("tabTaxonIndicatorComponentPart"))
+        {
+            //Load componentPart
+            loadAddRemoveComponentPartData(false);
+            //Set default indicator value selected
+            if(tsb.getDdIndicatorCPSelected() == null && indicatorRelations.length>0)
+            {
+                tsb.setDdIndicatorCPSelected((Long)indicatorRelations[0].getValue());
+
             }
 
 
@@ -295,10 +316,20 @@ public class NewTaxonomy extends AbstractPageBean {
         {
             tsb.setAbleTabTaxonIndicatorCountry(true);
             tsb.setAbleTabTaxonIndicatorDublinCore(true);
+            if(tsb.getIndicatorRelationsAP().size()>0)
+            {
+                tsb.setAbleTabTaxonIndicatorComponentPart(true);
+            }
+            else
+            {
+                tsb.setAbleTabTaxonIndicatorComponentPart(false);
+            }
+            
         }
         else
         {
             tsb.setAbleTabTaxonIndicatorCountry(false);
+            tsb.setAbleTabTaxonIndicatorComponentPart(false);
             tsb.setAbleTabTaxonIndicatorDublinCore(false);
         }
 
@@ -474,6 +505,39 @@ public class NewTaxonomy extends AbstractPageBean {
 
     }
 
+
+    public void loadAddRemoveComponentPartData(boolean reset) {
+
+        List<SelectionListDTO> componentPartList = null;
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        if (reset) {
+            tsb.getArComponentPart().setAvailableOptions(new Option[0]);
+            tsb.getArComponentPart().setSelectedOptions(new Long[0]);
+        }
+
+        // AddRemove de Countries
+        if (tsb.getArComponentPart() == null || tsb.getArComponentPart().getAvailableOptions().length == 0) {
+
+            componentPartList = tsb.getAllComponetPartByCollectionId(this.getAraSessionBean().getGlobalCollectionId());
+            this.setComponentPartListOptions(componentPartList);
+        }
+
+        // Configura los títulos
+        tsb.getArComponentPart().setLbTitle(
+            BundleHelper.getDefaultBundleValue("sle_component_part", this.getMyLocale()));
+
+        tsb.getArComponentPart().setLbAvailable(
+            BundleHelper.getDefaultBundleValue("available", this.getMyLocale()));
+
+        tsb.getArComponentPart().setLbSelected(
+            BundleHelper.getDefaultBundleValue("selected", this.getMyLocale()));
+
+
+    }
+
+
     private void setCountryListOptions(List<CountryDTO> taxonList) {
 
         TaxonSessionBean tsb = this.getTaxonSessionBean();
@@ -487,6 +551,19 @@ public class NewTaxonomy extends AbstractPageBean {
         arCountry.setAvailableOptions(list.toArray(new Option[list.size()]));
     }
 
+    private void setComponentPartListOptions(List<SelectionListDTO> componentPartList)
+    {
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+        List<Option> list = new ArrayList<Option>();
+        AddRemoveList arComponentPart = tsb.getArComponentPart();
+
+        for (SelectionListDTO componentPart : componentPartList) {
+            list.add(new Option(componentPart.getValueId(), componentPart.getValueName()));
+        }
+
+        arComponentPart.setAvailableOptions(list.toArray(new Option[list.size()]));
+    }
 
 
 
@@ -606,6 +683,18 @@ public class NewTaxonomy extends AbstractPageBean {
                         TSB.saveTaxonIndicatorDublinCoreIds(TSB.getCurrentTaxon().getTaxonKey(), indicatorId ,newReferences, this.getAraSessionBean().getGlobalUserName());
                     }
 
+                    if(TSB.getSelectedTaxonIndicatorComponentPartId().containsKey(indicatorId))
+                    {
+                        List<Long> componentPartIds = new ArrayList<Long>();
+                        Option[] componentPartSelected = TSB.getSelectedTaxonIndicatorComponentPartId().get(indicatorId);
+                        for(int pos = 0; pos < componentPartSelected.length;pos++)
+                        {
+                            componentPartIds.add((Long)componentPartSelected[pos].getValue());
+                        }
+
+                        TSB.saveTaxonIndicatorComponentPartIds(TSB.getCurrentTaxon().getTaxonKey(), indicatorId, componentPartIds, this.getAraSessionBean().getGlobalUserName());
+                    }
+
 
 
                }
@@ -642,7 +731,8 @@ public class NewTaxonomy extends AbstractPageBean {
        TSB.setDdIndicatorSelected(null);
        TSB.setIndicatorRelations(null);
        TSB.setElementSelected(null);
-       
+
+
 
         return "back";
     }
@@ -656,13 +746,26 @@ public class NewTaxonomy extends AbstractPageBean {
         if(this.getTaxonSessionBean().isLeaf(indicatorNodeId)){
             if(!this.getTaxonSessionBean().getIndicatorRelationIds().contains(indicatorNodeId))
             {
+                //agrega el indicatorId a una lista para llevar el control de elementos repetidos con el long
                 this.getTaxonSessionBean().getIndicatorRelationIds().add(indicatorNodeId);
+                //obtiene la informacion del nodo seleccionado
                 IndicatorDTO infoNodo = this.getTaxonSessionBean().getIndicatorDTOByIndicatorId(indicatorNodeId);
+                System.out.println("Aplica a partes? "+ infoNodo.getAppliesToParts());
+                //agrega el indicator seleccionado a la lista de indicadores del session bean
                 this.getTaxonSessionBean().getIndicatorRelations().add(new Option(indicatorNodeId, infoNodo.getName() ));
-        
+
+                if(infoNodo.getAppliesToParts() == 1)
+                {
+                    this.getTaxonSessionBean().getIndicatorRelationsAP().add(new Option(indicatorNodeId, infoNodo.getName() ));
+                }
+                //asigna la lista de indicadores al elemento grafico drop down
                 indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
                 this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
+                //asigna la lista de indicadores que aplican a partes de componentes al elemento grafico drop down
+                indicatorRelationsAP = new Option[this.getTaxonSessionBean().getIndicatorRelationsAP().size()];
+                this.getTaxonSessionBean().getIndicatorRelationsAP().toArray(indicatorRelationsAP);
             }
+
             else
             {
                 MessageBean.setErrorMessageFromBundle("error_taxon_indicator_exist",this.getMyLocale());
@@ -679,11 +782,17 @@ public class NewTaxonomy extends AbstractPageBean {
     public String btnRemoveTaxonIndicator_action()
     {
         
-        
-        this.getTaxonSessionBean().removeOption(this.getTaxonSessionBean().getElementSelected());
+        //elmimnar de el elemento de la lista de indicadores
+        this.getTaxonSessionBean().removeOption(this.getTaxonSessionBean().getElementSelected(), this.getTaxonSessionBean().getIndicatorRelations());
+        //elmimnar de el elemento de la lista de indicadores que aplican a partes de componente
+        this.getTaxonSessionBean().removeOption(this.getTaxonSessionBean().getElementSelected(), this.getTaxonSessionBean().getIndicatorRelationsAP());
+        //asignar de nuevo la lista al elemento grafico
         indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
         this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
-        
+        //asignar de nuevo la lista al elemento grafico
+        indicatorRelationsAP = new Option[this.getTaxonSessionBean().getIndicatorRelationsAP().size()];
+        this.getTaxonSessionBean().getIndicatorRelationsAP().toArray(indicatorRelationsAP);
+
         return null;
     }
 
@@ -699,11 +808,25 @@ public class NewTaxonomy extends AbstractPageBean {
         return null;
     }
 
+    public String btnAssociateComponentPart_action()
+    {
+
+
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        tsb.getSelectedTaxonIndicatorComponentPartId().put(tsb.getDdIndicatorCPSelected(), tsb.getArComponentPart().getRightOptions());
+
+
+        return null;
+    }
 
     public String btnAssociateDublinCore_action()
     {
         
         TaxonSessionBean tsb = this.getTaxonSessionBean();
+        System.out.println("El recurso seleccionado es "+tsb.getSelectedResourcesId());
+        System.out.println("El dataTableDublinCore es "+this.getDataTableDublinCore());
+        System.out.println("El SelectedTaxonIndicatorDublinCoreId es "+tsb.getSelectedTaxonIndicatorDublinCoreId());
 
         getSelectedResourceIds(this.getDataTableDublinCore(), tsb.getSelectedResourcesId());
         tsb.getSelectedTaxonIndicatorDublinCoreId().put(tsb.getDdIndicatorDCSelected(), new HashMap<String, ReferenceDTO>());
@@ -903,6 +1026,7 @@ public class NewTaxonomy extends AbstractPageBean {
         {
             tsb.setAbleTabTaxonIndicator(false);
             tsb.setAbleTabTaxonIndicatorCountry(false);
+            tsb.setAbleTabTaxonIndicatorComponentPart(false);
             tsb.setAbleTabTaxonIndicatorDublinCore(false);
         }
         return null;
@@ -972,6 +1096,44 @@ public class NewTaxonomy extends AbstractPageBean {
         }
 
       
+        return null;
+    }
+
+
+    public String updateRightComponentPartList()
+    {
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        //move elements to left
+        int size = tsb.getArComponentPart().getRightOptions().length;
+        Long[] optionsSelected = new Long[size];
+        for(int pos = 0; pos < size; pos++)
+        {
+            optionsSelected[pos]=(Long)tsb.getArComponentPart().getRightOptions()[pos].getValue();
+        }
+        tsb.getArComponentPart().setRightSelected(optionsSelected);
+        tsb.getArComponentPart().removeSelectedOptions();
+
+        //move elements to right
+        if(tsb.getSelectedTaxonIndicatorComponentPartId().containsKey(tsb.getDdIndicatorCPSelected()))
+        {
+            Option[] elements = tsb.getSelectedTaxonIndicatorComponentPartId().get(tsb.getDdIndicatorCPSelected());
+
+            tsb.getArComponentPart().setRightOptions(new Option[0]);
+
+
+            int arraySize = elements.length;
+            Long[] arrayOptionsSelected = new Long[arraySize];
+            for(int pos = 0; pos < arraySize; pos++)
+            {
+                arrayOptionsSelected[pos]=(Long)elements[pos].getValue();
+            }
+            tsb.getArComponentPart().setLeftSelected(arrayOptionsSelected);
+            tsb.getArComponentPart().addSelectedOptions();
+
+        }
+
+
         return null;
     }
 
@@ -1342,6 +1504,34 @@ public class NewTaxonomy extends AbstractPageBean {
      */
     public void setDdRanges(DropDown ddRanges) {
         this.ddRanges = ddRanges;
+    }
+
+    /**
+     * @return the ddIndicatorsComponentPart
+     */
+    public DropDown getDdIndicatorsComponentPart() {
+        return ddIndicatorsComponentPart;
+    }
+
+    /**
+     * @param ddIndicatorsComponentPart the ddIndicatorsComponentPart to set
+     */
+    public void setDdIndicatorsComponentPart(DropDown ddIndicatorsComponentPart) {
+        this.ddIndicatorsComponentPart = ddIndicatorsComponentPart;
+    }
+
+    /**
+     * @return the indicatorRelationsAP
+     */
+    public Option[] getIndicatorRelationsAP() {
+        return indicatorRelationsAP;
+    }
+
+    /**
+     * @param indicatorRelationsAP the indicatorRelationsAP to set
+     */
+    public void setIndicatorRelationsAP(Option[] indicatorRelationsAP) {
+        this.indicatorRelationsAP = indicatorRelationsAP;
     }
 
    
