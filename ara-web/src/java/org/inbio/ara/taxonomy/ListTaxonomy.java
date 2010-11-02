@@ -121,14 +121,14 @@ public class ListTaxonomy extends AbstractPageBean {
     public void prerender() {
         if(this.getAraSessionBean().getGlobalNomenclaturalGroupId()> -1)
         {
-            System.out.println("Es de tipo nomenclatural "+this.getAraSessionBean().getGlobalNomenclaturalGroupId() );
+            
             this.hiddenTypeGroup.setValue(1);
             this.hiddenCollecNomenclGroupId.setValue(this.getAraSessionBean().getGlobalNomenclaturalGroupId());
            
         }
         else
         {
-             System.out.println("Es de tipo collection "+this.getAraSessionBean().getGlobalCollectionId() );
+            
             this.hiddenTypeGroup.setValue(0);
             this.hiddenCollecNomenclGroupId.setValue(this.getAraSessionBean().getGlobalCollectionId());
 
@@ -269,27 +269,26 @@ public class ListTaxonomy extends AbstractPageBean {
 
     public String btnNewIndicator_action() {
 
-        System.out.println("El nodoId es "+hiddenTaxonNodeId.getValue().toString());
-        System.out.println("El nodoRoot es "+hiddenRootNodeId.getValue().toString());
+        
         String result =null;
         TaxonDTO taxon;
         Long nodeId=new Long(hiddenTaxonNodeId.getValue().toString());
         if(nodeId == -1)
         {
-            //taxon = this.getTaxonSessionBean().getTaxon(new Long(hiddenRootNodeId.getValue().toString()));
+        
             this.getHiddenTaxonNodeId().setValue(this.getHiddenRootNodeId().getValue());
 
         }
         
         taxon = this.getTaxonSessionBean().getTaxon(new Long(hiddenTaxonNodeId.getValue().toString()));
-        //this.getHiddenTaxonNodeName().setValue(taxon.getDefaultName());
+        
         
         //Validate if the node is an species //CAMBIAR AL NIVEL TAXONOMICO MAS BAJO
         if (taxon.getTaxonomicalRangeId().equals
                 (TaxonomicalRangeEntity.FORM.getId())) {
             MessageBean.setErrorMessageFromBundle("cant_add_taxon_under_this_level",
                     this.getMyLocale());
-            //return null;
+        
         }
         else
         {
@@ -307,10 +306,8 @@ public class ListTaxonomy extends AbstractPageBean {
             this.getTaxonSessionBean().setTaxonNodeName(this.hiddenTaxonNodeName.getValue().toString());
             this.getTaxonSessionBean().setCollecNomenclGroupId(this.hiddenCollecNomenclGroupId.getValue().toString());
             this.getTaxonSessionBean().setTypeGroup(this.hiddenTypeGroup.getValue().toString());
+          
             
-
-            //this.getTaxonSessionBean().setDbIndicatorRelations(new HashSet<Option>());
-            //this.getTaxonSessionBean().setIndicatorRelations(new HashSet<Option>());
             this.getTaxonSessionBean().setSelectedTaxonIndicatorCountriesId(new HashMap<Long, Option[]>());
             this.getTaxonSessionBean().setSelectedTaxonIndicatorComponentPartId(new HashMap<Long, Option[]>());
             this.getTaxonSessionBean().setIndicatorRelations(new HashSet<Option>());
@@ -422,8 +419,7 @@ public class ListTaxonomy extends AbstractPageBean {
         this.getTaxonSessionBean().setArContries(new AddRemoveList());
 
 
-        this.getTaxonSessionBean().setIndicatorRelationsAP(null);
-        //this.getTaxonSessionBean().setIndicatorRelationIds(new HashSet<Long>());
+        this.getTaxonSessionBean().setIndicatorRelationsAP(null);        
         this.getTaxonSessionBean().setSelectedTaxonIndicatorComponentPartId(new HashMap<Long, Option[]>());
         this.getTaxonSessionBean().setdBTaxonIndicatorComponentPartId(new HashMap<Long, Option[]>());
         this.getTaxonSessionBean().setArComponentPart(new AddRemoveList());

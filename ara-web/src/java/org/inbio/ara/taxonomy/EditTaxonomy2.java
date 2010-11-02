@@ -773,7 +773,7 @@ public class EditTaxonomy2 extends AbstractPageBean {
         //move elements to right
         if(tsb.getSelectedTaxonIndicatorCountriesId().containsKey(tsb.getDdIndicatorSelected()))
         {
-            System.out.println(tsb.getSelectedTaxonIndicatorCountriesId().get(tsb.getDdIndicatorSelected()));
+            
             Option[] elements = tsb.getSelectedTaxonIndicatorCountriesId().get(tsb.getDdIndicatorSelected());
 
             tsb.getArContries().setRightOptions(new Option[0]);
@@ -1179,9 +1179,7 @@ public class EditTaxonomy2 extends AbstractPageBean {
             //Elminina las relaciones deseleccionadas            
             for(String deleteIndicator: copiaDb)
             {   Long indicatorId = new Long(deleteIndicator);                
-                
-                
-                System.out.println("borrar taxon "+taxonId+" indicator "+indicatorId);
+                                                
                 TSB.deleteTaxonIndicatorCountryByTaxonIndicator(taxonId, indicatorId);
                 TSB.deleteTaxonIndicatorComponentPartByTaxonIndicator(taxonId, indicatorId);
                 TSB.deleteTaxonIndicatorDublinCoreByTaxonIndicator(taxonId, indicatorId);
@@ -1243,7 +1241,7 @@ public class EditTaxonomy2 extends AbstractPageBean {
                 this.getTaxonSessionBean().getIndicatorRelations().add(new Option(indicatorNodeId, infoNodo.getName() ));
                 this.getTaxonSessionBean().getIndicatorRelationIds().add(indicatorNodeId);
 
-                System.out.println("Aplica a partes? "+ infoNodo.getAppliesToParts());
+                
                 if(infoNodo.getAppliesToParts() == 1)
                 {
                     this.getTaxonSessionBean().getIndicatorRelationsAP().add(new Option(indicatorNodeId, infoNodo.getName() ));
@@ -1475,7 +1473,7 @@ public class EditTaxonomy2 extends AbstractPageBean {
             ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData();
 
             if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) {
-                System.out.println("Seleccionado "+ aux.getTitle());
+                
                 selectedResourcesId.put(aux.getKey(), aux);
 
             }

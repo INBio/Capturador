@@ -87,7 +87,7 @@
                                     <webuijsf:tab id="tabTaxonIndicatorReferences" rendered="true"  text="#{resources.relations_taxon_indicator}"  visible="#{taxonomy$TaxonSessionBean.ableTabTaxonIndicator}">
                                         <webuijsf:panelGroup id="groupTaxonIndicator"  >
                                         <h:panelGrid columns="3" id="taxonIndicator">
-                                            <div id="tree" style="width:200px; float:left; " title="Taxonomy Tree "></div>
+                                            <div id="tree" style="width:250px; height:400px; float:left; overflow:scroll" title="Taxonomy Tree "></div>
                                             <h:panelGrid columns="1" id="panelAddRemoveAction">
                                                 <h:commandButton id="btnAddElement"  action="#{taxonomy$NewTaxonomy.btnAddTaxonIndicator_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.add}"/>
                                                 <h:commandButton id="btnRemoveElement" action="#{taxonomy$NewTaxonomy.btnRemoveTaxonIndicator_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.remove}"/>

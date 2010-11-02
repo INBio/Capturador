@@ -701,7 +701,7 @@ public class NewTaxonomy extends AbstractPageBean {
                catch(Exception e)
                {
                    message += elementIndicator.getLabel()+"\n";
-                   System.out.println("ERROR-- almacenando una relacion taxon-indicador");
+                   
                }
            }
           
@@ -742,6 +742,7 @@ public class NewTaxonomy extends AbstractPageBean {
     {
         
         this.getTaxonSessionBean().setNodeId(this.getHiddenNodeId().getValue().toString());
+        this.getTaxonSessionBean().setPathNode(this.getHiddenPathNode().getValue().toString());
         Long indicatorNodeId = new Long(this.getHiddenNodeId().getValue().toString());
         if(this.getTaxonSessionBean().isLeaf(indicatorNodeId)){
             if(!this.getTaxonSessionBean().getIndicatorRelationIds().contains(indicatorNodeId))
@@ -750,7 +751,7 @@ public class NewTaxonomy extends AbstractPageBean {
                 this.getTaxonSessionBean().getIndicatorRelationIds().add(indicatorNodeId);
                 //obtiene la informacion del nodo seleccionado
                 IndicatorDTO infoNodo = this.getTaxonSessionBean().getIndicatorDTOByIndicatorId(indicatorNodeId);
-                System.out.println("Aplica a partes? "+ infoNodo.getAppliesToParts());
+                
                 //agrega el indicator seleccionado a la lista de indicadores del session bean
                 this.getTaxonSessionBean().getIndicatorRelations().add(new Option(indicatorNodeId, infoNodo.getName() ));
 
@@ -776,6 +777,8 @@ public class NewTaxonomy extends AbstractPageBean {
              MessageBean.setErrorMessageFromBundle("error_taxon_indicator",this.getMyLocale());
 
         }
+
+
         return null;
     }
 
@@ -824,10 +827,7 @@ public class NewTaxonomy extends AbstractPageBean {
     {
         
         TaxonSessionBean tsb = this.getTaxonSessionBean();
-        System.out.println("El recurso seleccionado es "+tsb.getSelectedResourcesId());
-        System.out.println("El dataTableDublinCore es "+this.getDataTableDublinCore());
-        System.out.println("El SelectedTaxonIndicatorDublinCoreId es "+tsb.getSelectedTaxonIndicatorDublinCoreId());
-
+        
         getSelectedResourceIds(this.getDataTableDublinCore(), tsb.getSelectedResourcesId());
         tsb.getSelectedTaxonIndicatorDublinCoreId().put(tsb.getDdIndicatorDCSelected(), new HashMap<String, ReferenceDTO>());
         Map<String, ReferenceDTO> ref = tsb.getSelectedTaxonIndicatorDublinCoreId().get(tsb.getDdIndicatorDCSelected());
