@@ -14,7 +14,8 @@
     <f:view>
         <webuijsf:page id="page1">
             <webuijsf:html id="html1">
-                <webuijsf:head id="head1">
+                <webuijsf:head binding="#{Header_Login.head1}" id="head1">
+                
                     <webuijsf:link id="link1" url="/resources/css/stylesheet.css"/>
                     <webuijsf:link id="link3" url="/resources/js/yui/build/fonts/fonts-min.css"/>
                     <webuijsf:link id="link4" url="/resources/js/yui/build/treeview/assets/skins/sam/treeview.css"/>
