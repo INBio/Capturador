@@ -63,5 +63,13 @@ public class GeoreferencedSiteEAOImpl
         q.setParameter("layerId", layerId);
         return q.getResultList();
     }
+
+    public void deleteBySiteId(Long sId){
+        Query q = em.createQuery("delete from GeoreferencedSite gs " +
+                "where gs.georeferencedSitePK.siteId = :sId");
+        q.setParameter("sId", sId);
+        q.executeUpdate();
+        em.flush();
+    }
  
 }

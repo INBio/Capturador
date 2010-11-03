@@ -415,11 +415,19 @@ public class GisFacadeImpl implements GisFacadeRemote {
 
     /**
      * Metodo para eliminar Localidades por su id
+     * Además elimina las dependencias en las tablas:
+     *          - site_coordinate
+     *          -
      * @param Id
      */
     public void deleteSite(Long Id){
         Site aux = this.siteEAOImpl.findById(Site.class, Id);
         if(aux!=null){
+            //Delete asociated coordinates
+            this.siteCoordinateEAOImpl.deleteBySiteId(Id);
+            //Delete asociated countries and provinces
+            this.georeferencedSiteEAOImpl.deleteBySiteId(Id);
+            //Finally delete the site
             this.siteEAOImpl.delete(aux);
         }
     }

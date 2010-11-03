@@ -37,5 +37,7 @@ public interface GeoreferencedSiteEAOLocal
     public java.util.List<java.lang.Long> findSiteByGeoLayerId(java.lang.Long geoLayerType, java.lang.Long geoLayerId);
 
     public java.util.List<org.inbio.ara.persistence.gis.GeoreferencedSite> findAllBySiteAndLayer(java.lang.Long siteId, java.lang.Long layerId);
+
+    public void deleteBySiteId(Long sId);
     
 }
