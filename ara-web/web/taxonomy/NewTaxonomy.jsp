@@ -41,7 +41,10 @@
                                 <h:panelGrid columns="1" id="grouppBotoneraIndicator" style="height: 24px" width="540">
                                     <h:commandButton action="#{taxonomy$NewTaxonomy.btnSaveTaxon_action}" id="btnSaveTaxon" style="height: 24px; width: 175px"
                                         styleClass="My_Button" value="#{resources.btnSave}"/>
-                                    <webuijsf:label for="txFatherName" id="lbFatherName" text="#{taxonomy$TaxonSessionBean.taxonNodeName}"/>
+                                    <h:panelGrid  columns="2" id="taxonNameDescription">
+                                        <webuijsf:label for="txTaxonAntecessor" id="lbTaxonAntecessor" text="#{resources.taxon_antecessor}"/>
+                                        <webuijsf:label for="txFatherName" id="lbFatherName" text="#{taxonomy$TaxonSessionBean.taxonNodeName}"/>
+                                    </h:panelGrid>
                                 </h:panelGrid>
                                 <webuijsf:tabSet id="tabSet1" binding="#{taxonomy$NewTaxonomy.taxonTabs}" lite="true" selected="#{taxonomy$TaxonSessionBean.taxonTabSelected}"  styleClass="My_panel_blue">
                                     <!-- Tab para ingresar los datos de los taxones -->
