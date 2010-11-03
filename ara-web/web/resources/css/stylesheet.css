@@ -60,16 +60,23 @@
 
 .list-columns-gis{
     text-align:left;
-    margin-top: 1px;
-    margin-bottom: 1px;
-    margin-left: 1px;
-    margin-right: 1px;
+    margin: 1px;
     border-right-style: solid;
     border-right-width: 2px;
     border-right-color: #d6dadd;
-    max-width:110px;
+    padding-left:2px;
+    max-width:100px;
     overflow: hidden;
     white-space: nowrap;
+}
+
+#map{
+    width:550px;
+    height:350px;
+    float:left;
+    border:solid 1px gray;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
 .infoMessage {
@@ -282,12 +289,7 @@ table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
     -webkit-border-radius: 3px;
 }
 
-.My_panel_sites{
-    background-color:#EEEEEE;
-    border: 1px solid #344F60;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-}
+.My_panel_sites{}
 
 .My_table_top{
     background-color:#486C83;

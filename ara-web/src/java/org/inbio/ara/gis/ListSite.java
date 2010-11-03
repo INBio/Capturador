@@ -839,7 +839,7 @@ public class ListSite extends AbstractPageBean {
         //En caso de que solo se seleccione un elemento
         else if(selectedSites.size() == 1){
             SiteDTO selected = selectedSites.get(0);
-            //Mandar a borrar la audiencia
+            //Mandar a borrar el sitio
             try{
                 this.getGis$SiteSessionBean().deleteSite(selected.getSiteId());
             }
@@ -849,7 +849,7 @@ public class ListSite extends AbstractPageBean {
                 return null;
             }
 
-            //Refrescar la lista de audiencias
+            //Refrescar la lista de sitios
             this.getGis$SiteSessionBean().getPagination().deleteItem();
             this.getGis$SiteSessionBean().getPagination().refreshList();
 

@@ -75,31 +75,31 @@ public class MapController extends AbstractPageBean {
                 ("final_date", this.getMyLocale());
 
 
-        String scriptString = "";
-        //scriptString += "<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjpkAC9ePGem0lIq5XcMiuhT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTS6gjckBmeABOGXIUiOiZObZESPg'></script>\n";
-        scriptString += "<script src='http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=euzuro-openlayers'></script>\n";
-        scriptString += "<script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>\n";
+        StringBuilder scriptString = new StringBuilder();
+        scriptString.append("<script src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAGtIHQJm1-pS3ci26k9D7hRT7opmBeaxHuawv_Kd1glG3Nt0J_BTtatHbTWi9CS1GoJb9MocYjwB2Iw\" type=\"text/javascript\"></script>\n");
+        //scriptString.append("<script src='http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=euzuro-openlayers'></script>\n");
+        scriptString.append("<script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>\n");
         //Script to Java Script SOAPClient
-        scriptString += "<script id=\"script2\" type=\"text/JavaScript\" src=\"../../SOAPClient.js\"></script>";
-        scriptString += "<script defer='defer' type='text/javascript'>\n";
+        scriptString.append("<script id=\"script2\" type=\"text/JavaScript\" src=\"../../SOAPClient.js\"></script>");
+        scriptString.append("<script defer='defer' type='text/javascript'>\n");
 
         //Define global variables
-        scriptString += "var map\n";
-        scriptString += "var selectControl\n";
-        scriptString += "var selectedFeature\n";
+        scriptString.append("var map\n");
+        scriptString.append("var selectControl\n");
+        scriptString.append("var selectedFeature\n");
 
-        scriptString += "function init() {\n";
-        scriptString += "var attributes;\n";
+        scriptString.append("function init() {\n");
+        scriptString.append("var attributes;\n");
 
         // Define map
-        scriptString += "map = new OpenLayers.Map('map', {controls: [], numZoomLevels: 10});\n";
+        scriptString.append("map = new OpenLayers.Map('map', {controls: [], numZoomLevels: 10});\n");
 
         // Define map's layers
-        //scriptString += "googleMapsLayer    = new OpenLayers.Layer.Google('Google Hybrid', {type: G_HYBRID_MAP });\n";
-        scriptString += "openLayersWMSLayer = new OpenLayers.Layer.WMS('OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {layers:'basic'} );\n";
-        scriptString += "yahooLayer         = new OpenLayers.Layer.Yahoo('Yahoo');\n";
-        scriptString += "vectorLayer        = new OpenLayers.Layer.Vector('Gatherings/Observations');\n";
-        scriptString += "virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');\n";
+        //scriptString.append("openLayersWMSLayer = new OpenLayers.Layer.WMS('OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {layers:'basic'} );\n");
+        //scriptString.append("yahooLayer         = new OpenLayers.Layer.Yahoo('Yahoo');\n");
+        scriptString.append("googleLayer        = new OpenLayers.Layer.Google('Google Hybrid', {type: G_HYBRID_MAP });\n");
+        scriptString.append("vectorLayer        = new OpenLayers.Layer.Vector('Gatherings/Observations');\n");
+        scriptString.append("virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');\n");
 
         // Add coordinates of collecting points
         for (SiteDTO tObject : getLocalities()) {
@@ -124,17 +124,15 @@ public class MapController extends AbstractPageBean {
                     province="";
                 }
 
-                scriptString += "attributes = createAttrib(\""+siteId+"\" , \""+countryName+"\" , \""+coordinates+"\" , \""+province+"\" , \""+localityName+"\" , \""+gatheringObs+"\" , \""+responsable+"\" , \""+initialDate+"\" , \""+finalDate+"\" , \""+scientificNames+"\");\n";
-                scriptString += "addPoint(" + Double.toString(lon) + ", " + Double.toString(lat) + ",attributes);\n";
+                scriptString.append("attributes = createAttrib(\""+siteId+"\" , \""+countryName+"\" , \""+coordinates+"\" , \""+province+"\" , \""+localityName+"\" , \""+gatheringObs+"\" , \""+responsable+"\" , \""+initialDate+"\" , \""+finalDate+"\" , \""+scientificNames+"\");\n");
+                scriptString.append("addPoint(" + Double.toString(lon) + ", " + Double.toString(lat) + ",attributes);\n");
             }
         }
 
         // Add map's layers
-        scriptString += "map.addLayer(openLayersWMSLayer);\n";
-        //scriptString += "map.addLayer(googleMapsLayer);\n";
-        scriptString += "map.addLayer(yahooLayer);\n";
-        scriptString += "map.addLayer(vectorLayer);\n";
-        scriptString += "map.addLayer(virtualEarthLayer);\n";
+        scriptString.append("map.addLayer(googleLayer);\n");
+        scriptString.append("map.addLayer(virtualEarthLayer);\n");
+        scriptString.append("map.addLayer(vectorLayer);\n");        
 
         // Get map's bounds
         Double minX = getMinX(getLocalities());
@@ -142,135 +140,134 @@ public class MapController extends AbstractPageBean {
         Double maxX = getMaxX(getLocalities());
         Double maxY = getMaxY(getLocalities());
 
-        scriptString += "bounds = new OpenLayers.Bounds(" + minX + ", " + minY + ", " + maxX + ", " + maxY + ");\n";
-        scriptString += "map.zoomToExtent(bounds);\n";
+        scriptString.append("bounds = new OpenLayers.Bounds(" + minX + ", " + minY + ", " + maxX + ", " + maxY + ");\n");
+        scriptString.append("map.zoomToExtent(bounds);\n");
 
         //Create selected control
-        scriptString += "selectControl = new OpenLayers.Control.SelectFeature(vectorLayer,\n";
-        scriptString += "{onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});\n";
+        scriptString.append("selectControl = new OpenLayers.Control.SelectFeature(vectorLayer,\n");
+        scriptString.append("{onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});\n");
 
 
         // Add map's controls
-        scriptString += "map.addControl(new OpenLayers.Control.LayerSwitcher());\n";
-        scriptString += "map.addControl(new OpenLayers.Control.MousePosition());\n";
-        scriptString += "map.addControl(new OpenLayers.Control.OverviewMap());\n";
-        scriptString += "map.addControl(new OpenLayers.Control.Navigation());\n";
-        scriptString += "map.addControl(new OpenLayers.Control.MouseToolbar());\n";
-        scriptString += "map.addControl(new OpenLayers.Control.PanZoomBar());\n";
-        scriptString += "map.addControl(selectControl);\n";
-        scriptString += "selectControl.activate();\n";
+        scriptString.append("map.addControl(new OpenLayers.Control.LayerSwitcher());\n");
+        scriptString.append("map.addControl(new OpenLayers.Control.MousePosition());\n");
+        scriptString.append("map.addControl(new OpenLayers.Control.OverviewMap());\n");
+        scriptString.append("map.addControl(new OpenLayers.Control.Navigation());\n");
+        scriptString.append("map.addControl(new OpenLayers.Control.MouseToolbar());\n");
+        scriptString.append("map.addControl(new OpenLayers.Control.PanZoomBar());\n");
+        scriptString.append("map.addControl(selectControl);\n");
+        scriptString.append("selectControl.activate();\n");
 
-        scriptString += "}\n";
+        scriptString.append("}\n");
 
         // Create Attributes
-        scriptString += "function createAttrib(site, countryName, coordinates, state, locality, gathObs, responsible, initialDate,finalDate, scientificName) {\n";
-        scriptString += "attrib = {\n";
-        scriptString += "siteId: site,\n";
-        scriptString += "country: countryName,\n";
-        scriptString += "coordinate: coordinates,\n";
-        scriptString += "state: state,\n";
-        scriptString += "locality: locality,\n";
-        scriptString += "sGathObs: gathObs,\n";
-        scriptString += "sResponsible: responsible,\n";
-        scriptString += "sInitialDate: initialDate,\n";
-        scriptString += "sFinalDate: finalDate,\n";
-        scriptString += "sScientificName: scientificName\n";
-        scriptString += "};\n";
-        scriptString += "return attrib;\n";
-        scriptString += "};\n";
+        scriptString.append("function createAttrib(site, countryName, coordinates, state, locality, gathObs, responsible, initialDate,finalDate, scientificName) {\n");
+        scriptString.append("attrib = {\n");
+        scriptString.append("siteId: site,\n");
+        scriptString.append("country: countryName,\n");
+        scriptString.append("coordinate: coordinates,\n");
+        scriptString.append("state: state,\n");
+        scriptString.append("locality: locality,\n");
+        scriptString.append("sGathObs: gathObs,\n");
+        scriptString.append("sResponsible: responsible,\n");
+        scriptString.append("sInitialDate: initialDate,\n");
+        scriptString.append("sFinalDate: finalDate,\n");
+        scriptString.append("sScientificName: scientificName\n");
+        scriptString.append("};\n");
+        scriptString.append("return attrib;\n");
+        scriptString.append("};\n");
 
         // Add Point
-        scriptString += "function addPoint(x, y, attribute) {\n";
-        scriptString += "var attrib = attribute;\n";
-        scriptString += "var feature = new OpenLayers.Feature.Vector(\n";
-        scriptString += "new OpenLayers.Geometry.Point(x, y), attrib);\n";
-        scriptString += "vectorLayer.addFeatures(feature);\n";
-        scriptString += "}\n";
+        scriptString.append("function addPoint(x, y, attribute) {\n");
+        scriptString.append("var attrib = attribute;\n");
+        scriptString.append("var feature = new OpenLayers.Feature.Vector(\n");
+        scriptString.append("new OpenLayers.Geometry.Point(x, y), attrib);\n");
+        scriptString.append("vectorLayer.addFeatures(feature);\n");
+        scriptString.append("}\n");
 
         // Event onPopupClose
-        scriptString += "function onPopupClose(evt) {\n";
-        scriptString += "selectControl.unselect(selectedFeature);\n";
-        scriptString += "}\n";
+        scriptString.append("function onPopupClose(evt) {\n");
+        scriptString.append("selectControl.unselect(selectedFeature);\n");
+        scriptString.append("}\n");
 
 
         // Event onFeatureSelect
-        scriptString += "function onFeatureSelect(feature) {\n";
-        scriptString += "selectedFeature = feature;\n";
-        scriptString += "var gatheringObservation = getScientificNames(feature.attributes.siteId, feature);\n";
-        scriptString += "popup = new OpenLayers.Popup.FramedCloud(\"point\",  \n";
-        scriptString += "feature.geometry.getBounds().getCenterLonLat(),\n";
-        scriptString += " null,\n";
-        scriptString += "\"<div style='font-size:.8em; font-family:";
-        scriptString += "Arial Unicode MS'><b>";
-        scriptString +=  country+":</b> \" + feature.attributes.country +";
-        scriptString += "\"<br><b>"+state +":</b> \" + feature.attributes.state +";
-        scriptString += "\"<br><b>"+locality +":</b> \" + feature.attributes.locality +";
-        scriptString += "\"<br><b>"+coordinate+":</b> \" + feature.attributes.coordinate+\"<br>\"+";
-        scriptString += "gatheringObservation";        
-        scriptString += "+\"</div>\",";
-        scriptString += " null, true, onPopupClose);\n";
-        scriptString += " feature.popup = popup;\n";
-        scriptString += " map.addPopup(popup);\n";
-        scriptString += " }\n";
+        scriptString.append("function onFeatureSelect(feature) {\n");
+        scriptString.append("selectedFeature = feature;\n");
+        scriptString.append("var gatheringObservation = getScientificNames(feature.attributes.siteId, feature);\n");
+        scriptString.append("popup = new OpenLayers.Popup.FramedCloud(\"point\",  \n");
+        scriptString.append("feature.geometry.getBounds().getCenterLonLat(),\n");
+        scriptString.append(" null,\n");
+        scriptString.append("\"<div style='font-size:.8em; font-family:");
+        scriptString.append("Arial Unicode MS'><b>");
+        scriptString.append(country+":</b> \" + feature.attributes.country +");
+        scriptString.append("\"<br><b>"+state +":</b> \" + feature.attributes.state +");
+        scriptString.append("\"<br><b>"+locality +":</b> \" + feature.attributes.locality +");
+        scriptString.append("\"<br><b>"+coordinate+":</b> \" + feature.attributes.coordinate+\"<br>\"+");
+        scriptString.append("gatheringObservation");
+        scriptString.append("+\"</div>\",");
+        scriptString.append(" null, true, onPopupClose);\n");
+        scriptString.append(" feature.popup = popup;\n");
+        scriptString.append(" map.addPopup(popup);\n");
+        scriptString.append(" }\n");
 
 
         //Get Gathering Observation and Scientific Names
-        scriptString += "function getScientificNames(siteId, feature)\n";
-        scriptString += "{\n";
-        scriptString += "var parameter = new Array();\n";
-        scriptString += "var url = \"../../../InventoryWebServiceService/InventoryWebService\";\n";
-        scriptString += "parameter[\"siteId\"]=siteId;\n";
-        scriptString += "var gathObs = SOAPClient.request(url, \"getGathObsBySiteId\", parameter);\n";
-        scriptString += "var gathObsXML=stringToXML(gathObs);\n";
-        scriptString += "var gatheringObservations =gathObsXML.getElementsByTagName(\"gathering\");\n";
-        scriptString += "var url = \"../../../TaxonomyWebServiceService/TaxonomyWebService\";\n";
-        scriptString += "var information = \"\";\n";
-        scriptString += "for(var gath = 0; gath < gatheringObservations.length; gath++)\n";
-        scriptString += "{\n";
-        scriptString += "var parameters = new Array();\n";
-        scriptString += "var id = gatheringObservations[gath].getElementsByTagName(\"id\")[0].childNodes[0].nodeValue;\n";
-        scriptString += "var responsible = gatheringObservations[gath].getElementsByTagName(\"responsible\")[0].childNodes[0].nodeValue;\n";
-        scriptString += "var initialDate = gatheringObservations[gath].getElementsByTagName(\"initialDate\")[0].childNodes[0].nodeValue;\n";
-        scriptString += "var finalDate = gatheringObservations[gath].getElementsByTagName(\"finalDate\")[0].childNodes[0].nodeValue;\n";
-        scriptString += "parameters[\"gathObsId\"]=id;\n";
-        scriptString += "var scientificNames = SOAPClient.request(url, \"getTaxonByGatheringObservation\", parameters);\n";
-        scriptString += "information += \"<br><b>\"+feature.attributes.sGathObs +\": </b>\"+id +\"<br>\";\n";
-        scriptString += "information += \"<b>\"+feature.attributes.sResponsible +\": </b>\"+responsible +\"<br>\";\n";
-        scriptString += "information += \"<b>\"+feature.attributes.sInitialDate +\": </b>\"+initialDate +\"<br>\";\n";
-        scriptString += "information += \"<b>\"+feature.attributes.sFinalDate +\": </b>\"+finalDate +\"<br>\";\n";
-        scriptString += "information += \"<b>\"+feature.attributes.sScientificName +\": </b>\"+scientificNames +\"<br>\";\n";
-        scriptString += "}\n";
-        scriptString += "return information;\n";
-        scriptString += "}\n";
+        scriptString.append("function getScientificNames(siteId, feature)\n");
+        scriptString.append("{\n");
+        scriptString.append("var parameter = new Array();\n");
+        scriptString.append("var url = \"../../../InventoryWebServiceService/InventoryWebService\";\n");
+        scriptString.append("parameter[\"siteId\"]=siteId;\n");
+        scriptString.append("var gathObs = SOAPClient.request(url, \"getGathObsBySiteId\", parameter);\n");
+        scriptString.append("var gathObsXML=stringToXML(gathObs);\n");
+        scriptString.append("var gatheringObservations =gathObsXML.getElementsByTagName(\"gathering\");\n");
+        scriptString.append("var url = \"../../../TaxonomyWebServiceService/TaxonomyWebService\";\n");
+        scriptString.append("var information = \"\";\n");
+        scriptString.append("for(var gath = 0; gath < gatheringObservations.length; gath++)\n");
+        scriptString.append("{\n");
+        scriptString.append("var parameters = new Array();\n");
+        scriptString.append("var id = gatheringObservations[gath].getElementsByTagName(\"id\")[0].childNodes[0].nodeValue;\n");
+        scriptString.append("var responsible = gatheringObservations[gath].getElementsByTagName(\"responsible\")[0].childNodes[0].nodeValue;\n");
+        scriptString.append("var initialDate = gatheringObservations[gath].getElementsByTagName(\"initialDate\")[0].childNodes[0].nodeValue;\n");
+        scriptString.append("var finalDate = gatheringObservations[gath].getElementsByTagName(\"finalDate\")[0].childNodes[0].nodeValue;\n");
+        scriptString.append("parameters[\"gathObsId\"]=id;\n");
+        scriptString.append("var scientificNames = SOAPClient.request(url, \"getTaxonByGatheringObservation\", parameters);\n");
+        scriptString.append("information += \"<br><b>\"+feature.attributes.sGathObs +\": </b>\"+id +\"<br>\";\n");
+        scriptString.append("information += \"<b>\"+feature.attributes.sResponsible +\": </b>\"+responsible +\"<br>\";\n");
+        scriptString.append("information += \"<b>\"+feature.attributes.sInitialDate +\": </b>\"+initialDate +\"<br>\";\n");
+        scriptString.append("information += \"<b>\"+feature.attributes.sFinalDate +\": </b>\"+finalDate +\"<br>\";\n");
+        scriptString.append("information += \"<b>\"+feature.attributes.sScientificName +\": </b>\"+scientificNames +\"<br>\";\n");
+        scriptString.append("}\n");
+        scriptString.append("return information;\n");
+        scriptString.append("}\n");
 
 
         //Convert String to XML
-        scriptString += "function stringToXML(xmlData)\n";
-        scriptString += "{\n";
-        scriptString += "if (window.ActiveXObject) {\n";
-        scriptString += "xmlDoc=new ActiveXObject(\"Microsoft.XMLDOM\");\n";
-        scriptString += "xmlDoc.async=\"false\";\n";
-        scriptString += "xmlDoc.loadXML(xmlData);\n";
-        scriptString += "return xmlDoc;\n";
-        scriptString += "} else if (document.implementation && document.implementation.createDocument) {\n";
-        scriptString += "parser=new DOMParser();\n";
-        scriptString += "xmlDoc=parser.parseFromString(xmlData,\"text/xml\");\n";
-        scriptString += "return xmlDoc;\n";
-        scriptString += "}\n";
-        scriptString += "}\n";
-
+        scriptString.append("function stringToXML(xmlData)\n");
+        scriptString.append("{\n");
+        scriptString.append("if (window.ActiveXObject) {\n");
+        scriptString.append("xmlDoc=new ActiveXObject(\"Microsoft.XMLDOM\");\n");
+        scriptString.append("xmlDoc.async=\"false\";\n");
+        scriptString.append("xmlDoc.loadXML(xmlData);\n");
+        scriptString.append("return xmlDoc;\n");
+        scriptString.append("} else if (document.implementation && document.implementation.createDocument) {\n");
+        scriptString.append("parser=new DOMParser();\n");
+        scriptString.append("xmlDoc=parser.parseFromString(xmlData,\"text/xml\");\n");
+        scriptString.append("return xmlDoc;\n");
+        scriptString.append("}\n");
+        scriptString.append("}\n");
 
 
         //Event onFeatureUnselect
-        scriptString += "function onFeatureUnselect(feature) { \n";
-        scriptString += "map.removePopup(feature.popup); \n";
-        scriptString += "feature.popup.destroy(); \n";
-        scriptString += "feature.popup = null; \n";
-        scriptString += " }\n";
+        scriptString.append("function onFeatureUnselect(feature) { \n");
+        scriptString.append("map.removePopup(feature.popup); \n");
+        scriptString.append("feature.popup.destroy(); \n");
+        scriptString.append("feature.popup = null; \n");
+        scriptString.append(" }\n");
 
 
-        scriptString += "</script>\n";      
-        return scriptString;
+        scriptString.append("</script>\n");
+        return scriptString.toString();
     }
 
     /**

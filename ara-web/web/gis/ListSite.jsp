@@ -66,10 +66,10 @@
                                             styleClass="My_Button" value="#{resources.button_proceed}"/>
                                     </h:panelGrid>
                                 </h:panelGrid>
-                                <h:panelGrid cellspacing="1" columns="2" id="gridpTableMain" style="height: 24px" styleClass="My_panel_sites" width="570">
-                                    <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain2" style="height: 24px" styleClass="My_table" width="570">
+                                <h:panelGrid cellspacing="1" columns="2" id="gridpTableMain" style="height: 24px" styleClass="My_panel_sites" width="500">
+                                    <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain2" style="height: 24px" styleClass="My_table" width="500">
                                         <webuijsf:panelGroup id="grouppButtons">
-                                            <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" width="570">
+                                            <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" width="500">
                                                 <h:outputLabel id="labelQuantity" value="#{gis$ListSite.quantityTotal}"/>
                                             </h:panelGrid>
                                             <webuijsf:panelGroup id="panelPaginacion" separator=" " style="margin-left:70px;">
@@ -95,11 +95,11 @@
                                                     styleClass="My_Button_last" value="#{resources.pagination_last}"/>
                                             </webuijsf:panelGroup>
                                         </webuijsf:panelGroup>
-                                        <h:dataTable binding="#{gis$ListSite.dataTableSite}" cellspacing="0" columnClasses="list-columns"
-                                            headerClass="list-header" id="dataTablesite" rowClasses="list-row-even,list-row-odd"
+                                        <h:dataTable binding="#{gis$ListSite.dataTableSite}" cellspacing="0" columnClasses="list-columns-gis"
+                                            headerClass="list-header-gis" id="dataTablesite" rowClasses="list-row-even,list-row-odd"
                                             rows="#{gis$SiteSessionBean.pagination.resultsPerPage}"
                                             style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
-                                            value="#{gis$SiteSessionBean.pagination.dataProvider.list}" var="currentRow" width="570">
+                                            value="#{gis$SiteSessionBean.pagination.dataProvider.list}" var="currentRow" width="500">
                                             <h:column>
                                                 <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow['selected']}"/>
                                             </h:column>
@@ -129,7 +129,7 @@
                                             </h:column>
                                         </h:dataTable>
                                     </h:panelGrid>
-                                    <div id="map" style="width:500px; height:350px; float:left" title="Mapa Mundial"></div>
+                                    <div id="map" title="Mapa Mundial"></div>
                                 </h:panelGrid>
                                 <jsp:directive.include file="/Footer.jspf"/>
                             </h:panelGrid>
