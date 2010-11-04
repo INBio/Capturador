@@ -17,6 +17,12 @@
                     <jsp:directive.include file="/Header.jspf"/>
                     <webuijsf:panelLayout id="contenido">
                         <webuijsf:form id="form1">
+                            
+                            <!-- Buble help -->
+                            <webuijsf:bubble id="bubble" style="left: 400px; top: 48px; position: absolute" title="#{resources.standard_bubble_title}">
+                                <webuijsf:staticText text="#{resources.generation_bubble_text}"/>
+                            </webuijsf:bubble>
+
                             <webuijsf:label id="lbSpecimenGenTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 850px"
                                 styleClass="Page_title" text="#{resources.sp_gen_and_identifications}"/>
                             <!-- Inicio panel principal -->
@@ -30,6 +36,13 @@
                                     <h:commandButton action="#{inventory$SpecimenGeneration.btnSpecimenGeneration_action}" id="btnSpecimenGeneration"
                                         style="height: 24px; width: 250px" styleClass="My_Button" value="#{resources.generate}"/>
                                     <h:commandButton id="btnSeeGenerated" rendered="false" style="height: 24px; width: 250px" styleClass="My_Button" value="#{resources.view_generated_specimens}"/>
+                                    <!-- Buble help -->
+                                    <webuijsf:hyperlink id="hyperlink_help" onClick="return false;"
+                                            onMouseDown="document.getElementById('contenido:form1:bubble').open(event);"
+                                            onMouseOut="document.getElementById('contenido:form1:bubble').close();"
+                                            onMouseOver="document.getElementById('contenido:form1:bubble').open(event);"
+                                            style="height: 24px; width: 96px" text="#{resources.standard_bubble_title}">
+                                    </webuijsf:hyperlink>
                                 </webuijsf:panelGroup>
                                 <!-- Inicio panel de detalles -->
                                 <webuijsf:panelLayout id="layoutpGenDetails" style="height: 191px; position: relative; width: 840px; -rave-layout: grid" styleClass="My_panel_blue">

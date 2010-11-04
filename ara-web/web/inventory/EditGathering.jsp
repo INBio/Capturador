@@ -67,16 +67,16 @@
                                     <webuijsf:label id="lbDepth" style="height: 24px; left: 408px; top: 96px; position: absolute; width: 118px" text="#{resources.depth}"/>
                                     <webuijsf:textField binding="#{inventory$EditGathering.txElevationMin}" columns="10" id="txElevationMin"
                                         style="height: 24px; left: 175px; top: 96px; position: absolute; width: 80px" validatorExpression="#{util$ValidatorBean.doubleNumberFormatValidator}"/>
-                                    <webuijsf:label id="lbElevationMin" style="height: 24px; left: 264px; top: 96px; position: absolute; width: 96px" text="#{resources.minimum}"/>
+                                    <webuijsf:label id="lbElevationMin" style="height: 24px; left: 288px; top: 96px; position: absolute; width: 96px" text="#{resources.minimum}"/>
                                     <webuijsf:textField binding="#{inventory$EditGathering.txElevationMax}" columns="10" id="txElevationMax"
                                         style="height: 24px; left: 175px; top: 120px; position: absolute; width: 80px" validatorExpression="#{util$ValidatorBean.doubleNumberFormatValidator}"/>
-                                    <webuijsf:label id="lbElevationMax" style="height: 24px; left: 264px; top: 120px; position: absolute; width: 96px" text="#{resources.maximum}"/>
+                                    <webuijsf:label id="lbElevationMax" style="height: 24px; left: 288px; top: 120px; position: absolute; width: 96px" text="#{resources.maximum}"/>
                                     <webuijsf:textField binding="#{inventory$EditGathering.txDepthMin}" columns="10" id="txDepthMin"
                                         style="height: 24px; left: 538px; top: 96px; position: absolute; width: 80px" validatorExpression="#{util$ValidatorBean.doubleNumberFormatValidator}"/>
-                                    <webuijsf:label id="lbDepthMin" style="height: 24px; left: 624px; top: 96px; position: absolute; width: 96px" text="#{resources.minimum}"/>
+                                    <webuijsf:label id="lbDepthMin" style="height: 24px; left: 648px; top: 96px; position: absolute; width: 96px" text="#{resources.minimum}"/>
                                     <webuijsf:textField binding="#{inventory$EditGathering.txDepthMax}" columns="10" id="txDepthMax"
                                         style="height: 24px; left: 538px; top: 120px; position: absolute; width: 80px" validatorExpression="#{util$ValidatorBean.doubleNumberFormatValidator}"/>
-                                    <webuijsf:label id="lbDepthMax" style="height: 24px; left: 624px; top: 120px; position: absolute; width: 96px" text="#{resources.maximum}"/>
+                                    <webuijsf:label id="lbDepthMax" style="height: 24px; left: 648px; top: 120px; position: absolute; width: 96px" text="#{resources.maximum}"/>
                                     <webuijsf:label for="txaSurrounding" id="lbSurrounding"
                                         style="height: 24px; left: 24px; top: 144px; position: absolute; width: 140px" text="#{resources.surroundings_description}"/>
                                     <webuijsf:textArea binding="#{inventory$EditGathering.txaSurrounding}" columns="23" id="txaSurrounding"
