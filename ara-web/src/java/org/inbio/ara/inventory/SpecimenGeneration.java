@@ -1539,7 +1539,7 @@ public class SpecimenGeneration extends AbstractPageBean {
          * Verificar que el número de catálogo inicial sea un número, si es un
          * número todo bien, sino, se verifica que la cantidad a generar sea 1.
          *
-         * La idea es que si NO es un nmero entero, el sistema solo podrá generar
+         * La idea es que si NO es un numero entero, el sistema solo podrá generar
          * los especmenes de uno en uno. Ya que la funcionalidad de generar en bloque
          * solo funciona para números de catálogo enteros.
          */
@@ -1635,12 +1635,37 @@ public class SpecimenGeneration extends AbstractPageBean {
 
         //Llamada para generar especimenes
         try {
-            sgsb.generateSpecimens();
-            MessageBean.setSuccessMessageFromBundle
+            int gen = sgsb.generateSpecimens();
+            /*  0 means everything is ok
+             *  1 means Null specimenDTO
+             *  2 means Not quantity specified
+             *  3 means Catalog Number not available
+             *  4 means Multiple taxa selected
+             */
+            switch(gen){
+                case 0:
+                    MessageBean.setSuccessMessageFromBundle
                     ("specimen_generation_success", this.getMyLocale());
+                    break;
+                case 1:
+                    MessageBean.setErrorMessageFromBundle
+                    ("generation_error", this.getMyLocale());
+                    break;
+                case 2:
+                    MessageBean.setErrorMessageFromBundle
+                    ("generation_quantity_error", this.getMyLocale());
+                    break;
+                case 3:
+                    MessageBean.setErrorMessageFromBundle
+                    ("generation_catalog_error", this.getMyLocale());
+                    break;
+                default:
+                    MessageBean.setErrorMessageFromBundle
+                    ("generation_multiple_taxa_error", this.getMyLocale());
+                    break;
+            }
         } catch (Exception e) {
-            //Must parse the exception to show a specific error to the user
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+            MessageBean.setErrorMessageFromBundle("generation_error", this.getMyLocale());
         }
 
         return null;

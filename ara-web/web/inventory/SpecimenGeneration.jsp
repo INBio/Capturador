@@ -34,7 +34,7 @@
                                 <!-- Inicio panel de detalles -->
                                 <webuijsf:panelLayout id="layoutpGenDetails" style="height: 191px; position: relative; width: 840px; -rave-layout: grid" styleClass="My_panel_blue">
                                     <webuijsf:label for="txQuantity" id="lbQuantity"
-                                        style="height: 24px; left: 48px; top: 24px; position: absolute; width: 164px" text="#{resources.quantity} (*)"/>
+                                        style="height: 24px; left: 48px; top: 24px; position: absolute; width: 164px" text="#{resources.quantity}"/>
                                     <webuijsf:textField required="true" binding="#{inventory$SpecimenGeneration.txQuantity}" columns="22" id="txQuantity"
                                         style="height: 24px; left: 216px; top: 24px; position: absolute; width: 120px" validatorExpression="#{util$ValidatorBean.longNumberFormatValidator}"/>
                                     <webuijsf:label for="txInitialCatalog" id="lbInitialCatalog"
@@ -93,7 +93,7 @@
                                     <webuijsf:textField binding="#{inventory$SpecimenGeneration.txCertainty}" columns="22" id="txCertainty"
                                         style="height: 24px; left: 624px; top: 48px; position: absolute; width: 120px" validatorExpression="#{util$ValidatorBean.longNumberFormatValidator}"/>
                                     <webuijsf:label for="ddInstitutions" id="lbInstitutions"
-                                        style="height: 24px; left: 456px; top: 72px; position: absolute; width: 168px" text="#{resources.institution} (*)"/>
+                                        style="height: 24px; left: 456px; top: 72px; position: absolute; width: 168px" text="#{resources.institution}"/>
                                     <webuijsf:dropDown required="true" binding="#{inventory$SpecimenGeneration.ddInstitutions}" id="ddInstitutions"
                                         items="#{inventory$SpecimenGeneration.institutionsData.options}"
                                         selected="#{inventory$SpecimenGenerationSessionBean.specimenDTO.institutionId}"

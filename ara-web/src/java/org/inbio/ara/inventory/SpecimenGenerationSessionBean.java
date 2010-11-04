@@ -376,8 +376,8 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
         this.selecctedValidator = selecctedValidator;
     }
 
-    public void generateSpecimens() {
-        inventoryFacade.specimenGenerator(specimenDTO, identificationDTO,
+    public int generateSpecimens() {
+        return inventoryFacade.specimenGenerator(specimenDTO, identificationDTO,
                 lifeFormList, getSpecimenQuantity().intValue());
     }
 }
