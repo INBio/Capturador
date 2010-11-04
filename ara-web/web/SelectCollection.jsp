@@ -30,12 +30,12 @@
                                 </webuijsf:panelGroup>
                                 <webuijsf:panelLayout id="layoutpSelect" style="height: 212px; position: relative; width: 599px; -rave-layout: grid">
                                     <webuijsf:label for="listbTaxons" id="lbTaxons"
-                                        style="font-size: 12px; font-weight: bold; height: 22px; left: 20px; top: 24px; position: absolute; width: 285px" text="#{resources.available_taxons}"/>
+                                        style="font-size: 12px; font-weight: bold; height: 22px; left: 0px; top: 24px; position: absolute; width: 285px" text="#{resources.available_taxons}"/>
                                     <webuijsf:label for="listbNomenclatural" id="lbNomenclaturalG"
                                         style="font-size: 12px; font-weight: bold; height: 24px; left: 312px; top: 24px; position: absolute; width: 285px" text="#{resources.available_groups}"/>
                                     <webuijsf:listbox binding="#{SelectCollection.collectionList}" id="listbTaxons"
                                         items="#{SelectCollection.taxonUserData.options}" rows="9" selected="#{SelectCollection.selectedCollection}"
-                                        style="height: 168px; left: 20px; top: 48px; position: absolute" width="265px"/>
+                                        style="height: 168px; left: 0px; top: 48px; position: absolute" width="265px"/>
                                     <webuijsf:listbox binding="#{SelectCollection.nomenclaturalList}" id="listbNomenclatural"
                                         items="#{SelectCollection.nomenclaturalGroupData.options}" rows="9" selected="#{SelectCollection.selectedNomenclatural}"
                                         style="height: 168px; left: 312px; top: 48px; position: absolute" width="265px"/>
