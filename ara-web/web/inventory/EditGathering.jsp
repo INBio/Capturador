@@ -36,11 +36,11 @@
                                     <webuijsf:label for="ddLocality" id="lblocality" requiredIndicator="true"
                                         style="height: 24px; left: 24px; top: 24px; position: absolute; width: 140px" text="#{resources.locality}"/>
                                     <webuijsf:label for="ddResponsible" id="lbResponsible"
-                                        style="height: 24px; left: 384px; top: 24px; position: absolute; width: 140px" text="#{resources.person_in_charge}"/>
+                                        style="height: 24px; left: 408px; top: 24px; position: absolute; width: 118px" text="#{resources.person_in_charge}"/>
                                     <webuijsf:label for="calInitialDate" id="lbInitialDate" requiredIndicator="true"
                                         style="height: 24px; left: 24px; top: 48px; position: absolute; width: 140px" text="#{resources.initial_date}"/>
                                     <webuijsf:label for="calFinalDate" id="lbFinalDate" requiredIndicator="true"
-                                        style="height: 24px; left: 384px; top: 48px; position: absolute; width: 140px" text="#{resources.final_date}"/>
+                                        style="height: 24px; left: 408px; top: 48px; position: absolute; width: 118px" text="#{resources.final_date}"/>
                                     <webuijsf:dropDown binding="#{inventory$EditGathering.ddLocalities}" id="ddLocality"
                                         items="#{inventory$EditGathering.localitiesData.options}" required="true"
                                         selected="#{inventory$GatheringSessionBean.currentGatheringDTO.localityId}"
@@ -56,7 +56,7 @@
                                     <webuijsf:label for="txGradient" id="lbGradient"
                                         style="height: 24px; left: 24px; top: 72px; position: absolute; width: 140px" text="#{resources.gradient}"/>
                                     <webuijsf:label for="ddExposicion" id="lbExposicion"
-                                        style="height: 24px; left: 384px; top: 72px; position: absolute; width: 140px" text="#{resources.exposition}"/>
+                                        style="height: 24px; left: 408px; top: 72px; position: absolute; width: 118px" text="#{resources.exposition}"/>
                                     <webuijsf:dropDown binding="#{inventory$EditGathering.ddExposition}" id="ddExposicion"
                                         items="#{inventory$EditGathering.expositionData.options}"
                                         selected="#{inventory$GatheringSessionBean.currentGatheringDTO.expositionId}"
@@ -64,7 +64,7 @@
                                     <webuijsf:textField binding="#{inventory$EditGathering.txGradient}" columns="25" id="txGradient"
                                         style="height: 24px; left: 175px; top: 72px; position: absolute; width: 180px" validatorExpression="#{util$ValidatorBean.longNumberFormatValidator}"/>
                                     <webuijsf:label id="lbElevation" style="height: 24px; left: 24px; top: 96px; position: absolute; width: 140px" text="#{resources.elevation}"/>
-                                    <webuijsf:label id="lbDepth" style="height: 24px; left: 384px; top: 96px; position: absolute; width: 140px" text="#{resources.depth}"/>
+                                    <webuijsf:label id="lbDepth" style="height: 24px; left: 408px; top: 96px; position: absolute; width: 118px" text="#{resources.depth}"/>
                                     <webuijsf:textField binding="#{inventory$EditGathering.txElevationMin}" columns="10" id="txElevationMin"
                                         style="height: 24px; left: 175px; top: 96px; position: absolute; width: 80px" validatorExpression="#{util$ValidatorBean.doubleNumberFormatValidator}"/>
                                     <webuijsf:label id="lbElevationMin" style="height: 24px; left: 264px; top: 96px; position: absolute; width: 96px" text="#{resources.minimum}"/>
@@ -80,14 +80,12 @@
                                     <webuijsf:label for="txaSurrounding" id="lbSurrounding"
                                         style="height: 24px; left: 24px; top: 144px; position: absolute; width: 140px" text="#{resources.surroundings_description}"/>
                                     <webuijsf:textArea binding="#{inventory$EditGathering.txaSurrounding}" columns="23" id="txaSurrounding"
-                                        style="height: 40px; left: 175px; top: 144px; position: absolute; width: 172px" 
-                                        validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"
-                                        text="#{inventory$GatheringSessionBean.currentGatheringDTO.surroundingDescription}"/>
-                                    <webuijsf:label id="lbSiteDescription" style="height: 24px; left: 384px; top: 144px; position: absolute; width: 140px" text="#{resources.site_description}"/>
+                                        style="height: 40px; left: 175px; top: 144px; position: absolute; width: 172px"
+                                        text="#{inventory$GatheringSessionBean.currentGatheringDTO.surroundingDescription}" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"/>
+                                    <webuijsf:label id="lbSiteDescription" style="height: 24px; left: 408px; top: 144px; position: absolute; width: 118px" text="#{resources.site_description}"/>
                                     <webuijsf:textArea binding="#{inventory$EditGathering.txaSiteDescription}" columns="23" id="txaSiteDescription"
-                                        style="height: 40px; left: 538px; top: 144px; position: absolute; width: 172px" 
-                                        validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"
-                                        text="#{inventory$GatheringSessionBean.currentGatheringDTO.siteDescription}"/>
+                                        style="height: 40px; left: 538px; top: 144px; position: absolute; width: 172px"
+                                        text="#{inventory$GatheringSessionBean.currentGatheringDTO.siteDescription}" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"/>
                                 </webuijsf:panelLayout>
                                 <webuijsf:tabSet id="tabSetDetails" lite="true" selected="tabCollectors" style="height: 235px; width: 758px" styleClass="My_tab_border">
                                     <webuijsf:tab id="tabCollectors" text="#{resources.collectors}">
@@ -199,7 +197,7 @@
                                                     <h:panelGrid cellspacing="1" columns="1">
                                                         <h:outputLabel id="lbSelectedTaxonOptions3" styleClass="My_white_label" value="#{inventory$GatheringSessionBean.arCollectionsEdit.lbSelected}"/>
                                                         <h:selectManyListbox id="mlSelectedList3" size="7" style="width:250px" value="#{inventory$GatheringSessionBean.arCollectionsEdit.rightSelected}">
-																													<f:selectItems id="mlSelectedSelectItems3" value="#{inventory$GatheringSessionBean.arCollectionsEdit.rightOptions}"/>
+                                                            <f:selectItems id="mlSelectedSelectItems3" value="#{inventory$GatheringSessionBean.arCollectionsEdit.rightOptions}"/>
                                                         </h:selectManyListbox>
                                                     </h:panelGrid>
                                                 </h:panelGrid>
@@ -211,7 +209,7 @@
                                 <jsp:directive.include file="/Footer.jspf"/>
                             </h:panelGrid>
                         </webuijsf:form>
-                    </webuijsf:panelLayout>                    
+                    </webuijsf:panelLayout>
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>
