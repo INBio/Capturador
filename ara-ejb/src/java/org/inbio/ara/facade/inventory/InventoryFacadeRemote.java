@@ -154,8 +154,7 @@ public interface InventoryFacadeRemote {
     public void deleteAsociatedListByGatheringId(java.lang.Long gId);
 
     public int specimenGenerator(SpecimenDTO sDTO, IdentificationDTO iDTO,
-            List<Long> lifeForms, int quantity)
-            throws IllegalArgumentException;
+            List<Long> lifeForms, int quantity);
 
     public java.util.List<org.inbio.ara.dto.inventory.PersonDTO> getAllValidators();
 

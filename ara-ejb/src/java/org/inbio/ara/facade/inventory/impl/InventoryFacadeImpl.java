@@ -1054,18 +1054,19 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      * @return int Operation code
      */
     public int specimenGenerator(SpecimenDTO sDTO, IdentificationDTO iDTO,
-            List<Long> lifeForms, int quantity)
-            throws IllegalArgumentException {
+            List<Long> lifeForms, int quantity) {
         String[] catalogNumbersAvailable;
         List<LifeStageSexDTO> lssDTOList;
 
         if (sDTO == null) {
-            throw new IllegalArgumentException("Null specimenDTO");
+            //Null specimenDTO
+            return 1;
         } else {
             validateSpecimenDTO(sDTO);
         }
         if (quantity == 0) {
-            throw new IllegalArgumentException("Not quantity specified");
+            //Not quantity specified
+            return 2;
         }
         lssDTOList = sDTO.getLifeStageSexList();
 
@@ -1087,7 +1088,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 quantity);
         //No
         if (catalogNumbersAvailable == null) {
-            throw new IllegalArgumentException("Catalog Number not available");
+            //Catalog Number not available
+            return 3;
         }
         //Yes
         for (String cn : catalogNumbersAvailable) {
@@ -1110,8 +1112,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 if(sDTO.getCategoryId() != SpecimenCategoryEntity.
                         AGRUPADO_MULTITAXON.getId() &&
                         iDTO.getTaxa().size() > 1) {
-                    throw new
-                            IllegalArgumentException("Multiple taxa selected");
+                    //Multiple taxa selected
+                    return 4;
                 }
             }
             //Do I have a life stage sex?
@@ -1125,7 +1127,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 createLifeForm(lifeForms, specimen.getSpecimenId());
             }
         }
-        return 0;
+        return 0; //0 means everything is ok
     }
 
     private void createLifeForm(List<Long> lifeFormIds, Long specimenId) {
