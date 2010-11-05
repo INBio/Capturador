@@ -896,9 +896,10 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     }
 
     public List<IdentificationTypeDTO> getAllIdentificationTypes() {
+        String[] fields = {"name"};
         return identificationTypeDTOFactory.
                 createDTOList(identificationTypeEAOImpl.
-                findAll(IdentificationType.class));
+                findAllAndOrderBy(IdentificationType.class, fields));
     }
 
     public List<TaxonomicalRangeDTO> getAllTaxonomicalRage() {
