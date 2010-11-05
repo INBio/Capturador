@@ -121,7 +121,11 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
      * Metodo que retorna la lista completa de perfiles
      */
     public List<ProfileDTO> getAllProfiles(){
-        return profileDTOFactory.createDTOList(profileEAOImpl.findAll(Profile.class));
+        //return profileDTOFactory.createDTOList(profileEAOImpl.findAll(Profile.class));
+        String[] fields  = {"name"};
+        return profileDTOFactory.createDTOList(profileEAOImpl.
+                findAllAndOrderBy(Profile.class, fields));
+
     }
 
     /**
@@ -158,7 +162,9 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
      * Metodo que retorna la lista completa de audiencias sin paginar
      */
     public List<AudienceDTO> getAllAudiences(){
-        List<Audience> entityList =  audienceEAOImpl.findAll(Audience.class);
+        //List<Audience> entityList =  audienceEAOImpl.findAll(Audience.class);
+        String[] fields = {"name"};
+        List<Audience> entityList =  audienceEAOImpl.findAllAndOrderBy(Audience.class, fields);
         return audienceDTOFactory.createDTOList(entityList);
     }
 
