@@ -96,7 +96,7 @@
                                     <!-- Tab para relación entre taxon - indicador -->
                                     <webuijsf:tab id="tabTaxonIndicatorReferences" rendered="true" text="#{resources.relations_taxon_indicator}" visible="#{taxonomy$TaxonSessionBean.ableTabTaxonIndicator}">
                                         <h:panelGrid columns="3" id="taxonIndicator">
-                                            <div id="tree" style="width:200px; float:left; " title="Taxonomy Tree "></div>
+                                            <div id="tree"  style="width:250px; height:400px; float:left; overflow:scroll"  title="Taxonomy Tree "></div>
                                             <h:panelGrid columns="1" id="panelAddRemoveAction">
                                                 <h:commandButton id="btnAddElement"  action="#{taxonomy$EditTaxonomy2.btnAddTaxonIndicator_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.add}"/>
                                                 <h:commandButton id="btnRemoveElement" action="#{taxonomy$EditTaxonomy2.btnRemoveTaxonIndicator_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.remove}"/>
