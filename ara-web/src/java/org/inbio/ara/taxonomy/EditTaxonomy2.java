@@ -369,7 +369,8 @@ public class EditTaxonomy2 extends AbstractPageBean {
 
         }
 
-        if(tsb.getIndicatorRelations().size()>0)
+        if(tsb.getIndicatorRelations().size()>0 && tsb.getCurrentTaxon().getTaxonomicalRangeId().equals
+                (TaxonomicalRangeEntity.SPECIES.getId()))
         {
             tsb.setAbleTabTaxonIndicatorCountry(true);
             if(tsb.getIndicatorRelationsAP().size()>0)
