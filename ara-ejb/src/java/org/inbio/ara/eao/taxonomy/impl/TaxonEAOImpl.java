@@ -64,7 +64,8 @@ public class TaxonEAOImpl extends BaseEAOImpl<Taxon,Long> implements TaxonEAOLoc
 
     public List<Taxon> findByTaxononimcalRange(Long taxonomicalRangeId) {
         StringBuffer query = new StringBuffer();
-        query.append("from Taxon as t where t.taxonomicalRangeId = :taxonomicalRangeId");
+        query.append("from Taxon as t where t.taxonomicalRangeId = :taxonomicalRangeId" +
+                " order by t.defaultName");
         Query q = em.createQuery(query.toString());
 		q.setParameter("taxonomicalRangeId", taxonomicalRangeId);
         return q.getResultList();

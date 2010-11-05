@@ -73,7 +73,8 @@ public class SelectionListValueEAOImpl implements SelectionListValueLocalEAO {
 
         Query q = em .createQuery("select slv " +
                 "from "+ selectionListEntityClassName+" as  slv " +
-                "where slv.id = :selectionListValueId");
+                "where slv.id = :selectionListValueId " +
+                " order by slv.name");
         q.setParameter("selectionListValueId", selectionListValueId);
 
         return (SelectionListGenericEntity) q.getSingleResult();
@@ -109,7 +110,9 @@ public class SelectionListValueEAOImpl implements SelectionListValueLocalEAO {
         SelectionListEntity selectionListEntity = SelectionListEntity.getById(selectionListEntityId.intValue());
 
         String entityClassName = selectionListEntity.getSelectionlistClassName();
-        Query q = em .createQuery("select slv from "+ entityClassName+" as  slv");
+        Query q = em .createQuery(
+                "select slv from "+ entityClassName+" as  slv " +
+                " order by slv.name");
         q.setFirstResult(first);
         q.setMaxResults(maxResults);
         return q.getResultList();
@@ -130,7 +133,8 @@ public class SelectionListValueEAOImpl implements SelectionListValueLocalEAO {
                 " from "+ entityClassName+" as  slv, ListTableCollection as slc" +
                 " where slc.selectionListCollectionPK.collectionId = :colletionId" +
                 " and slc.selectionListCollectionPK.selectionListEntityId = :selectionListEntityId" +
-                " and slc.selectionListCollectionPK.selectionListValueId = slv.id");
+                " and slc.selectionListCollectionPK.selectionListValueId = slv.id " +
+                " order by slv.name");
         q.setParameter("colletionId", collectionId);
         q.setParameter("selectionListEntityId", selectionListEntityId);
 

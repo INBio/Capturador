@@ -47,7 +47,9 @@ public class PersonEAOImpl extends BaseEAOImpl<Person,Long> implements PersonEAO
 
 	public List<Person> findByProfile(Long profileId) {
 
-        Query q = em.createQuery("Select p from Person as p, IN(p.profiles) prof  where prof.profileId = :profileId ");
+        Query q = em.createQuery("Select p from Person as p, IN(p.profiles) prof " +
+                " where prof.profileId = :profileId " +
+                " order by p.firstName, p.lastName, p.secondLastName");
 		q.setParameter("profileId", profileId );
         return q.getResultList();
 	}
@@ -58,7 +60,8 @@ public class PersonEAOImpl extends BaseEAOImpl<Person,Long> implements PersonEAO
               sql += "from Person p, TaxonDescriptionPersonProfile tdpp ";
               sql += "where p.personId = tdpp.taxonDescriptionPersonProfilePK.personId " +
                       "and tdpp.taxonDescriptionPersonProfilePK.taxonId = :taxonId "+
-                      "and tdpp.taxonDescriptionPersonProfilePK.taxonDescriptionSequence = :taxonDescriptionSequence";
+                      "and tdpp.taxonDescriptionPersonProfilePK.taxonDescriptionSequence = :taxonDescriptionSequence" +
+                      " order by p.firstName, p.lastName, p.secondLastName";
         Query q = em.createQuery(sql);
 		q.setParameter("taxonId", taxonId);
         q.setParameter("taxonDescriptionSequence", taxonDescriptionSequence);
@@ -77,7 +80,8 @@ public class PersonEAOImpl extends BaseEAOImpl<Person,Long> implements PersonEAO
         String lowerLastName = lastName.toLowerCase();
         Query q = em.createQuery("from Person p " +
                 " where lower(p.firstName) = '"+ lowerfirstName + "' and" +
-                " lower(p.lastName) = '"+  lowerLastName + "'");
+                " lower(p.lastName) = '"+  lowerLastName + "'" +
+                " order by p.firstName, p.lastName, p.secondLastName");
         //q.setParameter("LastName", lowerLastName);
         return q.getResultList();
     }

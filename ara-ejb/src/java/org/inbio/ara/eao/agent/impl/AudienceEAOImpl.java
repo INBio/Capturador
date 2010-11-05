@@ -41,7 +41,8 @@ public class AudienceEAOImpl extends BaseEAOImpl<Audience, Long>
               sql += "from Audience a, TaxonDescriptionAudience tda ";
               sql += "where a.audienceId = tda.taxonDescriptionAudiencePK.audienceId " +
                       "and tda.taxonDescriptionAudiencePK.taxonId = :taxonId "+
-                      "and tda.taxonDescriptionAudiencePK.taxonDescriptionSequence = :taxonDescriptionSequence";
+                      "and tda.taxonDescriptionAudiencePK.taxonDescriptionSequence = :taxonDescriptionSequence" +
+                      " order by a.name";
         Query q = em.createQuery(sql);
 		q.setParameter("taxonId", taxonId);
         q.setParameter("taxonDescriptionSequence", taxonDescriptionSequence);

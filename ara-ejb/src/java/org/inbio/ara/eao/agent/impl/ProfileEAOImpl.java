@@ -23,7 +23,8 @@ public class ProfileEAOImpl extends BaseEAOImpl<Profile,Long> implements Profile
         String sql = "Select p ";
               sql += "from Profile p, PersonProfile pp ";
               sql += "where p.profileId = pp.personProfilePK.profileId " +
-                      "and pp.personProfilePK.personId = :personId";
+                      "and pp.personProfilePK.personId = :personId " +
+                      " order by p.name";
         Query q = em.createQuery(sql);
 		q.setParameter("personId", personId);
         return (List<Profile>)q.getResultList();
