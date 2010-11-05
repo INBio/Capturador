@@ -114,7 +114,11 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
      * Metodo que retorna la lista completa de instituciones
      */
     public List<InstitutionDTO> getAllInstitutions(){
-        return institutionEAOImpl.getAllInstitutions();
+        String[] fields = {"institutionCode"};
+        return institutionDTOFactory.
+                createDTOList(institutionEAOImpl.findAllAndOrderBy(Institution.class, fields));
+        
+        //return institutionEAOImpl.getAllInstitutions();
     }
 
     /**

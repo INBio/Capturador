@@ -32,7 +32,8 @@ public class InstitutionEAOImpl extends BaseEAOImpl<Institution,Long> implements
         String sql = "Select i ";
               sql += "from Institution i, PersonInstitution pi ";
               sql += "where i.institutionId = pi.personInstitutionPK.institutionId " +
-                      "and pi.personInstitutionPK.personId = :personId";
+                      "and pi.personInstitutionPK.personId = :personId " +
+                      " order by i.institutionCode";
         Query q = em.createQuery(sql);
 		q.setParameter("personId", personId);
         return (List<Institution>)q.getResultList();
