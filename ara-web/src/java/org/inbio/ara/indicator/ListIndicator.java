@@ -244,6 +244,10 @@ public class ListIndicator extends AbstractPageBean {
         {
             this.getIndicatorSessionBean().setPagination(null);
         }
+        this.getIndicatorSessionBean().setQueryMode(false);
+        this.getIndicatorSessionBean().setQueryModeSimple(false);
+        this.getIndicatorSessionBean().setSimpleConsult(new String(""));
+
         return "edit";
         
     }
