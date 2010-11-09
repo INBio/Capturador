@@ -45,7 +45,7 @@
                                     <!-- Tab para ingresar los datos de los indicadores -->
                                     <webuijsf:tab id="tabNewIndicator" text="#{resources.dataIndicator}">
                                         <h:panelGrid binding="#{indicator$EditIndicator.gridIndicator}" columns="2" id="gridIndicator" style="height: 24px" width="540">
-                                            <div id="tree" style="width:200px; float:left; " title="Indicators Tree "></div>
+                                            <div id="tree" style="width:250px; height:400px; float:left; overflow:scroll" title="Indicators Tree "></div>
                                             <h:panelGrid binding="#{indicator$EditIndicator.indicator}" columns="1" id="indicator" style="height: 124px; position: relative; width: 400px; -rave-layout: grid">
                                                 <webuijsf:label for="txIndicatorName" id="lbIndicatorName" text="#{resources.indicator_name}"/>
                                                 <webuijsf:textField text="#{indicator$IndicatorSessionBean.currentIndicatorDTO.name}" required="true" columns="25" id="txIndicatorName"/>
