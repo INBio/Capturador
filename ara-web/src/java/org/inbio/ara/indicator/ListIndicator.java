@@ -254,9 +254,19 @@ public class ListIndicator extends AbstractPageBean {
 
     public String btnDeleteIndicator_action() {
         Long indicatorId = new Long(this.hiddenNodeId.getValue().toString());
+        //Long rootIdId = new Long(this.hidden.getValue().toString());
        if(this.getIndicatorSessionBean().countChildrenByIndicatorId(indicatorId) <= 0)
        {
-           this.getIndicatorSessionBean().deleteIndicator(indicatorId);
+           if(indicatorId != 0)
+           {
+               this.getIndicatorSessionBean().deleteIndicator(indicatorId);
+           }
+           else
+           {
+               MessageBean.setErrorMessageFromBundle("error_root", this.getMyLocale());
+
+
+           }
        }
        else
        {
