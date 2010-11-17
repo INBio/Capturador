@@ -35,6 +35,7 @@ import org.inbio.ara.persistence.germplasm.SemenGatheringMethod;
 import org.inbio.ara.persistence.germplasm.Condition;
 import org.inbio.ara.persistence.germplasm.SemenConsistency;
 import org.inbio.ara.persistence.indicator.ComponentPart;
+import org.inbio.ara.persistence.taxonomy.TaxonAuthorConnector;
 import org.inbio.ara.persistence.transaction.TransactedSpecimenStatus;
 import org.inbio.ara.persistence.transaction.TransactionType;
 /**
@@ -68,7 +69,9 @@ public enum SelectionListEntity {
     /*
     PREPARATION_METHOD(17, new PreparationMethod(), true),
     SAMPLING_TYPE(18, new SamplingType(), true),
-    TAXON_AUTHOR_CONNECTOR(19, new TaxonAuthorConnector(), true),
+     */
+    TAXON_AUTHOR_CONNECTOR(new Long(19), new TaxonAuthorConnector(), true, "sle_taxon_author_connector", TaxonAuthorConnector.class.getName()),
+    /*
     TYPE_SPECIMEN_TYPE(20, new TypeSpecimenType(), true),
     REFERENCE_TYPE(21, new ReferenceType(), true),
     SITE_CALCULATION_METHOD(22, new SiteCalculationMethod(), true),*/
