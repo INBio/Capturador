@@ -3299,3 +3299,11 @@ ALTER TABLE ARA.TAXON_INDICATOR ALTER COLUMN VALUER_PERSON_ID DROP NOT NULL;
 
 --2010.11.08 gsulca
 UPDATE ara.indicator SET applies_to_parts=0 WHERE name='Atributos Taxonómicos';
+
+--2010.11.18 gsulca
+ALTER TABLE ara.taxon_author_connector DROP COLUMN obj_version;
+-- Secuence para taxon_author_connector
+CREATE SEQUENCE ara.taxon_author_connector_seq;
+ALTER TABLE ara.taxon_author_connector_seq OWNER TO ara;
+ALTER TABLE ara.taxon_author_connector ALTER COLUMN taxon_author_connector_id
+SET DEFAULT nextval('ara.taxon_author_connector_seq'::regclass);
