@@ -78,6 +78,7 @@ public class GatheringObservationEAOImpl
         q.setParameter("finalDate", finalDate);
         return q.getResultList();
     }
+    
 
     public void deleteById(Long gId) {
         Query q = em.createQuery("delete from GatheringObservation go " +

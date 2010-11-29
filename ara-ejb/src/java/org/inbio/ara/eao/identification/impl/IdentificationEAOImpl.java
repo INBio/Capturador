@@ -28,6 +28,7 @@ import org.inbio.ara.eao.identification.IdentificationEAOLocal;
 import org.inbio.ara.persistence.identification.Identification;
 import org.inbio.ara.persistence.identification.IdentificationPK;
 
+
 /**
  *
  * @author herson
@@ -55,14 +56,38 @@ public class IdentificationEAOImpl
         return q.getResultList();
     }
 
-    public List<Long> findSpecimenByValuerPersonId(Long id) {
+
+
+   /* public List<Long> findSpecimenByTaxonNameAndTaxonomicalLevel(Long taxonRange,String taxonName) {
+        StringBuffer query = new StringBuffer();
+        query.append( "select i.identificationPK.specimenId " +
+                       "from Identification i " +
+                       "join  fetch Taxon t on t.taxonId = i.taxon " +
+                       "join  fetch Taxon r on r.taxonId = t.kingdomTaxonId " +
+                       "where lower(r.defaultName) like " +
+                       "'%"+ taxonName.toLowerCase() +"%'");
+        Query q = em.createQuery(query.toString());
+        return q.getResultList();
+    }*/
+
+
+     public List<Long> findSpecimenByTaxonNameAndTaxonomicalLevel(String taxonRange,String taxonName) {
         StringBuffer query = new StringBuffer();
         query.append("select i.identificationPK.specimenId from Identification"+
-                " as i where i.valuerPersonId = :valuerId order by " +
-                "i.identificationPK.specimenId");
+                " as i,Taxon as t, Taxon as t1 where  t.taxonId =  i.taxon  and " + taxonRange + "= t1.taxonId and  lower(t1.defaultName) like " +
+                "'%"+ taxonName.trim().toLowerCase() +"%'");
         Query q = em.createQuery(query.toString());
+        return q.getResultList();
+    }
+     
+
+    public List<Long> findSpecimenByValuerPersonId(Long id) {
+
+       Query q = em.createQuery("select i.identificationPK.specimenId from Identification"+
+                " as i where i.valuerPerson.personId = :valuerId ");
         q.setParameter("valuerId", id);
         return q.getResultList();
+        
     }
 
     /**
@@ -119,4 +144,6 @@ public class IdentificationEAOImpl
         q.setParameter("taxonId", taxonId);
         return (Long)q.getSingleResult();
     }
+
+
 }

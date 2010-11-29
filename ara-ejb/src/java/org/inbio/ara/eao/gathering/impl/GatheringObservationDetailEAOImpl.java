@@ -51,12 +51,49 @@ public class GatheringObservationDetailEAOImpl extends BaseEAOImpl<GatheringObse
         em.flush();
     }
 
-    public List<Long> findByGathObsId(Long gathObsId) {
+    public List<Long> findByGathObsDetailId(Long gathObsId) {
         String query = "select gd.gatheringObservationDetailId from GatheringObservationDetail as gd where " +
                 "gd.gatheringObservationId = :gathObsId";
         Query q = em.createQuery(query);
         q.setParameter("gathObsId", gathObsId);
         return q.getResultList();
     }
+    
+    /**
+     * Ej. select gathering_observation.gathering_observation_id from
+     * ara.gathering_observation where
+     *          gathering_observation.responsible_person_id = 128;
+     * @param personId
+     * @return Gatherings & Observations carried out by some responsible person
+     */
+    public List<Long> findByResponsibleId(Long personId, Long initialGathObserDetail, Long finalGathObserDetail) {
+        Query q = em.createQuery("select go.gatheringObservationId from " +
+                "GatheringObservationDetail as go"
+                + " where go.gatheringObservationDetailPerson.personId = :personId and go.gatheringObservationDetailId between :initialGathDetail  and  :finalGathDetail");
+        q.setParameter("personId", personId);
+        q.setParameter("initialGathDetail", initialGathObserDetail);
+        q.setParameter("finalGathDetail", finalGathObserDetail);
+        return q.getResultList();
+    }
+
+    public List<Long> findByResponsibleId(Long personId) {
+        Query q = em.createQuery("select go.gatheringObservationId from " +
+                "GatheringObservationDetail as go"
+                + " where go.gatheringObservationDetailPerson.personId = :personId");
+        q.setParameter("personId", personId);
+        return q.getResultList();
+    }
+
+    public List<Long> findByResponsibleId(Long personId, Long initialGathObserDetail) {
+        Query q = em.createQuery("select go.gatheringObservationId from " +
+                "GatheringObservationDetail as go"
+                + " where go.gatheringObservationDetailPerson.personId = :personId and go.gatheringObservationDetailId = :initialGathDetail");
+        q.setParameter("personId", personId);
+        q.setParameter("initialGathDetail", initialGathObserDetail);
+        return q.getResultList();
+    }
+
+   
+
  
 }

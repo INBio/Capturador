@@ -71,7 +71,10 @@ public class SpecimenDTO implements Serializable {
     private Long gatheringObsevationId;
 
     private Long gatheringObservationDetailId;
-
+    /*labelId is read only */
+    private Long labelId;
+    /*originalLabelId is read only */
+    private Long originalLabelId;
 
     /* For Graphical Inteface purposes */
     private boolean selected;
@@ -175,7 +178,9 @@ public class SpecimenDTO implements Serializable {
                 "\n\tLatitude = " + getLatitude()+
                 "\n\tRadio = " + getRadio()+
                 "\n\tDiscarted = " + isDiscarded()+
-                "\n\tLifeStafeSexDTO = \n" + lssToString
+                "\n\tLifeStafeSexDTO = \n" + lssToString +
+                "\n\tlabelID = " + labelId  +
+                "\n\tOriginalLabelID = " +originalLabelId
                 ;
     }
 
@@ -752,6 +757,34 @@ public class SpecimenDTO implements Serializable {
      */
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
+    }
+
+    /**
+     * @return the labelID
+     */
+    public Long getLabelId() {
+        return labelId;
+    }
+
+    /**
+     * @param labelID the labelID to set
+     */
+    public void setLabelId(Long labelId) {
+        this.labelId = labelId;
+    }
+
+    /**
+     * @return the originalLabelId
+     */
+    public Long getOriginalLabelId() {
+        return originalLabelId;
+    }
+
+    /**
+     * @param originalLabelId the originalLabelId to set
+     */
+    public void setOriginalLabelId(Long originalLabelId) {
+        this.originalLabelId = originalLabelId;
     }
 }
 

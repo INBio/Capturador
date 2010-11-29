@@ -19,9 +19,14 @@ public interface SpecimenEAOLocal extends BaseLocalEAO<Specimen,Long>{
 
     public List<Long> findByGathObsId(Long gathObsId);
 
+    public List<Long> findByGathObsId(Long initialGathObs, Long finalGathObs);
+
+
     public List<Long> findByCollectionName(String collectionName);
 
     public Long findByCatalogNumber(String catalogNumber);
+
+    public List<Long> findByCatalogNumber(String catalogNumberFirst, String catalogNumberEnd);
 
     public java.util.List<java.lang.Long> findByInstitutionId(java.lang.Long institutionId);
 

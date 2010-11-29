@@ -3307,3 +3307,253 @@ CREATE SEQUENCE ara.taxon_author_connector_seq;
 ALTER TABLE ara.taxon_author_connector_seq OWNER TO ara;
 ALTER TABLE ara.taxon_author_connector ALTER COLUMN taxon_author_connector_id
 SET DEFAULT nextval('ara.taxon_author_connector_seq'::regclass);
+
+
+---------------------------------------------
+    -- TABLES FOR LABEL MODULE --
+---------------------------------------------
+--2010.11.29 pcorrales
+
+--create label
+CREATE TABLE ara.label
+(
+  label_id numeric NOT NULL,
+  contents character varying(4000),
+  created_by character varying(100) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL,
+  initial_date timestamp without time zone,
+  final_date timestamp without time zone,
+  label_type_id numeric,
+  ancestor_label_id numeric
+
+);
+
+--add  primary key
+ALTER TABLE ara.label ADD CONSTRAINT label_pk PRIMARY KEY (label_id)
+
+--create sequence
+CREATE SEQUENCE ara.label_seq;
+ALTER TABLE ara.label_seq OWNER TO ara;
+
+--add sequence
+ALTER TABLE ara.label  ALTER COLUMN label_id  SET DEFAULT nextval('ara.label_seq'::regclass);
+
+------------------------------------------------------------------------------------------------
+
+--create label history
+CREATE TABLE ara.label_history
+(
+  label_id numeric NOT NULL,
+  contents character varying(4000),
+  created_by character varying(100) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL,
+  initial_date timestamp without time zone NOT NULL,
+  final_date timestamp without time zone,
+  ancestor_label_id numeric
+);
+
+
+--add primary key
+ALTER TABLE  ara.label_history ADD CONSTRAINT label_history_pk PRIMARY KEY (label_id,initial_date)
+
+--add foreing key
+ALTER TABLE  ara.label_history  ADD CONSTRAINT label_fk FOREIGN KEY (label_id)
+      REFERENCES ara.label (label_id)
+
+
+------------------------------------------------------------------------------------------------
+
+--create original Label
+CREATE TABLE ara.original_label
+(
+  original_label_id numeric NOT NULL
+  contents character varying(4000),
+  created_by character varying(100) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL
+);
+
+
+--add primary key
+
+ALTER TABLE ara.original_label  ADD CONSTRAINT origincal_label_pk PRIMARY KEY (original_label_id)
+
+
+-- Secuence for original label
+CREATE SEQUENCE ara.original_label_seq;
+ALTER TABLE ara.original_label_seq OWNER TO ara;
+
+ALTER TABLE ara.original_label  ALTER COLUMN original_label_id  SET DEFAULT nextval('ara.original_label_seq'::regclass);
+
+---- modificar  la tabla de specimen para que posee el campo de label
+
+ALTER TABLE ara.specimen  ADD COLUMN label_id numeric;
+ALTER TABLE ara.specimen  ADD COLUMN  original_label_id numeric;
+
+---------------------------------------------
+    -- TABLES FOR FORMAT LABEL MODULE --
+---------------------------------------------
+--2010.11.29 pcorrales
+
+﻿-------------------------------------------------------------
+-- Table: ara.funcionality_type
+
+CREATE TABLE ara.funcionality_type
+(
+  funcionality_type_id numeric NOT NULL,
+  funcionality_type_keyword character varying(100) NOT NULL,
+  description character varying(100) NOT NULL,
+  creation_date date NOT NULL,
+  created_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL
+);
+
+ALTER TABLE ara.funcionality_type ADD CONSTRAINT pk_funcionality_id PRIMARY KEY (funcionality_type_id)
+
+-------------------------------------------------------------
+--create tabel report layout
+
+CREATE TABLE ara.report_layout
+(
+  report_layout_id numeric NOT NULL,
+  report_layout_keyword character varying(100) NOT NULL,
+  description character varying(100) NOT NULL,
+  contents character varying(4000) NOT NULL,
+  creation_date date NOT NULL,
+  created_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL,
+  funcionality_type_id numeric
+);
+
+--add primary key
+ALTER TABLE ara.report_layout ADD CONSTRAINT pk_report_id PRIMARY KEY (report_layout_id)
+
+--add foreing key
+ALTER TABLE ADD ara.report_layout CONSTRAINT funcionality_type_fk FOREIGN KEY (funcionality_type_id)
+      REFERENCES ara.funcionality_type (funcionality_type_id)
+
+------------------------------------------------------------------------------------------
+
+-- create Table: ara.report_layout_category
+
+
+CREATE TABLE ara.report_layout_category
+(
+  report_layout_category_id numeric NOT NULL,
+  category_keyword character varying(100) NOT NULL,
+  description character varying(100) NOT NULL,
+  creation_date date NOT NULL,
+  created_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL
+);
+
+--add primary key
+ALTER TABLE ara.report_layout_category ADD  CONSTRAINT pk_category_id PRIMARY KEY (report_layout_category_id )
+
+--------------------------------------------------------------------------------------------------
+CREATE TABLE ara.report_layout_element
+(
+  report_layout_element_id numeric NOT NULL,
+  report_layout_category_id numeric NOT NULL,
+  report_layout_element_sequence numeric NOT NULL,
+  element_keyword character varying(100) NOT NULL,
+  description character varying(100) NOT NULL,
+  element_required numeric NOT NULL,
+  entity character varying(30),
+  entity_key_field character varying(30),
+  entity_main_field character varying(30),
+  creation_date date NOT NULL,
+  created_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL
+);
+
+--add primary key
+ALTER TABLE ara.report_layout_element ADD CONSTRAINT pk_element_id PRIMARY KEY (report_layout_element_id),
+
+--add foreing key
+ALTER TABLE ara.report_layout_element ADD CONSTRAINT category_fk FOREIGN KEY (report_layout_category_id )
+      REFERENCES ara.report_layout_category (report_layout_category_id)
+
+
+---------------------------------------------------------------------------------------
+--Table: ara.element_format;
+
+CREATE TABLE ara.element_format
+(
+  element_format_id numeric NOT NULL,
+  element_format_keyword character varying(100) NOT NULL,
+  creation_date date NOT NULL,
+  created_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL
+);
+
+--add primary key
+ALTER TABLE ara.element_format ADD  CONSTRAINT pk_element_format_id PRIMARY KEY (element_format_id)
+
+
+-------------------------------------------------------------------------------------
+
+--Table: ara.report_layout_element_format
+
+CREATE TABLE ara.report_layout_element_format
+(
+  element_format_id numeric NOT NULL,
+  report_layout_element_id numeric NOT NULL,
+  creation_date date NOT NULL,
+  created_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL
+);
+
+--add primary key
+ALTER TABLE  ara.report_layout_element_format ADD  CONSTRAINT pk_report_layout_element_format_id PRIMARY KEY (report_layout_element_id,element_format_id),
+
+--add foreing key
+ALTER TABLE  ara.report_layout_element_format ADD  CONSTRAINT report_layout_element_fk FOREIGN KEY (report_layout_element_id)
+  REFERENCES ara.report_layout_element (report_layout_element_id)
+
+---------------------------------------------------------------------------------
+
+--Table: ara.element_format
+
+CREATE TABLE ara.report_layout_selected_element
+(
+  report_layout_selected_element_id numeric NOT NULL,
+  element_format_id numeric NOT NULL,
+  report_layout_id numeric NOT NULL,
+  report_layout_element_id numeric NOT NULL,
+  creation_date date NOT NULL,
+  created_by character varying(100) NOT NULL,
+  last_modification_date date NOT NULL,
+  last_modification_by character varying(100) NOT NULL
+
+);
+
+--add primary key
+
+ALTER TABLE ara.report_layout_selected_element ADD CONSTRAINT pk_report_layout_selected_element_id PRIMARY KEY (report_layout_selected_element_id ),
+
+--add foreing key
+ALTER TABLE ara.report_layout_selected_element ADD  CONSTRAINT element_format_fk FOREIGN KEY (element_format_id)
+      REFERENCES ara.element_format (element_format_id),
+
+ALTER TABLE ara.report_layout_selected_element ADD CONSTRAINT report_layout_element_fk FOREIGN KEY (report_layout_element_id)
+      REFERENCES ara.report_layout_element (report_layout_element_id),
+
+ALTER TABLE ara.report_layout_selected_element ADD CONSTRAINT report_layout_fk FOREIGN KEY (report_layout_id)
+      REFERENCES ara.report_layout (report_layout_id) ,
+
+---------------------------------------------
+    -- TABLES FOR FORMAT LABEL MODULE --
+---------------------------------------------
+--2010.11.29 pcorrales

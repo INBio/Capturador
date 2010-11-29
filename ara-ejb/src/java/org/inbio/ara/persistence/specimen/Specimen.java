@@ -45,6 +45,8 @@ import org.inbio.ara.persistence.gathering.GatheringObservation;
 import org.inbio.ara.persistence.gathering.GatheringObservationMethod;
 import org.inbio.ara.persistence.identification.Identification;
 import org.inbio.ara.persistence.institution.Institution;
+import org.inbio.ara.persistence.label.Label;
+import org.inbio.ara.persistence.label.OriginalLabel;
 
 /**
  *
@@ -56,7 +58,7 @@ public class Specimen extends GenericEntity {
 
     private static long serialVersionUID = 1L;
     @Id
-//    @GeneratedValue(strategy=GenerationType.AUTO)//Added
+    //@GeneratedValue(strategy=GenerationType.AUTO)//Added
     @GeneratedValue(strategy=GenerationType.AUTO, generator="specimen")
     @SequenceGenerator(name="specimen", sequenceName="specimen_seq")
     @Basic(optional = false)
@@ -94,7 +96,7 @@ public class Specimen extends GenericEntity {
 
     @Column(name="collection_id")
     private Long collectionId;
-   
+
     @JoinColumn(name = "extraction_type_id", referencedColumnName = "extraction_type_id", insertable=false, updatable=false)
     @ManyToOne(fetch = FetchType.LAZY)
     private ExtractionType extractionType;
@@ -171,14 +173,31 @@ public class Specimen extends GenericEntity {
     @OneToMany(cascade = {CascadeType.ALL}, fetch=FetchType.LAZY)
     private Set<Identification> identificationList;
 
+    
+    @JoinColumn(name = "label_id", referencedColumnName = "label_id",insertable=false, updatable=false)
+    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    private Label label;
+    @Column(name = "label_id")
+    private Long labelId;
+
+  
+    @JoinColumn(name = "original_label_id", referencedColumnName = "original_label_id",insertable=false, updatable=false)
+    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    private OriginalLabel originalLabel;
+    @Column(name = "original_label_id")
+    private Long originalLabelId;
+
+
+
     public Specimen() {
     }
 
     public Specimen(Long specimenId) {
         this.specimenId = specimenId;
+
     }
 
-    public Specimen(Long specimenId, String catalogNumber, int discarded, 
+    public Specimen(Long specimenId, String catalogNumber, int discarded,
             String createdBy, Calendar creationDate, String lastModificationBy,
             Calendar lastModificationDate) {
         this.specimenId = specimenId;
@@ -552,5 +571,61 @@ public class Specimen extends GenericEntity {
      */
     public void setInstitutionId(Long institutionId) {
         this.institutionId = institutionId;
+    }
+
+    /**
+     * @return the label
+     */
+    public Label getLabel() {
+        return label;
+    }
+
+    /**
+     * @param label the label to set
+     */
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
+    /**
+     * @return the labelId
+     */
+    public Long getLabelId() {
+        return labelId;
+    }
+
+    /**
+     * @param labelId the labelId to set
+     */
+    public void setLabelId(Long labelId) {
+        this.labelId = labelId;
+    }
+
+    /**
+     * @return the originalLabel
+     */
+    public OriginalLabel getOriginalLabel() {
+        return originalLabel;
+    }
+
+    /**
+     * @param originalLabel the originalLabel to set
+     */
+    public void setOriginalLabel(OriginalLabel originalLabel) {
+        this.originalLabel = originalLabel;
+    }
+
+    /**
+     * @return the originalLabelId
+     */
+    public Long getOriginalLabelId() {
+        return originalLabelId;
+    }
+
+    /**
+     * @param originalLabelId the originalLabelId to set
+     */
+    public void setOriginalLabelId(Long originalLabelId) {
+        this.originalLabelId = originalLabelId;
     }
 }

@@ -20,6 +20,8 @@
 
 package org.inbio.ara.facade.search;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Remote;
@@ -97,6 +99,13 @@ public interface SearchFacadeRemote {
 
     public Long countSpecimensByCriteria(SpecimenDTO inputDTO);
 
+    public Long countSpecimensByCriteria(SpecimenDTO inputDTO,String taxonLevel, String catalogEnd,Long initialGathObserDetail, 
+           Long finalGathObserDetail,Long initialGathObser, Long finalGathObser,
+           Calendar initialDate, Calendar finalDate, Long identicatorId);
+
+    public List<SpecimenDTO> searchSpecimenByCriteria(SpecimenDTO inputDTO, String taxonomyLevel,String catalogEnd,
+           Long initialGathObserDetail, Long finalGathObserDetail, Long initialGathObser, Long finalGathObser,
+           Calendar initialDate, Calendar finalDate, Long identicatorId, int base, int offset);
     /***************************************************************************
      *********************** ===IDENTIFICATION=== ******************************
      **************************************************************************/

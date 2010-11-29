@@ -42,6 +42,24 @@ public class SpecimenEAOImpl extends BaseEAOImpl<Specimen,Long>
         return q.getResultList();
     }
 
+     /**
+     * Ej.
+     * select specimen_id from ara.specimen where
+     *   specimen.gathering_observation_id = 3;
+     * @param gathObsId
+     * @return specimen ids that belongs to a Gathering/Observation
+     */
+    public List<Long> findByGathObsId(Long initialGathObs, Long finalGathObs) {
+        String query = "select sp.specimenId from Specimen as sp where " +
+                "sp.gatheringObservation.gatheringObservationId between " +
+                ":initialGathObs  and :finalGathObs ";
+        Query q = em.createQuery(query);
+        q.setParameter("initialGathObs", initialGathObs);
+        q.setParameter("finalGathObs", finalGathObs);
+        return q.getResultList();
+    }
+
+    
     public List<Long> findByCollectionName(String collectionName) {
         String query = "select sp.specimenId from Specimen as sp where " +
                 "lower(sp.collection.name) like '%"+ 
@@ -92,6 +110,21 @@ public class SpecimenEAOImpl extends BaseEAOImpl<Specimen,Long>
         try {
             Query q = em.createQuery(query);
             return (Long) q.getSingleResult();
+        } catch (Exception e){
+            return null;
+        }
+    }
+
+    public List<Long> findByCatalogNumber(String catalogNumberFirst, String catalogNumberEnd) {
+        String query = "select sp.specimenId from Specimen as sp where " +
+                "sp.catalogNumber  between   :catalogNumberFirst   and  :catalogNumberEnd order by catalogNumber";
+        try {
+
+            Query q = em.createQuery(query);
+            System.out.println(query);
+            q.setParameter("catalogNumberFirst", catalogNumberFirst);
+            q.setParameter("catalogNumberEnd", catalogNumberEnd);
+             return (List<Long>) q.getResultList();
         } catch (Exception e){
             return null;
         }

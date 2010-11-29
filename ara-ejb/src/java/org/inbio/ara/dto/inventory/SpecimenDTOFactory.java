@@ -31,6 +31,8 @@ import org.inbio.ara.persistence.gis.GeographicLayerEntity;
 import org.inbio.ara.persistence.gis.GeoreferencedSite;
 import org.inbio.ara.persistence.gis.Site;
 import org.inbio.ara.persistence.institution.Institution;
+import org.inbio.ara.persistence.label.Label;
+import org.inbio.ara.persistence.label.OriginalLabel;
 import org.inbio.ara.persistence.person.Person;
 import org.inbio.ara.persistence.specimen.Origin;
 import org.inbio.ara.persistence.specimen.PreservationMedium;
@@ -68,16 +70,26 @@ public class SpecimenDTOFactory extends BaseDTOFactory<Specimen,SpecimenDTO> {
          PreservationMedium preservationMedium = s.getPreservationMedium();
 //         Taxon taxon = s.getTaxon();
          Substrate substrate = s.getSubstrate();
-
+         
+         Label  label = s.getLabel();
+         OriginalLabel originalLabel= s.getOriginalLabel();
+         
          Person responsiblePerson=null;
-         Site site = null;
+         Site site = null;         
          if(gatheringObservation!=null){
             site = gatheringObservation.getSite();
             responsiblePerson = gatheringObservation.getResponsiblePerson();
          }
-         
+       SpecimenDTO sDTO = new SpecimenDTO();
 
-         SpecimenDTO sDTO = new SpecimenDTO();
+         //link specimen  with  label and original label
+
+         if(label != null)
+             sDTO.setLabelId(label.getLabelId());
+         
+         if(originalLabel != null)
+             sDTO.setOriginalLabelId(originalLabel.getOriginalLabelId());
+         
          //seleted is used in the Graphical Interface, should be set in false
          sDTO.setSelected(false);
          sDTO.setSpecimenKey(s.getSpecimenId());

@@ -426,7 +426,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      * @return
      */
     public int findDetailsByGathObsId(Long gId) {
-        List<Long> list = this.gatheringDetailEAOImpl.findByGathObsId(gId);
+        List<Long> list = this.specimenEAOImpl.findByGathObsId(gId);
         if (list == null)
             return 0;
         return list.size();
@@ -438,7 +438,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      * @return
      */
     public int findSpecimensByGathObsDetailId(Long gId) {
-        List<Long> list = this.specimenEAOImpl.findByGathObsDetailId(gId);
+        List<Long> list = this.gatheringDetailEAOImpl.findByGathObsDetailId(gId);
         if (list == null)
             return 0;
         return list.size();
@@ -685,6 +685,9 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         }
 
         //set Values
+        s.setLabelId( sDTO.getLabelId());
+        s.setOriginalLabelId( sDTO.getOriginalLabelId());
+        
         s.setSpecimenCategoryId(sDTO.getCategoryId());
         s.setSpecimenTypeId(sDTO.getTypeId());
         s.setGatheringObservationMethodId(sDTO.getGatheringMethodId());

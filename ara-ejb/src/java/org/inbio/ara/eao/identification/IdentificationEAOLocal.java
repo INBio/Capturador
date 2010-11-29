@@ -49,4 +49,6 @@ public interface IdentificationEAOLocal
 
     public java.lang.Long countSpecimenByTaxonId(java.lang.Long taxonId);
 
+    public List<Long> findSpecimenByTaxonNameAndTaxonomicalLevel(String  taxonRange,String taxonName);
+
 }

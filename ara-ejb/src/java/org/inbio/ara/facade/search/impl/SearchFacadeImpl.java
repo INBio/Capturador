@@ -45,6 +45,7 @@ import org.inbio.ara.dto.transaction.TransactedSpecimenDTO;
 import org.inbio.ara.dto.transaction.TransactionDTO;
 import org.inbio.ara.dto.transaction.TransactionDTOFactory;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
+import org.inbio.ara.eao.gathering.GatheringObservationDetailEAOLocal;
 import org.inbio.ara.eao.gathering.GatheringObservationEAOLocal;
 import org.inbio.ara.eao.gis.GeoreferencedSiteEAOLocal;
 import org.inbio.ara.eao.gis.SiteEAOLocal;
@@ -76,6 +77,8 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     private SpecimenEAOLocal specimenEAOImpl;
     @EJB
     private GatheringObservationEAOLocal gatheringObservationEAOImpl;
+    @EJB
+    private GatheringObservationDetailEAOLocal gatheringObservationDetailEAOImpl;
     @EJB
     private PersonEAOLocal personEAOImpl;
     @EJB
@@ -881,8 +884,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         //Retrieve entities
         specimenList = getEntities(specimenIds, Specimen.class, base, offset);
 
-        List<SpecimenDTO> updated = inventoryFacadeImpl.
-            updateCountryAndProvinceName(factory.createDTOList(specimenList));
+        List<SpecimenDTO> updated = inventoryFacadeImpl.updateCountryAndProvinceName(factory.createDTOList(specimenList));
         return inventoryFacadeImpl.updateScientificName(updated);
 
     }
@@ -932,7 +934,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                 (specimenDTOList);
         return inventoryFacadeImpl.updateScientificName(updated);
     }
-
+    
     private Set<Long> getSpecimenIds(SpecimenDTO inputDTO) {
         Set<Long> specimenIds = new HashSet();
         boolean firstFilter = true; //helps with the intersection of data
@@ -977,7 +979,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         if(taxonName != null && !taxonName.trim().isEmpty()) {
             List<Long> specimenByTaxonName =
                     //specimenEAOImpl.findByTaxonName(taxonName);
-                    identificationEAOImpl.findSpecimenByTaxonName(taxonName);
+                    identificationEAOImpl.findSpecimenByTaxonName(taxonName);                 
             if(firstFilter) {
                 specimenIds.addAll(specimenByTaxonName);
                 firstFilter = false;
@@ -1078,7 +1080,21 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
          return i.longValue();
     }
 
-    private Set<Long> unstructuredSpecimenQuery(String[] parts) {
+
+    /***
+     * count specimens by taxonomical 
+     * @param inputDTO
+     * @param TaxonLevel
+     * @return
+     */
+     public Long countSpecimensByCriteria(SpecimenDTO inputDTO, String TaxonLevel, String catalogEnd,Long initialGathObserDetail,Long finalGathObserDetail,Long initialGathObser, Long finalGathObser,Calendar  initialDate, Calendar finalDate, Long identicatorId) {
+        Integer i = new Integer(this.getSpecimenIds(inputDTO,TaxonLevel,catalogEnd,initialGathObserDetail, finalGathObserDetail,initialGathObser, finalGathObser,initialDate, finalDate,identicatorId).size());
+         return i.longValue();
+    }
+
+
+
+    private Set<Long> unstructuredSpecimenQuery(String[] parts){
         Set<Long> finalSpecimenIds = new HashSet();
         List<String> strings = new ArrayList();
         List<Long> numbers = new ArrayList();
@@ -1181,6 +1197,384 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         return finalSpecimenList;
     }
 
+    /***************************************************************************
+     ********************** === LABEL  === ********************************
+     **************************************************************************/
+
+    private List<Long> findSpecimenByResponsibleId(Long personId) {
+        ArrayList<Long> finalSpecimenList = new ArrayList();
+        List<Long> gathObsList = this.findGathObsDetailByResponsibleId(personId);
+        
+        for (Long gatObsId : gathObsList) {
+            finalSpecimenList.addAll(specimenEAOImpl.findByGathObsId(gatObsId));
+        }
+        return finalSpecimenList;
+    }
+    /**
+     * @param inputDTO Built in the advanced search
+     * @param base First result retrieved
+     * @param offset How many results I want
+     * @return List of specimens
+     */
+    public List<SpecimenDTO> searchSpecimenByCriteria(SpecimenDTO inputDTO, String taxonomyLevel,String catalogEnd,
+           Long initialGathObserDetail, Long finalGathObserDetail, Long initialGathObser, Long finalGathObser, Calendar initialDate, Calendar  finalDate, Long identicatorId,int base, int offset) {
+        Set<Long> specimenIds =  this.getSpecimenIds(inputDTO,taxonomyLevel, catalogEnd,initialGathObserDetail,finalGathObserDetail, initialGathObser,finalGathObser, initialDate, finalDate, identicatorId);
+        List<Specimen> specimenList = new ArrayList();
+
+        specimenList = getEntities(specimenIds, Specimen.class, base, offset);
+        List<SpecimenDTO> specimenDTOList = specimenDTOFactory.
+                createDTOList(specimenList);
+
+        List<SpecimenDTO> updated = inventoryFacadeImpl.updateCountryAndProvinceName
+                (specimenDTOList);
+        return inventoryFacadeImpl.updateScientificName(updated);
+    }
+
+
+    /**
+     * get the id of the gathering observation ID
+     * @param personId
+     * @return
+     */
+    private List<Long> findGathObsDetailByResponsibleId(Long personId) {
+       List<Long> finalGathObsIds = new ArrayList();
+
+       List<Long> gathObsByResponsible = this.getGatheringObservationDetailEAOImpl().findByResponsibleId(personId);
+               finalGathObsIds.addAll(gathObsByResponsible);
+
+        return finalGathObsIds;
+    }
+
+     private List<Long> findGathObsDetailByResponsibleId(Long personId, Long initialGathObserDetail,Long finalGathObserDetail ) {
+       List<Long> finalGathObsIds = new ArrayList();
+
+       List<Long> gathObsByResponsible = this.getGatheringObservationDetailEAOImpl().findByResponsibleId(personId, initialGathObserDetail, finalGathObserDetail);
+              finalGathObsIds.addAll(gathObsByResponsible);
+
+        return finalGathObsIds;
+
+    }
+   private List<Long> findGathObsDetailByResponsibleId(Long personId, Long initialGathObserDetail ) {
+       List<Long> finalGathObsIds = new ArrayList();
+
+       List<Long> gathObsByResponsible = this.getGatheringObservationDetailEAOImpl().findByResponsibleId(personId, initialGathObserDetail);
+              finalGathObsIds.addAll(gathObsByResponsible);
+
+        return finalGathObsIds;
+    }
+
+    private List<Long> findSpecimenByValuerPersonId(Long personId) {
+ 
+        List<Long> finalSpecimenList = this.identificationEAOImpl.findSpecimenByValuerPersonId(personId);
+
+        System.out.println("size "  + finalSpecimenList.size());
+      
+        return finalSpecimenList;
+    }
+
+
+    private List<Long> findSpecimenByResponsibleId(Long personId,Long initialGathObs , Long finalGathObs) {
+        ArrayList<Long> finalSpecimenList = new ArrayList();
+        List<Long> gathObsList = this.findGathObsDetailByResponsibleId(personId,initialGathObs ,finalGathObs);
+        
+        for (Long gatObsId : gathObsList) {
+            finalSpecimenList.addAll(specimenEAOImpl.findByGathObsId(gatObsId));
+        }
+        return finalSpecimenList;
+    }
+
+    private List<Long> findSpecimenByResponsibleId(Long personId,Long initialGathObs ) {
+        ArrayList<Long> finalSpecimenList = new ArrayList();
+        List<Long> gathObsList = this.findGathObsDetailByResponsibleId(personId, initialGathObs);
+
+        for (Long gatObsId : gathObsList) {
+            finalSpecimenList.addAll(specimenEAOImpl.findByGathObsId(gatObsId));
+        }
+        return finalSpecimenList;
+    }
+
+
+    private List<Long> findSpecimenByInitailDateGathering(Calendar initialDate) {
+        ArrayList<Long> finalSpecimenList = new ArrayList();
+        List<Long> gathObsList = this.gatheringObservationEAOImpl.findByInitialDate(initialDate);
+
+        for (Long gatObsId : gathObsList) {
+            finalSpecimenList.addAll(specimenEAOImpl.findByGathObsId(gatObsId));
+        }
+        return finalSpecimenList;
+    }
+
+
+      private List<Long> findSpecimenByFinalDateGathering(Calendar  finalDate ) {
+        ArrayList<Long> finalSpecimenList = new ArrayList();
+        List<Long> gathObsList = this.gatheringObservationEAOImpl.findByFinalDate(finalDate);
+
+        for (Long gatObsId : gathObsList) {
+            finalSpecimenList.addAll(specimenEAOImpl.findByGathObsId(gatObsId));
+        }
+        return finalSpecimenList;
+    }
+
+
+        private List<Long> findSpecimenByCatalogNumber(String catalogNumberFirst,String catalogNumberEnd) {
+
+        Long catalogEnd = Long.parseLong(catalogNumberEnd);
+
+        List<Long> specimenIds = new ArrayList();
+        specimenIds = this.specimenEAOImpl.findByCatalogNumber(catalogNumberFirst,catalogNumberEnd);
+
+        List<Long> specimenIdsF = new ArrayList();
+
+        for (Long Id : specimenIds)
+        {
+            if(Id <= catalogEnd)
+              specimenIdsF.add(Id);
+        }
+        return  specimenIdsF;
+    }
+
+        /* modificate by paula*/
+     private Set<Long> getSpecimenIds(SpecimenDTO inputDTO, String taxonLevel,String catalogEnd,Long initialGathObserDetail, Long finalGathObserDetail,Long initialGathObser, Long finalGathObser,Calendar initialDate, Calendar finalDate, Long identicatorId) {
+        Set<Long> specimenIds = new HashSet();
+
+        boolean firstFilter = true; //helps with the intersection of data
+
+        String catalogNumber   = inputDTO.getCatalogNumber();
+        Long institutionId     = inputDTO.getInstitutionId();
+        Long collectionId      = inputDTO.getCollectionId();
+        String taxonName       = inputDTO.getTaxonName();
+        String localityDescrip = inputDTO.getLocalityDescription();
+        Long countryId         = inputDTO.getCountryId();
+        Long provinceId        = inputDTO.getProvinceId();
+        Double latitude        = inputDTO.getLatitude();
+        Double longitude       = inputDTO.getLongitude();
+        Integer radius         = inputDTO.getRadio();
+        Long responsibleId     = inputDTO.getResponsibleId();
+
+
+        if (catalogNumber != null) {
+
+            //search by catalog  number
+            if(catalogEnd == null)
+            {
+              List<Long> specimenByCN = findSpecimenByCatalogNumber(catalogNumber);
+              specimenIds.addAll(specimenByCN);
+              firstFilter = false;
+            }
+            //search by range of catalog first and catalog last
+            else
+            {
+                List<Long> specimenByCN = findSpecimenByCatalogNumber(catalogNumber,catalogEnd);
+                specimenIds.addAll(specimenByCN);
+                firstFilter = false;
+            }
+        }
+        if(institutionId != null) {
+            List<Long> specimenByInstitution =
+                    specimenEAOImpl.findByInstitutionId(institutionId);
+            if(firstFilter) {
+                specimenIds.addAll(specimenByInstitution);
+                firstFilter = false;
+            } else {
+                specimenIds.retainAll(specimenByInstitution);
+            }
+        }
+        if(collectionId != null) {
+            List<Long> specimenByCollection =
+                    specimenEAOImpl.findByCollectionId(collectionId);
+            if(firstFilter) {
+                specimenIds.addAll(specimenByCollection);
+                firstFilter = false;
+            } else {
+                specimenIds.retainAll(specimenByCollection);
+            }
+        }
+        if(taxonName != null && !taxonName.trim().isEmpty()) {
+            List<Long> specimenByTaxonName =
+                    identificationEAOImpl.findSpecimenByTaxonNameAndTaxonomicalLevel(taxonLevel,taxonName);
+            if(firstFilter) {
+                specimenIds.addAll(specimenByTaxonName);
+                firstFilter = false;
+            } else {
+                specimenIds.retainAll(specimenByTaxonName);
+            }
+        }
+        if(localityDescrip != null && !localityDescrip.trim().isEmpty()) {
+             List<Long> specimenBySiteDescr =
+                     findSpecimenBySiteDescription(localityDescrip);
+            if(firstFilter) {
+                specimenIds.addAll(specimenBySiteDescr);
+                firstFilter = false;
+            } else {
+                specimenIds.retainAll(specimenBySiteDescr);
+            }
+        }
+        if(countryId != null && provinceId != null) {
+            List<Long> specimenByGeoLayer =
+                findSpecimenByGeoLayer(GeographicLayerEntity.PROVINCE.getId(),
+                countryId);
+            if(firstFilter) {
+                specimenIds.addAll(specimenByGeoLayer);
+                firstFilter = false;
+            } else {
+                specimenIds.retainAll(specimenByGeoLayer);
+            }
+        } else if (countryId != null) {
+            List<Long> specimenByGeoLayer =
+                findSpecimenByGeoLayer(GeographicLayerEntity.COUNTRY.getId(),
+                countryId);
+            if(firstFilter) {
+                specimenIds.addAll(specimenByGeoLayer);
+                firstFilter = false;
+            } else {
+                specimenIds.retainAll(specimenByGeoLayer);
+            }
+        }
+        if(latitude != null && longitude != null && radius != null) {
+            List<Long> specimenByCoords =
+                    findSpecimenByCoords(latitude, longitude, radius);
+            if(firstFilter) {
+                specimenIds.addAll(specimenByCoords);
+                firstFilter = false;
+            } else {
+                specimenIds.retainAll(specimenByCoords);
+            }
+        }
+        //preguantar si nos nulos los rangos
+        if(responsibleId != null ) {
+
+            if(initialGathObserDetail != null  && finalGathObserDetail != null )
+            {
+                List<Long> specimenByResponsible =
+                        this.findSpecimenByResponsibleId(responsibleId, initialGathObserDetail, finalGathObserDetail);
+
+                if(firstFilter) {
+                    specimenIds.addAll(specimenByResponsible);
+                    firstFilter = false;
+                } else {
+                    specimenIds.retainAll(specimenByResponsible);
+                }
+            }
+            else  if(initialGathObserDetail != null  && finalGathObserDetail == null )
+            {
+                  List<Long> specimenByResponsible = this.findSpecimenByResponsibleId(responsibleId,initialGathObserDetail);
+
+                  if(firstFilter) {
+                    specimenIds.addAll(specimenByResponsible);
+                    firstFilter = false;
+                } else {
+                    specimenIds.retainAll(specimenByResponsible);
+                }
+
+            }
+
+            else if(initialGathObserDetail == null  && finalGathObserDetail == null )
+            {
+
+                  List<Long> specimenByResponsible = this.findSpecimenByResponsibleId(responsibleId);
+
+                   if(firstFilter)
+                   {
+                      specimenIds.addAll(specimenByResponsible);
+                      firstFilter = false;
+                   }
+                   else
+                   {
+                     specimenIds.retainAll(specimenByResponsible);
+                   }
+            }
+
+        }
+
+        else if(initialGathObser != null)
+        {
+              List<Long> specimenByResponsible;
+
+             if(finalGathObser != null)
+             {
+                specimenByResponsible =  this.specimenEAOImpl.findByGathObsId(initialGathObser, finalGathObser);
+             }
+             else
+             {
+                specimenByResponsible =  this.specimenEAOImpl.findByGathObsId(initialGathObser);
+             }
+
+                 if(firstFilter)
+                 {
+                       specimenIds.addAll(specimenByResponsible);
+                       firstFilter = false;
+                 }
+                 else
+                 {
+                      specimenIds.retainAll(specimenByResponsible);
+                 }
+        }
+        //search by person id, who identific the person
+        else if(identicatorId != null)
+        {
+            List<Long> specimenByResponsible =  this.findSpecimenByValuerPersonId(identicatorId);
+
+             if(firstFilter)
+             {
+                   specimenIds.addAll(specimenByResponsible);
+                   firstFilter = false;
+             }
+             else
+             {
+                  specimenIds.retainAll(specimenByResponsible);
+             }
+        }
+        //search by the date of gathering
+        else if (initialDate != null)
+        {
+
+            List<Long> specimenByResponsible =  this.findSpecimenByInitailDateGathering(initialDate);
+
+             if(firstFilter)
+             {
+                   specimenIds.addAll(specimenByResponsible);
+                   firstFilter = false;
+             }
+             else
+             {
+                  specimenIds.retainAll(specimenByResponsible);
+             }
+
+        }
+        else if(finalDate != null)
+        {
+
+         List<Long> specimenByResponsible =  this.findSpecimenByFinalDateGathering(finalDate);
+
+         if(firstFilter)
+         {
+               specimenIds.addAll(specimenByResponsible);
+               firstFilter = false;
+         }
+         else
+
+         {
+              specimenIds.retainAll(specimenByResponsible);
+         }
+
+        }
+        return specimenIds;
+    }
+
+
+    /**
+     * @return the gatheringObservationDetailEAOImpl
+     */
+    public GatheringObservationDetailEAOLocal getGatheringObservationDetailEAOImpl() {
+        return gatheringObservationDetailEAOImpl;
+    }
+
+    /**
+     * @param gatheringObservationDetailEAOImpl the gatheringObservationDetailEAOImpl to set
+     */
+    public void setGatheringObservationDetailEAOImpl(GatheringObservationDetailEAOLocal gatheringObservationDetailEAOImpl) {
+        this.gatheringObservationDetailEAOImpl = gatheringObservationDetailEAOImpl;
+    }
     /**
      * This method could overload the server.
      * @param descr String pattern of the locality
@@ -1547,6 +1941,70 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             }
         }
         
+        if (catalogNumber != null && !catalogNumber.trim().isEmpty()) {
+            List<Long> specimen = findSpecimenByCatalogNumber(catalogNumber);
+            List<Long> newTransactionIds = new ArrayList();
+            if (specimen.size() > 0) {
+                newTransactionIds =
+                    this.transactionEAOImpl.findBySpecimenId(collectionId, specimen.get(0));
+            }
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (initialDeliveryDate != null || finalDeliveryDate != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByDeliveryDateRange(initialDeliveryDate, finalDeliveryDate, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (initialReceivingDate != null || finalReceivingDate != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByReceivingDateRange(initialReceivingDate, finalReceivingDate, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (transactedSpecimenStatusId != null) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByTransactedSpecimenStatusId(transactedSpecimenStatusId, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
+        if (transactedSpecimenDescription != null && !transactedSpecimenDescription.trim().isEmpty()) {
+            List<Long> newTransactionIds =
+                    this.transactionEAOImpl.findByTransactedSpecimenDescription(transactedSpecimenDescription, collectionId);
+            if (firstFilter) {
+                transactionIds.addAll(newTransactionIds);
+                firstFilter = false;
+            }
+            else {
+                transactionIds.retainAll(newTransactionIds);
+            }
+        }
+
         return transactionIds;
     }
 

@@ -5,6 +5,7 @@
 
 package org.inbio.ara.eao.gathering;
 
+import java.util.List;
 import javax.ejb.Local;
 import org.inbio.ara.eao.BaseLocalEAO;
 import org.inbio.ara.persistence.gathering.GatheringObservationDetail;
@@ -20,6 +21,13 @@ public interface GatheringObservationDetailEAOLocal extends BaseLocalEAO<Gatheri
 
     public void deleteById(java.lang.Long gId);
 
-    public java.util.List<java.lang.Long> findByGathObsId(java.lang.Long gathObsId);
+    public List<Long> findByResponsibleId(Long personId, Long initialGathObserDetail, Long finalGathObserDetail);
+
+    public List<Long> findByResponsibleId(Long personId);
+
+    public List<Long> findByResponsibleId(Long personId, Long initialGathObserDetail);
+
+
+    public List<Long> findByGathObsDetailId(Long gathObsId);
     
 }
