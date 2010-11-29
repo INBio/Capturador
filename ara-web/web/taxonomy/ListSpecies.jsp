@@ -48,7 +48,7 @@
                                             <h:commandButton action="#{taxonomy$ListSpecies.deleteButton_action}" id="deleteButton"
                                                 style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnDelete}"/>
                                             <h:commandButton action="#{taxonomy$ListSpecies.previewButton_action}" id="previewButton"
-                                            style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.view_record}"/>
+                                                style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.view_record}"/>
                                             <!-- Botones de paginacion -->
                                             <h:commandButton action="#{taxonomy$SpeciesSessionBean.pagination.firstResults}" id="btnFirst"
                                                 rendered="#{taxonomy$SpeciesSessionBean.pagination.isVisiblePrevious}" style="margin: 2px;height: 22px"

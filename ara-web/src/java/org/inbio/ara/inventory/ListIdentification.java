@@ -34,14 +34,17 @@ import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
+import javax.faces.component.html.HtmlInputHidden;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.inventory.IdentificationDTO;
 import org.inbio.ara.dto.inventory.IdentificationStatusDTO;
 import org.inbio.ara.dto.inventory.IdentificationTypeDTO;
 import org.inbio.ara.dto.inventory.IdentifierDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
+import org.inbio.ara.dto.inventory.SpecimenDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
+import org.inbio.ara.label.LabelSessionBean;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
@@ -108,6 +111,7 @@ public class ListIdentification extends AbstractPageBean {
     private DropDown ddValidatorsData = new DropDown();
     private Long ddValidatorSelected = null;
 
+    private HtmlInputHidden deleteConfirmationText = new HtmlInputHidden();
     /**
      * <p>Construct a new Page bean instance.</p>
      */
@@ -175,6 +179,10 @@ public class ListIdentification extends AbstractPageBean {
         this.setTaxonomicLevelData();
         this.loadValidatorData();
         this.loadAddRemoveData(false);
+
+        this.getDeleteConfirmationText().setValue(BundleHelper.getDefaultBundleValue
+
+                    ("delete_confirmation", this.getMyLocale()));
 
         /* Preguntar si la bandera de busqueda avanzada esta prendida y si
          * la bandera de cargar provincias esta apagada
@@ -730,9 +738,28 @@ public class ListIdentification extends AbstractPageBean {
 
         // cierra el panel de reidentificación.
         this.getIdentificationSessionBean().getPagination().firstResults();
+
+
+        // print the label
+        
         this.loadAddRemoveData(true);
 
-        return null;
+         String  Id = this.getIdentificationSessionBean().getCurrentIdentificationDTO().getCatalogNumber();
+         SpecimenDTO current =   this.getlabel$LabelSessionBean().getCurrentSpecimenDTO();
+         this.getlabel$LabelSessionBean().setCurrentSpecimenDTO(current);
+        return "edit";
+    }
+
+      /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+   protected LabelSessionBean getlabel$LabelSessionBean() {
+        return (LabelSessionBean) getBean("label$LabelSessionBean");
+    }
+    protected SpecimenSessionBean getinventory$SpecimenSessionBean() {
+        return (SpecimenSessionBean) getBean("inventory$SpecimenSessionBean");
     }
 
     /**
@@ -929,6 +956,20 @@ public class ListIdentification extends AbstractPageBean {
 
     public void setDdValidatorsData(DropDown ddValidatorsData) {
         this.ddValidatorsData = ddValidatorsData;
+    }
+
+    /**
+     * @return the deleteConfirmationText
+     */
+    public HtmlInputHidden getDeleteConfirmationText() {
+        return deleteConfirmationText;
+    }
+
+    /**
+     * @param deleteConfirmationText the deleteConfirmationText to set
+     */
+    public void setDeleteConfirmationText(HtmlInputHidden deleteConfirmationText) {
+        this.deleteConfirmationText = deleteConfirmationText;
     }
     // </editor-fold>
 }

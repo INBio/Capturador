@@ -262,7 +262,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
         }
         else{
             Long countryid = new Long(this.getSelectedCountry());
-            return this.gisFacade.getProvincesByCountry(countryid);
+            return this.getGisFacade().getProvincesByCountry(countryid);
         }
     }
 
@@ -270,7 +270,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
      * Obtener los datos para el drop down de paises
      */
     public List<GeographicLayerDTO> SetCountryDropDownData(){
-        return this.gisFacade.getAllCountries();
+        return this.getGisFacade().getAllCountries();
     }
 
      /**
@@ -491,7 +491,24 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
         return (AraSessionBean) getBean("AraSessionBean");
     }
 
-    public List getResults(int firstResult, int maxResults) {
+    
+
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
+   public List getResults(int firstResult, int maxResults) {
+       
         Long collectionId = getAraSessionBean().getGlobalCollectionId();
             List<SpecimenDTO> auxResult =
                     new ArrayList<SpecimenDTO>();
@@ -523,21 +540,6 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
                 catch(Exception e){return auxResult;}
             }
     }
-
-    /**
-     * @return the pagination
-     */
-    public PaginationControllerRemix getPagination() {
-        return pagination;
-    }
-
-    /**
-     * @param pagination the pagination to set
-     */
-    public void setPagination(PaginationControllerRemix pagination) {
-        this.pagination = pagination;
-    }
-
     
     
 }

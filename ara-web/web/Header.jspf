@@ -52,7 +52,11 @@
 									</li>
 									<li>
 										<webuijsf:hyperlink actionExpression="#{Header.menuModuleSpecimens_action}" id="menuModuleSpecimens" text="#{resources.menuModuleSpecimens}" visible="false"/>
+</li>
+                                                                        <li>
+                                                                            <webuijsf:hyperlink actionExpression="#{Header.menuModuleLabels_action}" id="menuModuleLabels" text="#{resources.menuModuleLabels}" visible="false"/>
 									</li>
+
                                                                         <li>
 										<webuijsf:hyperlink actionExpression="#{Header.menuModuleTransactions_action}" id="menuModuleTransactions"
                                                                                     text="#{resources.menuModuleTransaction}" visible="false"/>

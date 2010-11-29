@@ -9,9 +9,17 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"/>
     <f:view>
         <webuijsf:page id="page1">
+            <webuijsf:script id="scriptX" type="text/javascript">
+
+                        function deleteConfirmation() {
+                            var confirmationText = document.getElementById('contenido:form1:deleteConfirmationText').value;
+                            return confirm(confirmationText);
+                        }
+            </webuijsf:script>
             <webuijsf:html id="html1">
                 <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link id="link2" url="/resources/css/stylesheet.css"/>
+
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header.jspf"/>
@@ -66,7 +74,8 @@
                                                                                             width="154px"/>
                                         </webuijsf:panelGroup>
                                         <h:commandButton action="#{inventory$ListIdentification.btnProceedReIdentifyAction}" id="btnAdvSearchGO2"
-                                            style="width: 160px" styleClass="My_Button" value="#{resources.button_proceed}"/>
+                                            style="width: 160px" styleClass="My_Button" value="#{resources.button_proceed}"  onclick="return deleteConfirmation();"  />
+                                   
                                         <!-- AddRemove Component -->
                                         <h:panelGrid cellspacing="1" columns="1" id="gridpAddRemove" style="height: 24px" styleClass="My_table">
                                             <!-- Title -->
@@ -77,9 +86,9 @@
                                             <h:panelGrid cellspacing="1" columns="3">
                                                 <!-- Available List -->
                                                 <h:panelGrid cellspacing="1" columns="1">
-																									<h:outputLabel id="lbAvailableTaxonOptions" styleClass="My_white_label" value="#{inventory$IdentificationSessionBean.arTaxonList.lbAvailable}"/>
+						    <h:outputLabel id="lbAvailableTaxonOptions" styleClass="My_white_label" value="#{inventory$IdentificationSessionBean.arTaxonList.lbAvailable}"/>
                                                     <h:selectManyListbox id="mlAvaibleList" size="7" style="width:154px" value="#{inventory$IdentificationSessionBean.arTaxonList.leftSelected}" >
-																											<f:selectItems id="mlAvailableSelectItems" value="#{inventory$IdentificationSessionBean.arTaxonList.leftOptions}"/>
+                                                    <f:selectItems id="mlAvailableSelectItems" value="#{inventory$IdentificationSessionBean.arTaxonList.leftOptions}"/>
                                                     </h:selectManyListbox>
                                                 </h:panelGrid>
                                                 <!-- Buttons Panel -->
@@ -101,8 +110,7 @@
                                                     </h:selectManyListbox>
                                                 </h:panelGrid>
 
-																								
-
+																						
                                             </h:panelGrid>
                                         </h:panelGrid>
                                         <!-- End AddRemove Component -->
@@ -141,33 +149,33 @@
                                             </h:panelGrid>
                                         </h:panelGrid>
                                         <!-- End AddRemove Component -->
-
-																				<!-- Validator -->
-																				<h:panelGrid cellspacing="1" columns="2" id="gridpValidator">
-																					<webuijsf:label for="ddValidatorReidentify" id="lbValidatorReidentify" text="#{resources.validator}"/>
+                                                <!-- Validator -->
+                                    <h:panelGrid cellspacing="1" columns="2" id="gridpValidator">
+                                            <webuijsf:label for="ddValidatorReidentify" id="lbValidatorReidentify" text="#{resources.validator}"/>
                                             <webuijsf:dropDown id="ddValidatorReidentify"  binding="#{inventory$ListIdentification.ddValidatorsData}"
-																															 items="#{inventory$ListIdentification.validatorsData.options}"
-																															 selected="#{inventory$ListIdentification.ddValidatorSelected}"
-																															 width="200px"/>
-																				</h:panelGrid>
-																				<!-- Type -->
-																				<h:panelGrid cellspacing="1" columns="2" id="gridpIdentificationType">
-																					<webuijsf:label for="ddTypeNameReidentify" id="lbTaxonReidentify" text="#{resources.type}"/>
-																					<webuijsf:dropDown binding="#{inventory$ListIdentification.ddType}" id="ddTypeNameReidentify"
-																									 items="#{inventory$ListIdentification.ddTypeData.options}"
-																									 selected="#{inventory$ListIdentification.ddTypeSelected}"
-																									 width="200px"/>
-																				</h:panelGrid>
-																				<!-- Status -->
-																				<h:panelGrid  cellspacing="1" columns="2" id="gridpStatus">
-                                          <webuijsf:label for="ddStatusNameReidentify" id="lbStatusNameReidentify" text="#{resources.status}"/>
-                                        <webuijsf:dropDown binding="#{inventory$ListIdentification.ddStatus}" id="ddStatusNameReidentify"
-																									items="#{inventory$ListIdentification.ddStatusData.options}"
-																									selected="#{inventory$ListIdentification.ddStatusSelected}"
-																									width="200px"/>
-																				</h:panelGrid>
-                                        
+                                                 items="#{inventory$ListIdentification.validatorsData.options}"
+                                                 selected="#{inventory$ListIdentification.ddValidatorSelected}"
+                                                 width="200px"/>
                                     </h:panelGrid>
+                                    <!-- Type -->
+                                    <h:panelGrid cellspacing="1" columns="2" id="gridpIdentificationType">
+                                        <webuijsf:label for="ddTypeNameReidentify" id="lbTaxonReidentify" text="#{resources.type}"/>
+                                        <webuijsf:dropDown binding="#{inventory$ListIdentification.ddType}" id="ddTypeNameReidentify"
+                                        items="#{inventory$ListIdentification.ddTypeData.options}"
+                                        selected="#{inventory$ListIdentification.ddTypeSelected}"
+                                        width="200px"/>
+                                    </h:panelGrid>
+                                    <!-- Status -->
+                                    <h:panelGrid  cellspacing="1" columns="2" id="gridpStatus">
+                                        <webuijsf:label for="ddStatusNameReidentify" id="lbStatusNameReidentify" text="#{resources.status}"/>
+                                        <webuijsf:dropDown binding="#{inventory$ListIdentification.ddStatus}" id="ddStatusNameReidentify"
+                                        items="#{inventory$ListIdentification.ddStatusData.options}"
+                                        selected="#{inventory$ListIdentification.ddStatusSelected}"
+                                        width="200px"/>
+                                    </h:panelGrid>
+
+                                    </h:panelGrid>
+                                    <h:inputHidden id="deleteConfirmationText" binding="#{inventory$ListIdentification.deleteConfirmationText}"/>
                                 </h:panelGrid>
                                 <h:panelGrid cellspacing="1" columns="1" id="gridpTableButtons" style="height: 24px" styleClass="My_table" width="840">
                                     <webuijsf:panelGroup id="grouppButtons">

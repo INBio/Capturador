@@ -318,4 +318,10 @@ public class Header extends AbstractFragmentBean {
      * El numero representa el ultimo numero asociado para el los modulos
      * ULTIMO ID DE MODULO INGRESADO = 31
      */
+
+    //Menú germoplasma -> Entrada a Administracion de Accessiones
+    public String menuModuleLabels_action() {
+        this.getSessionManager().setCurrentModuleId(new Long(30));
+        return "labels";
+    }
 }

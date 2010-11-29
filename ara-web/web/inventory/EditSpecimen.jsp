@@ -11,6 +11,13 @@
             <webuijsf:html id="html1">
                 <webuijsf:head binding="#{Header_Login.head1}" id="head1">
                     <webuijsf:link id="link2" url="/resources/css/stylesheet.css"/>
+                    <webuijsf:script id="scriptX" type="text/javascript">
+
+                        function deleteConfirmation() {
+                            var confirmationText = document.getElementById('contenido:form1:grouppBotonera:deleteConfirmationText').value;
+                            return confirm(confirmationText);
+                        }
+                    </webuijsf:script>
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
                     <jsp:directive.include file="/Header.jspf"/>
@@ -24,8 +31,12 @@
                                         style="height: 24px; text-align: center; width: 800px" styleClass="Page_title"/>
                                 </h:panelGrid>
                                 <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 840px">
+                                    
+                                    <h:inputHidden id="deleteConfirmationText" binding="#{inventory$EditSpecimen.deleteConfirmationText}"/>
+
                                     <h:commandButton action="#{inventory$EditSpecimen.btnSaveEdit_action}" id="btnSveEdit" style="height: 24px; width: 160px"
-                                        styleClass="My_Button" value="#{resources.btnSave}"/>
+                                        styleClass="My_Button" value="#{resources.btnSave}"  onclick="return deleteConfirmation();"/>
+
                                 </webuijsf:panelGroup>
                                 <h:panelGrid columns="4" id="gridpEditSpecimen1" styleClass="My_panel_blue" width="840">
                                     <webuijsf:label for="txCatalogNumber" id="lbCatalogNumber" text="#{resources.catalognumber}"/>

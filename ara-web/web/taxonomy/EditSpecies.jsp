@@ -33,7 +33,7 @@
                     <webuijsf:panelLayout id="contenido">
                         <webuijsf:form binding="#{taxonomy$EditSpecies.form1}" id="form1">
                             <webuijsf:label id="lbTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 850px" styleClass="Page_title" text="#{resources.edit_record}"/>
-                            <h:panelGrid columns="1" id="gridpMain" style="left: 24px; top: 48px; position: absolute" width="850">
+                            <h:panelGrid columns="1" id="gridpMain" style="left: 48px; top: 24px; position: absolute" width="850">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                     style="height: 30px; width: 840px" warnClass="warnMessage"/>
                                 <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 840px">
@@ -69,7 +69,7 @@
                                     <webuijsf:label id="lbShowScientificName"
                                         style="color: green; font-size: 14px; height: 24px; left: 192px; top: 14px; position: absolute; width: 308px" text="#{taxonomy$SpeciesSessionBean.currentTaxDescripDTO.taxonDefaultName}"/>
                                 </webuijsf:panelLayout>
-                                <webuijsf:tabSet id="tabSetSpeciesRecord" lite="true" selected="tabTaxonomyHierarchy" style="width: 840px" styleClass="My_panel_blue">
+                                <webuijsf:tabSet id="tabSetSpeciesRecord" lite="true" selected="tabAudiences" style="width: 840px" styleClass="My_panel_blue">
                                     <webuijsf:tab id="tabDescription" text="#{resources.description}">
                                         <h:panelGrid columns="2" id="layoutpDescription">
                                             <webuijsf:tree binding="#{taxonomy$EditSpecies.descriptionTree}" clientSide="true" id="descriptionTree"
@@ -203,7 +203,7 @@
                                     </webuijsf:tab>-->
                                 </webuijsf:tabSet>
                                 <jsp:directive.include file="/Footer.jspf"/>
-                            </h:panelGrid>                            
+                            </h:panelGrid>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
                 </webuijsf:body>

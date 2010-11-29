@@ -31,12 +31,14 @@ import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
+import javax.faces.component.html.HtmlInputHidden;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.SessionManager;
 import org.inbio.ara.dto.inventory.LifeStageSexDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.SelectionListEntity;
 import org.inbio.ara.dto.inventory.SpecimenDTO;
+import org.inbio.ara.label.LabelSessionBean;
 import org.inbio.ara.persistence.specimen.SpecimenCategoryEntity;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
@@ -113,6 +115,8 @@ public class EditSpecimen extends AbstractPageBean {
     //En esta variable se setearan los datos del drop down de substrate
     private SingleSelectOptionsList substrateData = new SingleSelectOptionsList();
 
+    private HtmlInputHidden deleteConfirmationText = new HtmlInputHidden();
+    
     /**
      * <p>Construct a new Page bean instance.</p>
      */
@@ -176,6 +180,12 @@ public class EditSpecimen extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+
+
+        this.deleteConfirmationText.setValue(BundleHelper.getDefaultBundleValue
+
+                    ("delete_confirmation", this.getMyLocale()));
+        
         // --- Cargar los valores de los dropdowns y del radio button group de discarded ---------------------
         this.getGatheringObservationData().
                 setOptions(setSelectionListDropDownData(SelectionListEntity.GATHERING_METHOD_OBSERVATION.getId()));
@@ -308,10 +318,24 @@ public class EditSpecimen extends AbstractPageBean {
         return null;
     }
 
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+   protected LabelSessionBean getlabel$LabelSessionBean() {
+        return (LabelSessionBean) getBean("label$LabelSessionBean");
+    }
+
+
     /**
      * Metodo encargado de mandar a persistir el SpecimenDTO editado por el usuario
      */
     public String btnSaveEdit_action() {
+
+        
+        System.out.println("ENNNNNNNNNNNNNNTRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ES AQUIIIIIIII");
         if(this.getinventory$SpecimenSessionBean().isSpecimenValid()){
             //Persistir
             this.getinventory$SpecimenSessionBean().getInventoryFacade().saveSpecimen(
@@ -329,7 +353,8 @@ public class EditSpecimen extends AbstractPageBean {
             //Mostrar mensaje de que no se puede persistir el currentSpecimenDTO
             MessageBean.setErrorMessageFromBundle("error_saving_specimen", this.getMyLocale());
         }
-        return null;
+        this.getlabel$LabelSessionBean().setCurrentSpecimenDTO(this.getinventory$SpecimenSessionBean().getCurrentSpecimenDTO());
+        return "edit";
     }
 
     /**
@@ -940,6 +965,20 @@ public class EditSpecimen extends AbstractPageBean {
             this.getinventory$SpecimenSessionBean().getCurrentSpecimenDTO().getLifeStageSexList().remove(elements-1);
             return null;
         }
+    }
+
+    /**
+     * @return the deleteConfirmationText
+     */
+    public HtmlInputHidden getDeleteConfirmationText() {
+        return deleteConfirmationText;
+    }
+
+    /**
+     * @param deleteConfirmationText the deleteConfirmationText to set
+     */
+    public void setDeleteConfirmationText(HtmlInputHidden deleteConfirmationText) {
+        this.deleteConfirmationText = deleteConfirmationText;
     }
 }
 
