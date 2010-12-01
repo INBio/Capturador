@@ -3524,6 +3524,13 @@ ALTER TABLE ara.report_layout_selected_element ADD CONSTRAINT report_layout_elem
 ALTER TABLE ara.report_layout_selected_element ADD CONSTRAINT report_layout_fk FOREIGN KEY (report_layout_id)
       REFERENCES ara.report_layout (report_layout_id);
 
+alter table ara.report_layout owner to ara;
+alter table ara.report_layout_category owner to ara;
+alter table ara.report_layout_element owner to ara;
+alter table ara.report_layout_element_format owner to ara;
+alter table ara.report_layout_selected_element owner to ara;
+alter table ara.funcionality_type owner to ara;
+
 ---------------------------------------------
     -- TABLES FOR FORMAT LABEL MODULE --
 ---------------------------------------------

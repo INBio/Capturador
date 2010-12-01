@@ -5,6 +5,7 @@
 
 package org.inbio.ara.eao.format.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Query;
 import org.inbio.ara.eao.format.*;
@@ -22,8 +23,12 @@ public class ReportLayoutEAOImpl extends BaseEAOImpl<ReportLayout,Long> implemen
 
 
     public List<ReportLayoutDTO> getAllReportLayoutByFuncionality(Long funcionalityTypeId) {
-        Query query = em.createQuery("select new org.inbio.ara.dto.format.ReportLayoutDTO(i.reportLayoutKeyWord,i.reportLayoutId) from ReportLayout as i");
-        return query.getResultList();
+        try{
+            Query query = em.createQuery("select new org.inbio.ara.dto.format.ReportLayoutDTO(i.reportLayoutKeyWord,i.reportLayoutId)" +
+                    " from ReportLayout as i");
+            return query.getResultList();
+        }
+        catch(Exception e){System.out.println(e);return new ArrayList<ReportLayoutDTO>();}
     }
  
 }
