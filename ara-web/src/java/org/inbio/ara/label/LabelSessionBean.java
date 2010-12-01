@@ -412,7 +412,7 @@ implements Serializable,PaginationCoreInterface {
      */
     public List<ReportLayoutDTO> SetReportLayoutDropDownData(){
 
-       //the  labelsFormat is a  funcionality  number1, see  ReportLayourCategorie
+       //Labels Format is a  funcionality  number1, see  ReportLayoutCategory
        Long funcionality =  new Long(1);
 
         if(funcionality == 1)
