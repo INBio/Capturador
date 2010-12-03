@@ -97,15 +97,15 @@ public class PaginationControllerRemix {
 
     public void nextResults() {
         actualPage = getActualPage() + resultsPerPage;
-        System.out.println("Actual Page: " + getActualPage());
-        System.out.println("Total Results: " + getTotalResults());
+        //System.out.println("Actual Page: " + getActualPage());
+        //System.out.println("Total Results: " + getTotalResults());
         setButtonsVisibility();
         this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
     }
 
     public void firstResults() {
         actualPage = 0;
-        System.out.println("Actual Page: " + getActualPage());
+        //System.out.println("Actual Page: " + getActualPage());
         setButtonsVisibility();
         this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
     }
@@ -113,7 +113,7 @@ public class PaginationControllerRemix {
     public void previousResults() {
         if (getActualPage() > 0) {
             actualPage = getActualPage() - resultsPerPage;
-            System.out.println("Actual Page: " + getActualPage());
+            //System.out.println("Actual Page: " + getActualPage());
             setButtonsVisibility();
             this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
         }
@@ -129,7 +129,7 @@ public class PaginationControllerRemix {
         if (getActualPage() + resultsPerPage < getTotalResults()) {
             actualPage = getActualPage() + resultsPerPage;
         }
-        System.out.println("Actual Page: " + getActualPage());
+        //System.out.println("Actual Page: " + getActualPage());
         setButtonsVisibility();
         this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
     }
