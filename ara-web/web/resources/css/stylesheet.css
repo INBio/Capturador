@@ -276,6 +276,70 @@ table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
     -webkit-border-radius: 3px;
 }
 
+/* Buttons used on select collection page */
+.Button_next{
+   display:block;
+   float:left;
+   background: url(../images/next.png);
+   background-color:#dff4ff;
+   background-position:right;
+   background-repeat:no-repeat;
+   padding: 2px 20px 2px 2px;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   font-weight:bold;
+   color:#334563;
+   cursor:pointer;
+   padding:3px 3px 3px 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.Button_next:hover{
+    background-color:#B7D9ED;
+    border:1px solid #456C84;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.Button_exit{
+   display:block;
+   float:left;
+   background: url(../images/exit.png);
+   background-color:#dff4ff;
+   background-position:right;
+   background-repeat:no-repeat;
+   padding: 2px 20px 2px 2px;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   font-weight:bold;
+   color:#334563;
+   cursor:pointer;
+   padding:3px 3px 3px 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.Button_exit:hover{
+    background-color:#B7D9ED;
+    border:1px solid #456C84;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+/* Buttons used on select collection page -- ENDS --*/
+
 .Page_title{
     font-size: 22px;
     color:#44677D;
@@ -540,10 +604,10 @@ html {height:100%}
 body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 }
 
-#banner {background: url(../images/banner2.jpg) no-repeat 0 0; height: 123px;}
+#banner {background: url(../images/banner.jpg) no-repeat 0 0; height: 123px;}
 #banner-rep { background: url(../images/banner-rep.png) repeat-x 960px 0; height: 123px; }
 
-#title h1 { float: left; position:absolute; font-family:Arial, Helvetica, sans-serif; font-size: 16px; margin:0; width:220px; padding: 35px 0 0 135px; line-height:17px;color:#336600;}
+#title h1 { float: left; position:absolute; font-family:Arial, Helvetica, sans-serif; font-size: 16px; margin:0; width:220px; padding: 35px 0 0 125px; line-height:17px;color:#336600;}
 
 #lang {width: 90px; height:20px; padding: 65px 0 0 0; float:right; z-index:999}
 #lang span {float:left; background: url(../images/boton1.png) no-repeat top center; display:block; width:30px; text-align:center;}
@@ -554,11 +618,27 @@ body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 #actions span a { display:block; padding: 3px 8px; color:#fff; background-color: #006600; -moz-border-radius: 3px; -webkit-border-radius: 3px;}
 #actions span a:hover {background-color:#d22425;}
 
-#contenido {background: url(../images/bk-conten.png)  repeat-x  top center; margin: 0; height:100px;}
+#contenido {background: url(../images/bk-conten.png)  repeat-x  top center; margin: 0;}
+
+#pageFormated {
+    text-align:justify;
+    margin: 3px 5% 0 5%;
+    display: block;
+    margin-bottom: 3em;
+    border:solid 1px #BAC072;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+#footer{
+        margin:0;
+        background: #D2D8A5;
+        width: 100%;
+        text-align:center;
+        line-height:24px;
+}
 
 #outer { width: 100%; position:absolute;}
-#footer-cont { text-align:center; background:#fff;  border-top: 1px solid #eee; height:30px;}
-#footer-cont span {text-align:center; font-weight: bold; line-height:25px;}
 
 .title {font-family:Arial, Helvetica, sans-serif; font-size:18px; color:red; font-weight:bold;}
 

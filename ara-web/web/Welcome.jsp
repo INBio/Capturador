@@ -14,16 +14,18 @@
                     <webuijsf:link id="link2" url="/resources/css/stylesheet.css"/>
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
-                    <jsp:directive.include file="/Header.jspf"/>
-                    <webuijsf:panelLayout id="contenido">
-                        <webuijsf:form id="form1">
-                            <webuijsf:label id="lbTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 840px" styleClass="Page_title" text="#{resources.system_statistics}"/>
-                            <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="840">
-                                <jsp:directive.include file="/statistics/Statistics.jspf"/>
-                                <jsp:directive.include file="/Footer.jspf"/>
-                            </h:panelGrid>
-                        </webuijsf:form>
-                    </webuijsf:panelLayout>
+                    <div id="pageFormated">
+                        <jsp:directive.include file="/Header.jspf"/>
+                        <webuijsf:panelLayout id="contenido">
+                            <webuijsf:form id="form1">
+                                <webuijsf:label id="lbTitle" style="height: 24px; left: 24px; top: 10px; position: relative; width: 840px" styleClass="Page_title" text="#{resources.system_statistics}"/>
+                                <!--<h:panelGrid columns="1" id="gridpMain" style="width:100%;height: 24px; left: 24px; top: 20px; position: relative">-->
+                                    <jsp:directive.include file="/statistics/Statistics.jspf"/>
+                                <!--</h:panelGrid>-->
+                            </webuijsf:form>
+                        </webuijsf:panelLayout> <!-- contenido ends -->
+                        <jsp:directive.include file="/Footer.jspf"/>
+                    </div> <!-- pageFormated ends -->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>

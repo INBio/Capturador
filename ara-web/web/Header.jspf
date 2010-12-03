@@ -9,11 +9,11 @@
 							<webuijsf:staticText id="headerApplicationName" escape="false" text="#{resources.applicationName}" />
 						</h1>
 					</div>
-					<div id="lang">
-						<!--<webuijsf:hyperlink actionExpression="#{Header.spanishLink1_action}" id="spanishLink1" immediate="true" text="es"/>
+					<!--<div id="lang">
+						<webuijsf:hyperlink actionExpression="#{Header.spanishLink1_action}" id="spanishLink1" immediate="true" text="es"/>
 						<webuijsf:hyperlink actionExpression="#{Header.englishLink1_action}" id="englishLink1" immediate="true" text="en"/>
-						<webuijsf:hyperlink actionExpression="#{Header.frenchLink1_action}" id="frenchLink1" immediate="true" text="fr"/>-->
-					</div>
+						<webuijsf:hyperlink actionExpression="#{Header.frenchLink1_action}" id="frenchLink1" immediate="true" text="fr"/>
+					</div>-->
 					<div id="actions">
 						<webuijsf:hyperlink actionExpression="back" id="linkAction1" immediate="true" text="#{resources.btnBack}"/>
                         <webuijsf:hyperlink actionExpression="#{Header.closeSession}" id="linkAction2" immediate="true" text="#{resources.btnExit}"/>
