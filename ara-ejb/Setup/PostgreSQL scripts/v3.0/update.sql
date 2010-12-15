@@ -3530,8 +3530,50 @@ alter table ara.report_layout_element owner to ara;
 alter table ara.report_layout_element_format owner to ara;
 alter table ara.report_layout_selected_element owner to ara;
 alter table ara.funcionality_type owner to ara;
-
----------------------------------------------
-    -- TABLES FOR FORMAT LABEL MODULE --
----------------------------------------------
 --2010.11.29 pcorrales End
+---------------------------------------------
+
+
+--2010.12.15 esmata and mvargas
+-- Function: ara.taxon_nomenclatural_group_list(numeric, text)
+-- DROP FUNCTION ara.taxon_nomenclatural_group_list(numeric, text);
+CREATE OR REPLACE FUNCTION ara.taxon_nomenclatural_group_list(arg_taxon_id numeric, arg_separator text)
+  RETURNS text AS
+$BODY$
+DECLARE
+--Fetch var
+aNomGroupID numeric;
+aName text;
+-- Result string
+aNomGroupsList text;
+taxonNomGroups CURSOR IS
+   select  ng.nomenclatural_group_id, ng.name
+      from ara.taxon_nomenclatural_group tng, ara.nomenclatural_group ng
+      where tng.nomenclatural_group_id = ng.nomenclatural_group_id and
+            tng.taxon_id = arg_taxon_id;
+BEGIN
+   -- Procedure Name: taxon_nomenclatural_group_list
+   -- Retruns a taxons nomenclatural groups list.
+   -- Created to be use during the generation of the Plinian Core snapshot.
+   -- Revision History:
+   --   June 19,  20010 - Manuel Vargas
+   -- Arguments (input / output):
+   --    arg_taxon_id NUMBER,                    Taxon identifier
+   --    arg_separator                           Element separator
+
+   aNomGroupsList = '';
+   OPEN taxonNomGroups;
+   FETCH taxonNomGroups INTO aNomGroupID, aName ;
+   WHILE FOUND LOOP
+     IF aName is not NULL THEN
+        aNomGroupsList  = aNomGroupsList || aName || arg_separator;
+     END IF;
+     FETCH taxonNomGroups INTO aNomGroupID, aName ;
+   END LOOP;
+   CLOSE taxonNomGroups ;
+   RETURN aNomGroupsList;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION ara.taxon_nomenclatural_group_list(numeric, text) OWNER TO ara;
