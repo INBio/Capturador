@@ -18,7 +18,7 @@
                         <jsp:directive.include file="/Header.jspf"/>
                         <webuijsf:panelLayout id="contenido">
                             <webuijsf:form id="form1">
-                                <webuijsf:label id="lbTitle" style="height: 24px; left: 24px; top: 10px; position: relative; width: 840px" styleClass="Page_title" text="#{resources.system_statistics}"/>
+                                <h:outputLabel id="lbTitle" style="height: 24px; left: 24px; top: 10px; position: relative; width: 840px" styleClass="Page_title" value="#{resources.system_statistics}"/>
                                 <!--<h:panelGrid columns="1" id="gridpMain" style="width:100%;height: 24px; left: 24px; top: 20px; position: relative">-->
                                     <jsp:directive.include file="/statistics/Statistics.jspf"/>
                                 <!--</h:panelGrid>-->

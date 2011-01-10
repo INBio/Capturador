@@ -21,7 +21,7 @@
                                 <tbody>
                                     <tr>
                                         <td align="center">
-                                            <webuijsf:label id="lb_title" styleClass="Page_title" text="#{resources.enter_system}"/>
+                                            <h:outputLabel id="lb_title" styleClass="Page_title" value="#{resources.enter_system}"/>
                                             <webuijsf:form id="form1" style="border-style: solid; border-color: rgb(216, 241, 139); text-align: center; vertical-align: middle; width: 258px">
                                                 <h:panelGrid columns="1" id="gridPanel1" width="261">
                                                     <webuijsf:label id="label1" text="#{resources.username}"/>

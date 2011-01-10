@@ -14,15 +14,16 @@
                     <webuijsf:link id="link2" url="/resources/css/stylesheet.css"/>
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
+                    <div id="pageFormated">
                     <jsp:directive.include file="/Header.jspf"/>
                     <webuijsf:panelLayout id="contenido">
                         <webuijsf:form id="form1">
-                            <webuijsf:label id="lbGatheringTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 850px"
-                                styleClass="Page_title" text="#{resources.gatherings_observations}"/>
-                            <h:panelGrid id="gridpGathering_Main" style="height: 24px; left: 24px; top: 48px; position: absolute" width="850">
+                            <h:outputLabel id="lbGatheringTitle" style="left: 24px; position: relative; width: 850px"
+                                styleClass="Page_title" value="#{resources.gatherings_observations}"/>
+                            <h:panelGrid id="gridpGathering_Main" style="left: 24px; position: relative" width="850">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msgListGathering" infoClass="infoMessage"
                                     style="height: 24px; width: 574px" warnClass="warnMessage"/>
-                                <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">
+                                <h:panelGrid columns="3" id="gridpSearch" width="719">
                                     <h:inputText binding="#{inventory$ListGathering.txSearch}" id="txSearch" style="height: 18px; width: 408px">
                                         <f:validateLength maximum="100" minimum="0"/>
                                     </h:inputText>
@@ -34,7 +35,7 @@
                                 </h:panelGrid>
                                 <h:panelGrid binding="#{inventory$ListGathering.gridpAdvancedSearch}" columns="1" id="gridpAdvancedSearch" rendered="false"
                                     style="height: 5px" styleClass="My_panel_blue" width="680">
-                                    <h:panelGrid columns="4" id="gridpAdvancedSearch1" style="height: 24px" width="670">
+                                    <h:panelGrid columns="4" id="gridpAdvancedSearch1" width="670">
                                         <webuijsf:label for="initialDateCalendar" text="#{resources.initial_date}"/>
                                         <webuijsf:calendar binding="#{inventory$ListGathering.initial_date}" columns="15" dateFormatPattern="yyyy-MM-dd" id="initialDateCalendar"/>
                                         <webuijsf:label for="finalDateCalendar" text="#{resources.final_date}"/>
@@ -55,7 +56,7 @@
                                         <webuijsf:textField binding="#{inventory$ListGathering.txLocality}" id="txLocality" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"/>
                                     </h:panelGrid>
                                     <h:panelGrid cellspacing="1" columns="2" id="panelpCoordinates" width="670">
-                                        <h:panelGrid columns="7" id="gridpanelCoor" style="height: 24px" styleClass="My_subpanel_blue" width="500">
+                                        <h:panelGrid columns="7" id="gridpanelCoor" styleClass="My_subpanel_blue" width="500">
                                             <webuijsf:label for="txLatitudeShort" id="lbLatitudeShort" text="#{resources.latitude}"/>
                                             <webuijsf:textField binding="#{inventory$ListGathering.txLatitudeShort}" columns="10" id="txLatitudeShort" validatorExpression="#{util$ValidatorBean.doubleNumberFormatValidator}">
                                                 <f:validateDoubleRange maximum="90.000000" minimum="-90.000000"/>
@@ -73,7 +74,7 @@
                                             styleClass="My_Button" value="#{resources.button_proceed}"/>
                                     </h:panelGrid>
                                 </h:panelGrid>
-                                <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="height: 24px" styleClass="My_table" width="840">
+                                <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" styleClass="My_table" width="840">
                                     <webuijsf:panelGroup id="grouppButtons">
                                         <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" width="840">
                                             <h:outputLabel id="labelQuantity" value="#{inventory$ListGathering.quantityTotal}"/>
@@ -157,11 +158,12 @@
                                             <h:outputText value="#{currentRow['finalDateTime']}"/>
                                         </h:column>
                                     </h:dataTable>
-                                </h:panelGrid>
-                                <jsp:directive.include file="/Footer.jspf"/>
+                                </h:panelGrid>                                
                             </h:panelGrid>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
+                    <jsp:directive.include file="/Footer.jspf"/>
+                    </div> <!-- pageFormated ends -->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>

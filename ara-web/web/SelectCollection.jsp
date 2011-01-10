@@ -18,8 +18,8 @@
                         <jsp:directive.include file="/Header_Select.jspf"/>
                         <webuijsf:panelLayout id="contenido">
                             <webuijsf:form id="form1">
-                                <webuijsf:label id="lbSelectCollTitle" style="height: 24px; left: 24px; top: 10px; position: relative; width: 670px"
-                                                styleClass="Page_title" text="#{resources.titleCollectionSelect}"/>
+                                <h:outputLabel id="lbSelectCollTitle" style="height: 24px; left: 24px; top: 10px; position: relative; width: 670px"
+                                                styleClass="Page_title" value="#{resources.titleCollectionSelect}"/>
                                 <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 20px; position: relative" width="600">
                                     <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msgl" infoClass="infoMessage"
                                                 style="height: 30px; width: 600px" warnClass="warnMessage"/>

@@ -298,13 +298,13 @@ public class NewTransaction extends AbstractPageBean {
             }
             this.getTransactionSessionBean().setCurrentTransaction(transactionDTO);
             TransactionDTO aux = this.getTransactionSessionBean().saveTransaction(transactionDTO);
-            System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ID = " + aux.getTransactionId().toString());
+            //System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ID = " + aux.getTransactionId().toString());
             this.getTransactionSessionBean().setCurrentTransaction(aux);
             //Setear el currentDTO con el DTO recien persistido
             
         }
         catch(Exception e){
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());            
             return null;
         }
 

@@ -351,7 +351,7 @@ public class EditGatheringDetail extends AbstractPageBean {
         sgsb.setGatheringObservationId(gdsb.getCurrentDetail().getGatheringObservationId());
         sgsb.setGatheringDetailObservationId(gdsb.getCurrentDetail().getGatheringObservationDetailId());
 
-                //Limpiar los addRemove
+        //Limpiar los addRemove
         sgsb.setArIdentifierList(new AddRemoveList());
         sgsb.setArLifeFormList(new AddRemoveList());
         sgsb.setArTaxonList(new AddRemoveList());

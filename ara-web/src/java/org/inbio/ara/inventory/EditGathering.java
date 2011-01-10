@@ -876,6 +876,13 @@ public class EditGathering extends AbstractPageBean {
         seleccionados de los AddRemove*/
         this.getinventory$GatheringSessionBean().setFirstTime(true);
 
+        /* Dejar limpios los add remove de la pantalla de edición, esto con el fin de que
+         * si el usuario decide volver a la edición desde los detalles de recolección y/o
+         * desde la generación de especímenes los datos de los add remove no se repitan */
+        gsb.setArCollectionsEdit(new AddRemoveList());
+        gsb.setArCollectorsEdit(new AddRemoveList());
+        gsb.setArProjectsEdit(new AddRemoveList());
+
         return "generate";
     }
 
@@ -895,6 +902,13 @@ public class EditGathering extends AbstractPageBean {
         /*Indicar a la pantalla de edit que cargue 1 sola ves los datos
         seleccionados de los AddRemove*/
         this.getinventory$GatheringSessionBean().setFirstTime(true);
+
+        /* Dejar limpios los add remove de la pantalla de edición, esto con el fin de que
+         * si el usuario decide volver a la edición desde los detalles de recolección y/o
+         * desde la generación de especímenes los datos de los add remove no se repitan */
+        gsb.setArCollectionsEdit(new AddRemoveList());
+        gsb.setArCollectorsEdit(new AddRemoveList());
+        gsb.setArProjectsEdit(new AddRemoveList());
 
         return "detail";
     }
