@@ -36,6 +36,7 @@ import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.agent.InstitutionDTO;
+import org.inbio.ara.dto.inventory.IdentificationDTO;
 import org.inbio.ara.dto.inventory.IdentificationStatusDTO;
 import org.inbio.ara.dto.inventory.IdentificationTypeDTO;
 import org.inbio.ara.dto.inventory.IdentifierDTO;
@@ -43,12 +44,14 @@ import org.inbio.ara.dto.inventory.LifeStageSexDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.SelectionListEntity;
+import org.inbio.ara.dto.inventory.SpecimenDTO;
 import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.persistence.gathering.CollectionProtocolValuesEntity;
 import org.inbio.ara.persistence.gathering.ProtocolAtributeEntity;
 import org.inbio.ara.persistence.specimen.SpecimenCategoryEntity;
+import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
 
@@ -1643,7 +1646,10 @@ public class SpecimenGeneration extends AbstractPageBean {
              *  4 means Multiple taxa selected
              */
             switch(gen){
-                case 0:
+                case 0:                    
+                    //Limpiar pantalla de generación
+                    this.cleanGenerationPage();
+                    //Succes message
                     MessageBean.setSuccessMessageFromBundle
                     ("specimen_generation_success", this.getMyLocale());
                     break;
@@ -1669,6 +1675,31 @@ public class SpecimenGeneration extends AbstractPageBean {
         }
 
         return null;
+    }
+
+    private void cleanGenerationPage(){
+        SpecimenGenerationSessionBean sgsb = this.
+                getinventory$SpecimenGenerationSessionBean();
+        sgsb.setSpecimenDTO(new SpecimenDTO());
+        sgsb.setIdentificationDTO(new IdentificationDTO());
+        sgsb.setLifeFormList(new ArrayList<Long>());
+        sgsb.setSpecimenQuantity(new Long(0));
+        sgsb.setArTaxonList(new AddRemoveList());
+        sgsb.setArIdentifierList(new AddRemoveList());
+        sgsb.setArLifeFormList(new AddRemoveList());
+        sgsb.setSelectedHour(null);
+        sgsb.setSelectedMinute(null);
+        sgsb.setSelecctedValidator(null);
+        sgsb.setSelectedTaxonomicLevel(null);
+        this.getTxQuantity().setText(null);
+        this.getTxInitialCatalog().setText(null);
+        this.getTxCertainty().setText(null);
+        this.getCalDateObservation().setSelectedDate(new Date());
+        this.getCalDateObservation().setText(null);
+        this.getTxFragments().setText(null);
+        this.getTxWhole().setText(null);
+        this.getCalIdentificationDate().setSelectedDate(new Date());
+        this.getCalIdentificationDate().setText(null);
     }
 
     /**
