@@ -554,27 +554,29 @@ table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
 .My_Button_add{
    display:block;
    float:left;
+   width:20px;
    background: url(../images/add.gif);
    background-repeat:no-repeat;
    background-color:#B7D9ED;
    border:1px solid #456C84;
    background-position:left;
    cursor:pointer;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
 }
 
 .My_Button_remove{
-       display:block;
+   display:block;
    float:left;
+   width:20px;
    background: url(../images/remove.gif);
    background-repeat:no-repeat;
    background-color:#B7D9ED;
    border:1px solid #456C84;
    background-position:left;
    cursor:pointer;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
 }
 
 .My_search_icon{
@@ -594,6 +596,7 @@ table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
     font-weight:bold;
     padding: 2px 2px 2px 20px;
 }
+
 
 /*select {
     height: 100%; width:100%;
