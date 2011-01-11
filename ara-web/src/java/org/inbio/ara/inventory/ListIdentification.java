@@ -472,6 +472,10 @@ public class ListIdentification extends AbstractPageBean {
 
         if (reIdentify == false) { //Mostrar panel de Reidentificacion
 
+            //Limpiar los add-remove components
+            isb.setArTaxonList(new AddRemoveList());
+            isb.setArIdentifierList(new AddRemoveList());
+
             isb.setReIdentify(true);
             this.gridpAdvancedSearch.setRendered(false);
 
@@ -664,7 +668,6 @@ public class ListIdentification extends AbstractPageBean {
         Long selectedStatus = this.ddStatusSelected;
         Long selectedType = this.ddTypeSelected;
 
-
         //En caso de que no se seleccione ningun elemento
         if (selectedStatus == null || selectedStatus == -1) {
             MessageBean.setErrorMessageFromBundle("not_status_selected",
@@ -731,6 +734,7 @@ public class ListIdentification extends AbstractPageBean {
             return null;
         }
 
+        // realiza la re-identificación
         isb.reidentify(selectedIdentifications);
 
         // refresca los datos cargados.
@@ -738,16 +742,16 @@ public class ListIdentification extends AbstractPageBean {
 
         // cierra el panel de reidentificación.
         this.getIdentificationSessionBean().getPagination().firstResults();
-
-
-        // print the label
-        
+              
         this.loadAddRemoveData(true);
 
-         String  Id = this.getIdentificationSessionBean().getCurrentIdentificationDTO().getCatalogNumber();
-         SpecimenDTO current =   this.getlabel$LabelSessionBean().getCurrentSpecimenDTO();
-         this.getlabel$LabelSessionBean().setCurrentSpecimenDTO(current);
-        return "edit";
+        return null;
+
+        // print the label (Agregado por Pula corrales)
+        /*String  Id = this.getIdentificationSessionBean().getCurrentIdentificationDTO().getCatalogNumber();
+        SpecimenDTO current =   this.getlabel$LabelSessionBean().getCurrentSpecimenDTO();
+        this.getlabel$LabelSessionBean().setCurrentSpecimenDTO(current);
+        return "edit";*/
     }
 
       /**
