@@ -182,9 +182,9 @@
                                                     <h:panelGrid cellspacing="1" columns="3">
                                                         <!-- Available List -->
                                                         <h:panelGrid cellspacing="1" columns="1">
-                                                            <h:outputLabel id="lbAvailableTaxonOptions" styleClass="My_white_label" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.lbAvailable}"/>
-                                                            <h:selectManyListbox id="mlAvaibleList" size="7" style="width:154px;height:100px" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.leftSelected}">
-                                                                <f:selectItems id="mlAvailableSelectItems" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.leftOptions}"/>
+                                                            <h:outputLabel id="lbAvailableTaxonOptions" styleClass="My_white_label" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.lbAvailable}"/>                                                            
+                                                            <h:selectManyListbox id="mlAvaibleList" size="7" style="width:154px;height:100px;font-size:10px;" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.leftSelected}">
+                                                                <f:selectItems id="mlAvailableSelectItems" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.leftOptions}"/>                                                                
                                                             </h:selectManyListbox>
                                                         </h:panelGrid>
                                                         <!-- Buttons Panel -->
@@ -199,7 +199,7 @@
                                                         <!-- Selected List -->
                                                         <h:panelGrid cellspacing="1" columns="1">
                                                             <h:outputLabel id="lbSelectedTaxonOptions" styleClass="My_white_label" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.lbSelected}"/>
-                                                            <h:selectManyListbox id="mlSelectedList" size="7" style="width:154px;height:100px" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.rightSelected}">
+                                                            <h:selectManyListbox id="mlSelectedList" size="7" style="width:154px;height:100px;font-size:10px;" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.rightSelected}">
                                                                 <f:selectItems id="mlSelectedSelectItems" value="#{inventory$SpecimenGenerationSessionBean.arTaxonList.rightOptions}"/>
                                                             </h:selectManyListbox>
                                                         </h:panelGrid>
@@ -218,7 +218,7 @@
                                                         <!-- Available List -->
                                                         <h:panelGrid cellspacing="1" columns="1">
                                                             <h:outputLabel id="lbAvailableIdentifierOptions" styleClass="My_white_label" value="#{inventory$SpecimenGenerationSessionBean.arIdentifierList.lbAvailable}"/>
-                                                            <h:selectManyListbox id="mlAvaibleIdentifierList" size="7" style="width:154px;height:100px" value="#{inventory$SpecimenGenerationSessionBean.arIdentifierList.leftSelected}">
+                                                            <h:selectManyListbox id="mlAvaibleIdentifierList" size="7" style="width:154px;height:100px;font-size:10px;" value="#{inventory$SpecimenGenerationSessionBean.arIdentifierList.leftSelected}">
                                                                 <f:selectItems id="mlAvailableIdentifierSelectItems" value="#{inventory$SpecimenGenerationSessionBean.arIdentifierList.leftOptions}"/>
                                                             </h:selectManyListbox>
                                                         </h:panelGrid>
@@ -235,7 +235,7 @@
                                                         <!-- Selected List -->
                                                         <h:panelGrid cellspacing="1" columns="1">
                                                             <h:outputLabel id="lbSelectedIdentifierOptions" styleClass="My_white_label" value="#{inventory$SpecimenGenerationSessionBean.arIdentifierList.lbSelected}"/>
-                                                            <h:selectManyListbox id="mlSelectedIdentifierList" size="7" style="width:154px;height:100px" value="#{inventory$SpecimenGenerationSessionBean.arIdentifierList.rightSelected}">
+                                                            <h:selectManyListbox id="mlSelectedIdentifierList" size="7" style="width:154px;height:100px;font-size:10px;" value="#{inventory$SpecimenGenerationSessionBean.arIdentifierList.rightSelected}">
                                                                 <f:selectItems id="mlSelectedIdentifierSelectItems" value="#{inventory$SpecimenGenerationSessionBean.arIdentifierList.rightOptions}"/>
                                                             </h:selectManyListbox>
                                                         </h:panelGrid>
@@ -302,7 +302,7 @@
                                                         <!-- Available List -->
                                                         <h:panelGrid cellspacing="1" columns="1">
                                                             <h:outputLabel id="lbAvailableLifeFormOptions" styleClass="My_white_label" value="#{inventory$SpecimenGenerationSessionBean.arLifeFormList.lbAvailable}"/>
-                                                            <h:selectManyListbox id="mlAvaibleLifeFormList" size="7" style="width:154px;height:100px" value="#{inventory$SpecimenGenerationSessionBean.arLifeFormList.leftSelected}">
+                                                            <h:selectManyListbox id="mlAvaibleLifeFormList" size="7" style="width:154px;height:100px;font-size:10px;" value="#{inventory$SpecimenGenerationSessionBean.arLifeFormList.leftSelected}">
                                                                 <f:selectItems id="mlAvailableLifeFormSelectItems" value="#{inventory$SpecimenGenerationSessionBean.arLifeFormList.leftOptions}"/>
                                                             </h:selectManyListbox>
                                                         </h:panelGrid>
@@ -319,7 +319,7 @@
                                                         <!-- Selected List -->
                                                         <h:panelGrid cellspacing="1" columns="1">
                                                             <h:outputLabel id="lbSelectedLifeFormOptions" styleClass="My_white_label" value="#{inventory$SpecimenGenerationSessionBean.arLifeFormList.lbSelected}"/>
-                                                            <h:selectManyListbox id="mlSelectedLifeFormList" size="7" style="width:154px;height:100px" value="#{inventory$SpecimenGenerationSessionBean.arLifeFormList.rightSelected}">
+                                                            <h:selectManyListbox id="mlSelectedLifeFormList" size="7" style="width:154px;height:100px;font-size:10px;" value="#{inventory$SpecimenGenerationSessionBean.arLifeFormList.rightSelected}">
                                                                 <f:selectItems id="mlSelectedLifeFormSelectItems" value="#{inventory$SpecimenGenerationSessionBean.arLifeFormList.rightOptions}"/>
                                                             </h:selectManyListbox>
                                                         </h:panelGrid>
