@@ -39,30 +39,29 @@
                                                                         </li>
 								</ul>
 							</li>
-							<li class="inventory">
-								<webuijsf:hyperlink id="menuSubsystemInventory"  text="#{resources.menuSubsystemInventory}" visible="true"/>
-								<ul>
-									<li>
-										<webuijsf:hyperlink actionExpression="#{Header.menuModuleGatheringsObservations_action}" id="menuModuleGatheringsObservations"
-							  text="#{resources.menuModuleGatheringsObservations}" visible="false"/>
-									</li>
-									<li>
-										<webuijsf:hyperlink actionExpression="#{Header.menuModuleIdentifications_action}" id="menuModuleIdentifications"
-							  text="#{resources.menuModuleIdentifications}" visible="false"/>
-									</li>
-									<li>
-										<webuijsf:hyperlink actionExpression="#{Header.menuModuleSpecimens_action}" id="menuModuleSpecimens" text="#{resources.menuModuleSpecimens}" visible="false"/>
-</li>
-                                                                        <li>
-                                                                            <webuijsf:hyperlink actionExpression="#{Header.menuModuleLabels_action}" id="menuModuleLabels" text="#{resources.menuModuleLabels}" visible="false"/>
-									</li>
-
-                                                                        <li>
-										<webuijsf:hyperlink actionExpression="#{Header.menuModuleTransactions_action}" id="menuModuleTransactions"
-                                                                                    text="#{resources.menuModuleTransaction}" visible="false"/>
-									</li>
-								</ul>
-							</li>
+                            <li class="inventory">
+                                <webuijsf:hyperlink id="menuSubsystemInventory"  text="#{resources.menuSubsystemInventory}" visible="true"/>
+                                <ul>
+                                    <li>
+                                        <webuijsf:hyperlink actionExpression="#{Header.menuModuleGatheringsObservations_action}" id="menuModuleGatheringsObservations"
+                              text="#{resources.menuModuleGatheringsObservations}" visible="false"/>
+                                    </li>
+                                    <li>
+                                        <webuijsf:hyperlink actionExpression="#{Header.menuModuleIdentifications_action}" id="menuModuleIdentifications"
+                              text="#{resources.menuModuleIdentifications}" visible="false"/>
+                                    </li>
+                                    <li>
+                                        <webuijsf:hyperlink actionExpression="#{Header.menuModuleSpecimens_action}" id="menuModuleSpecimens" text="#{resources.menuModuleSpecimens}" visible="false"/>
+                                    </li>
+                                    <!--<li>
+                                        <webuijsf:hyperlink actionExpression="#{Header.menuModuleLabels_action}" id="menuModuleLabels" text="#{resources.menuModuleLabels}" visible="false"/>
+                                    </li>-->
+                                    <li>
+                                        <webuijsf:hyperlink actionExpression="#{Header.menuModuleTransactions_action}" id="menuModuleTransactions"
+                              text="#{resources.menuModuleTransaction}" visible="false"/>
+                                    </li>
+                                </ul>
+                            </li>
 							<li class="geographical">
 								<webuijsf:hyperlink id="menuSubsystemGeographicalInformation" text="#{resources.menuSubsystemGeographicalInformation}" visible="true"/>
 								<ul>
