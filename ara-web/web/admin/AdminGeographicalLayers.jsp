@@ -14,63 +14,65 @@
                     <webuijsf:link id="link2" url="/resources/css/stylesheet.css"/>
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
-                    <jsp:directive.include file="/Header.jspf"/>
-                    <webuijsf:panelLayout id="contenido">
-                        <webuijsf:form id="form1">
-                            <webuijsf:label id="lbTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 850px" styleClass="Page_title" text="#{resources.admin_geographic_layers}"/>
-                            <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="624">
-                                <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
-                                    style="height: 30px; width: 550px" warnClass="warnMessage"/>
-                                <!-- Botonera -->
-                                <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 650px">
-                                    <h:commandButton action="#{admin$AdminGeographicalLayers.btn_newValue_action}" binding="#{admin$AdminGeographicalLayers.btnNew}" id="btn_newValue" style="width: 175px"
-                                        styleClass="My_Button" value="#{resources.btnNew}"/>
-                                        <h:commandButton action="#{admin$AdminGeographicalLayers.btn_editValue_action}" binding="#{admin$AdminGeographicalLayers.btnEdit}" id="btn_editValue" style="width: 175px"
-                                        styleClass="My_Button" value="#{resources.btnEdit}"/>
-                                </webuijsf:panelGroup>
-                                <!-- Fin de la botonera -->
-                                <!-- Parte Superior -->
-                                <webuijsf:label id="label1" style="font-size: 16px;" styleClass="Page_title" text="#{resources.menuModuleGeographicalLayers}"/>
-                                <webuijsf:dropDown actionExpression="#{admin$AdminGeographicalLayers.onGeographicLayerChange}" id="geographicLayerDropDown"
-                                    items="#{admin$AdminGeographicLayersSessionBean.geographicLayers.options}"
-                                    selected="#{admin$AdminGeographicLayersSessionBean.selectedGeographicLayerDTO.geographicalLayerKey}" submitForm="true" width="175px"/>
-                                <!-- Parte Superior -->
-                                <webuijsf:label id="label2" style="font-size: 16px;" styleClass="Page_title" text="#{resources.valuesForSelectedGeographicLayer}"/>
-                                <webuijsf:panelGroup id="pg1" style="height: 24px; width: 650px">
-                                    <!--Valores para la capa seleccionada-->
-                                    <webuijsf:dropDown actionExpression="#{admin$AdminGeographicalLayers.onGeographicLayerValueChange}"
-                                        id="geographicLayerValueDropDown" items="#{admin$AdminGeographicLayersSessionBean.geographicLayerValues.options}"
-                                        selected="#{admin$AdminGeographicLayersSessionBean.selectedGeographicLayerValueDTO.geographicLayerValueKey}"
-                                        submitForm="true" width="175px"/>
-                                    <!-- fin Valorse para la capa seleccionada-->
-                                    <!-- Filtro de valores seleccionados -->
-                                    <webuijsf:label id="label3" text="#{resources.filterByCountry}" visible="#{admin$AdminGeographicLayersSessionBean.hasAncestor}"/>
-                                    <webuijsf:dropDown actionExpression="#{admin$AdminGeographicalLayers.onAncestorGeographicLayerValueChange}"
-                                        id="filterAncestorGeographicLayerValueDropDown"
-                                        items="#{admin$AdminGeographicLayersSessionBean.ancestorGeographicLayerValues.options}"
-                                        selected="#{admin$AdminGeographicLayersSessionBean.selectedFilterAncestorGeographicLayerId}" submitForm="true"
-                                        visible="#{admin$AdminGeographicLayersSessionBean.hasAncestor}" width="175px"/>
-                                    <!-- fin filtro -->
-                                </webuijsf:panelGroup>
-                                <!-- Detalles de creación y edición -->
-                                <webuijsf:panelLayout id="editGeographicLayerValuePanel"
-                                    style="height: 115px; position: relative; width: 370px; -rave-layout: grid" styleClass="My_subpanel_blue" visible="#{admin$AdminGeographicLayersSessionBean.isEditingValue}">
-                                    <webuijsf:label id="label5" style="height: 28px; left: 10px; top: 10px; position: absolute; width:150px" text="#{resources.name}"/>
-                                    <webuijsf:textField columns="22" id="textField1" style="left: 160px; top: 10px; position: absolute" text="#{admin$AdminGeographicLayersSessionBean.editingGeographicLayerValueDTO.name}"/>
-                                    <webuijsf:label id="label6" style="height: 28px; left: 10px; top: 48px; position: absolute; width: 150px"
-                                        text="#{resources.country}" visible="#{admin$AdminGeographicLayersSessionBean.hasAncestor}"/>
-                                    <webuijsf:dropDown id="ancestorGLValueDropDown"
-                                        items="#{admin$AdminGeographicLayersSessionBean.ancestorGeographicLayerValues.options}"
-                                        selected="#{admin$AdminGeographicLayersSessionBean.editingGeographicLayerValueDTO.ancestorGeographicLayerValueKey}"
-                                        style="left: 160px; top: 48px; position: absolute" visible="#{admin$AdminGeographicLayersSessionBean.hasAncestor}"/>
-                                    <h:commandButton action="#{admin$AdminGeographicalLayers.saveGeographicLayerValue}" id="btn_saveValue"
-                                        style="left:160px; top: 82px; position: absolute; width: 175px" value="#{resources.btnSave}"/>
-                                </webuijsf:panelLayout>
-                                <!-- Fin de detalles -->
-                                <jsp:directive.include file="/Footer.jspf"/>
-                            </h:panelGrid>
-                        </webuijsf:form>
-                    </webuijsf:panelLayout>
+                    <div id="pageFormated">
+                        <jsp:directive.include file="/Header.jspf"/>
+                        <webuijsf:panelLayout id="contenido">
+                            <webuijsf:form id="form1">
+                                <h:outputLabel id="lbTitle" style="height: 24px; left: 24px; position: relative; width: 850px" styleClass="Page_title" value="#{resources.admin_geographic_layers}"/>
+                                <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; position: relative" width="624">
+                                    <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
+                                        style="height: 30px; width: 550px" warnClass="warnMessage"/>
+                                    <!-- Botonera -->
+                                    <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 650px">
+                                        <h:commandButton action="#{admin$AdminGeographicalLayers.btn_newValue_action}" binding="#{admin$AdminGeographicalLayers.btnNew}" id="btn_newValue" style="width: 175px"
+                                            styleClass="My_Button" value="#{resources.btnNew}"/>
+                                            <h:commandButton action="#{admin$AdminGeographicalLayers.btn_editValue_action}" binding="#{admin$AdminGeographicalLayers.btnEdit}" id="btn_editValue" style="width: 175px"
+                                            styleClass="My_Button" value="#{resources.btnEdit}"/>
+                                    </webuijsf:panelGroup>
+                                    <!-- Fin de la botonera -->
+                                    <!-- Parte Superior -->
+                                    <webuijsf:label id="label1" style="font-size: 16px;" styleClass="Page_title" text="#{resources.menuModuleGeographicalLayers}"/>
+                                    <webuijsf:dropDown actionExpression="#{admin$AdminGeographicalLayers.onGeographicLayerChange}" id="geographicLayerDropDown"
+                                        items="#{admin$AdminGeographicLayersSessionBean.geographicLayers.options}"
+                                        selected="#{admin$AdminGeographicLayersSessionBean.selectedGeographicLayerDTO.geographicalLayerKey}" submitForm="true" width="175px"/>
+                                    <!-- Parte Superior -->
+                                    <webuijsf:label id="label2" style="font-size: 16px;" styleClass="Page_title" text="#{resources.valuesForSelectedGeographicLayer}"/>
+                                    <webuijsf:panelGroup id="pg1" style="height: 24px; width: 650px">
+                                        <!--Valores para la capa seleccionada-->
+                                        <webuijsf:dropDown actionExpression="#{admin$AdminGeographicalLayers.onGeographicLayerValueChange}"
+                                            id="geographicLayerValueDropDown" items="#{admin$AdminGeographicLayersSessionBean.geographicLayerValues.options}"
+                                            selected="#{admin$AdminGeographicLayersSessionBean.selectedGeographicLayerValueDTO.geographicLayerValueKey}"
+                                            submitForm="true" width="175px"/>
+                                        <!-- fin Valorse para la capa seleccionada-->
+                                        <!-- Filtro de valores seleccionados -->
+                                        <webuijsf:label id="label3" text="#{resources.filterByCountry}" visible="#{admin$AdminGeographicLayersSessionBean.hasAncestor}"/>
+                                        <webuijsf:dropDown actionExpression="#{admin$AdminGeographicalLayers.onAncestorGeographicLayerValueChange}"
+                                            id="filterAncestorGeographicLayerValueDropDown"
+                                            items="#{admin$AdminGeographicLayersSessionBean.ancestorGeographicLayerValues.options}"
+                                            selected="#{admin$AdminGeographicLayersSessionBean.selectedFilterAncestorGeographicLayerId}" submitForm="true"
+                                            visible="#{admin$AdminGeographicLayersSessionBean.hasAncestor}" width="175px"/>
+                                        <!-- fin filtro -->
+                                    </webuijsf:panelGroup>
+                                    <!-- Detalles de creación y edición -->
+                                    <webuijsf:panelLayout id="editGeographicLayerValuePanel"
+                                        style="height: 115px; position: relative; width: 370px; -rave-layout: grid" styleClass="My_subpanel_blue" visible="#{admin$AdminGeographicLayersSessionBean.isEditingValue}">
+                                        <webuijsf:label id="label5" style="height: 28px; left: 10px; top: 10px; position: absolute; width:150px" text="#{resources.name}"/>
+                                        <webuijsf:textField columns="22" id="textField1" style="left: 160px; top: 10px; position: absolute" text="#{admin$AdminGeographicLayersSessionBean.editingGeographicLayerValueDTO.name}"/>
+                                        <webuijsf:label id="label6" style="height: 28px; left: 10px; top: 48px; position: absolute; width: 150px"
+                                            text="#{resources.country}" visible="#{admin$AdminGeographicLayersSessionBean.hasAncestor}"/>
+                                        <webuijsf:dropDown id="ancestorGLValueDropDown"
+                                            items="#{admin$AdminGeographicLayersSessionBean.ancestorGeographicLayerValues.options}"
+                                            selected="#{admin$AdminGeographicLayersSessionBean.editingGeographicLayerValueDTO.ancestorGeographicLayerValueKey}"
+                                            style="left: 160px; top: 48px; position: absolute" visible="#{admin$AdminGeographicLayersSessionBean.hasAncestor}"/>
+                                        <h:commandButton action="#{admin$AdminGeographicalLayers.saveGeographicLayerValue}" id="btn_saveValue"
+                                            style="left:160px; top: 82px; position: absolute; width: 175px" value="#{resources.btnSave}"/>
+                                    </webuijsf:panelLayout>
+                                    <!-- Fin de detalles -->
+                                </h:panelGrid>
+                            </webuijsf:form>
+                        </webuijsf:panelLayout> <!-- contenido ends -->
+                        <jsp:directive.include file="/Footer.jspf"/>
+                    </div> <!-- pageFormated ends -->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>

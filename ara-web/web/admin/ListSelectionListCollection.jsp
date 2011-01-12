@@ -14,51 +14,54 @@
                     <webuijsf:link id="link2" url="/resources/css/stylesheet.css"/>
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
-                    <jsp:directive.include file="/Header.jspf"/>
-                    <webuijsf:panelLayout id="contenido">
-                        <webuijsf:form id="form1">
-                            <webuijsf:label id="lbMainTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 850px" styleClass="Page_title" text="#{resources.menuModuleSelectionLists}"/>
-                            <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="850">
-                                <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
-                                    style="height: 30px; width: 840px" warnClass="warnMessage"/>
-                            
-                                <h:panelGrid columns="1" id="selectionListValue"
-                                    style="height: 480px; left: 24px; top: 80px; position: absolute" width="850">
-                                    <webuijsf:label id="selectionList" style="height: 24px; left: 24px; top: 85px; position: absolute; width: 850px"
-                                        text="#{resources.subtitle_admin_selection_list}"/>
-                                    <webuijsf:dropDown actionExpression="#{admin$ListSelectionListCollection.onSelectionListChange}" id="ddSelectionList"
-                                        items="#{admin$SelectionListSessionBean.selectionListData.options}"
-                                        selected="#{admin$SelectionListSessionBean.selectedSelectionListEntityId}" style="top: 106px; position: absolute"
-                                        submitForm="true" width="400px"/>
-                                </h:panelGrid>
+                    <div id="pageFormated">
+                        <jsp:directive.include file="/Header.jspf"/>
+                        <webuijsf:panelLayout id="contenido">
+                            <webuijsf:form id="form1">
+                                <h:outputLabel id="lbMainTitle" style="height: 24px; left: 24px; position: relative; width: 850px" styleClass="Page_title" value="#{resources.menuModuleSelectionLists}"/>
+                                <h:panelGrid columns="1" id="gridpMain" style="left: 24px; position: relative" width="850">
+                                    <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
+                                        style="height: 30px; width: 840px" warnClass="warnMessage"/>
 
-                                <h:panelGrid binding="#{admin$ListSelectionListCollection.selectionListValuePanel}" columns="1" id="selectionListValuePanel"
-                                    style="height: 480px; left: 24px; top: 130px; position: absolute" width="850">
-                                    <webuijsf:label id="SelectionListValue" style="height: 24px; left: 24px; top: 135px; position: absolute; width: 850px"
-                                        text="#{resources.subtitle_admin_selection_list_value}"/>
-                                    <webuijsf:dropDown actionExpression="#{admin$ListSelectionListCollection.onSelectionListValueChange}" id="ddSelectionListValue"
-                                        items="#{admin$SelectionListSessionBean.selectionListValueData.options}"
-                                        selected="#{admin$SelectionListSessionBean.selectedSelectionListValueId}" style="top: 151px; position: absolute"
-                                        submitForm="true" width="400px"/>
-                                </h:panelGrid>
-
-                                <h:panelGrid binding="#{admin$ListSelectionListCollection.actionTable}" cellspacing="1" columns="1" id="actionTable"
-                                    style="height: 24px; left: 24px; top: 184px; position: absolute" width="840">
-
-                                    <!-- Colecciones Asociadas-->
-                                    <webuijsf:label id="labelColeccionesAsociadas" style="font-size: 24px; height: 46px; left: 24px; width: 574px" text="#{resources.associated_collections}"/>
-                                    <h:panelGrid cellspacing="1" columns="2" id="valuesTableButtons" rendered="true" style="height: 24px; left: 24px;" width="840">
-                                        <h:commandButton action="#{admin$ListSelectionListCollection.btn_save_action}" id="btn_new"
-                                            style="margin: 2px; height: 22px" value="#{resources.btnSave}"/>
+                                    <h:panelGrid columns="1" id="selectionListValue"
+                                    style="left: 24px; position: relative" width="850">
+                                        <webuijsf:label id="selectionList" style="height: 24px; left: 24px; position: relative; width: 850px"
+                                            text="#{resources.subtitle_admin_selection_list}"/>
+                                        <webuijsf:dropDown actionExpression="#{admin$ListSelectionListCollection.onSelectionListChange}" id="ddSelectionList"
+                                            items="#{admin$SelectionListSessionBean.selectionListData.options}"
+                                            selected="#{admin$SelectionListSessionBean.selectedSelectionListEntityId}" style="position: relative"
+                                            submitForm="true" width="400px"/>
                                     </h:panelGrid>
-                                    <!-- add remove -->
-                                    <webuijsf:addRemove availableItemsLabel="#{resources.available}" id="associationsBla"
-                                        items="#{admin$SelectionListSessionBean.associatedCollections.options}"
-                                        selected="#{admin$SelectionListSessionBean.associatedCollections.selectedValue}" selectedItemsLabel="#{resources.selected}" style="left: 24px; position: absolute"/>
-                               </h:panelGrid>
-                            </h:panelGrid>
-                        </webuijsf:form>
-                    </webuijsf:panelLayout>
+
+                                    <h:panelGrid binding="#{admin$ListSelectionListCollection.selectionListValuePanel}" columns="1" id="selectionListValuePanel"
+                                    style="left: 24px; position: relative" width="850">
+                                        <webuijsf:label id="SelectionListValue" style="height: 24px; left: 24px; position: relative; width: 850px"
+                                            text="#{resources.subtitle_admin_selection_list_value}"/>
+                                        <webuijsf:dropDown actionExpression="#{admin$ListSelectionListCollection.onSelectionListValueChange}" id="ddSelectionListValue"
+                                            items="#{admin$SelectionListSessionBean.selectionListValueData.options}"
+                                            selected="#{admin$SelectionListSessionBean.selectedSelectionListValueId}" style="position: relativa"
+                                            submitForm="true" width="400px"/>
+                                    </h:panelGrid>
+
+                                    <h:panelGrid binding="#{admin$ListSelectionListCollection.actionTable}" cellspacing="1" columns="1" id="actionTable"
+                                    style="left: 24px; position: relative" width="840">
+
+                                        <!-- Colecciones Asociadas-->
+                                        <webuijsf:label id="labelColeccionesAsociadas" style="font-size: 24px; height: 46px; left: 24px; width: 574px" text="#{resources.associated_collections}"/>
+                                        <h:panelGrid cellspacing="1" columns="2" id="valuesTableButtons" rendered="true" style="height: 24px; left: 24px;" width="840">
+                                            <h:commandButton action="#{admin$ListSelectionListCollection.btn_save_action}" id="btn_new"
+                                            style="margin: 2px; height: 22px" styleClass="My_Button" value="#{resources.btnSave}"/>
+                                        </h:panelGrid>
+                                        <!-- add remove -->
+                                        <webuijsf:addRemove availableItemsLabel="#{resources.available}" id="associationsBla"
+                                            items="#{admin$SelectionListSessionBean.associatedCollections.options}"
+                                            selected="#{admin$SelectionListSessionBean.associatedCollections.selectedValue}" selectedItemsLabel="#{resources.selected}" style="left: 24px; position: relative"/>
+                                   </h:panelGrid>
+                                </h:panelGrid>
+                            </webuijsf:form>
+                        </webuijsf:panelLayout> <!-- contenido ends -->
+                        <jsp:directive.include file="/Footer.jspf"/>
+                    </div> <!-- pageFormated ends -->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>
