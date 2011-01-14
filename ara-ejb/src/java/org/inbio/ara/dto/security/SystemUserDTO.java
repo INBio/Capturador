@@ -33,6 +33,7 @@ public class SystemUserDTO implements Serializable{
     private String passwd;
     private Long enabled;
     private Long userTypeId;
+    private Long userGroupId;
 
     /* For Graphical Inteface purposes */
     private boolean selected;
@@ -137,6 +138,20 @@ public class SystemUserDTO implements Serializable{
      */
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    /**
+     * @return the userGroupId
+     */
+    public Long getUserGroupId() {
+        return userGroupId;
+    }
+
+    /**
+     * @param userGroupId the userGroupId to set
+     */
+    public void setUserGroupId(Long userGroupId) {
+        this.userGroupId = userGroupId;
     }
 
 }

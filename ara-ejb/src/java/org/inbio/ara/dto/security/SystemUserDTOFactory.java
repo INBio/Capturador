@@ -27,6 +27,7 @@ public class SystemUserDTOFactory extends BaseDTOFactory<SystemUser, SystemUserD
         result.setFullname(entity.getFullname());
         result.setPasswd(entity.getPasswd());
         result.setUserTypeId(entity.getUserTypeId());
+        result.setUserGroupId(entity.getUserGroupId());
         //seleted is used in the Graphical Interface, should be set in false
         result.setSelected(false);
 
@@ -46,6 +47,7 @@ public class SystemUserDTOFactory extends BaseDTOFactory<SystemUser, SystemUserD
         result.setFullname(dto.getFullname());
         result.setPasswd(dto.getPasswd());
         result.setUserTypeId(dto.getUserTypeId());
+        result.setUserGroupId(dto.getUserGroupId());
 
         return result;
     }

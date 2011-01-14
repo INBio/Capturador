@@ -134,6 +134,17 @@ public class SecurityFacadeImpl implements SecurityFacadeRemote {
         }
     }
 
+    /**
+     * Metodo para averiguar si un usuario es administrador o no lo es.
+     */
+    public boolean isAdmin(Long userId){
+        Long userGroup = this.systemUserEAOImpl.getUserGroupIDbyUserId(userId);
+        if(userGroup != null && userGroup == 70L) //70 is administrators group id in db. This solution is temporary (Hope so!)
+            return true;
+        else
+            return false;
+    }
+
      /**
      * Persistir un nuevo userTaxon
      */

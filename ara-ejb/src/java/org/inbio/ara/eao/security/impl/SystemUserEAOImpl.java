@@ -74,4 +74,17 @@ public class SystemUserEAOImpl extends BaseEAOImpl<SystemUser,Long> implements S
         Query q = em.createQuery(query);
         return (Long) q.getSingleResult();
     }
+
+    /**
+     * Know if the user is part of administrators group
+     * @param userId
+     * @return
+     */
+    public Long getUserGroupIDbyUserId(Long userId){
+        String query = "select userGroupId from SystemUser su where " +
+                       "su.userId = :userId";
+        Query q = em.createQuery(query);
+        q.setParameter("userId", userId);
+        return (Long) q.getSingleResult();
+    }
 }

@@ -39,5 +39,7 @@ public interface SecurityFacadeRemote {
     public void saveUserNomenclaturalGroup(java.lang.Long groupId, java.lang.Long userId, java.lang.Long secuence);
 
     public Long getCollecionIdByNomenclaturalGroupId(Long nomenclatural);
+
+    public boolean isAdmin(java.lang.Long userId);
     
 }

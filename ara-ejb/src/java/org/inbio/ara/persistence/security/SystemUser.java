@@ -61,9 +61,13 @@ public class SystemUser extends GenericEntity implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SystemUserType userTypeId;*/
 
-    @JoinColumn(name = "user_group_id", referencedColumnName = "user_id")
+    @Basic(optional = true)
+    @Column(name = "user_group_id")
+    private Long userGroupId;
+
+    /*@JoinColumn(name = "user_group_id", referencedColumnName = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private SystemUser userGroupId;
+    private SystemUser userGroupId;*/
 
     public SystemUser() {
     }
@@ -124,11 +128,11 @@ public class SystemUser extends GenericEntity implements Serializable {
         this.enabled = enabled;
     }
 
-    public SystemUser getUserGroupId() {
+    public Long getUserGroupId() {
         return userGroupId;
     }
 
-    public void setUserGroupId(SystemUser userGroupId) {
+    public void setUserGroupId(Long userGroupId) {
         this.userGroupId = userGroupId;
     }
 

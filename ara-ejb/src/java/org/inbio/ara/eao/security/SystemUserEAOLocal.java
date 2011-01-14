@@ -21,5 +21,7 @@ public interface SystemUserEAOLocal extends BaseLocalEAO<SystemUser,Long>{
     public java.lang.Long countUserEnabled();
 
     public java.util.List<org.inbio.ara.persistence.security.SystemUser> getAllUserEnabledPaginated(int first, int totalResults);
+
+    public java.lang.Long getUserGroupIDbyUserId(java.lang.Long userId);
     
 }
