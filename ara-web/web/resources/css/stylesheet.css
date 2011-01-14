@@ -252,20 +252,20 @@ table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
 }
 
 .My_Button_table{
-   display:block;
-   float:left;
-   background-color:#dff4ff;
-   border:1px solid #767c87;
-   border-top:1px solid #eee;
-   border-left:1px solid #eee;
-   font-family:sans-serif;
-   font-size:100%;
-   line-height:130%;
-   text-decoration:none;
-   color:#334563;
-   cursor:pointer;
-   -moz-border-radius: 3px;
-   -webkit-border-radius: 3px;
+    display:block;
+    float:left;
+    background-color:#dff4ff;
+    border:1px solid #F8FCA0;
+    border-top:1px solid #eee;
+    border-left:1px solid #eee;
+    font-family:sans-serif;
+    font-size:100%;
+    line-height:130%;
+    text-decoration:none;
+    color:#334563;
+    cursor:pointer;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
 
 .My_Button_table:hover{
@@ -348,12 +348,10 @@ table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
 
 .My_table{
     background-color:#5986A2;
-    border: 1px solid #344F60;
+    /*border: 1px solid #344F60;*/
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-
-.My_panel_sites{}
 
 .My_table_top{
     background-color:#486C83;
@@ -367,9 +365,11 @@ table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
     font-size: 12px;
 }
 
+.My_panel_sites{}
+
 .My_table_statistics{
     background-color:#5986A2;
-    border: 1px solid #344F60;
+    /*border: 1px solid #344F60;*/
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     font-size: 14px;
@@ -442,7 +442,7 @@ table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
    background-color:#dff4ff;
    background-position:right;
    background-repeat:no-repeat;
-   padding: 2px 20px 2px 2px;
+   padding: 2px 20px 2px 2px;   
    border:1px solid #767c87;
    border-top:1px solid #eee;
    border-left:1px solid #eee;

@@ -23,10 +23,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.context.FacesContext;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.security.SystemUserDTO;
 import org.inbio.ara.util.AddRemoveList;
+import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
 
 
@@ -61,6 +63,7 @@ public class ListUser extends AbstractPageBean {
 
     //Bindings de componentes graficos
     private HtmlDataTable dataTableUser = new HtmlDataTable();
+    private HtmlInputHidden deleteConfirmationText = new HtmlInputHidden();
 
     //Variable que contiene los datos de la paginacion para ser mostrados en la tabla
     private String quantityTotal = new String();
@@ -128,6 +131,10 @@ public class ListUser extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+        //Setting the confirmation text for deleting option
+        this.deleteConfirmationText.setValue(BundleHelper.getDefaultBundleValue
+                    ("delete_confirmation", this.getMyLocale()));
+        //Manage pagination
         if(this.getUserSessionBean().getPagination()==null){
             this.getUserSessionBean().initDataProvider();
         }
@@ -244,10 +251,16 @@ public class ListUser extends AbstractPageBean {
         else if(selectedUsers.size() == 1){ //En caso de que solo se seleccione un elemento
 
             SystemUserDTO selected = selectedUsers.get(0);
-            //Mandar a eliminar las entradas en user_taxon
-            this.getUserSessionBean().deleteUserTaxonsByUser(selected.getUserId());
 
             try{
+                //Verify if user is administrator
+                if(this.getUserSessionBean().isAdmin(selected.getUserId())){
+                    MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
+                    return null;
+                }
+
+                //Mandar a eliminar las entradas en user_taxon
+                this.getUserSessionBean().deleteUserTaxonsByUser(selected.getUserId());
                 //Mandar a eliminar las entradas de user_nomenclatural_group
                 this.getUserSessionBean().deleteNomenclaturalGroupsByUser(selected.getUserId());
                 //Mandar a eliminar la entidad correspondiente al dto
@@ -255,6 +268,7 @@ public class ListUser extends AbstractPageBean {
             }
             catch(Exception e){
                 MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
+                System.out.print("mata"+e);
                 return null;
             }
             
@@ -264,7 +278,6 @@ public class ListUser extends AbstractPageBean {
 
             //Notificar al usuario
             MessageBean.setSuccessMessageFromBundle("delete_user_success", this.getMyLocale());
-
             return null;
 
         }
@@ -328,6 +341,20 @@ public class ListUser extends AbstractPageBean {
      */
     public Locale getMyLocale() {
 		return this.getAraSessionBean().getCurrentLocale();
+    }
+
+    /**
+     * @return the deleteConfirmationText
+     */
+    public HtmlInputHidden getDeleteConfirmationText() {
+        return deleteConfirmationText;
+    }
+
+    /**
+     * @param deleteConfirmationText the deleteConfirmationText to set
+     */
+    public void setDeleteConfirmationText(HtmlInputHidden deleteConfirmationText) {
+        this.deleteConfirmationText = deleteConfirmationText;
     }
 
 }

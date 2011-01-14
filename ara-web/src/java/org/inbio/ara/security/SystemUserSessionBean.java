@@ -211,6 +211,13 @@ public class SystemUserSessionBean extends AbstractSessionBean implements Pagina
         this.securityFacade.deleteNomenclaturalGroupsByUser(userId);
     }
 
+    /**
+     * Metodo para averiguar si el usuario es administrador o no lo es.
+     */
+    public boolean isAdmin(Long userId){
+        return this.securityFacade.isAdmin(userId);
+    }
+
      /**
      * Obtener los datos para el add remove de taxones
      */

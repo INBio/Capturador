@@ -14,47 +14,49 @@
                     <webuijsf:link id="link1" url="/resources/css/stylesheet.css"/>
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
-                    <jsp:directive.include file="/Header.jspf"/>
-                    <webuijsf:panelLayout id="contenido">
-                        <webuijsf:form id="form1">
-                            <webuijsf:label id="lbEditTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 850px"
-                                styleClass="Page_title" text="#{resources.edit_user}"/>
-                            <h:panelGrid columns="1" id="gridpGenerationMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="600">
-                                <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglEdit" infoClass="infoMessage"
-                                    style="height: 50px; width: 700px" warnClass="warnMessage"/>
-                                <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 700px">
-                                    <h:commandButton action="#{security$ChangePassword.btnChangePassword_action}" id="btnChangePassword"
-                                        style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.menuModuleChangePassword}"/>
-                                </webuijsf:panelGroup>
-                                <webuijsf:panelLayout id="layoutPanelDetail" style="height: 164px; position: relative; width: 499px; -rave-layout: grid" styleClass="My_panel_blue">
-                                    <webuijsf:label for="txFullName" id="lbFullName"
-                                        style="height: 24px; left: 72px; top: 24px; position: absolute; width: 168px" text="#{resources.full_name}"/>
-                                    <webuijsf:textField binding="#{security$ChangePassword.txFullName}" columns="24" disabled="true" id="txFullName" style="height: 24px; left: 240px; top: 24px; position: absolute; width: 168px"/>
-                                    <webuijsf:label for="txUserName" id="lbUserName"
-                                        style="height: 24px; left: 72px; top: 48px; position: absolute; width: 168px" text="#{resources.username}"/>
-                                    <webuijsf:textField binding="#{security$ChangePassword.txUserName}" columns="24" disabled="true" id="txUserName" style="height: 24px; left: 240px; top: 48px; position: absolute; width: 168px"/>
-                                    <webuijsf:label for="pfCurrent" id="lbCurrent" requiredIndicator="true"
-                                        style="height: 24px; left: 72px; top: 72px; position: absolute; width: 168px" text="#{resources.actual_password}"/>
-                                    <webuijsf:passwordField binding="#{security$ChangePassword.pfCurrent}" columns="24" id="pfCurrent" required="true" style="height: 24px; left: 240px; top: 72px; position: absolute; width: 168px">
-                                        <f:validateLength maximum="8" minimum="4"/>
-                                    </webuijsf:passwordField>
-                                    <webuijsf:label for="pfPassword" id="lbPassword"
-                                        style="height: 24px; left: 72px; top: 96px; position: absolute; width: 168px" text="#{resources.new_password}"/>
-                                    <webuijsf:passwordField binding="#{security$ChangePassword.pfPassword}" columns="24" id="pfPassword" required="true"
-                                        style="height: 24px; left: 240px; top: 96px; position: absolute; width: 144px" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}">
-                                        <f:validateLength maximum="8" minimum="4"/>
-                                    </webuijsf:passwordField>
-                                    <webuijsf:label for="pfConfirmPass" id="lbConfirmPass"
-                                        style="height: 24px; left: 72px; top: 120px; position: absolute; width: 168px" text="#{resources.confirm_new_password}"/>
-                                    <webuijsf:passwordField binding="#{security$ChangePassword.pfConfirmPass}" columns="24" id="pfConfirmPass" required="true"
-                                        style="height: 24px; left: 240px; top: 120px; position: absolute; width: 144px" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}">
-                                        <f:validateLength maximum="8" minimum="4"/>
-                                    </webuijsf:passwordField>
-                                </webuijsf:panelLayout>
-                                <jsp:directive.include file="/Footer.jspf"/>
-                            </h:panelGrid>
-                        </webuijsf:form>
-                    </webuijsf:panelLayout>
+                    <div id="pageFormated">
+                        <jsp:directive.include file="/Header.jspf"/>
+                        <webuijsf:panelLayout id="contenido">
+                            <webuijsf:form id="form1">
+                                <h:outputLabel id="lbEditTitle" style="height: 24px; left: 24px; position: relative; width: 850px"
+                                    styleClass="Page_title" value="#{resources.edit_user}"/>
+                                <h:panelGrid columns="1" id="gridpGenerationMain" style="height: 24px; left: 24px; position: relative" width="600">
+                                    <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglEdit" infoClass="infoMessage"
+                                        style="height: 50px; width: 700px" warnClass="warnMessage"/>
+                                    <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 700px">
+                                        <h:commandButton action="#{security$ChangePassword.btnChangePassword_action}" id="btnChangePassword"
+                                            style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.menuModuleChangePassword}"/>
+                                    </webuijsf:panelGroup>
+                                    <webuijsf:panelLayout id="layoutPanelDetail" style="height: 164px; position: relative; width: 499px; -rave-layout: grid" styleClass="My_panel_blue">
+                                        <webuijsf:label for="txFullName" id="lbFullName"
+                                            style="height: 24px; left: 72px; top: 24px; position: absolute; width: 168px" text="#{resources.full_name}"/>
+                                        <webuijsf:textField binding="#{security$ChangePassword.txFullName}" columns="24" disabled="true" id="txFullName" style="height: 24px; left: 240px; top: 24px; position: absolute; width: 168px"/>
+                                        <webuijsf:label for="txUserName" id="lbUserName"
+                                            style="height: 24px; left: 72px; top: 48px; position: absolute; width: 168px" text="#{resources.username}"/>
+                                        <webuijsf:textField binding="#{security$ChangePassword.txUserName}" columns="24" disabled="true" id="txUserName" style="height: 24px; left: 240px; top: 48px; position: absolute; width: 168px"/>
+                                        <webuijsf:label for="pfCurrent" id="lbCurrent" requiredIndicator="true"
+                                            style="height: 24px; left: 72px; top: 72px; position: absolute; width: 168px" text="#{resources.actual_password}"/>
+                                        <webuijsf:passwordField binding="#{security$ChangePassword.pfCurrent}" columns="24" id="pfCurrent" required="true" style="height: 24px; left: 240px; top: 72px; position: absolute; width: 168px">
+                                            <f:validateLength maximum="8" minimum="4"/>
+                                        </webuijsf:passwordField>
+                                        <webuijsf:label for="pfPassword" id="lbPassword"
+                                            style="height: 24px; left: 72px; top: 96px; position: absolute; width: 168px" text="#{resources.new_password}"/>
+                                        <webuijsf:passwordField binding="#{security$ChangePassword.pfPassword}" columns="24" id="pfPassword" required="true"
+                                            style="height: 24px; left: 240px; top: 96px; position: absolute; width: 144px" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}">
+                                            <f:validateLength maximum="8" minimum="4"/>
+                                        </webuijsf:passwordField>
+                                        <webuijsf:label for="pfConfirmPass" id="lbConfirmPass"
+                                            style="height: 24px; left: 72px; top: 120px; position: absolute; width: 168px" text="#{resources.confirm_new_password}"/>
+                                        <webuijsf:passwordField binding="#{security$ChangePassword.pfConfirmPass}" columns="24" id="pfConfirmPass" required="true"
+                                            style="height: 24px; left: 240px; top: 120px; position: absolute; width: 144px" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}">
+                                            <f:validateLength maximum="8" minimum="4"/>
+                                        </webuijsf:passwordField>
+                                    </webuijsf:panelLayout>
+                                </h:panelGrid>
+                            </webuijsf:form>
+                        </webuijsf:panelLayout> <!-- contenido ends -->
+                        <jsp:directive.include file="/Footer.jspf"/>
+                    </div> <!-- pageFormated ends -->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>
