@@ -666,7 +666,10 @@ body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
     padding: 0;
     margin: 0 3px;}
 #navbar li ul li {margin: 0}
-#navbar li ul li a {padding:3px 6px;}
+#navbar li ul li a {
+        background: url(../images/tabsCri.png) no-repeat scroll 6px 2px transparent;
+        padding: 2px 0 0 20px;
+    }
 #navbar li a {
     display: block;
     padding: 3px 8px 3px 22px;
@@ -685,6 +688,7 @@ body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
     margin: 0;
     padding: 0;
     }
+
 #navbar li:hover ul, #navbar li.hover ul {
     display: block;
     position: absolute;
@@ -706,11 +710,6 @@ body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 #navbar li li a { background-image: url(../images/none)}
 #navbar li li a:hover {
     background-color: #a6c62d; color:#fff; }
-
-
-
-
-
 
 /*menu icons*/
 .taxonomy a {background: url(../images/taxonomia.png)}

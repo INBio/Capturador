@@ -14,25 +14,27 @@
                     <webuijsf:link id="link1" url="/resources/css/stylesheet.css"/>
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
-                    <jsp:directive.include file="/Header.jspf"/>
-                    <webuijsf:panelLayout id="contenido">
-                        <webuijsf:form id="form1">
-                            <webuijsf:label id="lbTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 850px" styleClass="Page_title" text="#{resources.standard_selection}"/>
-                            <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="650">
-                                <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
-                                    style="height: 20px; width: 650px" warnClass="warnMessage"/>
-                                
-                                <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 650px">
-                                    <h:commandButton action="#{reports$StandardSelection.btnProcced_action}" id="btnProcced" style="height: 24px; width: 160px"
-                                        styleClass="My_Button" value="#{resources.button_proceed}"/>
-                                </webuijsf:panelGroup>
-                                <webuijsf:radioButtonGroup binding="#{reports$StandardSelection.radioButtonGroup}" id="radioButtonGroup" items="#{reports$StandardSelection.radioData.options}"
-                                    selected="#{reports$SnapshotSessionBean.resultRadioGroup}" style="font-size: 14px; height: 48px; width: 408px"/>
+                    <div id="pageFormated">
+                        <jsp:directive.include file="/Header.jspf"/>
+                        <webuijsf:panelLayout id="contenido">
+                            <webuijsf:form id="form1">
+                                <h:outputLabel id="lbTitle" style="height: 24px; left: 24px; position: relative; width: 850px" styleClass="Page_title" value="#{resources.standard_selection}"/>
+                                <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; position: relative" width="650">
+                                    <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
+                                        style="height: 20px; width: 650px" warnClass="warnMessage"/>
 
-                                <jsp:directive.include file="/Footer.jspf"/>
-                            </h:panelGrid>
-                        </webuijsf:form>
-                    </webuijsf:panelLayout>
+                                    <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 650px">
+                                        <h:commandButton action="#{reports$StandardSelection.btnProcced_action}" id="btnProcced" style="height: 24px; width: 160px"
+                                            styleClass="My_Button" value="#{resources.button_proceed}"/>
+                                    </webuijsf:panelGroup>
+                                    <webuijsf:radioButtonGroup binding="#{reports$StandardSelection.radioButtonGroup}" id="radioButtonGroup" items="#{reports$StandardSelection.radioData.options}"
+                                        selected="#{reports$SnapshotSessionBean.resultRadioGroup}" style="font-size: 14px; height: 48px; width: 408px"/>
+
+                                </h:panelGrid>
+                            </webuijsf:form>
+                        </webuijsf:panelLayout> <!-- contenido ends -->
+                        <jsp:directive.include file="/Footer.jspf"/>
+                    </div> <!-- pageFormated ends -->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>
