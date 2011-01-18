@@ -47,6 +47,9 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
 
     // </editor-fold>
 
+    //Variable que contiene los datos de la paginacion para ser mostrados en la tabla
+    private String quantityTotal = new String();
+
     // GUI bindings --  Table
     private HtmlDataTable dataTable = new HtmlDataTable();
 
@@ -243,6 +246,21 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
      */
     protected AraSessionBean getAraSessionBean() {
         return (AraSessionBean) getBean("AraSessionBean");
+    }
+
+    /**
+     * @return the quantityTotal
+     */
+    public String getQuantityTotal() {
+        quantityTotal = this.getNomenclaturalGroupSessionBean().getQuantityTotal();
+        return quantityTotal;
+    }
+
+    /**
+     * @param quantityTotal the quantityTotal to set
+     */
+    public void setQuantityTotal(String quantityTotal) {
+        this.quantityTotal = quantityTotal;
     }
 
 

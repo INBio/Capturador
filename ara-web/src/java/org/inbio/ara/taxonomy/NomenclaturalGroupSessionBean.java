@@ -196,6 +196,16 @@ public class NomenclaturalGroupSessionBean extends AbstractSessionBean
     public void setArRegionsEdit(AddRemoveList arRegionsEdit) {
         this.arRegionsEdit = arRegionsEdit;
     }
+
+    /**
+     * @return un String que contiene el detalle de la paginacion
+     */
+    public String getQuantityTotal() {
+        int actualPage = this.getPagination().getActualPage();
+        int resultsPerPage = this.getPagination().getResultsPerPage();
+        int totalResults = this.getPagination().getTotalResults();
+        return "  " + (actualPage + 1) + " - " + (actualPage + resultsPerPage) + "  | " + totalResults + "  ";
+    }
     
     /*
      * return the results of a consult of the pagination.
