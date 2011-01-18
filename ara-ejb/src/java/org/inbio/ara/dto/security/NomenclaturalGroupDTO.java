@@ -39,6 +39,7 @@ public class NomenclaturalGroupDTO extends GenericDTO implements Serializable{
     private Character commonName;
     private Long certificatorPersonId;
     private String notes;
+    private String certificatorPerson;
 
 
     public NomenclaturalGroupDTO(){
@@ -168,5 +169,19 @@ public class NomenclaturalGroupDTO extends GenericDTO implements Serializable{
      */
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    /**
+     * @return the certificatorPersonName
+     */
+    public String getCertificatorPerson() {
+        return certificatorPerson;
+    }
+
+    /**
+     * @param certificatorPersonName the certificatorPersonName to set
+     */
+    public void setCertificatorPerson(String certificatorPersonName) {
+        this.certificatorPerson = certificatorPersonName;
     }
 }

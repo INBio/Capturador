@@ -69,10 +69,12 @@ public class SecurityFacadeImpl implements SecurityFacadeRemote {
     }
 
     /**
-     * Metodo para obtener la lista completa de grupos nomenclaturales
+     * Metodo para obtener la lista completa de grupos nomenclaturales ordenados por nombre
      */
     public List<NomenclaturalGroupDTO> getAllNomenclaturalGroup(){
-        return this.nomenclaturalDTOFactory.createDTOList(this.nomenclaturalEAOImpl.findAll(NomenclaturalGroup.class));
+        String[] orderByFields = {"name"};
+        return this.nomenclaturalDTOFactory.createDTOList
+                (this.nomenclaturalEAOImpl.findAllAndOrderBy(NomenclaturalGroup.class,orderByFields));
     }
 
     /**

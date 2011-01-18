@@ -22,12 +22,16 @@ import java.util.Calendar;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.inbio.ara.persistence.LogGenericEntity;
+import org.inbio.ara.persistence.person.Person;
 
 /**
  *
@@ -65,9 +69,10 @@ public class NomenclaturalGroup extends LogGenericEntity {
     @Column(name = "notes")
     private String notes;
 
-//    @JoinColumn(name = "certificator_person_id", referencedColumnName = "person_id")
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Person certificatorPersonId;
+    @JoinColumn(name = "certificator_person_id", referencedColumnName = "person_id",insertable=false, updatable=false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Person certificatorPerson;
+
     @Column(name = "certificator_person_id")
     private Long certificatorPersonId;
 
@@ -194,6 +199,20 @@ public class NomenclaturalGroup extends LogGenericEntity {
      */
     public void setCertificatorPersonId(Long certificatorPersonId) {
         this.certificatorPersonId = certificatorPersonId;
+    }
+
+    /**
+     * @return the certificatorPerson
+     */
+    public Person getCertificatorPerson() {
+        return certificatorPerson;
+    }
+
+    /**
+     * @param certificatorPerson the certificatorPerson to set
+     */
+    public void setCertificatorPerson(Person certificatorPerson) {
+        this.certificatorPerson = certificatorPerson;
     }
 
 }

@@ -16,8 +16,8 @@
  */
 package org.inbio.ara.dto.security;
 
-import org.inbio.ara.dto.BaseDTOFactory;
 import org.inbio.ara.dto.BaseEntityOrDTOFactory;
+import org.inbio.ara.persistence.person.Person;
 import org.inbio.ara.persistence.taxonomy.NomenclaturalGroup;
 
 /**
@@ -38,24 +38,12 @@ public class NomenclaturalGroupDTOFactory extends
         result.setTemporality(entity.getTemporality());
         result.setCommonName(entity.getCommonName());
         result.setCertificatorPersonId(entity.getCertificatorPersonId());
-        result.setNotes(entity.getNotes());
+        if(entity.getCertificatorPerson() != null){
+           result.setCertificatorPerson(entity.getCertificatorPerson().getNaturalLongName());
+        }
+        result.setNotes(entity.getNotes());        
         return result;
     }
-
-//    public NomenclaturalGroup createEntity(NomenclaturalGroupDTO dto) {
-//        if(dto == null) {
-//            return null;
-//        }
-//        NomenclaturalGroup entity = new NomenclaturalGroup();
-//        entity.setName(dto.getName());
-//        entity.setDescription(dto.getDescription());
-//        entity.setTemporality(dto.getTemporality());
-//        entity.setCommonName(dto.getCommonName());
-//        entity.setCertificatorPersonId(dto.getCertificatorPersonId());
-//        entity.setCollectionId(dto.getCollectionId());
-//        entity.setNotes(dto.getNotes());
-//        return entity;
-//    }
 
     @Override
     public NomenclaturalGroup getEntityWithPlainValues(
