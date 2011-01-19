@@ -104,8 +104,7 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
         NomenclaturalGroupSessionBean ngsb =
             this.getNomenclaturalGroupSessionBean();
         
-        if(ngsb.getPagination() == null)
-            ngsb.initDataProvider();
+        ngsb.initDataProvider();
     }
 
     /**

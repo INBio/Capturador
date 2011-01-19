@@ -19,7 +19,6 @@ package org.inbio.ara.taxonomy;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.Label;
-import com.sun.webui.jsf.component.StaticText;
 //import com.sun.webui.jsf.component.TextArea;
 import java.util.HashMap;
 import java.util.List;
@@ -209,8 +208,6 @@ public class PreviewSpecies extends AbstractPageBean {
             if (TDR.getContentsNumeric() == 0) {
                 //76 es el abstract
                 if (TDR.getTaxonDescriptionElementId() == 76L) {
-                    //this.abstractText.setText(TDR.getContentsText());
-                    //this.abstractText.setVisible(true);
                     this.abstractText.setValue(TDR.getContentsText());
                 } else {
                     TaxonDescriptionElementDTO tde = ssb.getTaxonomyFacadeImpl().

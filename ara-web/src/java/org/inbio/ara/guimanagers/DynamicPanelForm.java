@@ -114,7 +114,7 @@ public class DynamicPanelForm {
 						HtmlInputTextarea component = new HtmlInputTextarea();
 						component.setCols(60);
 						component.setRows(8);
-						component.setStyle("font-family: Arial, Helvetica,sans-serif; font-size: 12px;");
+						component.setStyle("font-family: Arial, Helvetica,sans-serif; font-size: 12px;width: 100%;");
 						component.getAttributes().put(key, args.get(key));
 						finalComponent = component;
 					} else {
