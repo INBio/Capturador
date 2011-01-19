@@ -3577,3 +3577,11 @@ $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
 ALTER FUNCTION ara.taxon_nomenclatural_group_list(numeric, text) OWNER TO ara;
+
+--------------------------------------------------------------------------------
+--2011.01.19 esmata
+-- Adding a foreing key constrint to audience_id on table taxon_description_audience
+ALTER TABLE ara.taxon_description_audience ADD CONSTRAINT audience_fk FOREIGN KEY (audience_id)
+      REFERENCES ara.audience (audience_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION;
+
