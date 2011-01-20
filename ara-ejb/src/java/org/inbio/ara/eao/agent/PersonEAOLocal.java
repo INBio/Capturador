@@ -24,4 +24,11 @@ public interface PersonEAOLocal  extends BaseLocalEAO<Person,Long> {
 
     public java.util.List<org.inbio.ara.persistence.person.Person> findByFirstAndLastName(java.lang.String firstName, java.lang.String LastName);
 
+    public List<Long> findByFirstName(String firstName);
+
+    public List<Long> findByLastName(String lastName);
+
+    public List<Long> findByCountry(String country);
+
+    public List<Long> findByEmail(String email);
 }

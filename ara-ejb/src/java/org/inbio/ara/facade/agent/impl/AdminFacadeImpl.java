@@ -19,7 +19,9 @@
 package org.inbio.ara.facade.agent.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.SelectionListEntityDTO;
@@ -532,4 +534,123 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
 
     
 
+    
+
+    /**
+     * Search persons by first and last name, country and email
+     * @param query
+     * @param firstResult
+     * @param maxResult
+     * @return
+     */
+    public List<PersonDTO> getPersonSimpleSearch(String query, int firstResult, int maxResult) {
+        Set<Long> personIds = unstructeredPersonQuery(splitQuery(query));
+        List<Person> personList = getEntities(personIds, Person.class, firstResult, maxResult);
+        return personDTOFactory.createDTOList(personList);
+    }
+
+    /**
+     * Quantity of persons by first and last name, country and email
+     * @param query
+     * @return
+     */
+    public Long countPersonSimpleSearch(String query) {
+        Integer quantity = new Integer(unstructeredPersonQuery(splitQuery(query)).size());
+        return quantity.longValue();
+    }
+
+    /**
+     * Use this method for person simple search
+     * Search by: name and scientific name
+     * @param parts
+     * @return Set<Long>
+     */
+    private Set<Long> unstructeredPersonQuery(String[] parts)
+    {
+        Set<Long> list = new HashSet();
+        List<Long> ids = null;
+
+
+
+        for (int i = 0; i < parts.length; i++)
+        {
+            //try to cast it
+            try
+            {
+                //find by first name
+                ids = personEAOImpl.findByFirstName(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+                
+                //find by last name
+                ids = personEAOImpl.findByLastName(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by country
+                ids = personEAOImpl.findByCountry(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by email
+                ids = personEAOImpl.findByEmail(parts[i]);
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+            }
+            catch(Exception e){}
+        }
+        return list;
+    }
+
+
+    /**
+     * Get the entities for a list of Longs
+     * @param ids
+     * @param t
+     * @param base
+     * @param offset
+     * @return
+     */
+    private List getEntities(Set<Long> ids, Class t, int base, int offset)
+    {
+        List entitiesList = new ArrayList();
+        Object[] sortedIdentificationIds = ids.toArray();
+        java.util.Arrays.sort(sortedIdentificationIds);
+        int entitiesCounter = 0;
+        int baseCounter = 0;
+        if(sortedIdentificationIds.length > base)
+        {
+            for (Object id : sortedIdentificationIds)
+            {
+                if (baseCounter < base)
+                {
+                    baseCounter++;
+                }
+                else if(entitiesCounter < offset)
+                {
+                    if(t == Person.class)
+                    {
+                        entitiesList.add(personEAOImpl.
+                            findById(Person.class, (Long)id));
+                    }
+                    entitiesCounter++;
+                }
+
+            }
+        }
+        return entitiesList;
+    }
+
+    /**
+     * Split the query
+     * @param query
+     * @return
+     */
+    private String[] splitQuery(String query)
+    {
+            if(query == null || query.length() == 0)
+                return null;
+            return query.split(" ");
+    }
 }

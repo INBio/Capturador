@@ -85,4 +85,40 @@ public class PersonEAOImpl extends BaseEAOImpl<Person,Long> implements PersonEAO
         //q.setParameter("LastName", lowerLastName);
         return q.getResultList();
     }
+
+    public List<Long> findByFirstName(String firstName) {
+        String lowerfirstName = firstName.toLowerCase();
+        Query q = em.createQuery("select p.personId" +
+                " from Person p " +
+                " where lower(p.firstName) = '"+ lowerfirstName + "'"+
+                " order by p.personId");
+        return q.getResultList();
+    }
+
+    public List<Long> findByLastName(String lastName) {
+        String lowerlastName = lastName.toLowerCase();
+        Query q = em.createQuery("select p.personId" +
+                " from Person p " +
+                " where lower(p.lastName) = '"+ lowerlastName + "'"+
+                " order by p.personId");
+        return q.getResultList();
+    }
+
+    public List<Long> findByCountry(String country) {
+        String lowerCounry = country.toLowerCase();
+        Query q = em.createQuery("select p.personId" +
+                " from Person p " +
+                " where lower(p.country) = '"+ lowerCounry + "'"+
+                " order by p.personId");
+        return q.getResultList();
+    }
+
+    public List<Long> findByEmail(String email) {
+        String lowerEmail = email.toLowerCase();
+        Query q = em.createQuery("select p.personId" +
+                " from Person p " +
+                " where lower(p.email) = '"+ lowerEmail + "'"+
+                " order by p.personId");
+        return q.getResultList();
+    }
 }

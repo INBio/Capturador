@@ -8,6 +8,7 @@ package org.inbio.ara.facade.agent;
 import java.util.List;
 import javax.ejb.Remote;
 import org.inbio.ara.dto.agent.CollectionDTO;
+import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.SelectionListEntityDTO;
 
@@ -105,4 +106,8 @@ public interface AdminFacadeRemote {
     public void deleteProfilesByPersonId(java.lang.Long pId);
 
     public void updatePerson(org.inbio.ara.dto.inventory.PersonDTO pDTO);
+
+    public List<PersonDTO> getPersonSimpleSearch(String query, int firstResult, int maxResult);
+            
+    public Long countPersonSimpleSearch(String query);
 }
