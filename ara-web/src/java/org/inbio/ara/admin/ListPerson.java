@@ -22,7 +22,10 @@ import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.faces.FacesException;
+import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.inventory.PersonDTO;
@@ -63,6 +66,16 @@ public class ListPerson extends AbstractPageBean {
 
     //Variable que contiene los datos de la paginacion para ser mostrados en la tabla
     private String quantityTotal = new String();
+
+    //Variable que contiene los datos de la pagina
+
+
+    private HtmlPanelGrid alertMessage = new HtmlPanelGrid();
+    private HtmlPanelGrid mainPanel = new HtmlPanelGrid();
+
+    private HtmlCommandButton btnSimpleSearch = new HtmlCommandButton(); //Boton busqueda simple
+    private HtmlInputText txSimpleSearch = new HtmlInputText(); //Input text de busqueda simple
+
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -127,6 +140,14 @@ public class ListPerson extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+        if(getPersonSessionBean().isFirstTime())
+        {
+
+            PersonTable = new HtmlDataTable();
+            quantityTotal = new String();
+            getPersonSessionBean().setFirstTime(false);
+        }
+
         if(this.getPersonSessionBean().getPagination()==null){
             this.getPersonSessionBean().initDataProvider();
         }
@@ -286,6 +307,97 @@ public class ListPerson extends AbstractPageBean {
             return null;
         }
     }
+
+    /**
+     * Performed the simple search
+     * @return
+     */
+    public String btnSimpleSearch_action()
+    {
+        String userInput = "";
+        if(this.getTxSimpleSearch().getValue()!= null)
+            userInput = this.getTxSimpleSearch().getValue().toString();
+        userInput = userInput.trim();
+        System.out.println(1);
+        if(userInput.length()==0){
+            //Se desabilitan las banderas de busqueda simple y avanzada
+            this.getPersonSessionBean().setQueryModeSimple(false);
+            //Finalmente se setea el data provider del paginador con los datos por default
+            this.getPersonSessionBean().getPagination().setTotalResults
+                    (getPersonSessionBean().getAdminFacade().
+                    countPerson().intValue());
+        }
+        else{
+            //Setear el string para consulta simple del SessionBean
+            this.getPersonSessionBean().setConsultaSimple(userInput);
+            //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda simple
+            this.getPersonSessionBean().setQueryModeSimple(true);
+            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
+            this.getPersonSessionBean().getPagination().setTotalResults
+                    (getPersonSessionBean().getAdminFacade().
+                    countPersonSimpleSearch(userInput).intValue());
+        }
+        //set the first result of the query
+        this.getPersonSessionBean().getPagination().firstResults();
+        return null;
+    }
+
+    /**
+     * @return the alertMessage
+     */
+    public HtmlPanelGrid getAlertMessage() {
+        return alertMessage;
+    }
+
+    /**
+     * @param alertMessage the alertMessage to set
+     */
+    public void setAlertMessage(HtmlPanelGrid alertMessage) {
+        this.alertMessage = alertMessage;
+    }
+
+    /**
+     * @return the mainPanel
+     */
+    public HtmlPanelGrid getMainPanel() {
+        return mainPanel;
+    }
+
+    /**
+     * @param mainPanel the mainPanel to set
+     */
+    public void setMainPanel(HtmlPanelGrid mainPanel) {
+        this.mainPanel = mainPanel;
+    }
+
+    /**
+     * @return the btnSimpleSearch
+     */
+    public HtmlCommandButton getBtnSimpleSearch() {
+        return btnSimpleSearch;
+    }
+
+    /**
+     * @param btnSimpleSearch the btnSimpleSearch to set
+     */
+    public void setBtnSimpleSearch(HtmlCommandButton btnSimpleSearch) {
+        this.btnSimpleSearch = btnSimpleSearch;
+    }
+
+    /**
+     * @return the txSimpleSearch
+     */
+    public HtmlInputText getTxSimpleSearch() {
+        return txSimpleSearch;
+    }
+
+    /**
+     * @param txSimpleSearch the txSimpleSearch to set
+     */
+    public void setTxSimpleSearch(HtmlInputText txSimpleSearch) {
+        this.txSimpleSearch = txSimpleSearch;
+    }
+
     
 }
 

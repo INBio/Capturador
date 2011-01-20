@@ -97,6 +97,15 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
      */
     private boolean firstTime = true;
 
+
+    //Bandera para saber si se activo el panel de busqueda avanzada
+    private boolean advancedSearch = false;
+
+    //Bandera para indicarle al paginador que trabaje en modo busqueda simple
+    private boolean queryModeSimple = false;
+    //String que indica la consulta del usuario en la busqueda simple
+    private String consultaSimple = new String("");
+
     /**
      * <p>Construct a new session data bean instance.</p>
      */
@@ -420,8 +429,51 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
         this.arInstitutionesEdit = arInstitutionesEdit;
     }
 
+    /**
+     * Para evitar que retorne null al data provider del paginador
+     * @param l lista retornada para el paginador
+     * @return
+     */
+    public List myReturn(List l) {
+        if (l == null) {
+            return new ArrayList<PersonDTO>();
+        } else {
+            return l;
+        }
+    }
+
     public List getResults(int firstResult, int maxResults) {
-        return adminFacade.getAllPersonPaginated(firstResult, maxResults);
+
+        List<PersonDTO> auxResult = new ArrayList<PersonDTO>();
+
+        List<PersonDTO> aListDTO;
+
+        if (isQueryModeSimple())
+        { //En caso de que sea busqueda simple
+            try
+            {
+
+                aListDTO =  myReturn(getAdminFacade().
+                        getPersonSimpleSearch(consultaSimple, firstResult, maxResults));
+
+                return aListDTO;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return auxResult;
+            }
+        }
+        else //Valores default
+        {
+            try {
+                return adminFacade.getAllPersonPaginated(firstResult, maxResults);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return auxResult;
+            }
+        }
+        
     }
 
     /**
@@ -450,6 +502,48 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
      */
     public void setAdminFacade(AdminFacadeRemote adminFacade) {
         this.adminFacade = adminFacade;
+    }
+
+    /**
+     * @return the advancedSearch
+     */
+    public boolean isAdvancedSearch() {
+        return advancedSearch;
+    }
+
+    /**
+     * @param advancedSearch the advancedSearch to set
+     */
+    public void setAdvancedSearch(boolean advancedSearch) {
+        this.advancedSearch = advancedSearch;
+    }
+
+    /**
+     * @return the queryModeSimple
+     */
+    public boolean isQueryModeSimple() {
+        return queryModeSimple;
+    }
+
+    /**
+     * @param queryModeSimple the queryModeSimple to set
+     */
+    public void setQueryModeSimple(boolean queryModeSimple) {
+        this.queryModeSimple = queryModeSimple;
+    }
+
+    /**
+     * @return the consultaSimple
+     */
+    public String getConsultaSimple() {
+        return consultaSimple;
+    }
+
+    /**
+     * @param consultaSimple the consultaSimple to set
+     */
+    public void setConsultaSimple(String consultaSimple) {
+        this.consultaSimple = consultaSimple;
     }
 
     
