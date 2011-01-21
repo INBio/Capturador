@@ -3585,3 +3585,6 @@ ALTER TABLE ara.taxon_description_audience ADD CONSTRAINT audience_fk FOREIGN KE
       REFERENCES ara.audience (audience_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+--2011.01.21 gsulca
+ALTER TABLE ara.taxon_author DROP COLUMN obj_version;
+ALTER TABLE ara.taxon_author DROP COLUMN taxon_author_person_profile_id;
