@@ -20,11 +20,8 @@
 
 package org.inbio.ara.facade.search.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -154,7 +151,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         HashSet<Long> siteIds = (HashSet) unstructuredSiteQuery(parts);
         siteList = getEntities(siteIds, Site.class, base, offset);
 
-        // return siteDTOFactory.createDTOList(siteList);
         return gisFacade.updateCountryAndProvinceName(siteDTOFactory.createDTOList(siteList));
     }
 
@@ -164,7 +160,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         
         siteList = getEntities(siteIds, Site.class, base, offset);
 
-        // return siteDTOFactory.createDTOList(siteList);
         return gisFacade.updateCountryAndProvinceName(siteDTOFactory.createDTOList(siteList));
     }
 
@@ -1634,9 +1629,9 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                     } else if(t == Site.class) {
                         entitiesList.add(siteEAOImpl.findById(t, (Long)id));
                     } else if(t == Transaction.class) {
-                        entitiesList.add(transactionEAOImpl.findById(t, (Long)id));
-                    entitiesCounter++;
+                        entitiesList.add(transactionEAOImpl.findById(t, (Long)id));                    
                     }
+                    entitiesCounter++;
                 }
 
             }

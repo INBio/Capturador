@@ -6,10 +6,7 @@
 package org.inbio.commons.dublincore.facade.ara.impl;
 
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +21,6 @@ import org.inbio.commons.dublincore.dto.DublinCoreDTO;
 
 import org.inbio.commons.dublincore.dto.ElementTypeDTO;
 
-import org.inbio.commons.dublincore.dto.ResourceDescriptionDTO;
 import org.inbio.commons.dublincore.dto.ara.InterfaceDublinCoreDTO;
 import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
 import org.inbio.commons.dublincore.eao.ara.DublinCoreDescriptionEAOLocal;
@@ -116,6 +112,9 @@ public class DublinCoreFacadeImpl extends DublinCoreMetadataManagerImpl implemen
         {
             result.add(this.getMetadataByResourceKey(resourceId.toString()));
         }
+        System.out.println("Mata: "+result.size()+" Lista de entidades ");
+        System.out.println("Mata: "+resourceIds.size()+" Lista de identificadores ");
+        System.out.println(" ------- o -------");
         return result;
     }
 
