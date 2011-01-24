@@ -318,7 +318,6 @@ public class ListPerson extends AbstractPageBean {
         if(this.getTxSimpleSearch().getValue()!= null)
             userInput = this.getTxSimpleSearch().getValue().toString();
         userInput = userInput.trim();
-        System.out.println(1);
         if(userInput.length()==0){
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getPersonSessionBean().setQueryModeSimple(false);

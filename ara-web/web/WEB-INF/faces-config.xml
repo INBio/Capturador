@@ -692,10 +692,22 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     
-      <managed-bean>
+    <managed-bean>
         <managed-bean-name>label$GenerationLabels</managed-bean-name>
         <managed-bean-class>org.inbio.ara.label.GenerationLabels</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <!-- Autocomplete test -->
+    <managed-bean>
+        <managed-bean-name>autocomplete</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.autocomplete</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>AutoCompleteBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.AutoCompleteSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
 
@@ -1805,7 +1817,7 @@
     </navigation-rule>
 
      <!-- MODULO DE MODULO ETQ -->
-    
+
 </faces-config>
 
 

@@ -21,7 +21,7 @@
                             <webuijsf:form id="form1">
                                 <h:outputLabel id="lbGatheringTitle" style="width: 600px;height: 24px; left: 10px; position: relative;" styleClass="Page_title" value="#{resources.localities}"/>
                                 <h:panelGrid id="gridpGathering_Main" style=" width:600px">
-                                    <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msgListGathering" infoClass="infoMessage"
+                                <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msgListGathering" infoClass="infoMessage"
                                         style="height: 24px; width: 574px" warnClass="warnMessage"/>
                                 <h:panelGrid columns="4" id="gridpSearch" style="height: 24px" width="719">
                                         <h:inputText binding="#{gis$ListSite.txSearch}" id="txSearch" style="height: 18px; width: 408px">

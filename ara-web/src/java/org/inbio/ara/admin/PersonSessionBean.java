@@ -19,7 +19,6 @@
 package org.inbio.ara.admin;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
