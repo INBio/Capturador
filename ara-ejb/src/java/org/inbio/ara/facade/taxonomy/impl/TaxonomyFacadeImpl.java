@@ -44,8 +44,12 @@ import org.inbio.ara.dto.security.NomenclaturalGroupDTO;
 import org.inbio.ara.dto.security.NomenclaturalGroupDTOFactory;
 import org.inbio.ara.dto.taxonomy.LanguageDTO;
 import org.inbio.ara.dto.taxonomy.LanguageDTOFactory;
+import org.inbio.ara.dto.taxonomy.PersonAuthorDTO;
 import org.inbio.ara.dto.taxonomy.RegionDTO;
 import org.inbio.ara.dto.taxonomy.RegionDTOFactory;
+import org.inbio.ara.dto.taxonomy.TaxonAuthorDTO;
+import org.inbio.ara.dto.taxonomy.TaxonAuthorDTOFactory;
+import org.inbio.ara.dto.taxonomy.TaxonAuthorProfileDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionAudienceDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionAudienceDTOFactory;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionCategoryDTO;
@@ -73,6 +77,7 @@ import org.inbio.ara.dto.taxonomy.TaxonIndicatorDublinCoreDTOFactory;
 import org.inbio.ara.eao.agent.AudienceEAOLocal;
 import org.inbio.ara.eao.agent.InstitutionEAOLocal;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
+import org.inbio.ara.eao.agent.PersonProfileEAOLocal;
 import org.inbio.ara.eao.collection.CollectionEAOLocal;
 import org.inbio.ara.eao.gis.CountryEAOLocal;
 import org.inbio.ara.eao.identification.IdentificationEAOLocal;
@@ -86,6 +91,7 @@ import org.inbio.ara.eao.taxonomy.NomenclaturalGroupRegionEAOLocal;
 import org.inbio.ara.eao.taxonomy.ReferenceEAOLocal;
 import org.inbio.ara.eao.taxonomy.ReferenceTypeEAOLocal;
 import org.inbio.ara.eao.taxonomy.RegionEAOLocal;
+import org.inbio.ara.eao.taxonomy.TaxonAuthorEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonCategoryEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionAudienceEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonDescriptionCategoryEAOLocal;
@@ -109,6 +115,7 @@ import org.inbio.ara.persistence.collection.Collection;
 import org.inbio.ara.persistence.gis.Country;
 import org.inbio.ara.persistence.institution.Institution;
 import org.inbio.ara.persistence.person.Person;
+import org.inbio.ara.persistence.person.PersonProfile;
 import org.inbio.ara.persistence.person.ProfileEntity;
 import org.inbio.ara.persistence.taxonomy.GeographicCatalogue;
 import org.inbio.ara.persistence.taxonomy.GeographicEntity;
@@ -121,6 +128,8 @@ import org.inbio.ara.persistence.taxonomy.Reference;
 import org.inbio.ara.persistence.taxonomy.ReferenceType;
 import org.inbio.ara.persistence.taxonomy.Region;
 import org.inbio.ara.persistence.taxonomy.Taxon;
+import org.inbio.ara.persistence.taxonomy.TaxonAuthor;
+import org.inbio.ara.persistence.taxonomy.TaxonAuthorProfile;
 import org.inbio.ara.persistence.taxonomy.TaxonCategory;
 import org.inbio.ara.persistence.taxonomy.TaxonDescription;
 import org.inbio.ara.persistence.taxonomy.TaxonDescriptionAudience;
@@ -220,6 +229,11 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     private TaxonIndicatorDublinCoreEAOLocal taxonIndicatorDublinCoreEAOImpl;
     @EJB
     private TaxonIndicatorComponentPartEAOLocal taxonIndicatorComponentPartEAOImpl;
+    @EJB
+    private PersonProfileEAOLocal personProfileEAOImpl;
+    @EJB
+    private TaxonAuthorEAOLocal taxonAuthorEAOImpl;
+
 
     //DTO factories
     private TaxonDescriptionDTOFactory taxonDescriptionDTOFactory =
@@ -254,6 +268,7 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     private TaxonIndicatorCountryDTOFactory taxonIndicatorCountryDTOFactory = new TaxonIndicatorCountryDTOFactory();
     private TaxonIndicatorDublinCoreDTOFactory taxonIndicatorDublinCoreDTOFactory = new TaxonIndicatorDublinCoreDTOFactory();
     private TaxonIndicatorComponentPartDTOFactory taxonIndicatorComponentPartDTOFactory = new TaxonIndicatorComponentPartDTOFactory();
+    private TaxonAuthorDTOFactory taxonAuthorDTOFactory = new TaxonAuthorDTOFactory();
 
     /**
      * Retorna un listado paginado de TaxonDescriptionDTO
@@ -1462,5 +1477,204 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     {
         taxonIndicatorComponentPartEAOImpl.deleteTaxonIndicatorComponentPartByTaxonIndicator(taxonId, indicatorId);
     }
+
+    public List<TaxonAuthorProfileDTO> getAllTaxonAuthorProfile() {
+
+        List<TaxonAuthorProfileDTO> tapDTOList = new ArrayList<TaxonAuthorProfileDTO>();
+        //SelectionListEntityDTO sleDTO;
+        TaxonAuthorProfile[] all = TaxonAuthorProfile.values();
+
+        for(TaxonAuthorProfile tap: all){
+			//tapDTO = new TaxonAuthorProfileDTO(tap.getId(),sle.getNameAsProperty());
+            tapDTOList.add(new TaxonAuthorProfileDTO(tap.getId(), tap.getNameAsProperty(), tap.getNameAsProperty()));
+		}
+        return tapDTOList;
+    }
+
+
+    public String getAuthorName(Long personId, Long profileId,short formatId, boolean orientation)
+    {
+        String result;
+        switch(formatId)
+        {
+            case 0: result = perfilFormat(personId, profileId);
+                    if(result == null)
+                    {
+                        result = shortFormat(personId, orientation);
+                    }
+                    break;
+            case 1: result = shortFormat(personId, orientation);
+                    break;
+            case 2: result = LongFormat(personId, orientation);
+                    break;
+            case 3: result = completeFormat(personId, orientation);
+                    break;
+            default: result = shortFormat(personId, orientation);
+        }
+        return result;
+    }
+
+
+
+    private String perfilFormat(Long personId, Long profileId)
+    {
+        //System.out.println("entro a perfilFormat");
+        return personProfileEAOImpl.findPersonByPersonProfileId(personId, profileId);
+    }
+
+
+    private String shortFormat(Long personId,boolean orientation)
+    {
+        //System.out.println("entro a shortFormat");
+        String result = "";
+        Person person = personEAOImpl.findById(Person.class, personId);
+        String initials =person.getInitials();
+        String lastName =person.getLastName();
+
+        if(initials == null)
+        {
+            result =lastName;
+        }
+        else
+        {
+            if(lastName == null)
+            {
+                result = initials;
+            }
+            else
+            {
+                if(orientation)
+                {
+                    result = person.getInitials() +" "+person.getLastName();
+                }
+                else
+                {
+                    result = person.getLastName()+", "+person.getInitials();
+                }
+            }
+        }
+
+        return result;
+
+    }
+
+    private String LongFormat(Long personId, boolean orientation)
+    {
+     //   System.out.println("entro a longFormat");
+        String result = "";
+        Person person = personEAOImpl.findById(Person.class, personId);
+        String firstName =person.getFirstName();
+        String lastName =person.getLastName();
+
+        if(firstName == null)
+        {
+            result = lastName;
+        }
+        else
+        {
+            if(lastName == null)
+            {
+                result = firstName;
+            }
+            else
+            {
+                if(orientation)
+                {
+                    result = firstName +" "+lastName;
+                }
+                else
+                {
+                    result = lastName+", "+firstName;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private String completeFormat(Long personId, boolean orientation)
+    {
+        //System.out.println("entro a completeFormat");
+        String result = "";
+        Person person = personEAOImpl.findById(Person.class, personId);
+        String firstName =person.getFirstName();
+        String lastName =person.getLastName();
+        String secondLastName =person.getSecondLastName();
+        if(firstName == null)
+        {
+            firstName = "";
+        }
+        if(lastName == null)
+        {
+            lastName = "";
+        }
+        if(secondLastName != null)
+        {
+            secondLastName=" "+secondLastName;
+            
+        }
+        else
+        {
+            secondLastName = "";
+        }
+        if(orientation)
+        {
+            result = firstName +" "+lastName+secondLastName;
+        }
+        else
+        {
+
+            if(firstName != null)
+            {
+                firstName = ", "+firstName;
+            }
+           
+            result = lastName+secondLastName+firstName;
+        }
+        result = result.trim();
+        return result;
+    }
+
+
+    public List<PersonAuthorDTO> getAllPersonsByProfileId(Long profileId, Short formatId, boolean orientation)
+    {
+
+        List<PersonProfile> personProfiles = personProfileEAOImpl.findPersonsByProfileId(profileId);
+        List<PersonAuthorDTO> personAuthors = new ArrayList<PersonAuthorDTO>();
+        for(PersonProfile personProfile: personProfiles)
+        {
+            Long personId = personProfile.getPersonProfilePK().getPersonId();
+            personAuthors.add(new PersonAuthorDTO(personId,
+                    getAuthorName(personId, profileId, formatId, orientation)));
+        }
+        return personAuthors;
+
+    }
+
+
+    public void saveTaxonAuthors(Long taxonId, List<TaxonAuthorDTO> taxonAuthors, String userName)
+    {
+
+
+        for(TaxonAuthorDTO taxonAuthorDTO: taxonAuthors)
+        {
+
+            taxonAuthorDTO.setTaxonId(taxonId);
+            taxonAuthorDTO.setUserName(userName);
+            //newDTO.setValuerPersonId(1L);
+            TaxonAuthor taxonAuthor = taxonAuthorDTOFactory.createPlainEntity(taxonAuthorDTO);
+            taxonAuthorEAOImpl.create(taxonAuthor);
+        }
+
+    }
+
+    public void deleteTaxonAuthorByTaxonId(Long taxonId)
+    {
+        taxonAuthorEAOImpl.deleteTaxonAuthorByTaxonId(taxonId);
+    }
+
+
+
+
 
 }

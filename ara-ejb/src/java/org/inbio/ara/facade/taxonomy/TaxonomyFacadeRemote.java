@@ -14,7 +14,10 @@ import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.dto.security.NomenclaturalGroupDTO;
+import org.inbio.ara.dto.taxonomy.PersonAuthorDTO;
 import org.inbio.ara.dto.taxonomy.RegionDTO;
+import org.inbio.ara.dto.taxonomy.TaxonAuthorDTO;
+import org.inbio.ara.dto.taxonomy.TaxonAuthorProfileDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionCategoryDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionDTO;
 import org.inbio.ara.dto.taxonomy.TaxonDescriptionElementDTO;
@@ -244,5 +247,15 @@ public interface TaxonomyFacadeRemote {
     public void deleteTaxonIndicatorComponentPartByTaxonId(Long taxonId);
 
     public void deleteTaxonIndicatorComponentPartByTaxonIndicator(Long taxonId, Long indicatorId);
+
+    public List<TaxonAuthorProfileDTO> getAllTaxonAuthorProfile();
+
+    public String getAuthorName(Long personId,Long profileId, short formatId, boolean orientation);
+
+    public List<PersonAuthorDTO> getAllPersonsByProfileId(Long profileId, Short formatId, boolean orientation);
+
+    public void saveTaxonAuthors(Long taxonId, List<TaxonAuthorDTO> taxonAuthors, String userName);
+
+    public void deleteTaxonAuthorByTaxonId(Long taxonId);
 
 }
