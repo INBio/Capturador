@@ -33,7 +33,6 @@ import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.dto.taxonomy.CountryDTO;
 import org.inbio.ara.persistence.taxonomy.TaxonomicalRangeEntity;
-import org.inbio.ara.security.SystemUserSessionBean;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
@@ -1272,7 +1271,7 @@ public class EditTaxonomy2 extends AbstractPageBean {
 
     public String btnRemoveTaxonIndicator_action()
     {
-        this.getTaxonSessionBean().removeOption(this.getTaxonSessionBean().getElementSelected(), this.getTaxonSessionBean().getIndicatorRelations());
+        this.getTaxonSessionBean().removeIndicatorOption(this.getTaxonSessionBean().getElementSelected(), this.getTaxonSessionBean().getIndicatorRelations());
         indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
         this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
         return null;
