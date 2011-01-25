@@ -5,6 +5,7 @@
 
 package org.inbio.ara.eao.agent.impl;
 
+import java.util.List;
 import org.inbio.ara.eao.agent.*;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -25,5 +26,23 @@ public class PersonProfileEAOImpl extends BaseEAOImpl<PersonProfile,Long> implem
         q.executeUpdate();
         em.flush();
     }
- 
+
+    public String findPersonByPersonProfileId(Long personId, Long profileId)
+    {
+        Query q = em.createQuery("select pp.shortName from PersonProfile pp " +
+                "where pp.personProfilePK.personId = :personId and pp.personProfilePK.profileId = :profileId");
+        q.setParameter("personId", personId);
+        q.setParameter("profileId", profileId);
+        return (String)q.getSingleResult();
+    }
+
+    public List<PersonProfile> findPersonsByProfileId(Long profileId)
+    {
+        Query q = em.createQuery("select pp from PersonProfile pp " +
+                "where pp.personProfilePK.profileId = :profileId");
+        q.setParameter("profileId", profileId);
+        return q.getResultList();
+    }
+
+
 }
