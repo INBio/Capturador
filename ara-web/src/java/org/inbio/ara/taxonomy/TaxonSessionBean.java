@@ -7,16 +7,24 @@ package org.inbio.ara.taxonomy;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import com.sun.webui.jsf.model.Option;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
 import javax.faces.model.SelectItem;
+import javax.print.attribute.Size2DSyntax;
+import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.indicator.IndicatorDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.SelectionListEntity;
@@ -24,11 +32,17 @@ import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.dto.taxonomy.CountryDTO;
+import org.inbio.ara.dto.taxonomy.PersonAuthorDTO;
+import org.inbio.ara.dto.taxonomy.TaxonAuthorDTO;
+import org.inbio.ara.dto.taxonomy.TaxonAuthorProfileDTO;
 import org.inbio.ara.facade.gis.GisFacadeRemote;
 import org.inbio.ara.facade.indicator.IndicatorFacadeRemote;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.taxonomy.TaxonomyFacadeRemote;
+import org.inbio.ara.persistence.taxonomy.TaxonAuthor;
+import org.inbio.ara.persistence.taxonomy.TaxonAuthorProfile;
 import org.inbio.ara.util.AddRemoveList;
+import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.PaginationControllerRemix;
 import org.inbio.ara.util.PaginationCoreInterface;
 import org.inbio.commons.dublincore.dto.DublinCoreDTO;
@@ -141,15 +155,22 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
                                     new SelectItem(12L)
                                     };
 
+    /*private Option[] authorType = {new Option(0,"Originales"),
+                                    new Option(1,"Modificadores")};
+*/
+    private Option[] authorType;
     private Long taxonomicalRangeSelected;
     private Long taxonomicalCategorySelected;
+    private Long authorTypeSelected = 0L;
     private Long monthSelected = 1L;
     private boolean checkedParentheses;
+    private Long authorSelected;
 
     private String taxonName;
     private String basionymName;
     private Long year;
     private String taxonomicalRangeName = "";
+    private int authorListSize = 0;
 
 
     private Set<Option> indicatorRelations = new HashSet<Option>();
@@ -157,6 +178,10 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
     private Set<Long> indicatorRelationIds = new HashSet<Long>();
     private Set<Option> dbIndicatorRelations = new HashSet<Option>();
     private Set<Option> dbRanges = new HashSet<Option>();
+    private Set<Option> connectors = new HashSet<Option>();
+    private Set<Option> taxonAuthors = new HashSet<Option>();
+
+
     private Long elementSelected;
 
     private Long ddIndicatorSelected = null;
@@ -179,12 +204,38 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
     private Map<Long, Map<String,ReferenceDTO>> selectedTaxonIndicatorDublinCoreId = new HashMap<Long, Map<String,ReferenceDTO>>();
     private Map<Long, Map<String,ReferenceDTO>> dBTaxonIndicatorDublinCoreId = new HashMap<Long, Map<String,ReferenceDTO>>();
 
+    private List<TaxonAuthorDTO> authorList = new ArrayList<TaxonAuthorDTO>();
+
 
     private boolean ableTabTaxonIndicator = false;
     private boolean ableTabTaxonIndicatorCountry = false;
     private boolean ableTabTaxonIndicatorDublinCore = false;
     private boolean ableTabTaxonIndicatorComponentPart = false;
 
+
+    
+    private Long taxonAuthorSequence = -1L;
+    private String taxonAuthorName;
+    private Long connectorSelected = -1L;
+
+    private Long authorOriginalSequence = 0L;
+    private Long authorModificatorSequence = 0L;
+    private boolean visiblePanelAuthorAction = false;
+    private boolean readOnlySequence = false;
+
+
+    private Map<Long, Set<Option>> taxonAuthorsMap = new HashMap<Long, Set<Option>>();
+    private Map<Long, Long> taxonAuthorSequenceMap = new HashMap<Long, Long>();
+    private Map<Long, List<TaxonAuthorDTO>> authorListMap = new HashMap<Long, List<TaxonAuthorDTO>>();
+
+    private int countTaxonAuthorSelected = 0;
+
+    private boolean newAuthorAction = true;
+
+    private Option authorRemove = null;
+
+    private TaxonAuthorDTO newAuthor = null;
+    private int positionTaxonAuthorSelected = -1;
 
 
     /**
@@ -689,7 +740,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
         this.indicatorRelations = indicatorRelations;
     }
 
-    public void  removeOption(Long elementDeleted, Set<Option> indicators)
+    public void  removeIndicatorOption(Long elementDeleted, Set<Option> indicators)
     {
         for(Option element: indicators)
         {
@@ -703,6 +754,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
             }
 
         }
+
         indicatorRelationIds.remove(elementDeleted);
         elementSelected = null;
         
@@ -1158,7 +1210,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
      */
     public List getResults(int firstResult, int maxResults) {
 
-        System.out.println("ENTRO AL GET RESULTS DEL PAGINADOR");
+        //System.out.println("ENTRO AL GET RESULTS DEL PAGINADOR");
         List<ReferenceDTO> auxResult = new ArrayList<ReferenceDTO>();
 
         //Contiene el resultado de las busquedas
@@ -1318,6 +1370,87 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
             result += reference.getKey() +"\t"+reference.getTitle()+"\n";
         }
         return result;
+    }
+
+
+    /**
+     * Obtener los datos del drop down de las listas de seleccion
+     */
+    public void setTaxonAuthorProfileDropDownData(){
+
+        List<TaxonAuthorProfileDTO> tapDTOList = this.getTaxonomyFacade().getAllTaxonAuthorProfile();
+        ArrayList<Option> allOptions = new ArrayList<Option>();
+        Option[] allOptionsInArray;
+        //Option option;
+        String taxonAuthorProfileName;
+        //Crear opcion titulo
+        //option = new Option(null," -- "+BundleHelper.getDefaultBundleValue("drop_down_default",getMyLocale())+" --");
+        //allOptions.add(option);
+        //Crear todas las opciones del drop down
+        for(TaxonAuthorProfileDTO tapDTO : tapDTOList){
+            taxonAuthorProfileName = BundleHelper.getDefaultBundleValue(tapDTO.getNameAsProperty(), getMyLocale());
+            //option = new Option(sleDTO.getSelectionListEntityId(), selectionListName);
+            allOptions.add(new Option(tapDTO.getTaxonAuthorProfileId(), taxonAuthorProfileName));
+        }
+        //Sets the elements in the SingleSelectedOptionList Object
+        allOptionsInArray = new Option[allOptions.size()];        
+        this.setAuthorType(allOptions.toArray(allOptionsInArray));
+
+    }
+
+    public void setAuthorList()
+    {
+        //System.out.println("Entro a SetAuthorList");
+        List<PersonAuthorDTO> personAuthorDTOs = this.getTaxonomyFacade().getAllPersonsByProfileId(10L, new Short("0") , false);
+        //int size = personAuthorDTOs.size();
+        /*
+        Option[] taxonOriginalAuthors = new Option[size];
+        Option[] taxonModificatorAuthors = new Option[size];
+         */
+        Set<Option> taxonOriginalAuthors = new HashSet<Option>();
+        Set<Option> taxonModificatorAuthors = new HashSet<Option>();
+
+        //ArrayList<Option> allOptions = new ArrayList<Option>();
+
+        for(PersonAuthorDTO personAuthor: personAuthorDTOs)
+        //for(int pos = 0; pos < size; pos++)
+        {
+            taxonOriginalAuthors.add(new Option(personAuthor.getPersonId(),personAuthor.getName()));
+            taxonModificatorAuthors.add(new Option(personAuthor.getPersonId(),personAuthor.getName()));           
+        }
+
+        
+        getTaxonAuthorsMap().put(TaxonAuthorProfile.ORIGINALS.getId(), taxonOriginalAuthors);
+        getTaxonAuthorsMap().put(TaxonAuthorProfile.MODIFICATORS.getId(), taxonModificatorAuthors);
+        
+
+
+    }
+
+    public void initTaxonAuthorSequence()
+    {
+        TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
+        for(int pos = 0; pos < tap.length; pos++)
+        {
+            taxonAuthorSequenceMap.put(tap[pos].getId(), 1L);
+        }
+    }
+
+    public void initAuthorList()
+    {
+        TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
+        for(int pos = 0; pos < tap.length; pos++)
+        {
+            authorListMap.put(tap[pos].getId(), new ArrayList<TaxonAuthorDTO>());
+        }
+    }
+
+    public Locale getMyLocale() {
+        return this.getAraSessionBean().getCurrentLocale();
+    }
+
+     protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
     }
 
     /**
@@ -1612,5 +1745,546 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
         return this.getInventoryFacade().getSelectionListElementById(selectionListEntityId, selectionListValueId);
     }
 
+    public Set<Option> getSelectionListDropDownData(Long selectionListEntityId) {
+
+        List<SelectionListDTO> DTOList = this.getInventoryFacade().getAllSelectionListElementsByCollection(selectionListEntityId, getAraSessionBean().getGlobalCollectionId());
+
+        Set<Option> allOptions = new HashSet<Option>();
+        //Option[] allOptionsInArray;
+        Option option;
+        /*
+        //Crear opcion titulo
+        option = new Option(null, " -- " + BundleHelper.getDefaultBundleValue("drop_down_default", getMyLocale()) + " --");
+        allOptions.add(option);
+        */
+        //Crear todas las opciones del drop down
+        for (SelectionListDTO slDTO : DTOList) {
+            option = new Option(slDTO.getValueId(), slDTO.getValueName());
+            allOptions.add(option);
+        }
+        //allOptionsInArray = new Option[allOptions.size()];
+        //return allOptions.toArray(allOptionsInArray);
+        return allOptions;
+    }
+
+    public void saveTaxonAuthorDTOs(Long taxonId, List<TaxonAuthorDTO> taxonAuthorDTOs, String userName)
+    {
+        this.getTaxonomyFacade().saveTaxonAuthors(taxonId, taxonAuthorDTOs, userName);
+    }
+
+
+    public void deleteTaxonAuthorsByTaxon(Long taxonId)
+    {
+        this.getTaxonomyFacade().deleteTaxonAuthorByTaxonId(taxonId);
+    }
+
+    /**
+     * @return the authorType
+     */
+    public Option[] getAuthorType() {
+        return authorType;
+    }
+
+    /**
+     * @param authorType the authorType to set
+     */
+    public void setAuthorType(Option[] authorType) {
+        this.authorType = authorType;
+    }
+
+    /**
+     * @return the authorTypeSelected
+     */
+    public Long getAuthorTypeSelected() {
+        return authorTypeSelected;
+    }
+
+    /**
+     * @param authorTypeSelected the authorTypeSelected to set
+     */
+    public void setAuthorTypeSelected(Long authorTypeSelected) {
+        this.authorTypeSelected = authorTypeSelected;
+    }
+
+    /**
+     * @return the authorSelected
+     */
+    public Long getAuthorSelected() {
+        return authorSelected;
+    }
+
+    /**
+     * @param authorSelected the authorSelected to set
+     */
+    public void setAuthorSelected(Long authorSelected) {
+        this.authorSelected = authorSelected;
+    }
+
+    /**
+     * @return the authorList
+     */
+    public List<TaxonAuthorDTO> getAuthorList() {
+        return authorList;
+    }
+
+    /**
+     * @param authorList the authorList to set
+     */
+    public void setAuthorList(List<TaxonAuthorDTO> authorList) {
+        this.authorList = authorList;
+    }
+
+    /**
+     * @return the authorListSize
+     */
+    public int getAuthorListSize() {
+        return authorListSize;
+    }
+
+    /**
+     * @param authorListSize the authorListSize to set
+     */
+    public void setAuthorListSize(int authorListSize) {
+        this.authorListSize = authorListSize;
+    }
+
+    /**
+     * @return the taxonAuthorSequence
+     */
+    public Long getTaxonAuthorSequence() {
+        return taxonAuthorSequence;
+    }
+
+    /**
+     * @param taxonAuthorSequence the taxonAuthorSequence to set
+     */
+    public void setTaxonAuthorSequence(Long taxonAuthorSequence) {
+        this.taxonAuthorSequence = taxonAuthorSequence;
+    }
+
+    /**
+     * @return the taxonAuthorName
+     */
+    public String getTaxonAuthorName() {
+        return taxonAuthorName;
+    }
+
+    /**
+     * @param taxonAuthorName the taxonAuthorName to set
+     */
+    public void setTaxonAuthorName(String taxonAuthorName) {
+        this.taxonAuthorName = taxonAuthorName;
+    }
+
+    /**
+     * @return the connectors
+     */
+    public Set<Option> getConnectors() {
+        return connectors;
+    }
+
+    /**
+     * @param connectors the connectors to set
+     */
+    public void setConnectors(Set<Option> connectors) {
+        this.connectors = connectors;
+    }
+
+    /**
+     * @return the connectorSelected
+     */
+    public Long getConnectorSelected() {
+        return connectorSelected;
+    }
+
+    /**
+     * @param connectorSelected the connectorSelected to set
+     */
+    public void setConnectorSelected(Long connectorSelected) {
+        this.connectorSelected = connectorSelected;
+    }
+
+    /**
+     * @return the taxonAuthors
+     */
+    public Set<Option> getTaxonAuthors() {
+        return taxonAuthors;
+    }
+
+    /**
+     * @param taxonAuthors the taxonAuthors to set
+     */
+    public void setTaxonAuthors(Set<Option> taxonAuthors) {
+        this.taxonAuthors = taxonAuthors;
+    }
+
+    /**
+     * @return the visiblePanelAuthorAction
+     */
+    public boolean isVisiblePanelAuthorAction() {
+        return visiblePanelAuthorAction;
+    }
+
+    /**
+     * @param visiblePanelAuthorAction the visiblePanelAuthorAction to set
+     */
+    public void setVisiblePanelAuthorAction(boolean visiblePanelAuthorAction) {
+        this.visiblePanelAuthorAction = visiblePanelAuthorAction;
+    }
+
+    /**
+     * @return the authorOriginalSequence
+     */
+    public Long getAuthorOriginalSequence() {
+        return authorOriginalSequence;
+    }
+
+    /**
+     * @param authorOriginalSequence the authorOriginalSequence to set
+     */
+    public void setAuthorOriginalSequence(Long authorOriginalSequence) {
+        this.authorOriginalSequence = authorOriginalSequence;
+    }
+
+    /**
+     * @return the authorModificatorSequence
+     */
+    public Long getAuthorModificatorSequence() {
+        return authorModificatorSequence;
+    }
+
+    /**
+     * @param authorModificatorSequence the authorModificatorSequence to set
+     */
+    public void setAuthorModificatorSequence(Long authorModificatorSequence) {
+        this.authorModificatorSequence = authorModificatorSequence;
+    }
+
+    /**
+     * @return the taxonAuthorsMap
+     */
+    public Map<Long, Set<Option>> getTaxonAuthorsMap() {
+        return taxonAuthorsMap;
+    }
+
+    /**
+     * @param taxonAuthorsMap the taxonAuthorsMap to set
+     */
+    public void setTaxonAuthorsMap(Map<Long, Set<Option>> taxonAuthorsMap) {
+        this.taxonAuthorsMap = taxonAuthorsMap;
+    }
+
+
+    public Option  removeOption(Long elementDeleted, Set<Option> set)
+    {
+        Option result = null;
+        for(Option element: set)
+        {
+            Long idElement = new Long(element.getValue().toString());
+
+            if(idElement.equals(elementDeleted))
+            {
+                result = element;
+                set.remove(element);
+                break;
+            }
+
+        }
+        return result;
+    }
+
+
+    /**
+     * @return the taxonAuthorSequenceMap
+     */
+    public Map<Long, Long> getTaxonAuthorSequenceMap() {
+        return taxonAuthorSequenceMap;
+    }
+
+    /**
+     * @param taxonAuthorSequenceMap the taxonAuthorSequenceMap to set
+     */
+    public void setTaxonAuthorSequenceMap(Map<Long, Long> taxonAuthorSequenceMap) {
+        this.taxonAuthorSequenceMap = taxonAuthorSequenceMap;
+    }
+
+    /**
+     * @return the readOnlySequence
+     */
+    public boolean isReadOnlySequence() {
+        return readOnlySequence;
+    }
+
+    /**
+     * @param readOnlySequence the readOnlySequence to set
+     */
+    public void setReadOnlySequence(boolean readOnlySequence) {
+        this.readOnlySequence = readOnlySequence;
+    }
+
+    public List<TaxonAuthorDTO> reorderSequence(TaxonAuthorDTO element, List<TaxonAuthorDTO> list )
+    {
+        List<TaxonAuthorDTO> listResult= new ArrayList<TaxonAuthorDTO>();
+        List<TaxonAuthorDTO> tmpList = new ArrayList<TaxonAuthorDTO>();
+
+        int size = list.size();
+
+        boolean divide = false;
+        for(int pos = 0; pos < size; pos++)
+        {
+            
+            //
+            if(list.get(pos).getTaxonAuthorConnectorId() == null && list.get(pos).getTaxonAuthorConnector().equals("&"))
+            {
+                list.get(pos).setTaxonAuthorConnector(",");
+            }
+            
+            if(list.get(pos).getTaxonAuthorSequence() == element.getTaxonAuthorSequence() || divide)
+            {         
+                TaxonAuthorDTO ta = list.get(pos);
+                Long sequenceValue =ta.getTaxonAuthorSequence( )+1;
+                ta.setTaxonAuthorSequence(sequenceValue);
+                tmpList.add(ta);
+                
+                divide = true;              
+            }
+            else
+            {               
+                   listResult.add(list.get(pos));              
+            }
+        }
+
+        listResult.add(element);      
+        listResult.addAll(tmpList);        
+        
+        return listResult;
+    }
+
+    public void editSequence(TaxonAuthorDTO element, List<TaxonAuthorDTO> list )
+    {
+        int newPos = element.getTaxonAuthorSequence().intValue()-1;
+        list.remove(positionTaxonAuthorSelected);
+        list.add(newPos, element);
+        Long sequence = 0L;
+        if(positionTaxonAuthorSelected < newPos && (newPos - positionTaxonAuthorSelected) > 0)
+        {
+
+            for(int pos = positionTaxonAuthorSelected; pos < newPos; pos++)
+            {
+                sequence = list.get(pos).getTaxonAuthorSequence() - 1L;
+                list.get(pos).setTaxonAuthorSequence(sequence);
+            }
+        }
+        
+        if(positionTaxonAuthorSelected > newPos && ( positionTaxonAuthorSelected - newPos) > 0)
+        {
+            for(int pos = newPos+1; pos <= positionTaxonAuthorSelected; pos++)
+            {
+                sequence = list.get(pos).getTaxonAuthorSequence() + 1L;
+                list.get(pos).setTaxonAuthorSequence(sequence);
+            }
+        }
+
+    }
+
+     public String getLabelConnector(Long idConnector)
+     {
+         //TaxonSessionBean tsb = this.getTaxonSessionBean();
+         String result = "";
+
+         for(Option connector: this.getConnectors())
+         {
+             if(connector.getValue().equals(idConnector))
+             {
+                 result = connector.getLabel();
+                 break;
+             }
+         }
+         return result;
+     }
+
+     public TaxonAuthorDTO getTaxonAuthorSelected()
+     {
+         TaxonAuthorDTO result = null;
+         for(TaxonAuthorDTO taxonAuthor: authorList)
+         {
+             if(taxonAuthor.isSelected())
+             {
+                 result = taxonAuthor;
+                 countTaxonAuthorSelected++;
+             }
+         }
+         return result;
+
+     }
+
+     public int getPosTaxonAuthorSelected()
+     {
+         //System.out.println("-- Entro a Contar");
+         int result = -1;
+         
+         for(int pos= 0;pos < authorList.size(); pos++)
+         {
+             if(authorList.get(pos).isSelected())
+             {
+
+                 result = pos;
+                 countTaxonAuthorSelected++;
+                 //System.out.println("\t\tcountTaxonAuthorSelected = "+countTaxonAuthorSelected);
+             }
+         }
+          
+         return result;
+
+     }
+
+
+     public TaxonAuthorDTO removeTaxonAuthorSelected()
+     {
+         TaxonAuthorDTO result = null;
+         boolean editableSequence = false;
+         for(TaxonAuthorDTO taxonAuthor: authorList)
+         //int size = authorList.size();
+         //for(int pos = 0; pos<size; pos++)
+         {
+
+             if(editableSequence)
+             {
+                 Long newSequence =taxonAuthor.getTaxonAuthorSequence()-1L;
+                 //System.out.println("Editando sequence => sequence = "+taxonAuthor.getTaxonAuthorSequence() +" , new sequence = "+newSequence);
+                 taxonAuthor.setTaxonAuthorSequence(newSequence);
+             }
+             if(taxonAuthor.isSelected())
+             {
+                 result = taxonAuthor;
+                
+                 editableSequence = true;
+                 //countTaxonAuthorSelected++;
+             }
+             
+         }
+         authorList.remove(result);
+         return result;
+
+     }
+
+    /**
+     * @return the countTaxonAuthorSelected
+     */
+    public int getCountTaxonAuthorSelected() {
+        return countTaxonAuthorSelected;
+    }
+
+    /**
+     * @param countTaxonAuthorSelected the countTaxonAuthorSelected to set
+     */
+    public void setCountTaxonAuthorSelected(int countTaxonAuthorSelected) {
+        this.countTaxonAuthorSelected = countTaxonAuthorSelected;
+    }
+
+    /**
+     * @return the newAuthorAction
+     */
+    public boolean isNewAuthorAction() {
+        return newAuthorAction;
+    }
+
+    /**
+     * @param newAuthorAction the newAuthorAction to set
+     */
+    public void setNewAuthorAction(boolean newAuthorAction) {
+        this.newAuthorAction = newAuthorAction;
+    }
+
+    /**
+     * @return the authorListMap
+     */
+    public Map<Long, List<TaxonAuthorDTO>> getAuthorListMap() {
+        return authorListMap;
+    }
+
+    /**
+     * @param authorListMap the authorListMap to set
+     */
+    public void setAuthorListMap(Map<Long, List<TaxonAuthorDTO>> authorListMap) {
+        this.authorListMap = authorListMap;
+    }
+
+     public static Object deepCopy(Object orig) {
+        Object obj = null;
+        try {
+            // Write the object out to a byte array
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(bos);
+            out.writeObject(orig);
+            out.flush();
+            out.close();
+
+            // Make an input stream from the byte array and read
+            // a copy of the object back in.
+            ObjectInputStream in = new ObjectInputStream(
+                new ByteArrayInputStream(bos.toByteArray()));
+            obj = in.readObject();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        catch(ClassNotFoundException cnfe) {
+            cnfe.printStackTrace();
+        }
+        return obj;
+    }
+
+    /**
+     * @return the authorRemove
+     */
+    public Option getAuthorRemove() {
+        return authorRemove;
+    }
+
+    /**
+     * @param authorRemove the authorRemove to set
+     */
+    public void setAuthorRemove(Option authorRemove) {
+        this.authorRemove = authorRemove;
+    }
+
+    public void addOptionToTaxonAuthors(TaxonAuthorDTO element)
+    {
+        Option tmp = new Option(element.getTaxonAuthorPersonId(),element.getTaxonAuthorName());
+
+        getTaxonAuthorsMap().get(getAuthorTypeSelected()).add(tmp);
+
+    }
+
+    /**
+     * @return the newAuthor
+     */
+    public TaxonAuthorDTO getNewAuthor() {
+        return newAuthor;
+    }
+
+    /**
+     * @param newAuthor the newAuthor to set
+     */
+    public void setNewAuthor(TaxonAuthorDTO newAuthor) {
+        this.newAuthor = newAuthor;
+    }
+
+    /**
+     * @param positionTaxonAuthorSelected the positionTaxonAuthorSelected to set
+     */
+    public void setPositionTaxonAuthorSelected(int positionTaxonAuthorSelected) {
+        this.positionTaxonAuthorSelected = positionTaxonAuthorSelected;
+    }
+
+    /**
+     * @return the positionTaxonAuthorSelected
+     */
+    public int getPositionTaxonAuthorSelected() {
+        return positionTaxonAuthorSelected;
+    }
+
+ 
 
 }
