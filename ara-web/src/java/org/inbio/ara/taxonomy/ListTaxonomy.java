@@ -368,6 +368,7 @@ public class ListTaxonomy extends AbstractPageBean {
                     TSB.deleteTaxonIndicatorComponentPartByTaxonId(taxonId);
                     TSB.deleteTaxonIndicatorDublinCoreByTaxonId(taxonId);
                     TSB.deleteTaxonIndicatorByTaxonId(taxonId);
+                    TSB.deleteTaxonAuthorsByTaxon(taxonId);
                     TSB.removeTaxon(taxonId);
                     MessageBean.setSuccessMessageFromBundle("taxon_delete", this.getMyLocale());
 

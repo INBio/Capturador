@@ -31,11 +31,12 @@
                     </jsp:scriptlet>
                 </webuijsf:head>
                 <webuijsf:body id="body1" onLoad="initIndicators()" style="-rave-layout: grid">
+                    <div id="pageFormated">
                     <jsp:directive.include file="/Header.jspf"/>
                     <webuijsf:panelLayout id="contenido">
                         <webuijsf:form id="form1">
-                            <webuijsf:label id="lbTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 850px" styleClass="Page_title" text="#{resources.title_taxon_new}"/>
-                            <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="850">
+                            <h:outputLabel id="lbTitle" style="height: 24px; left: 24px; position: relative; width: 850px" styleClass="Page_title" value="#{resources.title_taxon_new}"/>
+                            <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; position: relative" width="850">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                     style="height: 50px; width: 840px" warnClass="warnMessage"/>
                                 <h:panelGrid columns="1" id="grouppBotoneraIndicator" style="height: 24px" width="540">
@@ -85,6 +86,79 @@
                                                 </h:panelGrid>
                                             </h:panelGrid>
 
+                                        </h:panelGrid>
+                                    </webuijsf:tab>
+                                    <!-- Tab para relación entre taxon - author -->
+                                    <webuijsf:tab id="tabTaxonAuthor" text="#{resources.title_author}">
+                                        <h:panelGrid columns="1" id="panelTaxonAuthor">
+                                            <h:panelGrid columns="2" id="panelAuthorType">
+                                                <webuijsf:label for="ddAuthorType" id="lbAuthorType" text="#{resources.author_type}"/>
+                                                <webuijsf:dropDown binding="#{taxonomy$NewTaxonomy.ddAuthorType}" id="ddAuthorType"
+                                                                   items="#{taxonomy$TaxonSessionBean.authorType}"
+                                                    selected="#{taxonomy$TaxonSessionBean.authorTypeSelected}"
+                                                    actionExpression="#{taxonomy$NewTaxonomy.setAuthorList}"
+                                                    submitForm="true"
+                                                />
+                                            </h:panelGrid>
+                                            <h:panelGrid columns="3" id="panelAuthorsList">
+                                                <webuijsf:listbox id="authorList"  items="#{taxonomy$NewTaxonomy.taxonAuthors}" selected="#{taxonomy$TaxonSessionBean.authorSelected}" />
+                                                <h:panelGrid columns="1" id="panelAuthorsActions">
+                                                    <h:commandButton id="btnAddAuthor"  action="#{taxonomy$NewTaxonomy.btnAddAuthor_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.add}"/>
+                                                    <h:commandButton id="btnEditAuthor"  action="#{taxonomy$NewTaxonomy.btnEditAuthor_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.edit}"/>
+                                                    <h:commandButton id="btnRemoveAuthor"  action="#{taxonomy$NewTaxonomy.btnRemoveAuthor_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.remove}"/>
+                                                </h:panelGrid>
+                                                <h:panelGrid columns="1" id="tableAuthorsSelected">
+                                                    <h:panelGrid columns="1" id="gridAuthorQuantity" styleClass="My_table_top" width="540">
+                                                        <h:outputLabel id="labelAuthorQuantity" value="#{taxonomy$NewTaxonomy.authorQuantityTotal}"/>
+                                                    </h:panelGrid>
+                                                    <h:dataTable binding="#{taxonomy$NewTaxonomy.dataTableAuthors}" cellspacing="0" columnClasses="list-columns"
+                                                        headerClass="list-header" id="dataTableAuthors" rowClasses="list-row-even,list-row-odd"
+                                                        rows="#{taxonomy$TaxonSessionBean.authorListSize}"
+                                                        style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
+                                                        value="#{taxonomy$TaxonSessionBean.authorList}" var="currentRow" width="540">
+                                                        <h:column>
+                                                            <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow.selected}"/>
+                                                        </h:column>
+
+                                                        <h:column>
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{resources.taxon_author_sequence}"/>
+                                                            </f:facet>                                                            
+                                                            <h:outputText value="#{currentRow.taxonAuthorSequence}"/>
+                                                        </h:column>
+                                                        
+                                                        <h:column>
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{resources.taxon_author}"/>
+                                                            </f:facet>
+                                                            <h:outputText value="#{currentRow.taxonAuthorName}"/>
+                                                        </h:column>
+                                                        <h:column>
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{resources.taxon_author_connector}"/>
+                                                            </f:facet>
+                                                            <h:outputText value="#{currentRow.taxonAuthorConnector}"/>
+                                                        </h:column>                                                       
+
+                                                    </h:dataTable>
+                                                </h:panelGrid>
+                                            </h:panelGrid>
+                                            <h:panelGrid columns="2" id="panelAuthorsAction"  rendered="#{taxonomy$TaxonSessionBean.visiblePanelAuthorAction}"  styleClass="My_subpanel_blue">
+                                                <webuijsf:label for="txTaxonAuthorSequence" id="lbTaxonAuthorSequence" text="#{resources.taxon_author_sequence}"/>
+                                                <webuijsf:textField columns="25"  id="txTaxonAuthorSequence" text="#{taxonomy$TaxonSessionBean.taxonAuthorSequence}"/>
+
+                                                <webuijsf:label for="txTaxonAuthorName"  id="lbTaxonAuthorName" text="#{resources.taxon_author}"/>
+                                                <webuijsf:textField columns="25" readOnly="true" id="txTaxonAuthorName" text="#{taxonomy$TaxonSessionBean.taxonAuthorName}"/>
+
+                                                <webuijsf:label for="ddConnector" id="lbConnector" text="#{resources.taxon_author_connector}"/>
+                                                <webuijsf:dropDown binding="#{taxonomy$NewTaxonomy.ddConnector}" id="ddConnector"
+                                                                   items="#{taxonomy$TaxonSessionBean.connectors}"
+                                                    selected="#{taxonomy$TaxonSessionBean.connectorSelected}"
+                                                />
+
+                                                <h:commandButton id="btnAceptAuthor"  action="#{taxonomy$NewTaxonomy.btnAceptAuthor_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.acept}"/>
+                                                <h:commandButton id="btnCancelAuthor"  action="#{taxonomy$NewTaxonomy.btnCancelAuthor_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.cancel}"/>
+                                            </h:panelGrid>
                                         </h:panelGrid>
                                     </webuijsf:tab>
                                     <!-- Tab para relación entre taxon - indicador -->
@@ -300,7 +374,7 @@
                                                 </webuijsf:panelGroup>
                                             </webuijsf:panelGroup>
 
-                                                    <h:dataTable binding="#{taxonomy$NewTaxonomy.dataTableDublinCore}" cellspacing="0" columnClasses="list-columns"
+                                            <h:dataTable binding="#{taxonomy$NewTaxonomy.dataTableDublinCore}" cellspacing="0" columnClasses="list-columns"
                                                 headerClass="list-header" id="dataTablegathering" rowClasses="list-row-even,list-row-odd"
                                                 rows="#{taxonomy$TaxonSessionBean.pagination.resultsPerPage}"
                                                 style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
@@ -346,10 +420,12 @@
                                 <h:inputHidden binding="#{taxonomy$NewTaxonomy.hiddenTypeGroup}" id="hiddenTypeGroup"/>
                                 <h:inputHidden binding="#{taxonomy$NewTaxonomy.hiddenNodeId}" id="hiddenNodeId"/>
                                 <h:inputHidden binding="#{taxonomy$NewTaxonomy.hiddenPathNode}" id="hiddenPathNode"/>
-                                <jsp:directive.include file="/Footer.jspf"/>
+                                
                             </h:panelGrid>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
+                    <jsp:directive.include file="/Footer.jspf"/>
+                 </div> <!-- pageFormated ends -->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>

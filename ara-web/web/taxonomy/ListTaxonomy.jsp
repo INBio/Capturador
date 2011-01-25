@@ -28,11 +28,12 @@
                     </jsp:scriptlet>
                 </webuijsf:head>
                 <webuijsf:body id="body1" onLoad="initTaxonomy()" style="-rave-layout: grid">
+                    <div id="pageFormated">
                     <jsp:directive.include file="/Header.jspf"/>
                     <webuijsf:panelLayout id="contenido">
                         <webuijsf:form id="form1">
-                            <webuijsf:label id="lbTitle" style="height: 24px; left: 24px; top: 24px; position: absolute; width: 850px" styleClass="Page_title" text="#{resources.taxon}"/>
-                            <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 48px; position: absolute" width="850">
+                            <h:outputLabel id="lbTitle" style="height: 24px; left: 24px; position: relative; width: 850px" styleClass="Page_title" value="#{resources.taxon}"/>
+                            <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; position: relative" width="850">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                     style="height: 50px; width: 840px" warnClass="warnMessage"/>
                                 <h:panelGrid columns="4" id="grouppBotoneraIndicator" style="height: 24px" width="540">
@@ -53,11 +54,12 @@
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenTypeGroup}" id="hiddenTypeGroup"/>
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenRootNodeId}" id="hiddenRootNodeId"/>
                                     </h:panelGrid>
-                                </h:panelGrid>
-                                <jsp:directive.include file="/Footer.jspf"/>
+                                </h:panelGrid>                          
                             </h:panelGrid>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
+                    <jsp:directive.include file="/Footer.jspf"/>
+                    </div>
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>

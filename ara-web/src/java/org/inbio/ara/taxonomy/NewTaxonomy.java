@@ -32,9 +32,12 @@ import javax.faces.model.SelectItem;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.indicator.IndicatorDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
+import org.inbio.ara.dto.inventory.SelectionListEntity;
 import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.dto.taxonomy.CountryDTO;
+import org.inbio.ara.dto.taxonomy.TaxonAuthorDTO;
+import org.inbio.ara.persistence.taxonomy.TaxonAuthorProfile;
 import org.inbio.ara.persistence.taxonomy.TaxonomicalRangeEntity;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
@@ -82,7 +85,7 @@ public class NewTaxonomy extends AbstractPageBean {
     private String quantityTotal = new String();
     private String selected = new String();
 
-
+    private String authorQuantityTotal = new String("0");
     /*
      * Elementos de la página web utilizados para almacenar la información del
      * nodo seleccionado en el árbol y así lograr el traspaso de información
@@ -100,8 +103,11 @@ public class NewTaxonomy extends AbstractPageBean {
 
     private DropDown ddIndicators= new DropDown();
     private DropDown ddRanges= new DropDown();
+    private DropDown ddAuthorType= new DropDown();
     private DropDown ddIndicatorsDublinCore= new DropDown();
     private DropDown ddIndicatorsComponentPart= new DropDown();
+    private DropDown ddConnector = new DropDown();
+
     private TabSet taxonTabs= new TabSet();
 
     private SelectItem[] ddRangeItems;
@@ -114,6 +120,8 @@ public class NewTaxonomy extends AbstractPageBean {
     private Option[] indicatorRelations = new Option[0];
 
     private Option[] indicatorRelationsAP = new Option[0];
+
+    private Option[] taxonAuthors = new Option[0];
 
     private DefaultOptionsList listbox1DefaultOptions = new DefaultOptionsList();
 
@@ -136,6 +144,8 @@ public class NewTaxonomy extends AbstractPageBean {
     private HtmlCommandButton btnAdvSearch = new HtmlCommandButton();
 
     private HtmlDataTable dataTableDublinCore = new HtmlDataTable();
+
+    private HtmlDataTable dataTableAuthors = new HtmlDataTable();
 
 
     
@@ -207,8 +217,8 @@ public class NewTaxonomy extends AbstractPageBean {
     public void prerender() {
 
         TaxonSessionBean tsb = this.getTaxonSessionBean();
-        System.out.println("Hizo prerender");
-             
+        //System.out.println("Hizo prerender");
+         
         //Set hidden value from session bean
         hiddenTaxonNodeId.setValue(tsb.getTaxonNodeId());
         hiddenPathTaxonNode.setValue(tsb.getPathTaxonNode());
@@ -250,6 +260,61 @@ public class NewTaxonomy extends AbstractPageBean {
             tsb.getIndicatorRelationsAP().toArray(indicatorRelationsAP);
         }
 
+        //On focus tabTaxonAuthor:
+        if(tsb.getTaxonTabSelected().equals("tabTaxonAuthor"))
+        {
+
+            //load AuthorProfileType
+            tsb.setTaxonAuthorProfileDropDownData();
+            //load Connectors
+            Set<Option> connectors = new HashSet<Option>();
+            connectors.add(new Option(-1L, " -- " + BundleHelper.getDefaultBundleValue
+                                    ("drop_down_default", getMyLocale()) + " --"));
+            connectors.addAll(tsb.getSelectionListDropDownData(
+                                SelectionListEntity.TAXON_AUTHOR_CONNECTOR.getId()));
+            tsb.setConnectors(connectors);
+
+            //load AuthorList
+            if(tsb.getTaxonAuthorsMap().size() == 0)
+            {
+                //System.out.println("=== taxonAuthorMap esta vacio");
+                //System.out.print("-> AuthorList size:"+tsb.getTaxonAuthorsMap().size());
+                tsb.setAuthorList();
+                tsb.initTaxonAuthorSequence();
+                tsb.initAuthorList();
+                //System.out.println("-> AuthorTypeSelected:"+tsb.getAuthorTypeSelected());
+                
+                
+             
+            }
+            //set authorSequence
+            if(tsb.getTaxonAuthorSequence() == -1)
+            {
+                tsb.setTaxonAuthorSequence(tsb.getTaxonAuthorSequenceMap().get(tsb.getAuthorTypeSelected()));
+            }
+            //System.out.print("TaxonAuthorSequence-> :"+tsb.getTaxonAuthorSequence());
+            /*
+            taxonAuthors = new Option[tsb.getTaxonAuthors().size()];
+            tsb.getTaxonAuthors().toArray(taxonAuthors);
+            */
+            /*
+            if(tsb.getAuthorTypeSelected() == TaxonAuthorProfile.ORIGINALS.getId())
+            {
+                //taxonAuthors = tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId());
+                taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId()).size()];
+                tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId()).toArray(taxonAuthors);
+            }
+            else
+            {
+                //taxonAuthors = tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId());
+                taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId()).size()];
+                tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId()).toArray(taxonAuthors);
+            }
+            */
+            //taxonAuthors = new Option[];
+            taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(tsb.getAuthorTypeSelected()).size()];
+            tsb.getTaxonAuthorsMap().get(tsb.getAuthorTypeSelected()).toArray(taxonAuthors);
+        }
         //On focus tabTaxonIndicatorCountry:
         if(tsb.getTaxonTabSelected().equals("tabTaxonIndicatorCountry"))
         {
@@ -641,7 +706,20 @@ public class NewTaxonomy extends AbstractPageBean {
            //save new Taxon
            TSB.saveTaxon(TSB.getCurrentTaxon());
 
-           
+           /* CREATE NEW TAXON-AUTHOR RELATIONS*/
+           TSB.getAuthorListMap().put(TSB.getAuthorTypeSelected(), TSB.getAuthorList());
+
+           TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
+           for(int pos = 0; pos < tap.length; pos++)
+            {
+             //   taxonAuthorSequenceMap.put(tap[pos].getId(), 1L);
+               List<TaxonAuthorDTO> tmpList = TSB.getAuthorListMap().get(tap[pos].getId());
+               if(tmpList != null && tmpList.size()>0)
+               {
+                   TSB.saveTaxonAuthorDTOs(TSB.getCurrentTaxon().getTaxonKey(), tmpList, this.getAraSessionBean().getGlobalUserName());
+               }
+
+            }
            
           
              
@@ -786,9 +864,9 @@ public class NewTaxonomy extends AbstractPageBean {
     {
         
         //elmimnar de el elemento de la lista de indicadores
-        this.getTaxonSessionBean().removeOption(this.getTaxonSessionBean().getElementSelected(), this.getTaxonSessionBean().getIndicatorRelations());
+        this.getTaxonSessionBean().removeIndicatorOption(this.getTaxonSessionBean().getElementSelected(), this.getTaxonSessionBean().getIndicatorRelations());
         //elmimnar de el elemento de la lista de indicadores que aplican a partes de componente
-        this.getTaxonSessionBean().removeOption(this.getTaxonSessionBean().getElementSelected(), this.getTaxonSessionBean().getIndicatorRelationsAP());
+        this.getTaxonSessionBean().removeIndicatorOption(this.getTaxonSessionBean().getElementSelected(), this.getTaxonSessionBean().getIndicatorRelationsAP());
         //asignar de nuevo la lista al elemento grafico
         indicatorRelations = new Option[this.getTaxonSessionBean().getIndicatorRelations().size()];
         this.getTaxonSessionBean().getIndicatorRelations().toArray(indicatorRelations);
@@ -985,7 +1063,273 @@ public class NewTaxonomy extends AbstractPageBean {
         return null;
     }
 
+    public String btnAddAuthor_action()
+    {
 
+        //System.out.println("ENTRO A AGREGAR UN AUTOR");
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+        //tsb.setVisiblePanelAuthorAction(false);
+
+        btnCancelAuthor_action();
+        
+
+        tsb.setNewAuthorAction(true);
+
+        if(tsb.getAuthorSelected() != null)
+        {
+            //Create new TaxonAuthorDTO
+            tsb.setNewAuthor(new TaxonAuthorDTO());
+            //System.out.println(tsb.getAuthorSelected());
+            Option selected;
+            /*selected*/
+            selected = tsb.removeOption(tsb.getAuthorSelected(), tsb.getTaxonAuthorsMap().get(tsb.getAuthorTypeSelected()));
+            
+            Set<Option> tmp = tsb.getTaxonAuthorsMap().get(tsb.getAuthorTypeSelected());
+
+            tsb.setTaxonAuthorName(selected.getLabel());
+            
+            tsb.getNewAuthor().setTaxonAuthorName(selected.getLabel());
+            tsb.getNewAuthor().setTaxonAuthorPersonId((Long)selected.getValue());
+
+            tsb.getNewAuthor().setCategory(TaxonAuthorProfile.values()[(tsb.getAuthorTypeSelected()).intValue()].getIdentifier());
+
+            
+            tsb.setVisiblePanelAuthorAction(true);
+        }
+        else
+        {
+            
+             MessageBean.setErrorMessageFromBundle("error_author_not_selected",this.getMyLocale());
+
+        }
+        
+        return null;
+    }
+
+    
+     public String btnEditAuthor_action()
+    {
+
+
+         //System.out.println("=== Entra al Editar Author ===");
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+        tsb.setCountTaxonAuthorSelected(0);
+
+        //return author selected to taxonAuthors
+        btnCancelAuthor_action();
+
+        tsb.setNewAuthorAction(false);
+        
+        tsb.setPositionTaxonAuthorSelected(tsb.getPosTaxonAuthorSelected());
+        if(tsb.getPositionTaxonAuthorSelected() >=0)
+        {
+            tsb.setNewAuthor(tsb.getAuthorList().get(tsb.getPositionTaxonAuthorSelected()));
+            //set default value to connectorId
+            Long connectorId = -1L;
+            //System.out.println("Cantidad de autores seleccionados = "+tsb.getCountTaxonAuthorSelected());
+            if(tsb.getCountTaxonAuthorSelected() == 1)
+            {
+
+                tsb.setTaxonAuthorSequence(tsb.getNewAuthor().getTaxonAuthorSequence());
+
+
+                tsb.setTaxonAuthorName(tsb.getNewAuthor().getTaxonAuthorName());
+                //System.out.println("--> ConnectorId = "+taxonAuthorSelected.getTaxonAuthorConnectorId());
+
+                if(tsb.getNewAuthor().getTaxonAuthorConnectorId() != null)
+                {
+
+                    connectorId = tsb.getNewAuthor().getTaxonAuthorConnectorId();
+                }
+
+
+                tsb.setConnectorSelected(connectorId);
+                tsb.setVisiblePanelAuthorAction(true);
+
+            }
+            else
+            {
+                
+                 MessageBean.setErrorMessageFromBundle("error_edit_one_author",this.getMyLocale());
+
+            }
+         }
+        else
+        {            
+            MessageBean.setErrorMessageFromBundle("error_edit_author_not_selected",this.getMyLocale());
+
+            
+        }
+        return null;
+    }
+
+    public String btnRemoveAuthor_action()
+    {
+
+        //System.out.println("=== Entra al Eliminar Author ===");
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+
+
+        TaxonAuthorDTO taxonAuthorSelected = tsb.getTaxonAuthorSelected();
+
+        if(tsb.getCountTaxonAuthorSelected() >= 0)
+        {
+            if(tsb.getCountTaxonAuthorSelected() == 1)
+            {
+                //tsb.setTaxonAuthorSequence(taxonAuthorSelected.getTaxonAuthorSequence());
+                tsb.removeTaxonAuthorSelected();
+                tsb.addOptionToTaxonAuthors(taxonAuthorSelected);
+                Long newSequence = tsb.getTaxonAuthorSequenceMap().get(tsb.getAuthorTypeSelected())-1L;
+                //System.out.println("Editando sequence FINAL => sequence = "+tsb.getTaxonAuthorSequence() +" , new sequence = "+newSequence);
+                //tsb.setTaxonAuthorSequence(newSequence);
+                tsb.getTaxonAuthorSequenceMap().put(tsb.getAuthorTypeSelected(), newSequence);
+                tsb.setCountTaxonAuthorSelected(0);
+
+            }
+            else
+            {
+            
+                 MessageBean.setErrorMessageFromBundle("error_delete_one_author",this.getMyLocale());
+
+            }
+        }
+        else
+        {
+            
+             MessageBean.setErrorMessageFromBundle("error_delete_author_not_selected",this.getMyLocale());
+
+        }
+        return null;
+    }
+
+     public String btnAceptAuthor_action()
+    {
+         TaxonSessionBean tsb = this.getTaxonSessionBean();
+         //NEW MODE
+         if(tsb.isNewAuthorAction())
+         {
+            //set Connector
+            if(tsb.getConnectorSelected() == -1)
+            {   
+                tsb.getNewAuthor().setTaxonAuthorConnector(",");
+                tsb.getNewAuthor().setTaxonAuthorConnectorId(null);
+            }
+            else
+            {
+                tsb.getNewAuthor().setTaxonAuthorConnector(tsb.getLabelConnector(tsb.getConnectorSelected()));
+                tsb.getNewAuthor().setTaxonAuthorConnectorId(tsb.getConnectorSelected());
+            }
+
+            //set sequence
+            tsb.getNewAuthor().setTaxonAuthorSequence(tsb.getTaxonAuthorSequence());
+
+            //reorder list
+            if(tsb.getNewAuthor().getTaxonAuthorSequence() != tsb.getTaxonAuthorSequenceMap().get(tsb.getAuthorTypeSelected()))
+            {
+                tsb.setAuthorList(tsb.reorderSequence(tsb.getNewAuthor(), tsb.getAuthorList()));
+            }
+            else
+            {
+                tsb.getAuthorList().add(tsb.getNewAuthor());
+            }
+
+            //New sequence
+            Long sequence =tsb.getTaxonAuthorSequenceMap().get(tsb.getAuthorTypeSelected())+1;
+            tsb.getTaxonAuthorSequenceMap().put(tsb.getAuthorTypeSelected(), sequence);
+
+            //Set & and , connectors
+            setDefaultConnector();
+           
+         }
+         //EDIT MODE
+         else
+         {
+             if(tsb.getTaxonAuthorSequence()>0 && tsb.getTaxonAuthorSequence() < tsb.getTaxonAuthorSequenceMap().get(tsb.getAuthorTypeSelected()))
+             {
+                
+                //if(tsb.getConnectorSelected() != null && tsb.getConnectorSelected() >= 0)
+                if(tsb.getConnectorSelected() >= 0)
+                {
+                    tsb.getNewAuthor().setTaxonAuthorConnectorId(tsb.getConnectorSelected());
+                    tsb.getNewAuthor().setTaxonAuthorConnector(tsb.getLabelConnector(tsb.getConnectorSelected()));
+
+                }
+                else
+                {
+                    tsb.getNewAuthor().setTaxonAuthorConnectorId(null);
+                    tsb.getNewAuthor().setTaxonAuthorConnector(",");
+                }
+                tsb.getNewAuthor().setTaxonAuthorSequence(tsb.getTaxonAuthorSequence());
+                //tsb.getAuthorList().set(tsb.getPositionTaxonAuthorSelected(), tsb.getNewAuthor());
+                tsb.editSequence(tsb.getNewAuthor(), tsb.getAuthorList());
+                //Set & and , connectors
+                setDefaultConnector();
+             }
+             else
+             {
+                //CAMBIAR EL MENSAJE DE ERROR
+                 MessageBean.setErrorMessageFromBundle("error_taxon_indicator",this.getMyLocale());
+             }
+         }
+
+
+         //Clean
+        tsb.setNewAuthor(null);
+        tsb.setTaxonAuthorSequence(-1L);
+        tsb.setConnectorSelected(-1L);
+        tsb.setVisiblePanelAuthorAction(false);
+        
+        return null;
+    }
+
+     public String btnCancelAuthor_action()
+    {
+         TaxonSessionBean tsb = this.getTaxonSessionBean();
+         if(tsb.isNewAuthorAction() && tsb.getNewAuthor() != null)
+         {
+             //tsb.getTaxonAuthorsMap().get(tsb.getAuthorTypeSelected()).add(tsb.getAuthorRemove());
+             tsb.addOptionToTaxonAuthors(tsb.getNewAuthor());
+         }
+
+         //Clean
+         tsb.setTaxonAuthorSequence(-1L);
+         tsb.setConnectorSelected(-1L);
+         tsb.setVisiblePanelAuthorAction(false);
+         //tsb.setAuthorRemove(null);
+         tsb.setNewAuthor(null);
+
+        return null;
+    }
+
+
+     public void setDefaultConnector()
+     {
+         TaxonSessionBean tsb = this.getTaxonSessionBean();
+         int position = 0;
+         int lastPosition = tsb.getAuthorList().size() - 1;
+         if(tsb.getAuthorList().size() > 2)
+         {             
+             position = tsb.getAuthorList().size() - 2;
+           //  System.out.println("** Entro a calcular la posicion = "+position);
+         }
+         //System.out.println("*** \tConnectorId = "+tsb.getAuthorList().get(position).getTaxonAuthorConnectorId());
+         //System.out.println("*** \tAuthorList.size() =  "+tsb.getAuthorList().size());
+         if(tsb.getAuthorList().get(position).getTaxonAuthorConnectorId() == null && tsb.getAuthorList().size() > 1)
+         {
+             //System.out.println("** Entro a asignar el & y corregir el , ");
+             tsb.getAuthorList().get(position).setTaxonAuthorConnector("&");
+             if(position > 0 && tsb.getAuthorList().get(position-1).getTaxonAuthorConnectorId() == null)
+             {
+                 tsb.getAuthorList().get(position-1).setTaxonAuthorConnector(",");
+             }
+         }
+         if(tsb.getAuthorList().get(lastPosition).getTaxonAuthorConnectorId() == null)
+         {
+             //System.out.println("** Entro a asignar , al ultimo elemento ");
+             tsb.getAuthorList().get(lastPosition).setTaxonAuthorConnector(",");
+         }
+     }
 
 
 
@@ -998,7 +1342,7 @@ public class NewTaxonomy extends AbstractPageBean {
             ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData();
 
             if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) {
-                System.out.println("Seleccionado "+ aux.getTitle());
+                //System.out.println("Seleccionado "+ aux.getTitle());
                 selectedResourcesId.put(aux.getKey(), aux);
 
             }
@@ -1029,6 +1373,59 @@ public class NewTaxonomy extends AbstractPageBean {
             tsb.setAbleTabTaxonIndicatorComponentPart(false);
             tsb.setAbleTabTaxonIndicatorDublinCore(false);
         }
+        return null;
+    }
+
+
+    public String setAuthorList()
+    {
+        TaxonSessionBean tsb = this.getTaxonSessionBean();
+        System.out.println("\t\t\ttsb.getAuthorTypeSelected() = "+tsb.getAuthorTypeSelected());
+        System.out.println("\t\t\tTaxonAuthorProfile.ORIGINALS.getId() = "+TaxonAuthorProfile.ORIGINALS.getId());
+        if(tsb.getAuthorTypeSelected().equals(TaxonAuthorProfile.ORIGINALS.getId()))
+        {
+            System.out.println("--> Cambiar la lista a ORIGINALS");
+            //set taxonAuthor
+            taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId()).size()];
+            tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId()).toArray(taxonAuthors);
+
+            //switch authorList
+           // List<TaxonAuthorDTO> tmpList = tsb.getAuthorList();
+            tsb.getAuthorListMap().put(TaxonAuthorProfile.MODIFICATORS.getId(),tsb.getAuthorList());
+            //Collection<Object> tmpArray = tsb.getAuthorListMap().get(TaxonAuthorProfile.ORIGINALS.getId()).toArray();
+            //tsb.setAuthorList(new ArrayList<TaxonAuthorDTO>());
+           /* tsb.getAuthorListMap().put(TaxonAuthorProfile.MODIFICATORS.getId(),
+                   (List<TaxonAuthorDTO>)tsb.deepCopy(tsb.getAuthorList()));
+            */
+            tsb.setAuthorList(tsb.getAuthorListMap().get(TaxonAuthorProfile.ORIGINALS.getId()));
+
+            //switch taxonAuthorSequence
+            tsb.getTaxonAuthorSequenceMap().put(TaxonAuthorProfile.MODIFICATORS.getId(),tsb.getTaxonAuthorSequence());
+            tsb.setTaxonAuthorSequence(tsb.getTaxonAuthorSequenceMap().get(TaxonAuthorProfile.ORIGINALS.getId()));
+
+        }
+        else
+        {
+            System.out.println("--> Cambiar la lista a MODIFICATORS");
+                //taxonAuthors = tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId());
+            taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId()).size()];
+            tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId()).toArray(taxonAuthors);
+
+            //switch authorList
+            //List<TaxonAuthorDTO> tmpList = tsb.getAuthorList();
+            tsb.getAuthorListMap().put(TaxonAuthorProfile.ORIGINALS.getId(),tsb.getAuthorList());
+            //tsb.setAuthorList(new ArrayList<TaxonAuthorDTO>());
+            /*
+            tsb.getAuthorListMap().put(TaxonAuthorProfile.ORIGINALS.getId(),
+                   (List<TaxonAuthorDTO>)tsb.deepCopy(tsb.getAuthorList()));
+             */
+            tsb.setAuthorList(tsb.getAuthorListMap().get(TaxonAuthorProfile.MODIFICATORS.getId()));
+
+            //switch taxonAuthorSequence
+            tsb.getTaxonAuthorSequenceMap().put(TaxonAuthorProfile.ORIGINALS.getId(),tsb.getTaxonAuthorSequence());
+            tsb.setTaxonAuthorSequence(tsb.getTaxonAuthorSequenceMap().get(TaxonAuthorProfile.MODIFICATORS.getId()));
+        }
+
         return null;
     }
 
@@ -1532,6 +1929,78 @@ public class NewTaxonomy extends AbstractPageBean {
      */
     public void setIndicatorRelationsAP(Option[] indicatorRelationsAP) {
         this.indicatorRelationsAP = indicatorRelationsAP;
+    }
+
+    /**
+     * @return the ddAuthorType
+     */
+    public DropDown getDdAuthorType() {
+        return ddAuthorType;
+    }
+
+    /**
+     * @param ddAuthorType the ddAuthorType to set
+     */
+    public void setDdAuthorType(DropDown ddAuthorType) {
+        this.ddAuthorType = ddAuthorType;
+    }
+
+  
+
+    /**
+     * @return the taxonAuthors
+     */
+    public Option[] getTaxonAuthors() {
+        return taxonAuthors;
+    }
+
+    /**
+     * @param taxonAuthors the taxonAuthors to set
+     */
+    public void setTaxonAuthors(Option[] taxonAuthors) {
+        this.taxonAuthors = taxonAuthors;
+    }
+
+    /**
+     * @return the authorQuantityTotal
+     */
+    public String getAuthorQuantityTotal() {
+        return authorQuantityTotal;
+    }
+
+    /**
+     * @param authorQuantityTotal the authorQuantityTotal to set
+     */
+    public void setAuthorQuantityTotal(String authorQuantityTotal) {
+        this.authorQuantityTotal = authorQuantityTotal;
+    }
+
+    /**
+     * @return the dataTableAuthors
+     */
+    public HtmlDataTable getDataTableAuthors() {
+        return dataTableAuthors;
+    }
+
+    /**
+     * @param dataTableAuthors the dataTableAuthors to set
+     */
+    public void setDataTableAuthors(HtmlDataTable dataTableAuthors) {
+        this.dataTableAuthors = dataTableAuthors;
+    }
+
+    /**
+     * @return the ddConnector
+     */
+    public DropDown getDdConnector() {
+        return ddConnector;
+    }
+
+    /**
+     * @param ddConnector the ddConnector to set
+     */
+    public void setDdConnector(DropDown ddConnector) {
+        this.ddConnector = ddConnector;
     }
 
    
