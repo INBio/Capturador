@@ -61,6 +61,8 @@ public class StatisticsFacadeImpl implements StatisticsFacadeRemote {
     public List<SystemStatisticsDTO> getSpeciesCountByCollection() {
 
         SystemStatisticsDTO statisticsDTO = null;
+        Long taxonId = null;
+        Long speciesCount = null;
 
         List<Collection> colectionList = collectionEAO.findAll(Collection.class);
         List<SystemStatisticsDTO> statisticList = new ArrayList<SystemStatisticsDTO>();
@@ -71,7 +73,14 @@ public class StatisticsFacadeImpl implements StatisticsFacadeRemote {
 
             statisticsDTO.setStatistic(SystemStatisticsEntinty.SPECIES_BY_COLLECTION_COUNT);
             statisticsDTO.setName(col.getName());
-            statisticsDTO.setValue(collectionEAO.getSpeciesCountByCollectionId(col.getCollectionId()));
+            
+            // determinal cual es el taxón que esta asociado a la jerarquía
+            taxonId = collectionEAO.getTaxonFatherOfCollection(col.getCollectionId());
+
+            // retorna el conteo de especies que esta bajo un taxon.
+            speciesCount = collectionEAO.getSpeciesCountUnderTaxonId(taxonId);
+
+            statisticsDTO.setValue(speciesCount);
             statisticList.add(statisticsDTO);
         }
 

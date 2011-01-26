@@ -20,8 +20,10 @@ public interface CollectionEAOLocal extends BaseLocalEAO<Collection,Long>{
 
     public java.lang.Long getSpecimensCountByCollectionId(java.lang.Long collectionId);
 
-    public java.lang.Long getSpeciesCountByCollectionId(java.lang.Long collectionId);
-
     public java.util.List<org.inbio.ara.persistence.collection.Collection> findByCollectionName(java.lang.String collectionName);
-    
+
+    public Long getTaxonFatherOfCollection(Long collectionId);
+       
+    public Long getSpeciesCountUnderTaxonId(Long taxonId);
+
 }
