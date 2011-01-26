@@ -170,11 +170,11 @@
                                 <!-- Elementos Hidden para compartir entre jsp y javascript la información del nodo seleccionado en el árbol -->
                                 <h:inputHidden binding="#{indicator$EditIndicator.hiddenNodeId}" id="hiddenNodeId"/>
                                 <h:inputHidden binding="#{indicator$EditIndicator.hiddenPathNode}" id="hiddenPathNode"/>
-                                <h:inputHidden binding="#{indicator$EditIndicator.hiddenAncestorNodeId}" id="hiddenAncestorNodeId"/>
-                                <jsp:directive.include file="/Footer.jspf"/>
+                                <h:inputHidden binding="#{indicator$EditIndicator.hiddenAncestorNodeId}" id="hiddenAncestorNodeId"/>                                
                             </h:panelGrid>
                         </webuijsf:form>
                     </webuijsf:panelLayout>
+                    <jsp:directive.include file="/Footer.jspf"/>
                     </div> <!-- pageFormated ends -->
                 </webuijsf:body>
             </webuijsf:html>

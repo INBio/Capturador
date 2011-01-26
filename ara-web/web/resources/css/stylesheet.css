@@ -616,10 +616,10 @@ html {height:100%}
 body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 }
 
-#banner {background: url(../images/banner.jpg) no-repeat 0 0; height: 123px;}
+#banner {background: url(../images/banner4.jpg) no-repeat 0 0; height: 123px;}
 #banner-rep { background: url(../images/banner-rep.png) repeat-x 960px 0; height: 123px; }
 
-#title h1 { float: left; position:absolute; font-family:Arial, Helvetica, sans-serif; font-size: 16px; margin:0; width:220px; padding: 35px 0 0 125px; line-height:17px;color:#336600;}
+#title h1 { float: left; position:absolute; font-family:Arial, Helvetica, sans-serif; font-size: 16px; margin:0; width:250px; padding: 35px 0 0 155px; line-height:17px;color:#336600;}
 
 #lang {width: 90px; height:20px; padding: 65px 0 0 0; float:right; z-index:999}
 #lang span {float:left; background: url(../images/boton1.png) no-repeat top center; display:block; width:30px; text-align:center;}
