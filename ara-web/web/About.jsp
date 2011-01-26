@@ -15,7 +15,7 @@
                 </webuijsf:head>
                 <webuijsf:body id="body1" style="-rave-layout: grid">
                     <div id="pageFormated">
-                        <jsp:directive.include file="/Header.jspf"/>
+                        <jsp:directive.include file="/Header_Login.jspf"/>
                         <webuijsf:panelLayout id="contenido">
                             <webuijsf:form id="form1" style="height: 600px">
                                 <h:outputLabel id="lbTitle" style="left: 24px; top: 10px; position: relative;" styleClass="Page_title" value="#{resources.sponsors}"/>
