@@ -20,6 +20,7 @@ package org.inbio.ara;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 import org.inbio.ara.inventory.SpecimenSessionBean;
 import org.inbio.ara.util.ValidatorBean;
 import org.inbio.ara.inventory.GatheringDetailSessionBean;
@@ -90,6 +91,9 @@ public class About extends AbstractPageBean {
         // Perform application initialization that must complete
         // *after* managed components are initialized
         // TODO - add your own initialization code here
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getViewRoot().setLocale(getSessionManager().getLocale());
     }
 
     /**

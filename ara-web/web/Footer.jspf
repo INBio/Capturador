@@ -8,7 +8,7 @@
     <f:subview id="Footer">
         <div id="footer">
             <h:panelGroup id="gridPanel1">
-                <webuijsf:hyperlink actionExpression="about" id="aboutLink" text="#{resources.titleAbout}"/>
+                <webuijsf:hyperlink  id="aboutLink" text="#{resources.titleAbout}" url="/ara-web/faces/About.jsp" />
                 <webuijsf:label id="aguacate1" text=" - "/>
                 <webuijsf:label id="text1" text="#{resources.footer_text1}"/>
                 <webuijsf:hyperlink id="licenceLink" text="#{resources.footer_text2}" url="http://www.gnu.org/licenses/gpl-3.0-standalone.html"/>

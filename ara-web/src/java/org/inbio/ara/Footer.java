@@ -94,6 +94,12 @@ public class Footer extends AbstractFragmentBean {
     public void destroy() {
     }
 
+
+    public String seeAboutAction() {
+        return "about";
+    }
+
+
     /**
      * <p>Return a reference to the scoped data bean.</p>
      *
