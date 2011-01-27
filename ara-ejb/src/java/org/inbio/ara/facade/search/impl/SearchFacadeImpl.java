@@ -241,26 +241,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                 siteIds.retainAll(newSiteIds);
             }
         }
-//        if(initialDate != null) {
-//            List<Long> newGathObsIds = gatheringObservationEAOImpl.
-//                    findByInitialDate(initialDate);
-//            if(firstFilter) {
-//                gathObsIds.addAll(newGathObsIds);
-//                firstFilter = false;
-//            } else {
-//                gathObsIds.retainAll(newGathObsIds);
-//            }
-//        }
-//        if(finalDate != null) {
-//            List<Long> newGathObsIds = gatheringObservationEAOImpl.
-//                    findByFinalDate(finalDate);
-//            if(firstFilter) {
-//                gathObsIds.addAll(newGathObsIds);
-//                firstFilter = false;
-//            } else {
-//                gathObsIds.retainAll(newGathObsIds);
-//            }
-//        }
         return siteIds;
     }
 
@@ -301,7 +281,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         }
 
         for (Long specimenId : finalSpecimenList) {
-	    // findBySpecimenId() = (select gathering_id from specimen s where s.specimenId = specimenId;)
             List<Long> gathsObsList =
                     gatheringObservationEAOImpl.findBySpecimenId(specimenId);
             finalGathsObsList.addAll(gathsObsList);
@@ -587,7 +566,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      * @param inputDTO Built in the advanced search
      * @param base First result retrieved
      * @param offset How many results I want
-     * @return List of identifications
+     * @return List of gatherings
      */
     public List<GatheringObservationDTO> searchGathObsByCriteria(
             GatheringObservationDTO inputDTO, int base, int offset) {
@@ -601,10 +580,11 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     }
 
     /**
-     * Used to retrieve some identifications and to know the total amount of
+     * Used to retrieve some gatherings and to know the total amount of
      * records (count)
      * @param inputDTO Built in the advanced search
-     * @return Set of identification Ids.
+     * This method filters the results by collectionId stored in the inputDTO
+     * @return Set of gathering Ids.
      */
     private Set<Long> getGathObsIds(GatheringObservationDTO inputDTO) {
         Set<Long> gathObsIds = new HashSet();
@@ -620,6 +600,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         Long provinceId        = inputDTO.getProvinceId();
         Calendar initialDate   = inputDTO.getInitialDateTime();
         Calendar finalDate     = inputDTO.getFinalDateTime();
+        Long collectionId      = inputDTO.getCollectionId();
 
         if(gathObsId != null) {
             gathObsIds.add(gathObsId);
@@ -633,6 +614,16 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                 firstFilter = false;
             } else {
                 gathObsIds.retainAll(newGathObsIds);
+            }
+        }
+        if(collectionId != null) {
+            List<Long> gathObsByCollection =
+                    this.gatheringObservationEAOImpl.findByCollectionId(collectionId);
+            if(firstFilter) {
+                gathObsIds.addAll(gathObsByCollection);
+                firstFilter = false;
+            } else {
+                gathObsIds.retainAll(gathObsByCollection);
             }
         }
         if(localityDescr != null && !localityDescr.trim().isEmpty()) {
@@ -709,7 +700,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      * @param base
      * @param offset
      * @return
-     * @deprecated
+     * @deprecated Because this method ingnors the collectionId
      */
     public List<GatheringObservationDTO>
             searchGathObsByCriteria(String query, int base, int offset) {
@@ -749,7 +740,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      *
      * @param query
      * @return
-     * @deprecated
+     * @deprecated Because this method ingnors the collectionId
      */
     public Long countGathObsByCriteria(String query) {
         String[] parts = this.splitQuery(query);
@@ -973,7 +964,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         }
         if(taxonName != null && !taxonName.trim().isEmpty()) {
             List<Long> specimenByTaxonName =
-                    //specimenEAOImpl.findByTaxonName(taxonName);
                     identificationEAOImpl.findSpecimenByTaxonName(taxonName);                 
             if(firstFilter) {
                 specimenIds.addAll(specimenByTaxonName);

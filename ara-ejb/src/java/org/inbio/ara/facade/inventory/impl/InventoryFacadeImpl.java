@@ -404,8 +404,15 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         return gatheringDetailEAOImpl.count(GatheringObservationDetail.class);
     }
 
+    /**
+     * @deprecated Because this method ingnors the collectionId
+     */
     public Long countGatheringObservations() {
         return gatheringObservationEAOImpl.count(GatheringObservation.class);
+    }
+
+    public Long countGatheringObservations(Long collectionId){
+        return gatheringObservationEAOImpl.countByCollection(GatheringObservation.class,collectionId);
     }
 
     /**

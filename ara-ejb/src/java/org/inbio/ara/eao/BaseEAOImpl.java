@@ -66,6 +66,14 @@ public class BaseEAOImpl<E extends Object,I extends Object>
         return result;
     }
 
+    //Base count, but including filtering by collection
+    public Long countByCollection(Class<E> entityClass,Long collectionId){
+        Query q = em.createQuery("select count (e.id) from "+entityClass.getName()+" as e where e.collectionId = :collectionId");
+        q.setParameter("collectionId", collectionId);
+        Long result = (Long)q.getSingleResult();
+        return result;
+    }
+
     /**
      *
      * This method does 2 things:

@@ -98,8 +98,8 @@ public class GatheringObservationEAOImpl
 
     public List<Long> findByCollectionId(Long collectionId) {
         Query q = em.createQuery("select " +
-                "s.gatheringObservation.gatheringObservationId from Specimen "
-                + "as s where s.collection.collectionId = :collectionId");
+                "go.gatheringObservationId from GatheringObservation "
+                + "as go where go.collectionId = :collectionId");
         q.setParameter("collectionId", collectionId);
         return q.getResultList();
     }

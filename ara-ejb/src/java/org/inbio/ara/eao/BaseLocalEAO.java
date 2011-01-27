@@ -72,6 +72,8 @@ public interface BaseLocalEAO<E extends Object,I extends Object> {
      */
     public Long count(Class<E> entityClass);
 
+    public Long countByCollection(Class<E> entityClass,Long collectionId);
+
 
     /**
      *

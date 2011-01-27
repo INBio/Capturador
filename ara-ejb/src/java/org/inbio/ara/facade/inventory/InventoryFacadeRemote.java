@@ -90,6 +90,8 @@ public interface InventoryFacadeRemote {
 
     public Long countGatheringObservations();
 
+    public Long countGatheringObservations(Long collectionId);
+
     /**
      * Retorna el total de collecciones existentes en la BD.in
      *
