@@ -8,14 +8,18 @@ package org.inbio.ara.taxonomy;
 import org.inbio.ara.*;
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.model.Option;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlInputHidden;
 import javax.faces.component.html.HtmlPanelGrid;
 import org.inbio.ara.dto.inventory.TaxonDTO;
+import org.inbio.ara.dto.taxonomy.TaxonAuthorDTO;
 import org.inbio.ara.persistence.taxonomy.TaxonomicalRangeEntity;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.MessageBean;
@@ -331,6 +335,23 @@ public class ListTaxonomy extends AbstractPageBean {
             this.getTaxonSessionBean().setAbleTabTaxonIndicatorCountry(false);
             this.getTaxonSessionBean().setAbleTabTaxonIndicatorDublinCore(false);
             this.getTaxonSessionBean().setAbleTabTaxonIndicatorComponentPart(false);
+
+
+            this.getTaxonSessionBean().setTaxonAuthorSequence(-1L);
+            this.getTaxonSessionBean().setConnectorSelected(-1L);
+            this.getTaxonSessionBean().setAuthorOriginalSequence(0L);
+            this.getTaxonSessionBean().setAuthorModificatorSequence(0L);
+            this.getTaxonSessionBean().setVisiblePanelAuthorAction(false);
+            this.getTaxonSessionBean().setReadOnlySequence(false);
+            this.getTaxonSessionBean().setTaxonAuthorsMap(new HashMap<Long, Set<Option>>());
+            this.getTaxonSessionBean().setTaxonAuthorSequenceMap(new HashMap<Long, Long>());
+            this.getTaxonSessionBean().setAuthorListMap(new HashMap<Long, List<TaxonAuthorDTO>>());
+            this.getTaxonSessionBean().setCountTaxonAuthorSelected(0);
+            this.getTaxonSessionBean().setNewAuthorAction(true);
+            this.getTaxonSessionBean().setNewAuthor(null);
+            this.getTaxonSessionBean().setPositionTaxonAuthorSelected(-1);
+            this.getTaxonSessionBean().setAuthorList(new ArrayList<TaxonAuthorDTO>());
+
 
             result = "new";
         }
