@@ -45,7 +45,7 @@
                                         style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.btnDelete}"/>
                                 </h:panelGrid>
                                 <h:panelGrid binding="#{taxonomy$ListTaxonomy.gridIndicator}" columns="2" id="gridIndicator" style="height: 24px" width="540">
-                                    <div id="tree" style="width:200px; float:left; " title="Indicators Tree "></div>
+                                    <div id="tree" style="width:100%; float:left; " title="Indicators Tree "></div>
                                     <h:panelGrid binding="#{taxonomy$ListTaxonomy.indicator}" columns="1" id="indicator">
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenTaxonNodeId}" id="hiddenTaxonNodeId"/>
                                         <h:inputHidden binding="#{taxonomy$ListTaxonomy.hiddenPathTaxonNode}" id="hiddenPathTaxonNode"/>
