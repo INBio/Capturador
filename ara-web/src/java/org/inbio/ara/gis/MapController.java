@@ -92,7 +92,7 @@ public class MapController extends AbstractPageBean {
         scriptString.append("var attributes;\n");
 
         // Define map
-        scriptString.append("map = new OpenLayers.Map('map', {controls: [], numZoomLevels: 10});\n");
+        scriptString.append("map = new OpenLayers.Map('map', {controls: [], numZoomLevels: 15});\n");
 
         // Define map's layers
         //scriptString.append("openLayersWMSLayer = new OpenLayers.Layer.WMS('OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {layers:'basic'} );\n");

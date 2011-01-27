@@ -262,6 +262,7 @@ public class ListGathering extends AbstractPageBean {
      * @return
      */
     public String btnGatheringSearch_action() {
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
         String userInput = "";
         if(this.getTxSearch().getValue()!= null)
             userInput = this.getTxSearch().getValue().toString();
@@ -273,7 +274,7 @@ public class ListGathering extends AbstractPageBean {
             //Finalmente se setea el data provider del paginador con los datos por default
             this.getinventory$GatheringSessionBean().getPagination().setTotalResults
                     (this.getinventory$GatheringSessionBean().getInventoryFacade().
-                    countGatheringObservations().intValue());
+                    countGatheringObservations(collectionId).intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -285,7 +286,7 @@ public class ListGathering extends AbstractPageBean {
             //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
             this.getinventory$GatheringSessionBean().getPagination().setTotalResults
                     (this.getinventory$GatheringSessionBean().getSearchFacade().
-                    countGathObsByCriteria(userInput).intValue());
+                    countGathObsByCriteria(userInput,collectionId).intValue());
         }
         this.getinventory$GatheringSessionBean().getPagination().firstResults();
         return null;
@@ -297,6 +298,7 @@ public class ListGathering extends AbstractPageBean {
      * @return
      */
     public String btnAdvSearchGO_action() {
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
         //Capturar el dato de gatheringId
         Long gatheringId = null;
         String gId = (String)this.getTxGatheringId().getText();
@@ -354,6 +356,7 @@ public class ListGathering extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getinventory$GatheringSessionBean().setQueryModeSimple(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
+        consulta.setCollectionId(collectionId); //Used to filter by collection
         this.getinventory$GatheringSessionBean().getPagination().setTotalResults
                 (this.getinventory$GatheringSessionBean().getSearchFacade().
                 countGathObsByCriteria(consulta).intValue());

@@ -17,7 +17,7 @@
                         <jsp:directive.include file="/Header_Login.jspf"/>
                         <webuijsf:panelLayout id="contenido">
                             <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1" infoClass="infoMessage" warnClass="warnMessage"/>
-                            <table align="center" style="padding-top: 50px;" width="60%">
+                            <table align="center" style="padding: 50px 0 60px 0;" width="60%">
                                 <tbody>
                                     <tr>
                                         <td align="center">
@@ -33,11 +33,11 @@
                                             </webuijsf:form>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    <!--<tr>
                                         <td align="center">
                                             <img alt="inb-iabin" height="82" src="resources/images/inb-iabin.gif" width="350"/>
                                         </td>
-                                    </tr>
+                                    </tr>-->
                                 </tbody>
                             </table>                            
                         </webuijsf:panelLayout> <!-- contenido ends -->

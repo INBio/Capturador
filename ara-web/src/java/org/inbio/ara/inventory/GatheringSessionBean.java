@@ -313,7 +313,9 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(getInventoryFacade().countGatheringObservations().intValue(), getQuantity(), this));
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
+        setPagination(new PaginationControllerRemix(getInventoryFacade().countGatheringObservations(collectionId).intValue(),
+                getQuantity(), this));
     }
 
     /**
@@ -800,7 +802,7 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
                 //Set the collectionId into the DTO
                 //It is a mandatory filter
                 GatheringObservationDTO gdto = getQueryGatheringDTO();
-                gdto.setCollectionId(collectionId);
+                gdto.setCollectionId(collectionId); //Used to filter by collection
                 try {
                     return myReturn(searchFacade.searchGathObsByCriteria(gdto,
                             firstResult, maxResults));
