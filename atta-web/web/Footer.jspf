@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : Footer
+    Created on : 16/09/2009, 05:02:06 PM
+    Author     : esmata
+-->
+<div xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:webuijsf="http://www.sun.com/webui/webuijsf">
+    <f:subview id="Footer">
+        <div id="footer">
+            <h:panelGroup id="gridPanel1">
+                <webuijsf:hyperlink  id="aboutLink" text="#{resources.titleAbout}" url="/ara-web/faces/About.jsp" />
+                <webuijsf:label id="aguacate1" text=" - "/>
+                <webuijsf:label id="text1" text="#{resources.footer_text1}"/>
+                <webuijsf:hyperlink id="licenceLink" text="#{resources.footer_text2}" url="http://www.gnu.org/licenses/gpl-3.0-standalone.html"/>
+                <webuijsf:label id="aguacate2" text=" - "/>
+                <webuijsf:label id="text3" text="#{resources.footer_text3}">
+                    <f:param value="3.0"/>
+                </webuijsf:label>
+            </h:panelGroup>
+        </div>
+    </f:subview>
+</div>

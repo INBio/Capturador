@@ -1,0 +1,742 @@
+/* 
+    Document   : araStyleSheet
+    Created on : 24/07/2009, 10:53:54 AM
+    Author     : esmata
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.AutocompletePanel {
+    margin:15px 0 15px 0;
+}
+
+.AutocompletePanel select {
+    border:solid 1px navy;
+    margin-top:20px;
+}
+
+.list-header {
+    background-color:#eeeeee;
+    font-weight: bold;
+    color:#334563;
+    border-right-style: solid;
+    border-right-color: #d6dadd;
+    border-right-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #d6dadd;
+    border-bottom-width: 2px;    
+}
+
+.list-header-gis {
+    background-color:#eeeeee;
+    font-weight: bold;
+    color:#334563;
+    border-right-style: solid;
+    border-right-color: #d6dadd;
+    border-right-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #d6dadd;
+    border-bottom-width: 2px;
+    max-width:120px;
+}
+
+.list-paging-header {
+  background-color: white;
+}
+
+.list-paging-footer {
+  background-color: white;
+}
+
+.list-row-even {
+    background-color:white;
+}
+
+.list-row-odd {
+  background-color: #eeeeee;  
+}
+
+.list-columns{
+    text-align:left;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 1px;
+    margin-right: 1px;
+    border-right-style: solid;
+    border-right-width: 2px;
+    border-right-color: #d6dadd;
+}
+
+.list-columns-gis{
+    text-align:left;
+    margin: 1px;
+    border-right-style: solid;
+    border-right-width: 2px;
+    border-right-color: #d6dadd;
+    padding-left:2px;
+    max-width:100px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+#map{
+    width:550px;
+    height:350px;
+    float:left;
+    border:solid 1px gray;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.infoMessage {
+  color: green;
+}
+
+.warnMessage {
+  color: orange;
+  font-weight: bold;
+}
+
+.errorMessage {
+  color: red;
+  font-weight: bold;
+}
+
+.fatalMessage {
+  color: red;
+  font-style: italic;
+  font-weight: bold;
+}
+
+table.Tbl {
+   background-color: #ffcc66;
+}
+caption.TblTtlTxt {
+   background-color: #990000;
+   background-image: none!important;
+   color: #ffffb4;
+   font-style: oblique;
+   font-weight: bolder
+}
+
+.TblHdrTxt {
+   background-image: none!important;
+}
+
+table.TblLt .TblHdrTxt {
+   background-image: none!important;
+}
+
+table.Tbl .TblHdrTxt {
+   background-image: none!important;
+   font-weight: lighter
+}
+
+table.Tbl td, table.Tbl th {
+   border-color: #ffcc66;
+}
+
+table.Tbl th.TblColHdr {
+   background-color: #ffcc66;
+}
+
+
+table.Tbl a.TblHdrLnk:link, table.Tbl a.TblHdrLnk:visited {
+   background-color: #ffcc66;
+   background-image: none!important;
+   color: #663389;
+   font-weight: bold;
+}
+
+table.Tbl a.TblHdrImgLnk:link, table.Tbl a.TblHdrImgLnk:visited {
+   background-color: #ffcc66;
+   background-image: none!important;
+   border-color: #f2b741;
+}
+.TblTtlTxt_sun4 {
+   background-color: #006600;
+   color: #ffffff;
+   font-style: normal;
+   font-weight: bold;
+}
+
+.My_Button{
+   display:block;
+   float:left;
+   background-color:#dff4ff;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   font-weight:bold;
+   color:#334563;
+   cursor:pointer;
+   padding:3px 3px 3px 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_Button:hover{
+    background-color:#B7D9ED;
+    border:1px solid #456C84;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_Button_Login{   
+   background-color:#dff4ff;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   font-weight:bold;
+   color:#334563;
+   cursor:pointer;
+   padding:3px 3px 3px 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_Button_Login:hover{
+    background-color:#B7D9ED;
+    border:1px solid #456C84;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_Button_dark{
+   display:block;
+   float:left;
+   background-color:#EEEEEE;
+   border:1px solid #264F6A;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   font-weight:bold;
+   color:#264F6A;
+   cursor:pointer;
+   padding:3px 3px 3px 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_Button_dark:hover{
+    background-color:#AAC14C;
+    border:1px solid #86913F;
+    color:#336604;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_Button_record{
+   background-color:#EEEEEE;
+   border:1px solid #264F6A;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   font-weight:bold;
+   color:#264F6A;
+   cursor:pointer;
+   padding:3px 3px 3px 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_Button_record:hover{
+    background-color:#AAC14C;
+    border:1px solid #86913F;
+    color:#336604;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_Button_table{
+    display:block;
+    float:left;
+    background-color:#dff4ff;
+    border:1px solid #F8FCA0;
+    border-top:1px solid #eee;
+    border-left:1px solid #eee;
+    font-family:sans-serif;
+    font-size:100%;
+    line-height:130%;
+    text-decoration:none;
+    color:#334563;
+    cursor:pointer;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_Button_table:hover{
+    background-color:#F8FCA0;
+    border:1px solid #A8BD48;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+/* Buttons used on select collection page */
+.Button_next{
+   display:block;
+   float:left;
+   background: url(../images/next.png);
+   background-color:#dff4ff;
+   background-position:right;
+   background-repeat:no-repeat;
+   padding: 2px 20px 2px 2px;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   font-weight:bold;
+   color:#334563;
+   cursor:pointer;
+   padding:3px 3px 3px 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.Button_next:hover{
+    background-color:#B7D9ED;
+    border:1px solid #456C84;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.Button_exit{
+   display:block;
+   float:left;
+   background: url(../images/exit.png);
+   background-color:#dff4ff;
+   background-position:right;
+   background-repeat:no-repeat;
+   padding: 2px 20px 2px 2px;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   font-weight:bold;
+   color:#334563;
+   cursor:pointer;
+   padding:3px 3px 3px 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.Button_exit:hover{
+    background-color:#B7D9ED;
+    border:1px solid #456C84;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+/* Buttons used on select collection page -- ENDS --*/
+
+.Page_title{
+    font-size: 22px;
+    color:#44677D;
+    font-variant: small-caps;
+}
+
+.My_table{
+    background-color:#5986A2;
+    /*border: 1px solid #344F60;*/
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_table_top{
+    background-color:#486C83;
+    color:white;
+    font-weight:bolder;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #314959;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    font-size: 12px;
+}
+
+.My_panel_sites{}
+
+.My_table_statistics{
+    background-color:#5986A2;
+    /*border: 1px solid #344F60;*/
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    font-size: 14px;
+    color:#314959;
+}
+
+.My_table_statistics_top{
+    background-color:#486C83;
+    color:white;
+    font-weight:bolder;
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+    border-bottom-color: #314959;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    font-size: 14px;
+}
+
+.My_white_label{
+	color:white;
+    font-weight:bolder;
+    font-size: 12px;
+}
+
+.My_panel_blue{
+    border: 2px solid #5986A2;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-top-style: groove;
+    border-bottom-style: groove;
+    border-left-style: groove;
+    border-right-style: groove;
+}
+
+.My_subpanel_blue{
+    border: 2px solid rgb(214, 218, 221);
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-top-style: dotted;
+    border-bottom-style: dotted;
+    border-left-style: dotted;
+    border-right-style: dotted;
+}
+
+.My_subpanel_white{
+    border: 2px solid rgb(214, 218, 221);
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-top-style: dotted;
+    border-bottom-style: dotted;
+    border-left-style: dotted;
+    border-right-style: dotted;
+    background: white;
+}
+
+.My_tab_border{
+    border: 2px solid #5986A2;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-top-style: groove;
+    border-bottom-style: groove;
+    border-left-style: groove;
+    border-right-style: groove;
+}
+
+.My_Button_next{
+   display:block;
+   float:left;
+   background: url(../images/nav_next.gif);
+   background-color:#dff4ff;
+   background-position:right;
+   background-repeat:no-repeat;
+   padding: 2px 20px 2px 2px;   
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   color:#334563;
+   cursor:pointer;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_Button_next:hover{
+    background-color:#F8FCA0;
+    border:1px solid #A8BD48;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_Button_first{
+   display:block;
+   float:left;
+   background: url(../images/nav_first.gif);
+   background-color:#dff4ff;
+   background-position:left;
+   background-repeat:no-repeat;
+   padding: 2px 2px 2px 20px;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   color:#334563;
+   cursor:pointer;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_Button_first:hover{
+    background-color:#F8FCA0;
+    border:1px solid #A8BD48;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_Button_last{
+   display:block;
+   float:left;
+   background: url(../images/nav_last.gif);
+   background-color:#dff4ff;
+   background-position:right;
+   background-repeat:no-repeat;
+   padding: 2px 20px 2px 2px;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   color:#334563;
+   cursor:pointer;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_Button_last:hover{
+    background-color:#F8FCA0;
+    border:1px solid #A8BD48;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_Button_previous{
+   display:block;
+   float:left;
+   background: url(../images/nav_prev.gif);
+   background-color:#dff4ff;
+   background-position:left;
+   background-repeat:no-repeat;
+   padding: 2px 2px 2px 20px;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   color:#334563;
+   cursor:pointer;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_Button_previous:hover{
+    background-color:#F8FCA0;
+    border:1px solid #A8BD48;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.My_Button_add{
+   display:block;
+   float:left;
+   width:20px;
+   background: url(../images/add.gif);
+   background-repeat:no-repeat;
+   background-color:#B7D9ED;
+   border:1px solid #456C84;
+   background-position:left;
+   cursor:pointer;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_Button_remove{
+   display:block;
+   float:left;
+   width:20px;
+   background: url(../images/remove.gif);
+   background-repeat:no-repeat;
+   background-color:#B7D9ED;
+   border:1px solid #456C84;
+   background-position:left;
+   cursor:pointer;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.My_search_icon{
+    /*background: url(../images/orderby.gif);
+    background-position: 3px 3px;
+    background-repeat:no-repeat;
+    padding: 2px 2px 2px 12px;
+    display: block;*/
+    color:#334563;
+    text-decoration:none;
+}
+
+.My_record_title{
+    font-variant: small-caps;
+    text-decoration:underline;
+    color:navy;
+    font-weight:bold;
+    padding: 2px 2px 2px 20px;
+}
+
+
+/*select {
+    height: 100%; width:100%;
+}*/
+
+/*Agregado por Cristian Granados*/
+html {height:100%}
+body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
+}
+
+#banner {background: url(../images/banner4.jpg) no-repeat 0 0; height: 123px;}
+#banner-rep { background: url(../images/banner-rep.png) repeat-x 960px 0; height: 123px; }
+
+#title h1 { float: left; position:absolute; font-family:Arial, Helvetica, sans-serif; font-size: 16px; margin:0; width:250px; padding: 35px 0 0 155px; line-height:17px;color:#336600;}
+
+#lang {width: 90px; height:20px; padding: 65px 0 0 0; float:right; z-index:999}
+#lang span {float:left; background: url(../images/boton1.png) no-repeat top center; display:block; width:30px; text-align:center;}
+#lang span a { color:#fff; margin:2px; line-height: 20px;}
+
+#actions {width: auto; padding: 89px 0 0 20px; float:left; position:absolute;z-index: 9999}
+#actions span { float:left; padding:0 3px;}
+#actions span a { display:block; padding: 3px 8px; color:#fff; background-color: #006600; -moz-border-radius: 3px; -webkit-border-radius: 3px;}
+#actions span a:hover {background-color:#d22425;}
+
+#contenido {background: url(../images/bk-conten.png)  repeat-x  top center; margin: 0;}
+
+#pageFormated {
+    text-align:justify;
+    margin: 3px 5% 0 5%;
+    display: block;
+    margin-bottom: 3em;
+    border:solid 1px #BAC072;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+#footer{
+        margin:0;
+        background: #D2D8A5;
+        width: 100%;
+        text-align:center;
+        line-height:24px;
+}
+
+#outer { width: 100%; position:absolute;}
+
+.title {font-family:Arial, Helvetica, sans-serif; font-size:18px; color:red; font-weight:bold;}
+
+/* These styles create the dropdown menus. */
+/* Tomado de: http://www.cssnewbie.com/easy-css-dropdown-menus */
+/* 19 marzo 2009 */
+#wrap {
+    width: auto;
+    padding: 89px 0 0 175px;
+    margin: 0 auto;
+    position: absolute;
+    z-index:99;
+    float:left;}
+
+#navbar {
+    margin: 0;
+    padding: 0;
+    height: 1em; }
+#navbar li {
+    list-style: none;
+    float: left;
+    padding: 0;
+    margin: 0 3px;}
+#navbar li ul li {margin: 0}
+#navbar li ul li a {
+        background: url(../images/tabsCri.png) no-repeat scroll 6px 2px transparent;
+        padding: 2px 0 0 20px;
+    }
+#navbar li a {
+    display: block;
+    padding: 3px 8px 3px 22px;
+    background-color: #3b79a4;
+    color: #fff;
+    text-decoration: none;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;}
+/*mouse sobre el menu-> muestra color rojo*/
+#navbar li a:hover {
+    background-color: #cc0000;
+}
+#navbar li ul {
+    display: none;
+    width: 13em; /* Width to help Opera out */
+    margin: 0;
+    padding: 0;
+    }
+
+#navbar li:hover ul, #navbar li.hover ul {
+    display: block;
+    position: absolute;
+    border-top: 0px solid #d2e87e;
+    border-right: 0px solid #d2e87e;
+    border-bottom: 5px solid #d2e87e;
+    border-left: 0px solid #d2e87e;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    }
+#navbar li:hover li, #navbar li.hover li {
+    float: none;
+    }
+#navbar li:hover li a, #navbar li.hover li a {
+    background-color: #d2e87e;
+    color: #000;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;}
+#navbar li li a { background-image: url(../images/none)}
+#navbar li li a:hover {
+    background-color: #a6c62d; color:#fff; }
+
+/*menu icons*/
+.taxonomy a {background: url(../images/taxonomia.png)}
+.inventory a {background: url(../images/inventario.png)}
+.administration a {background: url(../images/administracion.png)}
+.geographical a {background: url(../images/info-geo.png)}
+.security a { background: url(../images/seguridad.png)}
+.reports a { background: url(../images/report.png)}
+.germplasm a { background: url(../images/germplasm.png)}
+.taxonomy a, .inventory a, .administration a, .geographical a, .security a, .reports a, .germplasm a
+{ background-position: 3px 3px; background-repeat:no-repeat;}
+
+
+
+#limenuPlantBank ul li, #limenuSpermBank ul li {display: none;}
+#limenuPlantBank:hover li, #limenuSpermBank:hover li {display:block}
+#limenuPlantBank #ulmenuPlantBank, #limenuSpermBank #ulmenuSpermBank {margin: -25px 0 0 6.9em;}
+#navbar .germplasm ul, #navbar .germplasm ul li {width:7em;}
+#navbar .germplasm li ul {border:0}
+
+
