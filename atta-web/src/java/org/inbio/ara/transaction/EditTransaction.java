@@ -325,7 +325,10 @@ public class EditTransaction extends AbstractPageBean {
             return null;
         }
 
-        //Refrescar la lista de personas
+        //Refrescar la paginacion
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
+        this.getTransactionSessionBean().getPagination().setTotalResults(this.getTransactionSessionBean().
+                getTransactionFacade().countTransaction(collectionId).intValue());
         this.getTransactionSessionBean().getPagination().refreshList();
 
         //Notificar al usuario

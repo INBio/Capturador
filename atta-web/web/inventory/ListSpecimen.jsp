@@ -20,7 +20,7 @@
                             <webuijsf:form id="form1">
                                 <h:outputLabel id="lbSpecimenTitle" style="height: 24px; left: 24px; position: relative; width: 850px"
                                     styleClass="Page_title" value="#{resources.titleSpecimenList}"/>
-                                <h:panelGrid id="gridpSpecimen" style="height: 24px; left: 24px; position: relative" width="850">
+                                <h:panelGrid id="gridpSpecimen" style="height: 24px; left: 24px; position: relative;width:95%">
                                     <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msgListSpecimen" infoClass="infoMessage"
                                         style="height: 40px; width: 574px" warnClass="warnMessage"/>
                                     <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">
@@ -76,9 +76,9 @@
                                                 styleClass="My_Button" value="#{resources.button_proceed}"/>
                                         </h:panelGrid>
                                     </h:panelGrid>
-                                    <h:panelGrid cellspacing="1" columns="1" id="gridpTableButtons" style="height: 24px" styleClass="My_table" width="840">
+                                    <h:panelGrid cellspacing="1" columns="1" id="gridpTableButtons" style="width:100%" styleClass="My_table">
                                         <webuijsf:panelGroup id="grouppButtons">
-                                            <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" width="840">
+                                            <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" style="width:100%">
                                                 <h:outputLabel id="labelQuantity" value="#{inventory$ListSpecimen.quantityTotal}"/>
                                             </h:panelGrid>
                                             <h:commandButton action="#{inventory$ListSpecimen.btn_edit_action}" id="btn_edit" style="margin: 2px; height: 22px"
@@ -101,8 +101,8 @@
                                         <h:dataTable binding="#{inventory$ListSpecimen.dataTableSpecimens}" cellspacing="0" columnClasses="list-columns"
                                             headerClass="list-header" id="dataTableSpecimens" rowClasses="list-row-even,list-row-odd"
                                             rows="#{inventory$SpecimenSessionBean.pagination.resultsPerPage}"
-                                            style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
-                                            value="#{inventory$SpecimenSessionBean.pagination.dataProvider.list}" var="currentRow" width="839">
+                                            style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px;width:100%;"
+                                            value="#{inventory$SpecimenSessionBean.pagination.dataProvider.list}" var="currentRow">
                                             <h:column>
                                                 <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow['selected']}"/>
                                             </h:column>

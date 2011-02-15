@@ -158,18 +158,25 @@ public class ListSpecimen extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-
-        this.SetInstitutionDropDownData(); //Cargar valores del DD de instituciones
-        this.SetCountryDropDownData(); //Cargar valores del DD de paises
-        this.SetProvincesDropDownData();//Cargar valores del DD de proviencias
-
+        SpecimenSessionBean ssb = getinventory$SpecimenSessionBean();
+        //------------------------------ Control de GUI -------------------------------
         //Preguntar si la bandera de busqueda avanzada esta prendida
-        if(getinventory$SpecimenSessionBean().isAdvancedSearch()){
+        if(ssb.isAdvancedSearch()){
             this.gridpAdvancedSearch.setRendered(true);//Muestra el panel de busqueda avanzada
+            this.SetInstitutionDropDownData(); //Cargar valores del DD de instituciones
+            this.SetCountryDropDownData(); //Cargar valores del DD de paises
+            this.SetProvincesDropDownData();//Cargar valores del DD de proviencias            
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (getinventory$SpecimenSessionBean().getPagination()==null) {
-            getinventory$SpecimenSessionBean().initDataProvider();
+        //-------------------------- Control de Paginador ------------------------------
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (ssb.getPagination()==null) {
+            ssb.initDataProvider();
+        }
+        //Actualizar los datos del paginador si no es nula ni es ninguna búsqueda (osea, listado base)
+        else if(!ssb.isQueryMode() && !ssb.isQueryModeSimple()){
+            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+            ssb.getPagination().setTotalResults(ssb.getInventoryFacade().countSpecimens().intValue());
+            ssb.getPagination().refreshList();
         }
     }
 
@@ -302,7 +309,8 @@ public class ListSpecimen extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getinventory$SpecimenSessionBean().setQueryModeSimple(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getinventory$SpecimenSessionBean().getPagination().setTotalResults(this.getinventory$SpecimenSessionBean().getSearchFacade().countSpecimensByCriteria(consulta).intValue());
+        this.getinventory$SpecimenSessionBean().getPagination().
+                setTotalResults(this.getinventory$SpecimenSessionBean().getSearchFacade().countSpecimensByCriteria(consulta).intValue());
         this.getinventory$SpecimenSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
         return null;
@@ -322,7 +330,8 @@ public class ListSpecimen extends AbstractPageBean {
             this.getinventory$SpecimenSessionBean().setQueryModeSimple(false);
             this.getinventory$SpecimenSessionBean().setQueryMode(false);
             //Finalmente se setea el data provider del paginador con los datos por default
-            this.getinventory$SpecimenSessionBean().getPagination().setTotalResults(this.getinventory$SpecimenSessionBean().getInventoryFacade().countSpecimens().intValue());
+            this.getinventory$SpecimenSessionBean().getPagination().
+                    setTotalResults(this.getinventory$SpecimenSessionBean().getInventoryFacade().countSpecimens().intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -332,7 +341,8 @@ public class ListSpecimen extends AbstractPageBean {
             //Desabilitar la bandera de busqueda avanzada
             this.getinventory$SpecimenSessionBean().setQueryMode(false);
             //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getinventory$SpecimenSessionBean().getPagination().setTotalResults(this.getinventory$SpecimenSessionBean().getSearchFacade().countSpecimensByCriteria(userInput).intValue());
+            this.getinventory$SpecimenSessionBean().getPagination().
+                    setTotalResults(this.getinventory$SpecimenSessionBean().getSearchFacade().countSpecimensByCriteria(userInput).intValue());
         }
         this.getinventory$SpecimenSessionBean().getPagination().firstResults(); 
         return null;

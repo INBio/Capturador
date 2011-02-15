@@ -345,6 +345,8 @@ public class EditSpecimen extends AbstractPageBean {
             //Mostrar mensage de operacion exitosa
             MessageBean.setSuccessMessageFromBundle("success_editing_specimen", this.getMyLocale());
             //Refrescar el data provider del paginador
+            this.getinventory$SpecimenSessionBean().getPagination().setTotalResults
+                    (this.getinventory$SpecimenSessionBean().getInventoryFacade().countSpecimens().intValue());
             this.getinventory$SpecimenSessionBean().getPagination().refreshList();
         }
         else{

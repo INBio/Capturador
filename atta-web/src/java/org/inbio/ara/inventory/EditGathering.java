@@ -773,6 +773,10 @@ public class EditGathering extends AbstractPageBean {
         }
 
         //Actualizar el data provider del paginador
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
+        this.getinventory$GatheringSessionBean().getPagination().setTotalResults
+                    (this.getinventory$GatheringSessionBean().getInventoryFacade().
+                    countGatheringObservations(collectionId).intValue());
         this.getinventory$GatheringSessionBean().getPagination().refreshList();
 
         //Avisar al usuario que la operacion fue exitosa

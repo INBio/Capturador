@@ -616,7 +616,7 @@ html {height:100%}
 body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 }
 
-#banner {background: url(../images/banner4.jpg) no-repeat 0 0; height: 123px;}
+#banner {background: url(../images/banner.png) no-repeat 0 0; height: 123px;}
 #banner-rep { background: url(../images/banner-rep.png) repeat-x 960px 0; height: 123px; }
 
 #title h1 { float: left; position:absolute; font-family:Arial, Helvetica, sans-serif; font-size: 16px; margin:0; width:250px; padding: 35px 0 0 155px; line-height:17px;color:#336600;}
@@ -625,7 +625,7 @@ body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 #lang span {float:left; background: url(../images/boton1.png) no-repeat top center; display:block; width:30px; text-align:center;}
 #lang span a { color:#fff; margin:2px; line-height: 20px;}
 
-#actions {width: auto; padding: 89px 0 0 20px; float:left; position:absolute;z-index: 9999}
+#actions {width: auto; padding: 89px 0 0 8px; float:left; position:absolute;z-index: 9999}
 #actions span { float:left; padding:0 3px;}
 #actions span a { display:block; padding: 3px 8px; color:#fff; background-color: #006600; -moz-border-radius: 3px; -webkit-border-radius: 3px;}
 #actions span a:hover {background-color:#d22425;}
@@ -659,7 +659,7 @@ body {height: 100%; width:100%; margin: 0 0 50px 0; font-size:0.8em;
 /* 19 marzo 2009 */
 #wrap {
     width: auto;
-    padding: 89px 0 0 175px;
+    padding: 89px 0 0 154px;
     margin: 0 auto;
     position: absolute;
     z-index:99;

@@ -101,10 +101,17 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        NomenclaturalGroupSessionBean ngsb =
-            this.getNomenclaturalGroupSessionBean();
-        
-        ngsb.initDataProvider();
+        NomenclaturalGroupSessionBean ngsb = this.getNomenclaturalGroupSessionBean();
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (ngsb.getPagination()==null) {
+            ngsb.initDataProvider();
+        }
+        //Actualizar los datos del paginador en todo momento, una vez que haya sido inicializado
+        else {
+            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+            ngsb.getPagination().setTotalResults(ngsb.getTaxonomyFacadeImpl().countAllNomenclaturalGroups().intValue());
+            ngsb.getPagination().refreshList();
+        }
     }
 
     /**
@@ -175,8 +182,7 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
 
 
     public String btnDeleteAction(){
-
-
+        
         NomenclaturalGroupSessionBean ngsb =
             this.getNomenclaturalGroupSessionBean();
 
@@ -216,7 +222,8 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
             }
 
             //Refrescar la lista de audiencias
-            ngsb.getPagination().deleteItem();
+            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+            ngsb.getPagination().setTotalResults(ngsb.getTaxonomyFacadeImpl().countAllNomenclaturalGroups().intValue());
             ngsb.getPagination().refreshList();
 
             //Notificar al usuario

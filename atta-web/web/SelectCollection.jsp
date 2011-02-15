@@ -19,33 +19,35 @@
                         <webuijsf:panelLayout id="contenido">
                             <webuijsf:form id="form1">
                                 <h:outputLabel id="lbSelectCollTitle" style="height: 24px; left: 24px; top: 10px; position: relative; width: 670px"
-                                                styleClass="Page_title" value="#{resources.titleCollectionSelect}"/>
+                                    styleClass="Page_title" value="#{resources.titleCollectionSelect}"/>
                                 <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; top: 20px; position: relative" width="600">
                                     <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msgl" infoClass="infoMessage"
-                                                style="height: 30px; width: 600px" warnClass="warnMessage"/>
-                                    <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 600px">                                        
+                                        style="height: 30px; width: 600px" warnClass="warnMessage"/>
+                                    <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 600px">
                                         <h:commandButton action="#{SelectCollection.btnSelectCollection_action}" id="btnSelectCollection"
-                                                         style="height: 24px; width: 160px" styleClass="Button_next" value="#{resources.next_collection}"/>
-                                        <h:commandButton action="#{SelectCollection.btnExit_action}" id="btnExit" style="height: 24px; width: 160px;margin-left:24px;"
-                                                         styleClass="Button_exit" value="#{resources.btnExit}"/>
+                                            style="height: 24px; width: 160px" styleClass="Button_next" value="#{resources.next_collection}"/>
+                                        <h:commandButton action="#{SelectCollection.btnExit_action}" id="btnExit"
+                                            style="height: 24px; width: 160px;margin-left:24px;" styleClass="Button_exit" value="#{resources.btnExit}"/>
                                     </webuijsf:panelGroup>
-                                    <webuijsf:panelLayout id="layoutpSelect" style="height: 212px; position: relative; width: 599px; -rave-layout: grid">
+                                    <webuijsf:panelLayout id="layoutpSelect" style="height: 320px; position: relative; width: 599px; -rave-layout: grid">
                                         <webuijsf:label for="listbTaxons" id="lbTaxons"
-                                                        style="font-size: 12px; font-weight: bold; height: 22px; left: 0px; top: 24px; position: absolute; width: 285px" text="#{resources.available_taxons}"/>
+                                            style="font-size: 12px; font-weight: bold; height: 22px; left: 0px; top: 24px; position: absolute; width: 358px" text="#{resources.available_taxons}"/>
                                         <webuijsf:label for="listbNomenclatural" id="lbNomenclaturalG"
-                                                        style="font-size: 12px; font-weight: bold; height: 24px; left: 312px; top: 24px; position: absolute; width: 285px" text="#{resources.available_groups}"/>
+                                            style="font-size: 12px; font-weight: bold; height: 24px; left: 0px; top: 168px; position: absolute; width: 358px" text="#{resources.available_groups}"/>
                                         <webuijsf:listbox binding="#{SelectCollection.collectionList}" id="listbTaxons"
-                                                          items="#{SelectCollection.taxonUserData.options}" rows="8" selected="#{SelectCollection.selectedCollection}"
-                                                          style="height: 168px; left: 0px; top: 48px; position: absolute" width="265px"/>
+                                            items="#{SelectCollection.taxonUserData.options}" rows="6" selected="#{SelectCollection.selectedCollection}"
+                                            style="height: 130px; left: 0px; top: 48px; position: absolute" width="350px"/>
                                         <webuijsf:listbox binding="#{SelectCollection.nomenclaturalList}" id="listbNomenclatural"
-                                                          items="#{SelectCollection.nomenclaturalGroupData.options}" rows="8" selected="#{SelectCollection.selectedNomenclatural}"
-                                                          style="height: 168px; left: 312px; top: 48px; position: absolute" width="265px"/>
+                                            items="#{SelectCollection.nomenclaturalGroupData.options}" rows="6"
+                                            selected="#{SelectCollection.selectedNomenclatural}"
+                                            style="height: 130px; left: 0px; top: 192px; position: absolute" width="350px"/>
                                     </webuijsf:panelLayout>
                                 </h:panelGrid>
                             </webuijsf:form>
                         </webuijsf:panelLayout>
                         <jsp:directive.include file="/Footer.jspf"/>
-                    </div> <!-- pageFormated ends -->
+                    </div>
+                    <!-- pageFormated ends -->
                 </webuijsf:body>
             </webuijsf:html>
         </webuijsf:page>

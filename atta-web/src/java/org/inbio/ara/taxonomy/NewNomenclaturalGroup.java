@@ -286,6 +286,74 @@ public class NewNomenclaturalGroup extends AbstractPageBean {
     }
 
     /**
+     * Metodo ejecutado por el boton de crear un nuevo grupo nomenclatural
+     */
+    public String btnNewNomenclaturalGroup_action() {
+
+        NomenclaturalGroupSessionBean nsb =
+                this.gettaxonomy$NomenclaturalGroupSessionBean();
+
+        //Capturar los valores introducidos por el usuario
+        String name = null, description = null,notes = null, temporality = null;
+        name = (String)this.getTxName().getText();
+        description = (String)this.getTxaDescription().getText();
+        notes = (String)this.getTxaNotes().getText();
+        temporality = (String)this.getTxTemporality().getText();
+
+        //Asignar dichos valores al current DTO
+        nsb.getCurrentNomenclaturalGroupDTO().setName(name);
+        nsb.getCurrentNomenclaturalGroupDTO().setDescription(description);
+        nsb.getCurrentNomenclaturalGroupDTO().setNotes(notes);
+        nsb.getCurrentNomenclaturalGroupDTO().setTemporality(temporality);
+        nsb.getCurrentNomenclaturalGroupDTO().setCollectionId
+                (nsb.getSelectedCollection());
+        nsb.getCurrentNomenclaturalGroupDTO().setCertificatorPersonId
+                (nsb.getSelectedCertifier());
+        nsb.getCurrentNomenclaturalGroupDTO().setCommonName
+                (nsb.getSelectedCommon());
+
+        //Mandar a persistir el DTO
+        try{
+            //Llamar metodo que persiste el DTO
+            this.gettaxonomy$NomenclaturalGroupSessionBean().
+                    getTaxonomyFacadeImpl().createNomenclaturalGroup
+                    (nsb.getCurrentNomenclaturalGroupDTO(),
+                    nsb.getArRegions().getSelectedOptions(),
+                    nsb.getArTaxons().getSelectedOptions());
+        }
+        catch(Exception e){
+            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+            return null;
+        }
+
+        //Limpiar la pantalla de new nomenclatural group
+        nsb.setCurrentNomenclaturalGroupDTO(new NomenclaturalGroupDTO());
+        nsb.setArRegions(new AddRemoveList());
+        nsb.setArTaxons(new AddRemoveList());
+        this.getTxName().setText(null);
+        this.getTxTemporality().setText(null);
+        this.getTxaDescription().setText(null);
+        this.getTxaNotes().setText(null);
+        this.ddCertifier.setSelected(null);
+        this.ddCollection.setSelected(null);
+        this.ddCommonName.setSelected(null);
+        nsb.setSelectedCertifier(null);
+        nsb.setSelectedCollection(null);
+        nsb.setSelectedCommon(null);
+
+        //Refrescar la lista del paginador
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
+        nsb.getPagination().setTotalResults(nsb.getTaxonomyFacadeImpl().countAllNomenclaturalGroups().intValue());
+        nsb.getPagination().refreshList();
+
+        //Notoficar al usuario
+        MessageBean.setSuccessMessageFromBundle
+                ("create_nomenclatural_succes", this.getMyLocale());
+
+        return null;
+    }
+
+    /**
      * @return the txaDescription
      */
     public TextArea getTxaDescription() {
@@ -459,77 +527,6 @@ public class NewNomenclaturalGroup extends AbstractPageBean {
             gettaxonomy$NomenclaturalGroupSessionBean() {
         return (NomenclaturalGroupSessionBean)
                 getBean("taxonomy$NomenclaturalGroupSessionBean");
-    }
-
-    /**
-     * Metodo ejecutado por el boton de crear un nuevo grupo nomenclatural
-     * @return
-     */
-    public String btnNewNomenclaturalGroup_action() {
-
-        NomenclaturalGroupSessionBean nsb =
-                this.gettaxonomy$NomenclaturalGroupSessionBean();
-
-        //Capturar los valores introducidos por el usuario
-        String name = null, description = null,notes = null, temporality = null;
-        name = (String)this.getTxName().getText();
-        description = (String)this.getTxaDescription().getText();
-        notes = (String)this.getTxaNotes().getText();
-        temporality = (String)this.getTxTemporality().getText();
-
-        //Asignar dichos valores al current DTO
-        nsb.getCurrentNomenclaturalGroupDTO().setName(name);
-        nsb.getCurrentNomenclaturalGroupDTO().setDescription(description);
-        nsb.getCurrentNomenclaturalGroupDTO().setNotes(notes);
-        nsb.getCurrentNomenclaturalGroupDTO().setTemporality(temporality);
-        nsb.getCurrentNomenclaturalGroupDTO().setCollectionId
-                (nsb.getSelectedCollection());
-        nsb.getCurrentNomenclaturalGroupDTO().setCertificatorPersonId
-                (nsb.getSelectedCertifier());
-        nsb.getCurrentNomenclaturalGroupDTO().setCommonName
-                (nsb.getSelectedCommon());
-
-        //Mandar a persistir el DTO
-        try{
-            //Llamar metodo que persiste el DTO
-            this.gettaxonomy$NomenclaturalGroupSessionBean().
-                    getTaxonomyFacadeImpl().createNomenclaturalGroup
-                    (nsb.getCurrentNomenclaturalGroupDTO(),
-                    nsb.getArRegions().getSelectedOptions(),
-                    nsb.getArTaxons().getSelectedOptions());
-        }
-        catch(Exception e){
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-            return null;
-        }
-
-        //Limpiar la pantalla de new nomenclatural group
-        nsb.setCurrentNomenclaturalGroupDTO(new NomenclaturalGroupDTO());
-        nsb.setArRegions(new AddRemoveList());
-        nsb.setArTaxons(new AddRemoveList());
-        this.getTxName().setText(null);
-        this.getTxTemporality().setText(null);
-        this.getTxaDescription().setText(null);
-        this.getTxaNotes().setText(null);
-        this.ddCertifier.setSelected(null);
-        this.ddCollection.setSelected(null);
-        this.ddCommonName.setSelected(null);
-        nsb.setSelectedCertifier(null);
-        nsb.setSelectedCollection(null);
-        nsb.setSelectedCommon(null);
-
-        //Refrescar la lista del paginador
-        this.gettaxonomy$NomenclaturalGroupSessionBean().getPagination().
-                addItem();
-        this.gettaxonomy$NomenclaturalGroupSessionBean().getPagination().
-                refreshList();
-
-        //Notoficar al usuario
-        MessageBean.setSuccessMessageFromBundle
-                ("create_nomenclatural_succes", this.getMyLocale());
-        
-        return null;
-    }
-    
+    }    
 }
 

@@ -309,7 +309,9 @@ public class NewTransaction extends AbstractPageBean {
         }
 
         //Refrescar la lista de transacciones
-        this.getTransactionSessionBean().getPagination().addItem();
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
+        this.getTransactionSessionBean().getPagination().setTotalResults(this.getTransactionSessionBean().
+                getTransactionFacade().countTransaction(collectionId).intValue());
         this.getTransactionSessionBean().getPagination().refreshList();
 
         //Notificar al usuario

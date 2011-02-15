@@ -179,33 +179,36 @@ public class ListTransaction extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-
-        //Preguntar si la bandera de busqueda avanzada esta seteada
-        if(this.getTransactionSessionBean().isAdvancedSearch()){
-            this.getPgAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
-        }
-        if(this.getTransactionSessionBean().getPagination()==null || !this.getTransactionSessionBean().isTransactionPaginator()){
-            this.getTransactionSessionBean().setTransactionPaginator(true);
-            this.getTransactionSessionBean().initDataProvider();
-        }
-
-        this.deleteConfirmationText.setValue(BundleHelper.getDefaultBundleValue
-                    ("delete_confirmation", this.getMyLocale()));
-
-
-        //Para drop down de personas e instituciones
+        TransactionSessionBean tsb = getTransactionSessionBean();
+        //Load required data
+        this.deleteConfirmationText.setValue(BundleHelper.getDefaultBundleValue("delete_confirmation", this.getMyLocale()));
         this.getInstitutionData().setOptions(setInstitutionDropDownData());
         this.getSenderPersonData().setOptions(setSenderPersonDropDownData());
         this.getReceiverPersonData().setOptions(setReceiverPersonDropDownData());
-        //Para el DropDown/selectionList
         this.getTransactionTypeData().setOptions(getSelectionListDropDownData
                 (SelectionListEntity.TRANSACTION_TYPE.getId()));
-
         this.getTransactedSpecimenStatusData().setOptions(getSelectionListDropDownData
                 (SelectionListEntity.TRANSACTED_SPECIMEN_STATUS.getId()));
-
         java.util.Calendar currentDate = java.util.Calendar.getInstance();
         this.clReceivingDate.setSelectedDate(currentDate.getTime());
+        //------------------------------ Control de GUI -------------------------------
+        //Preguntar si la bandera de busqueda avanzada esta seteada
+        if(tsb.isAdvancedSearch()){
+            this.getPgAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
+        }
+        //-------------------------- Control de Paginador ------------------------------
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if(tsb.getPagination()==null || !tsb.isTransactionPaginator()){
+            tsb.setTransactionPaginator(true);
+            tsb.initDataProvider();
+        }
+        //Actualizar los datos del paginador si no es nula ni es ninguna búsqueda (osea, listado base)
+        else if(!tsb.isAdvancedSearch() && !tsb.isSimpleSearch()){
+            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+            tsb.getPagination().setTotalResults(tsb.getTransactionFacade().
+                    countTransaction(collectionId).intValue());
+            tsb.getPagination().refreshList();
+        }
     }
 
     /**
@@ -655,7 +658,6 @@ public class ListTransaction extends AbstractPageBean {
             this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO().setReceivingDate(null);
         }
 
-
         if(dtFinalTransactionDate!=null) {
             gcFinalTransactionDate.setTime(dtFinalTransactionDate);
             this.getTransactionSessionBean().getSearchDataDTO().setFinalTransactionDate(gcFinalTransactionDate);
@@ -763,8 +765,10 @@ public class ListTransaction extends AbstractPageBean {
                 MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
                 return null;
             }
-            //Refrescar la lista de audiencias
-            this.getTransactionSessionBean().getPagination().deleteItem();
+            //Refrescar la paginacion
+            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+            this.getTransactionSessionBean().getPagination().setTotalResults(this.getTransactionSessionBean().
+                    getTransactionFacade().countTransaction(collectionId).intValue());
             this.getTransactionSessionBean().getPagination().refreshList();
             //Notificar al usuario
             MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());

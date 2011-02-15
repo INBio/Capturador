@@ -19,7 +19,7 @@
                         <webuijsf:panelLayout id="contenido">
                             <webuijsf:form id="form1">
                                 <h:outputLabel id="lbTitle" style="height: 24px; left: 24px; position: relative; width: 850px" styleClass="Page_title" value="#{resources.species_records}"/>
-                                <h:panelGrid columns="1" id="gridpMain" style="left: 24px; position: relative" width="850">
+                                <h:panelGrid columns="1" id="gridpMain" style="left: 24px; position: relative;width:95%;">
                                     <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                         style="height: 30px; width: 840px" warnClass="warnMessage"/>
 
@@ -35,9 +35,9 @@
                                             styleClass="My_Button" value="#{resources.search}"/>
                                     </h:panelGrid>
 
-                                    <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="height: 24px" styleClass="My_table" width="840">
+                                    <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="height: 24px;width:100%;" styleClass="My_table">
                                         <webuijsf:panelGroup id="grouppButtons">
-                                            <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" width="840">
+                                            <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" style="width:100%">
                                                 <h:outputLabel id="labelQuantity" value="#{taxonomy$ListSpecies.quantityTotal}"/>
                                             </h:panelGrid>
                                             <webuijsf:panelGroup id="panelPaginacion" separator=" " style="margin-left:70px;">
@@ -68,8 +68,8 @@
                                         <h:dataTable binding="#{taxonomy$ListSpecies.taxonDescriptionTable}" cellspacing="0" columnClasses="list-columns"
                                             headerClass="list-header" id="dataTablegathering" rowClasses="list-row-even,list-row-odd"
                                             rows="#{taxonomy$SpeciesSessionBean.pagination.resultsPerPage}"
-                                            style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
-                                            value="#{taxonomy$SpeciesSessionBean.pagination.dataProvider.list}" var="currentRow" width="839">
+                                            style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px;width:100%;"
+                                            value="#{taxonomy$SpeciesSessionBean.pagination.dataProvider.list}" var="currentRow">
                                             <h:column>
                                                 <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow['selected']}"/>
                                             </h:column>

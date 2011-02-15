@@ -349,6 +349,52 @@ public class EditNomenclaturalGroup extends AbstractPageBean {
     }
 
     /**
+     * Metodo ejecutado por el boton de editar un grupo nomenclatural
+     */
+    public String btnEditNomenclaturalGroup_action() {
+        NomenclaturalGroupSessionBean nsb =
+                this.gettaxonomy$NomenclaturalGroupSessionBean();
+
+        //Capturar los valores introducidos por el usuario
+        String name = null, description = null,notes = null, temporality = null;
+        name = (String)this.getTxName().getText();
+        description = (String)this.getTxaDescription().getText();
+        notes = (String)this.getTxaNotes().getText();
+        temporality = (String)this.getTxTemporality().getText();
+
+        //Asignar dichos valores al current DTO
+        nsb.getCurrentNomenclaturalGroupDTO().setName(name);
+        nsb.getCurrentNomenclaturalGroupDTO().setDescription(description);
+        nsb.getCurrentNomenclaturalGroupDTO().setNotes(notes);
+        nsb.getCurrentNomenclaturalGroupDTO().setTemporality(temporality);
+
+        //Mandar a persistir el DTO
+        try{
+            //Llamar metodo que persiste el DTO
+            this.gettaxonomy$NomenclaturalGroupSessionBean().
+                    getTaxonomyFacadeImpl().updateNomenclaturalGroup
+                    (nsb.getCurrentNomenclaturalGroupDTO(),
+                    nsb.getArRegionsEdit().getSelectedOptions(),
+                    nsb.getArTaxonsEdit().getSelectedOptions());
+        }
+        catch(Exception e){
+            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+            return null;
+        }
+
+        //Refrescar la lista del paginador
+        Long collectionId = getAraSessionBean().getGlobalCollectionId();
+        nsb.getPagination().setTotalResults(nsb.getTaxonomyFacadeImpl().countAllNomenclaturalGroups().intValue());
+        nsb.getPagination().refreshList();
+
+        //Notoficar al usuario
+        MessageBean.setSuccessMessageFromBundle
+                ("update_nomenclatural_succes", this.getMyLocale());
+
+        return null;
+    }
+
+    /**
      * @return the myLocale
      */
     public Locale getMyLocale() {
@@ -637,49 +683,6 @@ public class EditNomenclaturalGroup extends AbstractPageBean {
      */
     protected StatisticsSessionBean getstatistics$StatisticsSessionBean() {
         return (StatisticsSessionBean) getBean("statistics$StatisticsSessionBean");
-    }
-
-    public String btnEditNomenclaturalGroup_action() {
-        NomenclaturalGroupSessionBean nsb =
-                this.gettaxonomy$NomenclaturalGroupSessionBean();
-
-        //Capturar los valores introducidos por el usuario
-        String name = null, description = null,notes = null, temporality = null;
-        name = (String)this.getTxName().getText();
-        description = (String)this.getTxaDescription().getText();
-        notes = (String)this.getTxaNotes().getText();
-        temporality = (String)this.getTxTemporality().getText();
-
-        //Asignar dichos valores al current DTO
-        nsb.getCurrentNomenclaturalGroupDTO().setName(name);
-        nsb.getCurrentNomenclaturalGroupDTO().setDescription(description);
-        nsb.getCurrentNomenclaturalGroupDTO().setNotes(notes);
-        nsb.getCurrentNomenclaturalGroupDTO().setTemporality(temporality);
-
-        //Mandar a persistir el DTO
-        try{
-            //Llamar metodo que persiste el DTO
-            this.gettaxonomy$NomenclaturalGroupSessionBean().
-                    getTaxonomyFacadeImpl().updateNomenclaturalGroup
-                    (nsb.getCurrentNomenclaturalGroupDTO(),
-                    nsb.getArRegionsEdit().getSelectedOptions(),
-                    nsb.getArTaxonsEdit().getSelectedOptions());
-        }
-        catch(Exception e){
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-            return null;
-        }
-
-        //Refrescar la lista del paginador
-        this.gettaxonomy$NomenclaturalGroupSessionBean().getPagination().
-                refreshList();
-
-        //Notoficar al usuario
-        MessageBean.setSuccessMessageFromBundle
-                ("update_nomenclatural_succes", this.getMyLocale());
-
-        return null;
-    }
-    
+    }    
 }
 

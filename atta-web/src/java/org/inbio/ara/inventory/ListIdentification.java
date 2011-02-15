@@ -41,7 +41,6 @@ import org.inbio.ara.dto.inventory.IdentificationStatusDTO;
 import org.inbio.ara.dto.inventory.IdentificationTypeDTO;
 import org.inbio.ara.dto.inventory.IdentifierDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
-import org.inbio.ara.dto.inventory.SpecimenDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.label.LabelSessionBean;
@@ -173,31 +172,33 @@ public class ListIdentification extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+        //Load required data
         this.setStatusData();
         this.setTypeData();
         this.setTaxonomicLevelData();
         this.loadValidatorData();
         this.loadAddRemoveData(false);
-
-        this.getDeleteConfirmationText().setValue(BundleHelper.getDefaultBundleValue
-
-                    ("delete_confirmation", this.getMyLocale()));
-
-        /* Preguntar si la bandera de busqueda avanzada esta prendida y si
-         * la bandera de cargar provincias esta apagada
-         */
-        if (this.getIdentificationSessionBean().isAdvancedSearch()) {
+        this.getDeleteConfirmationText().setValue(BundleHelper.getDefaultBundleValue("delete_confirmation", this.getMyLocale()));
+        //------------------------------ Control de GUI -------------------------------
+        if (isb.isAdvancedSearch()) {
             //Muestra el panel de busqueda avanzada
             this.gridpAdvancedSearch.setRendered(true);
         } //Verifica si esta re-identificando y muestra el panel
-        else if (this.getIdentificationSessionBean().isReIdentify()) {
+        else if (isb.isReIdentify()) {
             //Muestra el panel de reidentificacion
             this.gridpReIdentify.setRendered(true);
-        } else if (this.getIdentificationSessionBean().getPagination() == null) {
-            //Inicializar el dataprovider si la paginacion es nula
-            //y no es filtrado por busquedas
-            this.getIdentificationSessionBean().initDataProvider();
+        }
+        //-------------------------- Control de Paginador ------------------------------
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (isb.getPagination()==null) {
+            isb.initDataProvider();
+        }
+        //Actualizar los datos del paginador si no es nula ni es ninguna búsqueda (osea, listado base)
+        else if(!isb.isQueryMode() && !isb.isQueryModeSimple()){
+            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+            isb.getPagination().setTotalResults(isb.getInventoryFacade().countIdentifications().intValue());
+            isb.getPagination().refreshList();
         }
     }
 
@@ -438,8 +439,8 @@ public class ListIdentification extends AbstractPageBean {
 
             //Cambia el text del boton de busqueda avanzada
             this.btnAdvSeach.setValue(
-                BundleHelper.getDefaultBundleValue("advanced_search_specimen_back",
-                                                   getMyLocale()));
+                    BundleHelper.getDefaultBundleValue("advanced_search_specimen_back",
+                    getMyLocale()));
 
         } else if (advanced == true) {
             isb.setAdvancedSearch(false);
@@ -455,9 +456,8 @@ public class ListIdentification extends AbstractPageBean {
 
             //Cambia el text del boton de busqueda avanzada
             this.btnAdvSeach.setValue(
-                BundleHelper.getDefaultBundleValue("advanced_search_specimen",
-                                                   getMyLocale()));
-
+                    BundleHelper.getDefaultBundleValue("advanced_search_specimen",
+                    getMyLocale()));
         }
 
         return null;
@@ -616,8 +616,8 @@ public class ListIdentification extends AbstractPageBean {
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
         totalResults = isb.getSearchFacade().countIdentificationByCriteria(consulta).intValue();
         isb.getPagination().setTotalResults(totalResults);
-
         isb.getPagination().firstResults();
+
         this.getTxSearch().setValue("");
 
         return null;
@@ -734,14 +734,16 @@ public class ListIdentification extends AbstractPageBean {
             return null;
         }
 
-        // realiza la re-identificación
+        //Realiza la re-identificación
         isb.reidentify(selectedIdentifications);
 
-        // refresca los datos cargados.
+        //Cierra el panel de reidentificación.
         this.btnReIdentifyAction();
 
-        // cierra el panel de reidentificación.
-        this.getIdentificationSessionBean().getPagination().firstResults();
+        //Refresca los datos cargados.
+        this.getIdentificationSessionBean().getPagination().
+                setTotalResults(this.getIdentificationSessionBean().getInventoryFacade().countIdentifications().intValue());
+        this.getIdentificationSessionBean().getPagination().refreshList();
               
         this.loadAddRemoveData(true);
 

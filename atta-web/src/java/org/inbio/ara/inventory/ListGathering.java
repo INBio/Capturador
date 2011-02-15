@@ -162,17 +162,25 @@ public class ListGathering extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-
-        this.SetCountryDropDownData(); //Cargar valores del DD de paises
-        this.SetProvincesDropDownData();//Cargar valores del DD de provincias
-
+        GatheringSessionBean gsb = getinventory$GatheringSessionBean();
+        //------------------------------ Control de GUI -------------------------------
         //Preguntar si la bandera de busqueda avanzada esta prendida
-        if(getinventory$GatheringSessionBean().isAdvancedSearch()){
+        if(gsb.isAdvancedSearch()){
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
+            //Carga los datos de los dropdowns de pais y provincia
+            this.SetCountryDropDownData(); //Cargar valores del DD de paises
+            this.SetProvincesDropDownData();//Cargar valores del DD de provincias
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (getinventory$GatheringSessionBean().getPagination()==null) {
-            getinventory$GatheringSessionBean().initDataProvider();
+        //-------------------------- Control de Paginador ------------------------------
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (gsb.getPagination()==null) {
+            gsb.initDataProvider();
+        }
+        //Actualizar los datos del paginador si no es nula ni es ninguna búsqueda (osea, listado base)
+        else if(!gsb.isQueryMode() && !gsb.isQueryModeSimple()){
+            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+            gsb.getPagination().setTotalResults(gsb.getInventoryFacade().countGatheringObservations(collectionId).intValue());
+            gsb.getPagination().refreshList();
         }
     }
 
@@ -282,7 +290,7 @@ public class ListGathering extends AbstractPageBean {
             //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda simple
             this.getinventory$GatheringSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
-            this.getinventory$GatheringSessionBean().setQueryMode(false);            
+            this.getinventory$GatheringSessionBean().setQueryMode(false);
             //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
             this.getinventory$GatheringSessionBean().getPagination().setTotalResults
                     (this.getinventory$GatheringSessionBean().getSearchFacade().
@@ -362,7 +370,6 @@ public class ListGathering extends AbstractPageBean {
                 countGathObsByCriteria(consulta).intValue());
         this.getinventory$GatheringSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
-
         return null;
     }
 
@@ -471,7 +478,6 @@ public class ListGathering extends AbstractPageBean {
             this.getinventory$GatheringSessionBean().setCurrentGatheringDTO(myDTO);
             //Llamada al jsp encargado de la edicion de recolecciones
             return "edit";
-
         }
         else{ //En caso de que sea seleccion multiple
             MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
@@ -525,7 +531,10 @@ public class ListGathering extends AbstractPageBean {
             //Borrar de la tabla gatherinfObservation
             gsb.getInventoryFacade().deleteGatheringById(myDTO.getGatheringObservationId());
             //Refrescar el dataprovider del paginador
-            gsb.getPagination().deleteItem();
+            Long collectionId = getAraSessionBean().getGlobalCollectionId();
+            gsb.getPagination().setTotalResults
+                        (this.getinventory$GatheringSessionBean().getInventoryFacade().
+                        countGatheringObservations(collectionId).intValue());
             gsb.getPagination().refreshList();
             //Notificar al usuario
             MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());

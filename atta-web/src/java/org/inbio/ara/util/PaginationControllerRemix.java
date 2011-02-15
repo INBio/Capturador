@@ -77,6 +77,7 @@ public class PaginationControllerRemix {
     /**
      * Incrementa en una unidad la cantidad total de resultados
      * Debe utilizarse al crear un nuevo elemento en la tabla
+     * @deprecated Afecta la concurrencia en el sistema
      */
     public void addItem(){
         this.totalResults++;
@@ -85,6 +86,7 @@ public class PaginationControllerRemix {
      /**
      * Decrementa en una unidad la cantidad total de resultados
      * Debe utilizarse al eliminar un elemento en la tabla
+     * @deprecated Afecta la concurrencia en el sistema
      */
     public void deleteItem(){
         this.totalResults--;
