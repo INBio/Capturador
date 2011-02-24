@@ -106,12 +106,9 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
         if (ngsb.getPagination()==null) {
             ngsb.initDataProvider();
         }
-        //Actualizar los datos del paginador en todo momento, una vez que haya sido inicializado
-        else {
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
-            ngsb.getPagination().setTotalResults(ngsb.getTaxonomyFacadeImpl().countAllNomenclaturalGroups().intValue());
+        //Actualizar los datos del paginador
+        else
             ngsb.getPagination().refreshList();
-        }
     }
 
     /**
@@ -182,9 +179,9 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
 
 
     public String btnDeleteAction(){
-        
+
         NomenclaturalGroupSessionBean ngsb =
-            this.getNomenclaturalGroupSessionBean();
+                this.getNomenclaturalGroupSessionBean();
 
         int n = dataTable.getRowCount();
         ArrayList<NomenclaturalGroupDTO> selectedList = new ArrayList();
@@ -195,7 +192,7 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
             dataTable.setRowIndex(i);
 
             NomenclaturalGroupDTO aux =
-                (NomenclaturalGroupDTO) this.dataTable.getRowData();
+                    (NomenclaturalGroupDTO) this.dataTable.getRowData();
 
             if (aux.isSelected()) {
                 selectedList.add(aux);
@@ -203,37 +200,28 @@ public class ListNomenclaturalGroup extends AbstractPageBean {
         }
 
         // if no item was selected prints error message.
-        if(selectedList == null || selectedList.size() == 0){
-            MessageBean.setErrorMessageFromBundle("not_selected"
-                                                    , this.getMyLocale());
+        if (selectedList == null || selectedList.size() == 0) {
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
             return null;
-        }
-        // if just one item was selected by the user
-        else if(selectedList.size() == 1){
+        } // if just one item was selected by the user
+        else if (selectedList.size() == 1) {
             NomenclaturalGroupDTO selected = selectedList.get(0);
 
-            try{ // try to delete the nomenclatural group
+            try { // try to delete the nomenclatural group
                 ngsb.deleteNomenclaturalGroup(selected.getNomenclaturalGroupId());
-            }
-            catch(Exception e){// the nomenclatural group is imposible to delete
-                MessageBean.setErrorMessageFromBundle("imposible_to_delete"
-                                                        , this.getMyLocale());
+            } catch (Exception e) {// the nomenclatural group is imposible to delete
+                MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
                 return null;
             }
 
-            //Refrescar la lista de audiencias
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
-            ngsb.getPagination().setTotalResults(ngsb.getTaxonomyFacadeImpl().countAllNomenclaturalGroups().intValue());
+            //Refrescar la lista de grupos nomenclaturales
             ngsb.getPagination().refreshList();
 
             //Notificar al usuario
-            MessageBean.setSuccessMessageFromBundle("delete_success"
-                                                    , this.getMyLocale());
+            MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
             return null;
-        }
-        else{ //En caso de que sea seleccion multiple
-            MessageBean.setErrorMessageFromBundle("not_yet"
-                                                    , this.getMyLocale());
+        } else { //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
             return null;
         }
     }

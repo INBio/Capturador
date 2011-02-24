@@ -211,24 +211,21 @@ public class NomenclaturalGroupSessionBean extends AbstractSessionBean
      * return the results of a consult of the pagination.
      */
     public List getResults(int firstResult, int maxResults) {
-
         Long collectionId = this.getAraSessionBean().getGlobalCollectionId();
 
+        getPagination().setTotalResults(getTaxonomyFacadeImpl().countAllNomenclaturalGroups().intValue());
+
         return getTaxonomyFacadeImpl().getAllNomenclaturalGroupsPaginated(
-                                        firstResult
-                                        , maxResults
-                                        , collectionId);
+                firstResult, maxResults, collectionId);
     }
 
     /**
      * Inicializar el data provider
      */
     public void initDataProvider() {
-        pagination =
-            new PaginationControllerRemix(
-                this.getTaxonomyFacadeImpl().countAllNomenclaturalGroups().intValue()
-                , this.getQuantity()
-                , this);
+        this.setPagination(new PaginationControllerRemix(this.getTaxonomyFacadeImpl().
+                countAllNomenclaturalGroups().intValue(), this.getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
 

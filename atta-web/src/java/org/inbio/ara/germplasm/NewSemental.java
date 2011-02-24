@@ -164,7 +164,7 @@ public class NewSemental extends AbstractPageBean {
 
             SementalDTO sDTO = getgermplasm$SementalSessionBean().getGermplasmFacadeRemote().saveSemental(
                     getgermplasm$SementalSessionBean().getSementalDTO());
-            getgermplasm$SementalSessionBean().getPagination().addItem();
+
             getgermplasm$SementalSessionBean().getPagination().refreshList();
 
             getgermplasm$SementalSessionBean().setSementalDTO(sDTO);

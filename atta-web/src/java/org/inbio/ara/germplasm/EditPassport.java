@@ -699,8 +699,6 @@ public class EditPassport extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getPassportSessionBean().setQueryModeSimple(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getPassportSessionBean().getPagination().setTotalResults(this.getPassportSessionBean().getSearchFacade().
-                countGathObsByCriteria(consulta).intValue());
         this.getPassportSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
 
@@ -884,9 +882,6 @@ public class EditPassport extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getPassportSessionBean().setQueryModeSimple(false);
             this.getPassportSessionBean().setQueryMode(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getPassportSessionBean().getPagination().setTotalResults(this.getPassportSessionBean().getInventoryFacadeRemote().
-                    countGatheringObservations().intValue());
         } else {
             //Setear el string para consulta simple del SessionBean
             this.getPassportSessionBean().setConsultaSimple(userInput);
@@ -894,9 +889,6 @@ public class EditPassport extends AbstractPageBean {
             this.getPassportSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getPassportSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getPassportSessionBean().getPagination().setTotalResults(this.getPassportSessionBean().getSearchFacade().
-                    countGathObsByCriteria(userInput).intValue());
         }
         this.getPassportSessionBean().getPagination().firstResults();
         return null;

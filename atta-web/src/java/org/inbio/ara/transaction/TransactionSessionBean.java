@@ -382,14 +382,15 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
      */
     public void initDataProvider() {
         if(isTransactionPaginator()) {
-            //setPagination(new PaginationControllerImpl(this.getTransactionFacade().countTransaction().intValue(), this.getQuantity()));
-            setPagination(new PaginationControllerRemix(this.getTransactionFacade().
+            this.setPagination(new PaginationControllerRemix(this.getTransactionFacade().
                     countTransaction(this.getAraSessionBean().getGlobalCollectionId()).intValue(), getQuantity(), this));
+            this.getPagination().firstResults();
         }
         else {
             int totalResults = this.getTransactionFacade().
                     countTransactedSpecimen(this.currentTransaction.getTransactionId()).intValue();
-            setPagination(new PaginationControllerRemix(totalResults, this.getQuantity(), this));
+            this.setPagination(new PaginationControllerRemix(totalResults, this.getQuantity(), this));
+            this.getPagination().firstResults();
         }
     }
 
@@ -562,31 +563,31 @@ public class TransactionSessionBean extends AbstractSessionBean implements Pagin
 
     public List getResults(int firstResult, int maxResults) {
         Long collectionId = getAraSessionBean().getGlobalCollectionId();
-        if(isTransactionPaginator()) { // Si es el paginador para transacciones
+        if (isTransactionPaginator()) { // Si es el paginador para transacciones
 
             List<TransactionDTO> auxResult = new ArrayList<TransactionDTO>();
             if (isAdvancedSearch()) { // Si es búsqueda avanzada
                 this.searchDataDTO.setCollectionId(collectionId);
                 try {
+                    getPagination().setTotalResults (searchFacade.countTransactionsByCriteria(this.searchDataDTO,this.transactedSpecimenSearchDataDTO).intValue());
                     return this.searchFacade.searchTransactionsByCriteria(this.searchDataDTO, this.transactedSpecimenSearchDataDTO, firstResult, maxResults);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     return auxResult;
                 }
-            }
-            else if (isSimpleSearch()) { // Si es búsqueda simple
+            } else if (isSimpleSearch()) { // Si es búsqueda simple
                 try {
+                    getPagination().setTotalResults(searchFacade.countTransactionsByCriteria(this.simpleSearchText, collectionId).intValue());
                     return this.searchFacade.searchTransactionsByCriteria(this.simpleSearchText, collectionId, firstResult, maxResults);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     return auxResult;
                 }
-            }
-            else { // Si no es búsqueda
+            } else { // Si no es búsqueda
+                getPagination().setTotalResults(transactionFacade.countTransaction(collectionId).intValue());
                 return transactionFacade.getAllTransactionPaginated(firstResult, maxResults, collectionId);
             }
         }
         else { // Si es el paginador para especímenes transados
+            getPagination().setTotalResults(transactionFacade.countTransactedSpecimen(this.currentTransaction.getTransactionId()).intValue());
             return transactionFacade.getAllTransactedSpecimenPaginated(firstResult, maxResults, this.getCurrentTransaction().getTransactionId());
         }
     }

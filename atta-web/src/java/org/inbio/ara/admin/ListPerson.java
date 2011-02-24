@@ -140,17 +140,14 @@ public class ListPerson extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        if(getPersonSessionBean().isFirstTime())
-        {
-
-            PersonTable = new HtmlDataTable();
-            quantityTotal = new String();
-            getPersonSessionBean().setFirstTime(false);
+        PersonSessionBean psb = this.getPersonSessionBean();
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (psb.getPagination()==null) {
+            psb.initDataProvider();
         }
-
-        if(this.getPersonSessionBean().getPagination()==null){
-            this.getPersonSessionBean().initDataProvider();
-        }
+        //Actualizar los datos del paginador
+        else
+            psb.getPagination().refreshList();
     }
 
     /**
@@ -163,60 +160,6 @@ public class ListPerson extends AbstractPageBean {
      */
     @Override
     public void destroy() {
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected PersonSessionBean getPersonSessionBean() {
-        return (PersonSessionBean) getBean("admin$PersonSessionBean");
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
-    }
-
-    /**
-     * @return the PersonTable
-     */
-    public HtmlDataTable getPersonTable() {
-        return PersonTable;
-    }
-
-    /**
-     * @param PersonTable the PersonTable to set
-     */
-    public void setPersonTable(HtmlDataTable PersonTable) {
-        this.PersonTable = PersonTable;
-    }
-
-    /**
-     * @return the quantityTotal
-     */
-    public String getQuantityTotal() {
-        quantityTotal = this.getPersonSessionBean().getQuantityTotal();
-        return quantityTotal;
-    }
-
-    /**
-     * @param quantityTotal the quantityTotal to set
-     */
-    public void setQuantityTotal(String quantityTotal) {
-        this.quantityTotal = quantityTotal;
-    }
-
-    /**
-     * @return the myLocale
-     */
-    public Locale getMyLocale() {
-		return this.getAraSessionBean().getCurrentLocale();
     }
 
     /**
@@ -295,9 +238,11 @@ public class ListPerson extends AbstractPageBean {
                 MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
                 return null;
             }
-            //Refrescar la lista de audiencias
-            this.getPersonSessionBean().getPagination().deleteItem();
-            this.getPersonSessionBean().getPagination().refreshList();
+
+            //Refrescar la lista de personas
+            PersonSessionBean psb = this.getPersonSessionBean();
+            psb.getPagination().refreshList();
+
             //Notificar al usuario
             MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
             return null;
@@ -321,24 +266,70 @@ public class ListPerson extends AbstractPageBean {
         if(userInput.length()==0){
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getPersonSessionBean().setQueryModeSimple(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getPersonSessionBean().getPagination().setTotalResults
-                    (getPersonSessionBean().getAdminFacade().
-                    countPerson().intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
             this.getPersonSessionBean().setConsultaSimple(userInput);
             //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda simple
             this.getPersonSessionBean().setQueryModeSimple(true);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getPersonSessionBean().getPagination().setTotalResults
-                    (getPersonSessionBean().getAdminFacade().
-                    countPersonSimpleSearch(userInput).intValue());
         }
-        //set the first result of the query
+        //Set the first result of the query
         this.getPersonSessionBean().getPagination().firstResults();
         return null;
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected PersonSessionBean getPersonSessionBean() {
+        return (PersonSessionBean) getBean("admin$PersonSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
+    }
+
+    /**
+     * @return the PersonTable
+     */
+    public HtmlDataTable getPersonTable() {
+        return PersonTable;
+    }
+
+    /**
+     * @param PersonTable the PersonTable to set
+     */
+    public void setPersonTable(HtmlDataTable PersonTable) {
+        this.PersonTable = PersonTable;
+    }
+
+    /**
+     * @return the quantityTotal
+     */
+    public String getQuantityTotal() {
+        quantityTotal = this.getPersonSessionBean().getQuantityTotal();
+        return quantityTotal;
+    }
+
+    /**
+     * @param quantityTotal the quantityTotal to set
+     */
+    public void setQuantityTotal(String quantityTotal) {
+        this.quantityTotal = quantityTotal;
+    }
+
+    /**
+     * @return the myLocale
+     */
+    public Locale getMyLocale() {
+		return this.getAraSessionBean().getCurrentLocale();
     }
 
     /**

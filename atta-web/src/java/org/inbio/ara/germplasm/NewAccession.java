@@ -310,7 +310,6 @@ public class NewAccession extends AbstractPageBean {
                     getgermplasm$AccessionSessionBean().setEditAccessionDTO(accessionDTO);
 
                     //Refrescar la lista de recolecciones
-                    this.getgermplasm$AccessionSessionBean().getPagination().addItem();
                     this.getgermplasm$AccessionSessionBean().getPagination().refreshList();
 
                     return "edit";

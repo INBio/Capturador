@@ -15,11 +15,9 @@ import javax.faces.FacesException;
 import org.inbio.ara.util.PaginationControllerRemix;
 import org.inbio.ara.util.PaginationCoreInterface;
 import org.inbio.commons.dublincore.dto.DublinCoreDTO;
-import org.inbio.commons.dublincore.dto.ElementTypeDTO;
 import org.inbio.commons.dublincore.dto.ara.InterfaceDublinCoreDTO;
 import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
 import org.inbio.commons.dublincore.facade.ara.DublinCoreFacadeRemote;
-import org.inbio.commons.dublincore.model.ResourceTypeEnum;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -117,8 +115,8 @@ public class DublinCoreSessionBean extends AbstractSessionBean implements Pagina
      * Inicializar el data provider
      */
     public void initDataProvider() {
-
-        setPagination(new PaginationControllerRemix(dublinCoreFacadeRemote.countResourceByTypeId(-1).intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(dublinCoreFacadeRemote.countResourceByTypeId(-1).intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
     
     /**
@@ -139,7 +137,6 @@ public class DublinCoreSessionBean extends AbstractSessionBean implements Pagina
      */
     public List getResults(int firstResult, int maxResults) {
 
-
         List<ReferenceDTO> auxResult = new ArrayList<ReferenceDTO>();
 
         //Contiene el resultado de las busquedas
@@ -150,6 +147,8 @@ public class DublinCoreSessionBean extends AbstractSessionBean implements Pagina
 
         if (isQueryMode()) { //En caso de que sea busqueda avanzada
             try {
+                getPagination().setTotalResults(getDublinCoreFacadeRemote().countDublinCoreAdvancedSearch
+                        (getQueryDublinCoreDTO()).intValue());
                 //Se realiza la consulta utilizando los datos del query en un DublinCoreDTO
                 aListDTO =  myReturn(
                         this.getDublinCoreFacadeRemote().getDublinCoreAdvancedSearch
@@ -167,9 +166,10 @@ public class DublinCoreSessionBean extends AbstractSessionBean implements Pagina
                 return auxResult;
             }
         } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
-            try { 
+            try {
+                getPagination().setTotalResults(getDublinCoreFacadeRemote().countSimpleSearch(getSimpleConsult()).intValue());
                 //Se realiza la consulta utilizando el String que el usuario ingresó
-                aListDTO =  myReturn(this.getDublinCoreFacadeRemote().getReferenceSimpleSearch(this.getSimpleConsult(), firstResult, maxResults));
+                aListDTO =  myReturn(this.getDublinCoreFacadeRemote().getReferenceSimpleSearch(getSimpleConsult(), firstResult, maxResults));
                 /* Se convierte el resultado de la consulta de DublinCoreDTO a ReferenceDTO
                  * para poder mostrar los datos en la tabla utilizada en la interfaz
                 */
@@ -186,6 +186,7 @@ public class DublinCoreSessionBean extends AbstractSessionBean implements Pagina
         else//Valores default
         {
             try {
+                getPagination().setTotalResults(getDublinCoreFacadeRemote().countResourceByTypeId(-1).intValue());
                 // Se traen todas las referencias Dublin Core
                 aListDTO =  myReturn(this.getDublinCoreFacadeRemote().findAllDublinCorePaginated(-1, firstResult, maxResults));
                 /* Se convierte el resultado de la consulta de DublinCoreDTO a ReferenceDTO

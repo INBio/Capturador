@@ -85,7 +85,8 @@ public class SelectionListSessionBean extends AbstractSessionBean
      * 
      */
     public void initDataProvider() {
-        pagination = new PaginationControllerRemix(this.adminFacade.countAllSelectionListElements(getSelectedSelectionListEntityId()).intValue(), quantity, this);
+        this.setPagination(new PaginationControllerRemix(this.adminFacade.countAllSelectionListElements(getSelectedSelectionListEntityId()).intValue(), quantity, this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -96,9 +97,8 @@ public class SelectionListSessionBean extends AbstractSessionBean
      * @return
      */
     public List getResults(int firstResult, int maxResults) {
-        return getAdminFacade().
-                getAllSelectionListElementsPaginated(
-                getSelectedSelectionListEntityId(), firstResult, maxResults);
+        getPagination().setTotalResults(this.adminFacade.countAllSelectionListElements(getSelectedSelectionListEntityId()).intValue());
+        return getAdminFacade().getAllSelectionListElementsPaginated(getSelectedSelectionListEntityId(), firstResult, maxResults);
     }
 
     /**

@@ -71,7 +71,6 @@ public class PaginationControllerRemix {
         this.totalResults = totalResults;
         this.resultsPerPage = resultsPerPage;
         this.paginationCore = paginationCore;
-        firstResults();
     }
 
     /**

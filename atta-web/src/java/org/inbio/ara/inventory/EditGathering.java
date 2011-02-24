@@ -414,6 +414,220 @@ public class EditGathering extends AbstractPageBean {
     }
 
     /**
+     * Metodo ejecutado por el boton de actualizar informacion
+     * @return
+     */
+    public String btnUpdateGathering_action() {
+        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
+        //Variables para maximos y minimos
+        String eleMax = (String) this.getTxElevationMax().getText();
+        String eleMin = (String) this.getTxElevationMin().getText();
+        String deMax = (String) this.getTxDepthMax().getText();
+        String deMin = (String) this.getTxDepthMin().getText();
+        Double elevationMax = null, elevationMin = null, depthMax = null, depthMin = null;
+        if (eleMax != null) {
+            elevationMax = Double.valueOf(eleMax);
+        }
+        if (eleMin != null) {
+            elevationMin = Double.valueOf(eleMin);
+        }
+        if (deMax != null) {
+            depthMax = Double.valueOf(deMax);
+        }
+        if (deMin != null) {
+            depthMin = Double.valueOf(deMin);
+        }
+        //Validar maximos y minimos
+        if (elevationMax != null && elevationMin != null) {
+            if (elevationMax < elevationMin) {
+                MessageBean.setErrorMessageFromBundle("error_max_min", this.getMyLocale());
+                return null;
+            }
+        }
+        if (depthMax != null && depthMin != null) {
+            if (depthMax < depthMin) {
+                MessageBean.setErrorMessageFromBundle("error_max_min", this.getMyLocale());
+                return null;
+            }
+        }
+        //Actualizar en el currentDTO los datos que NO estan directamente "bindeados" con el jsp
+        GregorianCalendar iniCal = new GregorianCalendar();
+        GregorianCalendar finCal = new GregorianCalendar();
+        Date iniDate = this.getInitial_date().getSelectedDate();
+        Date finDate = this.getFinal_date().getSelectedDate();
+        if (iniDate != null) {
+            iniCal.setTime(iniDate);
+            gsb.getCurrentGatheringDTO().setInitialDateTime(iniCal);
+        }
+        if (finDate != null) {
+            finCal.setTime(finDate);
+            gsb.getCurrentGatheringDTO().setFinalDateTime(finCal);
+        }
+        String gra = (String) this.getTxGradient().getText();
+        if (gra != null) {
+            gsb.getCurrentGatheringDTO().setGradient(Long.valueOf(gra));
+        }
+        gsb.getCurrentGatheringDTO().setMaximumElevation(elevationMax);
+        gsb.getCurrentGatheringDTO().setMinimumElevation(elevationMin);
+        gsb.getCurrentGatheringDTO().setMaximumDepth(depthMax);
+        gsb.getCurrentGatheringDTO().setMinimumDepth(depthMin);
+
+        gsb.getCurrentGatheringDTO().setColectorsList(colectorsAsDTO());
+        gsb.getCurrentGatheringDTO().setProjectsList(projectsAsDTO());
+        gsb.getCurrentGatheringDTO().setCollectionsList(collectionsAsDTO());
+
+        try{
+            //Llamar metodo que persiste el DTO (update)
+            this.getinventory$GatheringSessionBean().getInventoryFacade().
+                    updateGathering(gsb.getCurrentGatheringDTO());
+        }
+        catch(Exception e){
+            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+            return null;
+        }
+
+        //Actualizar el data provider del paginador
+        this.getinventory$GatheringSessionBean().getPagination().refreshList();
+
+        //Avisar al usuario que la operacion fue exitosa
+        MessageBean.setSuccessMessageFromBundle("update_success", this.getMyLocale());
+
+        return null;
+    }
+
+    /**
+     * Metodo que toma los valores seleccionados en el add remove de colectores
+     * y los transforma en una lista de PersonDTO
+     */
+    private List<PersonDTO> colectorsAsDTO(){
+        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
+        List<PersonDTO> result = new ArrayList();
+        Long[] opList = gsb.getArCollectorsEdit().getSelectedOptions();
+
+		int arrayLength = 0;
+
+		if(opList != null){
+			arrayLength = opList.length;
+			for(int i = 0; i < arrayLength; i++){
+				PersonDTO aux = new PersonDTO();
+				aux.setPersonKey(opList[i]);
+				result.add(aux);
+			}
+		}
+
+        return result;
+    }
+
+    /**
+     * Metodo que toma los valores seleccionados en el add remove de projectos
+     * y los transforma en una lista de PersonDTO
+     */
+    private List<ProjectDTO> projectsAsDTO(){
+        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
+        List<ProjectDTO> result = new ArrayList();
+        Long[] opList = gsb.getArProjectsEdit().getSelectedOptions();
+		int arrayLength = 0;
+
+		if(opList != null){
+			arrayLength = opList.length;
+			for(int i = 0; i < arrayLength; i++){
+				ProjectDTO aux = new ProjectDTO();
+				aux.setProjectId(opList[i]);
+				result.add(aux);
+			}
+
+		}
+        return result;
+    }
+
+    /**
+     * Metodo que toma los valores seleccionados en el add remove de colecciones asociadas
+     * y los transforma en una lista de PersonDTO
+     */
+    private List<CollectionDTO> collectionsAsDTO(){
+        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
+        List<CollectionDTO> result = new ArrayList();
+        Long[] opList = gsb.getArCollectionsEdit().getSelectedOptions();
+
+		int arrayLength = 0;
+
+		if(opList != null){
+			arrayLength = opList.length;
+			for(int i = 0; i < arrayLength; i++){
+				CollectionDTO aux = new CollectionDTO();
+				aux.setCollectionId(opList[i]);
+				result.add(aux);
+			}
+
+		}
+        return result;
+    }
+
+    /**
+     * Metodo ejecutado por el boton de generar especimenes asociados a dicha recoleccion
+     * @return
+     */
+    public String btnGenerateSpecimens_action() {
+        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
+        SpecimenGenerationSessionBean sgsb = this.getinventory$SpecimenGenerationSessionBean();
+
+        //Reestablecer valores iniciales de la pantalla de generacion
+        sgsb.setSpecimenDTO(new SpecimenDTO());
+        sgsb.setIdentificationDTO(new IdentificationDTO());
+        sgsb.setLifeFormList(new ArrayList<Long>());
+        sgsb.setSpecimenQuantity(new Long(0));
+
+        //Setear el valor de gatheringObservationId
+        sgsb.setGatheringObservationId(gsb.getCurrentGatheringDTO().getGatheringObservationId());
+        sgsb.setGatheringDetailObservationId(null);
+
+        //Limpiar los addRemove
+        sgsb.setArIdentifierList(new AddRemoveList());
+        sgsb.setArLifeFormList(new AddRemoveList());
+        sgsb.setArTaxonList(new AddRemoveList());
+
+        /*Indicar a la pantalla de edit que cargue 1 sola ves los datos
+        seleccionados de los AddRemove*/
+        this.getinventory$GatheringSessionBean().setFirstTime(true);
+
+        /* Dejar limpios los add remove de la pantalla de edición, esto con el fin de que
+         * si el usuario decide volver a la edición desde los detalles de recolección y/o
+         * desde la generación de especímenes los datos de los add remove no se repitan */
+        gsb.setArCollectionsEdit(new AddRemoveList());
+        gsb.setArCollectorsEdit(new AddRemoveList());
+        gsb.setArProjectsEdit(new AddRemoveList());
+
+        return "generate";
+    }
+
+    /**
+     * Metodo ejecutado por el boton de detalles de recolección
+     * @return
+     */
+    public String btnGatheringDetail_action() {
+        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
+
+        //Pasar el dto de recoleccion
+        this.getinventory$GatheringDetailSessionBean().setCurrentGathering(gsb.getCurrentGatheringDTO());
+
+        //Ponerlo en null para que sea nuevamente instanciado en el prerender de listDetail
+        this.getinventory$GatheringDetailSessionBean().setPagination(null);
+
+        /*Indicar a la pantalla de edit que cargue 1 sola ves los datos
+        seleccionados de los AddRemove*/
+        this.getinventory$GatheringSessionBean().setFirstTime(true);
+
+        /* Dejar limpios los add remove de la pantalla de edición, esto con el fin de que
+         * si el usuario decide volver a la edición desde los detalles de recolección y/o
+         * desde la generación de especímenes los datos de los add remove no se repitan */
+        gsb.setArCollectionsEdit(new AddRemoveList());
+        gsb.setArCollectorsEdit(new AddRemoveList());
+        gsb.setArProjectsEdit(new AddRemoveList());
+
+        return "detail";
+    }
+
+    /**
      * <p>Return a reference to the scoped data bean.</p>
      *
      * @return reference to the scoped data bean
@@ -697,224 +911,6 @@ public class EditGathering extends AbstractPageBean {
      */
     public void setTxaSiteDescription(TextArea txaSiteDescription) {
         this.txaSiteDescription = txaSiteDescription;
-    }
-
-    /**
-     * Metodo ejecutado por el boton de actualizar informacion
-     * @return
-     */
-    public String btnUpdateGathering_action() {
-        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
-        //Variables para maximos y minimos
-        String eleMax = (String) this.getTxElevationMax().getText();
-        String eleMin = (String) this.getTxElevationMin().getText();
-        String deMax = (String) this.getTxDepthMax().getText();
-        String deMin = (String) this.getTxDepthMin().getText();
-        Double elevationMax = null, elevationMin = null, depthMax = null, depthMin = null;
-        if (eleMax != null) {
-            elevationMax = Double.valueOf(eleMax);
-        }
-        if (eleMin != null) {
-            elevationMin = Double.valueOf(eleMin);
-        }
-        if (deMax != null) {
-            depthMax = Double.valueOf(deMax);
-        }
-        if (deMin != null) {
-            depthMin = Double.valueOf(deMin);
-        }
-        //Validar maximos y minimos
-        if (elevationMax != null && elevationMin != null) {
-            if (elevationMax < elevationMin) {
-                MessageBean.setErrorMessageFromBundle("error_max_min", this.getMyLocale());
-                return null;
-            }
-        }
-        if (depthMax != null && depthMin != null) {
-            if (depthMax < depthMin) {
-                MessageBean.setErrorMessageFromBundle("error_max_min", this.getMyLocale());
-                return null;
-            }
-        }
-        //Actualizar en el currentDTO los datos que NO estan directamente "bindeados" con el jsp
-        GregorianCalendar iniCal = new GregorianCalendar();
-        GregorianCalendar finCal = new GregorianCalendar();
-        Date iniDate = this.getInitial_date().getSelectedDate();
-        Date finDate = this.getFinal_date().getSelectedDate();
-        if (iniDate != null) {
-            iniCal.setTime(iniDate);
-            gsb.getCurrentGatheringDTO().setInitialDateTime(iniCal);
-        }
-        if (finDate != null) {
-            finCal.setTime(finDate);
-            gsb.getCurrentGatheringDTO().setFinalDateTime(finCal);
-        }
-        String gra = (String) this.getTxGradient().getText();
-        if (gra != null) {
-            gsb.getCurrentGatheringDTO().setGradient(Long.valueOf(gra));
-        }
-        gsb.getCurrentGatheringDTO().setMaximumElevation(elevationMax);
-        gsb.getCurrentGatheringDTO().setMinimumElevation(elevationMin);
-        gsb.getCurrentGatheringDTO().setMaximumDepth(depthMax);
-        gsb.getCurrentGatheringDTO().setMinimumDepth(depthMin);
-
-        gsb.getCurrentGatheringDTO().setColectorsList(colectorsAsDTO());
-        gsb.getCurrentGatheringDTO().setProjectsList(projectsAsDTO());
-        gsb.getCurrentGatheringDTO().setCollectionsList(collectionsAsDTO());
-
-        try{
-            //Llamar metodo que persiste el DTO (update)
-            this.getinventory$GatheringSessionBean().getInventoryFacade().
-                    updateGathering(gsb.getCurrentGatheringDTO());
-        }
-        catch(Exception e){
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-            return null;
-        }
-
-        //Actualizar el data provider del paginador
-        Long collectionId = getAraSessionBean().getGlobalCollectionId();
-        this.getinventory$GatheringSessionBean().getPagination().setTotalResults
-                    (this.getinventory$GatheringSessionBean().getInventoryFacade().
-                    countGatheringObservations(collectionId).intValue());
-        this.getinventory$GatheringSessionBean().getPagination().refreshList();
-
-        //Avisar al usuario que la operacion fue exitosa
-        MessageBean.setSuccessMessageFromBundle("update_success", this.getMyLocale());
-        
-        return null;
-    }
-
-    /**
-     * Metodo que toma los valores seleccionados en el add remove de colectores
-     * y los transforma en una lista de PersonDTO
-     */
-    private List<PersonDTO> colectorsAsDTO(){
-        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
-        List<PersonDTO> result = new ArrayList();
-        Long[] opList = gsb.getArCollectorsEdit().getSelectedOptions();
-
-		int arrayLength = 0;
-
-		if(opList != null){
-			arrayLength = opList.length;
-			for(int i = 0; i < arrayLength; i++){
-				PersonDTO aux = new PersonDTO();
-				aux.setPersonKey(opList[i]);
-				result.add(aux);
-			}
-		}
-
-        return result;
-    }
-
-    /**
-     * Metodo que toma los valores seleccionados en el add remove de projectos
-     * y los transforma en una lista de PersonDTO
-     */
-    private List<ProjectDTO> projectsAsDTO(){
-        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
-        List<ProjectDTO> result = new ArrayList();
-        Long[] opList = gsb.getArProjectsEdit().getSelectedOptions();
-		int arrayLength = 0;
-
-		if(opList != null){
-			arrayLength = opList.length;
-			for(int i = 0; i < arrayLength; i++){
-				ProjectDTO aux = new ProjectDTO();
-				aux.setProjectId(opList[i]);
-				result.add(aux);
-			}
-
-		}
-        return result;
-    }
-
-    /**
-     * Metodo que toma los valores seleccionados en el add remove de colecciones asociadas
-     * y los transforma en una lista de PersonDTO
-     */
-    private List<CollectionDTO> collectionsAsDTO(){
-        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
-        List<CollectionDTO> result = new ArrayList();
-        Long[] opList = gsb.getArCollectionsEdit().getSelectedOptions();
-
-		int arrayLength = 0;
-
-		if(opList != null){
-			arrayLength = opList.length;
-			for(int i = 0; i < arrayLength; i++){
-				CollectionDTO aux = new CollectionDTO();
-				aux.setCollectionId(opList[i]);
-				result.add(aux);
-			}
-
-		}
-        return result;
-    }
-
-    /**
-     * Metodo ejecutado por el boton de generar especimenes asociados a dicha recoleccion
-     * @return
-     */
-    public String btnGenerateSpecimens_action() {
-        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
-        SpecimenGenerationSessionBean sgsb = this.getinventory$SpecimenGenerationSessionBean();
-        
-        //Reestablecer valores iniciales de la pantalla de generacion
-        sgsb.setSpecimenDTO(new SpecimenDTO());
-        sgsb.setIdentificationDTO(new IdentificationDTO());
-        sgsb.setLifeFormList(new ArrayList<Long>());
-        sgsb.setSpecimenQuantity(new Long(0));
-
-        //Setear el valor de gatheringObservationId
-        sgsb.setGatheringObservationId(gsb.getCurrentGatheringDTO().getGatheringObservationId());
-        sgsb.setGatheringDetailObservationId(null);
-
-        //Limpiar los addRemove
-        sgsb.setArIdentifierList(new AddRemoveList());
-        sgsb.setArLifeFormList(new AddRemoveList());
-        sgsb.setArTaxonList(new AddRemoveList());
-
-        /*Indicar a la pantalla de edit que cargue 1 sola ves los datos
-        seleccionados de los AddRemove*/
-        this.getinventory$GatheringSessionBean().setFirstTime(true);
-
-        /* Dejar limpios los add remove de la pantalla de edición, esto con el fin de que
-         * si el usuario decide volver a la edición desde los detalles de recolección y/o
-         * desde la generación de especímenes los datos de los add remove no se repitan */
-        gsb.setArCollectionsEdit(new AddRemoveList());
-        gsb.setArCollectorsEdit(new AddRemoveList());
-        gsb.setArProjectsEdit(new AddRemoveList());
-
-        return "generate";
-    }
-
-    /**
-     * Metodo ejecutado por el boton de detalles de recolección
-     * @return
-     */
-    public String btnGatheringDetail_action() {
-        GatheringSessionBean gsb = this.getinventory$GatheringSessionBean();
-
-        //Pasar el dto de recoleccion
-        this.getinventory$GatheringDetailSessionBean().setCurrentGathering(gsb.getCurrentGatheringDTO());
-
-        //Ponerlo en null para que sea nuevamente instanciado en el prerender de listDetail
-        this.getinventory$GatheringDetailSessionBean().setPagination(null);
-
-        /*Indicar a la pantalla de edit que cargue 1 sola ves los datos
-        seleccionados de los AddRemove*/
-        this.getinventory$GatheringSessionBean().setFirstTime(true);
-
-        /* Dejar limpios los add remove de la pantalla de edición, esto con el fin de que
-         * si el usuario decide volver a la edición desde los detalles de recolección y/o
-         * desde la generación de especímenes los datos de los add remove no se repitan */
-        gsb.setArCollectionsEdit(new AddRemoveList());
-        gsb.setArCollectorsEdit(new AddRemoveList());
-        gsb.setArProjectsEdit(new AddRemoveList());
-
-        return "detail";
     }
 
     /**

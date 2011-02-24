@@ -20,7 +20,7 @@
                         <webuijsf:panelLayout id="contenido">
                             <webuijsf:form id="form1">
                                 <h:outputLabel id="lbGatheringTitle" style="width: 600px;height: 24px; left: 10px; position: relative;" styleClass="Page_title" value="#{resources.localities}"/>
-                                <h:panelGrid id="gridpGathering_Main" style=" width:600px">
+                                <h:panelGrid id="gridpGathering_Main" style=" width:100%">
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msgListGathering" infoClass="infoMessage"
                                         style="height: 24px; width: 574px" warnClass="warnMessage"/>
                                 <h:panelGrid columns="4" id="gridpSearch" style="height: 24px" width="719">
@@ -67,10 +67,10 @@
                                                 styleClass="My_Button" value="#{resources.button_proceed}"/>
                                         </h:panelGrid>
                                     </h:panelGrid>
-                                <h:panelGrid cellspacing="1" columns="2" id="gridpTableMain" style="height: 24px" styleClass="My_panel_sites" width="500">
-                                        <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain2" style="height: 24px" styleClass="My_table" width="500">
+                                <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="width:100%" styleClass="My_panel_sites">
+                                        <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain2" style="width:100%;" styleClass="My_table">
                                             <webuijsf:panelGroup id="grouppButtons">
-                                                <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" width="500">
+                                                <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" style="width:100%;">
                                                     <h:outputLabel id="labelQuantity" value="#{gis$ListSite.quantityTotal}"/>
                                                 </h:panelGrid>
                                                 <webuijsf:panelGroup id="panelPaginacion" separator=" " style="margin-left:70px;">
@@ -99,8 +99,8 @@
                                             <h:dataTable binding="#{gis$ListSite.dataTableSite}" cellspacing="0" columnClasses="list-columns-gis"
                                                 headerClass="list-header-gis" id="dataTablesite" rowClasses="list-row-even,list-row-odd"
                                                 rows="#{gis$SiteSessionBean.pagination.resultsPerPage}"
-                                                style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
-                                                value="#{gis$SiteSessionBean.pagination.dataProvider.list}" var="currentRow" width="500">
+                                                style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px;width:100%;"
+                                                value="#{gis$SiteSessionBean.pagination.dataProvider.list}" var="currentRow">
                                                 <h:column>
                                                     <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow['selected']}"/>
                                                 </h:column>
@@ -129,9 +129,9 @@
                                                     <h:outputText value="#{currentRow['coordinates']}"/>
                                                 </h:column>
                                             </h:dataTable>
-                                        </h:panelGrid>
-                                        <div id="map" title="Mapa Mundial"></div>
+                                        </h:panelGrid>                                        
                                     </h:panelGrid>
+                                    <div id="map" title="Mapa Mundial"></div>
                                 </h:panelGrid>
                             </webuijsf:form>
                         </webuijsf:panelLayout> <!-- contenido ends -->

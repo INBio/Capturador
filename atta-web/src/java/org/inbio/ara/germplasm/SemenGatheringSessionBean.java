@@ -116,6 +116,7 @@ public class SemenGatheringSessionBean extends AbstractSessionBean implements Pa
     public void initDataProvider() {
         setPagination(new PaginationControllerRemix(
                 getGermplasmFacadeRemote().countAllSemenGathering(getSementalId()).intValue(),this.getQuantity(), this));
+        getPagination().firstResults();
     }
 
     /**
@@ -214,26 +215,26 @@ public class SemenGatheringSessionBean extends AbstractSessionBean implements Pa
         if (isQueryMode()) { //En caso de que sea busqueda avanzada
             //Set the collectionId into the DTO
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countSemenGatheringAdvancedSearch
+                        (getQuerySemenGatheringDTO(),getSementalId()).intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getSemenGatheringAdvancedSearch(
                         getQuerySemenGatheringDTO(), getSementalId(), firstResult, maxResults));
 
                 return aListDTO;
-
-
             } catch (Exception e) {
                 e.printStackTrace();
                 return auxResult;
             }
         } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
             try {
-
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countSemenGatheringSimpleSearch
+                        (getConsultaSimple(),getSementalId()).intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getSemenGatheringlSimpleSearch(
                         getConsultaSimple(), getSementalId(), firstResult, maxResults));
 
                 return aListDTO;
-
             } catch (Exception e) {
                 e.printStackTrace();
                 return auxResult;
@@ -241,6 +242,7 @@ public class SemenGatheringSessionBean extends AbstractSessionBean implements Pa
         } else //Valores default
         {
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countAllSemenGathering(getSementalId()).intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getAllSemenGatheringPaginated(getSementalId(),firstResult, maxResults));
 

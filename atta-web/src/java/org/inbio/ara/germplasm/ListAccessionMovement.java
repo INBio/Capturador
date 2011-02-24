@@ -6,10 +6,7 @@
 package org.inbio.ara.germplasm;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
-import com.sun.webui.jsf.component.Calendar;
 import com.sun.webui.jsf.component.Label;
-import com.sun.webui.jsf.component.TextField;
-import com.sun.webui.jsf.model.SingleSelectOptionsList;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.faces.FacesException;
@@ -188,11 +185,14 @@ public class ListAccessionMovement extends AbstractPageBean {
           
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (get$AccessionMovementSessionBean().getPagination()==null) {
-            
+
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (get$AccessionMovementSessionBean().getPagination()==null) {
             get$AccessionMovementSessionBean().initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            get$AccessionMovementSessionBean().getPagination().refreshList();
 
     }
 
@@ -289,7 +289,6 @@ public class ListAccessionMovement extends AbstractPageBean {
                     get$AccessionMovementSessionBean().getAccessionDTO());
 
             //refresh the list
-            get$AccessionMovementSessionBean().getPagination().deleteItem();
             get$AccessionMovementSessionBean().getPagination().refreshList();
             
             return null;

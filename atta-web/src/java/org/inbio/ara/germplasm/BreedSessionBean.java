@@ -336,7 +336,7 @@ public class BreedSessionBean extends AbstractSessionBean implements PaginationC
         { //En caso de que sea busqueda simple
             try
             {
-
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countBreedSimpleSearch(consultaSimple).intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getBreedSimpleSearch(consultaSimple, firstResult, maxResults));
 
@@ -349,6 +349,7 @@ public class BreedSessionBean extends AbstractSessionBean implements PaginationC
         } else //Valores default
         {
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countAllBreed().intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getAllBreedPaginated(firstResult, maxResults));
 
@@ -366,6 +367,7 @@ public class BreedSessionBean extends AbstractSessionBean implements PaginationC
     public void initDataProvider() {
         setPagination(new PaginationControllerRemix(
                 getGermplasmFacadeRemote().countAllBreed().intValue(), this.quantity, this));
+        getPagination().firstResults();
     }
 
     /**

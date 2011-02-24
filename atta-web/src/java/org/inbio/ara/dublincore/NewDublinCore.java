@@ -193,7 +193,6 @@ public class NewDublinCore extends AbstractPageBean {
                     saveDublinCore(
                     getdublincore$DublinCoreSessionBean().getDublinCoreDTO());
 
-            getdublincore$DublinCoreSessionBean().getPagination().addItem();
             getdublincore$DublinCoreSessionBean().getPagination().refreshList();
 
             MessageBean.setSuccessMessageFromBundle("create_dublin_core_successful", this.getMyLocale());

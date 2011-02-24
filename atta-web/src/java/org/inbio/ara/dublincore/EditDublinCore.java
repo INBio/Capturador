@@ -190,7 +190,7 @@ public class EditDublinCore extends AbstractPageBean {
     {
         try
         {
-            //set eht username
+            //set the username
             getdublincore$DublinCoreSessionBean().getDublinCoreDTO().
                     setUserName(getAraSessionBean().getGlobalUserName());
             //save the data

@@ -185,7 +185,6 @@ public class NewBreed extends AbstractPageBean {
                     getAraSessionBean().getGlobalUserName());
             getgermplasm$BreedSessionBean().getGermplasmFacadeRemote().saveBreed(
                     getgermplasm$BreedSessionBean().getBreedDTO());
-            getgermplasm$BreedSessionBean().getPagination().addItem();
             getgermplasm$BreedSessionBean().getPagination().refreshList();
             getgermplasm$BreedSessionBean().setBreedDTO(new BreedDTO());
             MessageBean.setSuccessMessageFromBundle("create_breed_success", this.getMyLocale());

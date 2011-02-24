@@ -383,8 +383,6 @@ public class EditNomenclaturalGroup extends AbstractPageBean {
         }
 
         //Refrescar la lista del paginador
-        Long collectionId = getAraSessionBean().getGlobalCollectionId();
-        nsb.getPagination().setTotalResults(nsb.getTaxonomyFacadeImpl().countAllNomenclaturalGroups().intValue());
         nsb.getPagination().refreshList();
 
         //Notoficar al usuario

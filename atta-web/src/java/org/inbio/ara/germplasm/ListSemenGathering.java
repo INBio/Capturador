@@ -64,13 +64,9 @@ public class ListSemenGathering extends AbstractPageBean {
     private HtmlCommandButton btnSimpleSearch = new HtmlCommandButton(); //Boton busqueda simple
     private HtmlCommandButton btnAdvSearch = new HtmlCommandButton(); //Boton busqueda avanzada
 
-
     //componentes para busuqedas avanzadas
     private SingleSelectOptionsList hourDropDown = new SingleSelectOptionsList();
     private SingleSelectOptionsList minutesDropDown = new SingleSelectOptionsList();
-
-
-
 
     private Calendar initialGatheringDate = new Calendar();
     private Calendar finalGatheringDate = new Calendar();
@@ -154,11 +150,14 @@ public class ListSemenGathering extends AbstractPageBean {
             minutesDropDown.setOptions(getMinutesDropDownData());
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (getgermplasm$SemenGatheringSessionBean().getPagination()==null) {
 
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (getgermplasm$SemenGatheringSessionBean().getPagination()==null) {
             getgermplasm$SemenGatheringSessionBean().initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
     }
 
     /**
@@ -283,7 +282,6 @@ public class ListSemenGathering extends AbstractPageBean {
             getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().
                     deleteSemenGathering(selected.get(0).getSemenGatheringId());
             //refresh the list
-            getgermplasm$SemenGatheringSessionBean().getPagination().deleteItem();
             getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
 
             MessageBean.setSuccessMessageFromBundle("delete_semen_gathering_success", this.getMyLocale());
@@ -315,10 +313,6 @@ public class ListSemenGathering extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getgermplasm$SemenGatheringSessionBean().setQueryModeSimple(false);
             this.getgermplasm$SemenGatheringSessionBean().setQueryMode(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getgermplasm$SemenGatheringSessionBean().getPagination().setTotalResults
-                    (getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().
-                    countAllSemenGathering(getgermplasm$SemenGatheringSessionBean().getSementalId()).intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -327,11 +321,6 @@ public class ListSemenGathering extends AbstractPageBean {
             this.getgermplasm$SemenGatheringSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getgermplasm$SemenGatheringSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getgermplasm$SemenGatheringSessionBean().getPagination().setTotalResults
-                    (getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().
-                    countSemenGatheringSimpleSearch(userInput,
-                    getgermplasm$SemenGatheringSessionBean().getSementalId()).intValue());
         }
         //set the first result of the query
         this.getgermplasm$SemenGatheringSessionBean().getPagination().firstResults();
@@ -407,17 +396,8 @@ public class ListSemenGathering extends AbstractPageBean {
         this.getgermplasm$SemenGatheringSessionBean().setQueryMode(true);
         //Desabilitar la bandera de busqueda simple
         this.getgermplasm$SemenGatheringSessionBean().setQueryModeSimple(false);
-        //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getgermplasm$SemenGatheringSessionBean().getPagination().setTotalResults(
-                this.getgermplasm$SemenGatheringSessionBean().
-                getGermplasmFacadeRemote().
-                countSemenGatheringAdvancedSearch(
-                getgermplasm$SemenGatheringSessionBean().
-                getQuerySemenGatheringDTO(),
-                getgermplasm$SemenGatheringSessionBean().getSementalId()).intValue());
 
         this.getgermplasm$SemenGatheringSessionBean().getPagination().firstResults();
-        this.getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
 
         this.getTxSimpleSearch().setValue("");
 

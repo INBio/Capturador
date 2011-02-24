@@ -176,12 +176,9 @@ public class ListGathering extends AbstractPageBean {
         if (gsb.getPagination()==null) {
             gsb.initDataProvider();
         }
-        //Actualizar los datos del paginador si no es nula ni es ninguna búsqueda (osea, listado base)
-        else if(!gsb.isQueryMode() && !gsb.isQueryModeSimple()){
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
-            gsb.getPagination().setTotalResults(gsb.getInventoryFacade().countGatheringObservations(collectionId).intValue());
+        //Actualizar los datos del paginador
+        else
             gsb.getPagination().refreshList();
-        }
     }
 
     /**
@@ -194,33 +191,6 @@ public class ListGathering extends AbstractPageBean {
      */
     @Override
     public void destroy() {
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected IdentificationSessionBean getinventory$IdentificationSessionBean() {
-        return (IdentificationSessionBean) getBean("inventory$IdentificationSessionBean");
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected GatheringSessionBean getinventory$GatheringSessionBean() {
-        return (GatheringSessionBean) getBean("inventory$GatheringSessionBean");
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
     }
 
     /**
@@ -279,10 +249,6 @@ public class ListGathering extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getinventory$GatheringSessionBean().setQueryModeSimple(false);
             this.getinventory$GatheringSessionBean().setQueryMode(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getinventory$GatheringSessionBean().getPagination().setTotalResults
-                    (this.getinventory$GatheringSessionBean().getInventoryFacade().
-                    countGatheringObservations(collectionId).intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -291,10 +257,6 @@ public class ListGathering extends AbstractPageBean {
             this.getinventory$GatheringSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getinventory$GatheringSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getinventory$GatheringSessionBean().getPagination().setTotalResults
-                    (this.getinventory$GatheringSessionBean().getSearchFacade().
-                    countGathObsByCriteria(userInput,collectionId).intValue());
         }
         this.getinventory$GatheringSessionBean().getPagination().firstResults();
         return null;
@@ -364,10 +326,6 @@ public class ListGathering extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getinventory$GatheringSessionBean().setQueryModeSimple(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        consulta.setCollectionId(collectionId); //Used to filter by collection
-        this.getinventory$GatheringSessionBean().getPagination().setTotalResults
-                (this.getinventory$GatheringSessionBean().getSearchFacade().
-                countGathObsByCriteria(consulta).intValue());
         this.getinventory$GatheringSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
         return null;
@@ -530,12 +488,10 @@ public class ListGathering extends AbstractPageBean {
                     (myDTO.getGatheringObservationId());
             //Borrar de la tabla gatherinfObservation
             gsb.getInventoryFacade().deleteGatheringById(myDTO.getGatheringObservationId());
+
             //Refrescar el dataprovider del paginador
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
-            gsb.getPagination().setTotalResults
-                        (this.getinventory$GatheringSessionBean().getInventoryFacade().
-                        countGatheringObservations(collectionId).intValue());
             gsb.getPagination().refreshList();
+            
             //Notificar al usuario
             MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
             return null;
@@ -597,6 +553,33 @@ public class ListGathering extends AbstractPageBean {
                 (new AddRemoveList());
         //Llamada al jsp encargado de la creacion de recolecciones
         return "new";
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected IdentificationSessionBean getinventory$IdentificationSessionBean() {
+        return (IdentificationSessionBean) getBean("inventory$IdentificationSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected GatheringSessionBean getinventory$GatheringSessionBean() {
+        return (GatheringSessionBean) getBean("inventory$GatheringSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
     }
 
     /**

@@ -73,7 +73,8 @@ public class CollectionSessionBean extends AbstractSessionBean implements Serial
     }
 
     void initDataProvider() {
-        setPagination(new PaginationControllerRemix(this.inventoryFacade.countCollections().intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(this.getInventoryFacade().countCollections().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -105,7 +106,8 @@ public class CollectionSessionBean extends AbstractSessionBean implements Serial
     }
 
     public List getResults(int firstResult, int maxResults) {
-        return inventoryFacade.getAllCollectionPaginated(firstResult, maxResults);
+        getPagination().setTotalResults(getInventoryFacade().countCollections().intValue());
+        return getInventoryFacade().getAllCollectionPaginated(firstResult, maxResults);
     }
 
     /**
@@ -255,6 +257,20 @@ public class CollectionSessionBean extends AbstractSessionBean implements Serial
      */
     protected AraSessionBean getAraSessionBean() {
         return (AraSessionBean) getBean("AraSessionBean");
+    }
+
+    /**
+     * @return the inventoryFacade
+     */
+    public InventoryFacadeRemote getInventoryFacade() {
+        return inventoryFacade;
+    }
+
+    /**
+     * @param inventoryFacade the inventoryFacade to set
+     */
+    public void setInventoryFacade(InventoryFacadeRemote inventoryFacade) {
+        this.inventoryFacade = inventoryFacade;
     }
 
 }

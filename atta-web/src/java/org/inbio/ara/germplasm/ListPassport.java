@@ -168,10 +168,13 @@ public class ListPassport extends AbstractPageBean {
         if(getPassportListSessionBean().isAdvancedSearch()){
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (getPassportListSessionBean().getPagination()==null) {
+
+        if (getPassportListSessionBean().getPagination()==null) {
             getPassportListSessionBean().initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            getPassportListSessionBean().getPagination().refreshList();
     }
 
     /**
@@ -268,10 +271,6 @@ public class ListPassport extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getPassportListSessionBean().setQueryModeSimple(false);
             this.getPassportListSessionBean().setQueryMode(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getPassportListSessionBean().getPagination().setTotalResults
-                    (getPassportListSessionBean().getGermplasmFacadeRemote().
-                    countPassport().intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -280,12 +279,6 @@ public class ListPassport extends AbstractPageBean {
             this.getPassportListSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getPassportListSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getPassportListSessionBean().getPagination().setTotalResults
-                    (getPassportListSessionBean().getGermplasmFacadeRemote().
-                    countPassportSimpleSearch(
-                    userInput,
-                    getAraSessionBean().getGlobalCollectionId()).intValue());
         }
         //set the first result of the query
         this.getPassportListSessionBean().getPagination().firstResults();
@@ -330,26 +323,8 @@ public class ListPassport extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getPassportListSessionBean().setQueryModeSimple(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getPassportListSessionBean().getPagination().setTotalResults(
-                this.getPassportListSessionBean().getGermplasmFacadeRemote().
-                countPassportAdvancedSearch(
-                passportDTO,
-                this.getAraSessionBean().getGlobalCollectionId()).intValue());
         this.getPassportListSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
-        /*//----------------------------------------------------------------------
-        
-        
-        //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
-        this.getinventory$GatheringSessionBean().setQueryMode(true);
-        //Desabilitar la bandera de busqueda simple
-        this.getinventory$GatheringSessionBean().setQueryModeSimple(false);
-        //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getinventory$GatheringSessionBean().getPagination().setTotalResults
-                (this.getinventory$GatheringSessionBean().getSearchFacade().
-                countGathObsByCriteria(consulta).intValue());
-        this.getinventory$GatheringSessionBean().getPagination().firstResults();
-        this.getTxSearch().setValue("");*/
 
         return null;
     }
@@ -676,7 +651,6 @@ public class ListPassport extends AbstractPageBean {
                 getPassportListSessionBean().getGermplasmFacadeRemote().
                         deletePassport(selectedPassport.get(0).getPassportId());
                 //refresh the list
-                getPassportListSessionBean().getPagination().deleteItem();
                 getPassportListSessionBean().getPagination().refreshList();
 
                 MessageBean.setSuccessMessageFromBundle("delete_passports", this.getMyLocale());

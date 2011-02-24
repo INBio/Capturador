@@ -48,7 +48,6 @@ import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
 import org.inbio.commons.dublincore.dto.DublinCoreDTO;
 import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
-import org.inbio.commons.dublincore.model.ResourceTypeEnum;
 
 /**
  * <p>Page bean that corresponds to a similarly named JSP page.  This
@@ -165,21 +164,9 @@ public class ListDublinCore extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        //Preguntar si la bandera de busqueda avanzada esta prendida
-        /*if(getdublincore$DublinCoreSessionBean().isAdvancedSearch()){
-
-            
-            this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
-        }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (getdublincore$DublinCoreSessionBean().getPagination()==null) {
-
-            getdublincore$DublinCoreSessionBean().initDataProvider();
-        }*/
-
+        DublinCoreSessionBean bcsb = this.getdublincore$DublinCoreSessionBean();
         if (this.getdublincore$DublinCoreSessionBean().getPagination()!=null)
         {
-
             getSelectedResourceIds(this.getDataTableDublinCore(), this.getdublincore$DublinCoreSessionBean().getSelectedResourcesId());
             Collection<ReferenceDTO> references = this.getdublincore$DublinCoreSessionBean().getSelectedResourcesId().values();
             for(ReferenceDTO reference: references)
@@ -192,11 +179,15 @@ public class ListDublinCore extends AbstractPageBean {
         if(this.getdublincore$DublinCoreSessionBean().isAdvancedSearch()){
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (this.getdublincore$DublinCoreSessionBean().getPagination()==null) {
-               this.getdublincore$DublinCoreSessionBean().initDataProvider();
-               this.getdublincore$DublinCoreSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (bcsb.getPagination()==null) {
+            bcsb.initDataProvider();
+            bcsb.setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
         }
+        //Actualizar los datos del paginador
+        else
+            bcsb.getPagination().refreshList();
 
     }
 
@@ -286,8 +277,8 @@ public class ListDublinCore extends AbstractPageBean {
             //delete the accession
             getdublincore$DublinCoreSessionBean().getDublinCoreFacadeRemote().
                     deleteDublinCoreResource(selected.get(0).getKey());
+
             //refresh the list
-            getdublincore$DublinCoreSessionBean().getPagination().deleteItem();
             getdublincore$DublinCoreSessionBean().getPagination().refreshList();
 
             
@@ -324,10 +315,6 @@ public class ListDublinCore extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getdublincore$DublinCoreSessionBean().setQueryModeSimple(false);
             this.getdublincore$DublinCoreSessionBean().setQueryMode(false);
-
-            //Actualiza el data provider del paginador con los datos por default
-            this.getdublincore$DublinCoreSessionBean().getPagination().setTotalResults
-                    (getdublincore$DublinCoreSessionBean().getDublinCoreFacadeRemote().countResourceByTypeId(-1).intValue());
         }
         else{
             //Actualizar el valor del string para consulta simple del SessionBean
@@ -336,9 +323,6 @@ public class ListDublinCore extends AbstractPageBean {
             this.getdublincore$DublinCoreSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getdublincore$DublinCoreSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el Total Results del data provider del paginador con la cantidad de resultados de la consulta
-            this.getdublincore$DublinCoreSessionBean().getPagination().setTotalResults
-                    (getdublincore$DublinCoreSessionBean().getDublinCoreFacadeRemote().countSimpleSearch(userInput).intValue());
         }
         //set the first result of the query
         this.getdublincore$DublinCoreSessionBean().getPagination().firstResults();
@@ -378,6 +362,10 @@ public class ListDublinCore extends AbstractPageBean {
         return null;
     }
 
+    /**
+     * Búsqueda avanzada
+     * @return
+     */
     public String btnProceedSearch_action() {
 
 
@@ -426,16 +414,9 @@ public class ListDublinCore extends AbstractPageBean {
         this.getdublincore$DublinCoreSessionBean().setQueryMode(true);
         //Desabilitar la bandera de busqueda simple
         this.getdublincore$DublinCoreSessionBean().setQueryModeSimple(false);
-        //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getdublincore$DublinCoreSessionBean().getPagination().setTotalResults(
-                this.getdublincore$DublinCoreSessionBean().
-                getDublinCoreFacadeRemote().
-                countDublinCoreAdvancedSearch(
-                getdublincore$DublinCoreSessionBean().
-                getQueryDublinCoreDTO()).intValue());
 
+        //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
         this.getdublincore$DublinCoreSessionBean().getPagination().firstResults();
-        this.getdublincore$DublinCoreSessionBean().getPagination().refreshList();
 
         this.getTxSearch().setValue("");
 

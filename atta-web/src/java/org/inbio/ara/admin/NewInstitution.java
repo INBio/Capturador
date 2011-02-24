@@ -209,7 +209,6 @@ public class NewInstitution extends AbstractPageBean {
         taURL.setText(null);
 
         //Refrescar el pagination
-        this.getInstitutionSessionBean().getPagination().addItem();
         this.getInstitutionSessionBean().getPagination().refreshList();
 
         //Notificar al usuario

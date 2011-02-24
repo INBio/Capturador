@@ -58,15 +58,10 @@ public class ListCollection extends AbstractPageBean {
      * values submitted with this request.  Instead, they represent the
      * property values that were saved for this view when it was rendered.</p>
      */
+    @Override
     public void init() {
         // Perform initializations inherited from our superclass
         super.init();
-// Perform application initialization that must complete
-        // *before* managed components are initialized
-        // TODO - add your own initialiation code here
-// <editor-fold defaultstate="collapsed" desc="Visual-Web-managed Component Initialization">
-// Initialize automatically managed components
-        // *Note* - this logic should NOT be modified
         try {
             _init();
         } catch (Exception e) {
@@ -82,6 +77,7 @@ public class ListCollection extends AbstractPageBean {
      * is processing a form submit.  Customize this method to allocate
      * resources that will be required in your event handlers.</p>
      */
+    @Override
     public void preprocess() {
     }
 
@@ -95,12 +91,16 @@ public class ListCollection extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+        CollectionSessionBean csb = this.getAdminCollectionSessionBean();
 
         //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        if (getAdminCollectionSessionBean().getPagination() == null) 
-            getAdminCollectionSessionBean().initDataProvider();
+        if (csb.getPagination() == null) {
+            csb.initDataProvider();
+        }
+        //Actualizar los datos del paginador
         else
-            getAdminCollectionSessionBean().getPagination().refreshList();
+            csb.getPagination().refreshList();
+
     }
 
     /**
@@ -111,6 +111,7 @@ public class ListCollection extends AbstractPageBean {
      * <code>preprocess()</code>, or <code>prerender()</code> methods (or
      * acquired during execution of an event handler).</p>
      */
+    @Override
     public void destroy() {
     }
 
@@ -163,7 +164,6 @@ public class ListCollection extends AbstractPageBean {
                 MessageBean.setErrorMessageFromBundle
                         ("delete_collection_error", this.getMyLocale());
             }
-            this.getAdminCollectionSessionBean().getPagination().deleteItem();
             this.getAdminCollectionSessionBean().getPagination().refreshList();
             this.gridEditOrNew.setRendered(false);
         }
@@ -177,9 +177,6 @@ public class ListCollection extends AbstractPageBean {
                 getActualCollectionDTO());
         this.gridEditOrNew.setRendered(false);
 
-        if(val==0){ //if create
-            this.getAdminCollectionSessionBean().getPagination().addItem();
-        }
         this.getAdminCollectionSessionBean().getPagination().refreshList();
 
         MessageBean.setSuccessMessageFromBundle("save_collection_success",

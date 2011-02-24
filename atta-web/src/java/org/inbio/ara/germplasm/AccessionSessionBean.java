@@ -101,8 +101,8 @@ public class AccessionSessionBean extends AbstractSessionBean implements Paginat
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        //pagination = new PaginationControllerImpl(getInventoryFacadeRemote().countGatheringObservations().intValue(), this.getQuantity());
-        setPagination(new PaginationControllerRemix(this.getGermplasmFacadeRemote().countAccessions().intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(this.getGermplasmFacadeRemote().countAccessions().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
     
     /**
@@ -229,19 +229,12 @@ public class AccessionSessionBean extends AbstractSessionBean implements Paginat
         if (isQueryMode()) { //En caso de que sea busqueda avanzada
             //Set the collectionId into the DTO
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countAccessionAdvancedSearch(
+                getQueryAccessionDTO(), getAraSessionBean().getGlobalCollectionId()).intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getAccessionAdvancedSearch(getQueryAccessionDTO(),
                         getAraSessionBean().getGlobalCollectionId(),
                         firstResult, maxResults));
-
-                /*if(accessionDTO.getAccessionId() != null && aListDTO != null && !aListDTO.isEmpty())
-                {
-                    for (AccessionDTO accessionDTO1 : aListDTO)
-                    {
-                        if(accessionDTO1.getAccessionId().equals(accessionDTO.getAccessionId()))
-                            accessionDTO1.setSelected(true);
-                    }
-                }*/
                 return aListDTO;
 
                 
@@ -250,20 +243,12 @@ public class AccessionSessionBean extends AbstractSessionBean implements Paginat
             }
         } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
             try {
-            
+                getPagination().setTotalResults(getGermplasmFacadeRemote().
+                        countAccessionSimpleSearch(getConsultaSimple(),getAraSessionBean().getGlobalCollectionId()).intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getAccessionSimpleSearch(getConsultaSimple(),
                         getAraSessionBean().getGlobalCollectionId(),
                         firstResult, maxResults));
-
-                /*if(accessionDTO.getAccessionId() != null && aListDTO != null && !aListDTO.isEmpty())
-                {
-                    for (AccessionDTO accessionDTO1 : aListDTO)
-                    {
-                        if(accessionDTO1.getAccessionId().equals(accessionDTO.getAccessionId()))
-                            accessionDTO1.setSelected(true);
-                    }
-                }*/
                 return aListDTO;
 
             } catch (Exception e) {
@@ -272,17 +257,9 @@ public class AccessionSessionBean extends AbstractSessionBean implements Paginat
         } else //Valores default
         {
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countAccessions().intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getAccessionListPaginated(firstResult, maxResults));
-
-                /*if(accessionDTO.getAccessionId() != null && aListDTO != null && !aListDTO.isEmpty())
-                {
-                    for (AccessionDTO accessionDTO1 : aListDTO)
-                    {
-                        if(accessionDTO1.getAccessionId().equals(accessionDTO.getAccessionId()))
-                            accessionDTO1.setSelected(true);
-                    }
-                }*/
                 return aListDTO;
             } catch (Exception e) {
                 return auxResult;

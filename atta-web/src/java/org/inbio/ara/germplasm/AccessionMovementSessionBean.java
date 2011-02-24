@@ -217,15 +217,6 @@ public class AccessionMovementSessionBean extends AbstractSessionBean implements
                         getAccessionMovementsAdvancedSearch(getQueryAccessionMovementDTO(),
                         getAraSessionBean().getGlobalCollectionId(),
                         firstResult, maxResults));
-
-                /*if(accessionMovementDTO.getAccessionId() != null && aListDTO != null && !aListDTO.isEmpty())
-                {
-                    for (AccessionMovementDTO accessionDTO1 : aListDTO)
-                    {
-                        if(accessionDTO1.getAccessionId().equals(accessionMovementDTO.getAccessionId()))
-                            accessionDTO1.setSelected(true);
-                    }
-                }*/
                 return aListDTO;
 
 
@@ -240,15 +231,6 @@ public class AccessionMovementSessionBean extends AbstractSessionBean implements
                         getAccessionMovementsSimpleSearch(getConsultaSimple(),
                         getAraSessionBean().getGlobalCollectionId(),
                         firstResult, maxResults));
-
-                /*if(accessionMovementDTO.getAccessionId() != null && aListDTO != null && !aListDTO.isEmpty())
-                {
-                    for (AccessionMovementDTO accessionDTO1 : aListDTO)
-                    {
-                        if(accessionDTO1.getAccessionId().equals(accessionMovementDTO.getAccessionId()))
-                            accessionDTO1.setSelected(true);
-                    }
-                }*/
                 return aListDTO;
 
             } catch (Exception e) {
@@ -258,17 +240,9 @@ public class AccessionMovementSessionBean extends AbstractSessionBean implements
         } else //Valores default
         {
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countAccessionMovements(accessionDTO.getAccessionId()).intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getAllAccessionMovementByAccesionIdPaginated(accessionDTO.getAccessionId(),firstResult, maxResults));
-
-                /*if(accessionMovementDTO.getAccessionId() != null && aListDTO != null && !aListDTO.isEmpty())
-                {
-                    for (AccessionMovementDTO accessionDTO1 : aListDTO)
-                    {
-                        if(accessionDTO1.getAccessionId().equals(accessionMovementDTO.getAccessionId()))
-                            accessionDTO1.setSelected(true);
-                    }
-                }*/
                 return aListDTO;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -282,6 +256,7 @@ public class AccessionMovementSessionBean extends AbstractSessionBean implements
      */
     public void initDataProvider() {
         setPagination(new PaginationControllerRemix(this.getGermplasmFacadeRemote().countAccessionMovements(accessionDTO.getAccessionId()).intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
     
     /**

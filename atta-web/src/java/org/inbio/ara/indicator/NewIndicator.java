@@ -197,11 +197,15 @@ public class NewIndicator extends AbstractPageBean {
         if(this.getindicator$IndicatorSessionBean().isAdvancedSearch()){        
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (this.getindicator$IndicatorSessionBean().getPagination()==null) {        
-               this.getindicator$IndicatorSessionBean().initDataProvider();
-               this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
+
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (this.getindicator$IndicatorSessionBean().getPagination()==null) {
+            this.getindicator$IndicatorSessionBean().initDataProvider();
+            this.getindicator$IndicatorSessionBean().setSelectedResourcesId(new HashMap<String, ReferenceDTO>());
         }
+        //Actualizar los datos del paginador
+        else
+            this.getindicator$IndicatorSessionBean().getPagination().refreshList();
     }
 
     /**

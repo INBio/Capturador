@@ -161,6 +161,7 @@ implements Serializable, PaginationCoreInterface{
         } else {
             setPagination(new PaginationControllerRemix(getSearchFacade().countQueryElements(this.queryList).intValue(), 10, this));
         }
+        this.getPagination().firstResults();
     }
 
     /**

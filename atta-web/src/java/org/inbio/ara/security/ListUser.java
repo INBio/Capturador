@@ -134,10 +134,16 @@ public class ListUser extends AbstractPageBean {
         //Setting the confirmation text for deleting option
         this.deleteConfirmationText.setValue(BundleHelper.getDefaultBundleValue
                     ("delete_confirmation", this.getMyLocale()));
-        //Manage pagination
-        if(this.getUserSessionBean().getPagination()==null){
-            this.getUserSessionBean().initDataProvider();
+
+        SystemUserSessionBean susb = this.getUserSessionBean();
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (susb.getPagination()==null) {
+            susb.initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            susb.getPagination().refreshList();
+
     }
 
     /**
@@ -273,7 +279,6 @@ public class ListUser extends AbstractPageBean {
             }
             
             //Refresccar la lista
-            this.getUserSessionBean().getPagination().deleteItem();
             this.getUserSessionBean().getPagination().refreshList();
 
             //Notificar al usuario

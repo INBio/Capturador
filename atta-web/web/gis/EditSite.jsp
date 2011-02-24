@@ -24,7 +24,7 @@
                                         style="height: 55px; width: 840px" warnClass="warnMessage"/>
                                     <!-- Botonera -->
                                     <webuijsf:panelGroup id="grouppBotonera" style="height: 24px; width: 840px">
-                                        <h:commandButton action="#{gis$EditSite.btnNewSite_action}" id="btnNewSite" style="height: 24px; width: 175px"
+                                        <h:commandButton action="#{gis$EditSite.btnEditSite_action}" id="btnEditSite" style="height: 24px; width: 175px"
                                             styleClass="My_Button" value="#{resources.btnSave}"/>
                                     </webuijsf:panelGroup>
                                     <!-- Panel de detalles del sitios -->

@@ -160,23 +160,102 @@ public class NewPerson extends AbstractPageBean {
     @Override
     public void destroy() {
     }
-    
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected PersonSessionBean getPersonSessionBean() {
-        return (PersonSessionBean) getBean("admin$PersonSessionBean");
-    }
 
     /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
+     * Metodo ejecutado por el boton de crear nueva persona
+     * @return
      */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
+    public String btnSavePerson_action() {
+
+        //Capturar datos de la pantalla
+        Long deathDate = null,birthDate = null;
+        String deathAux = (String)this.getTxDeathDate().getText();
+        if(deathAux!=null){
+            deathDate = Long.parseLong(deathAux);
+        }
+        String birthAux = (String)this.getTxBirthDate().getText();
+        if(birthAux!=null){
+            birthDate = Long.parseLong(birthAux);
+        }
+        String name=null,lastName1=null,lastName2=null,initials=null,
+                ocupation=null;
+        name = (String)this.getTxName().getText();
+        lastName1 = (String)this.getTx1lastName().getText();
+        lastName2 = (String)this.getTx2lastName().getText();
+        initials = (String)this.getTxInitials().getText();
+        ocupation = (String)this.getTxOcupation().getText();
+        String email=null,webSite=null,phone=null,fax=null,city=null,
+                province=null,country=null,address=null;
+        email = (String)this.getTxEmail().getText();
+        webSite = (String)this.getTxWebSite().getText();
+        phone = (String)this.getTxPhoneNumber().getText();
+        fax = (String)this.getTxFax().getText();
+        city = (String)this.getTxCity().getText();
+        province = (String)this.getTxProvience().getText();
+        country = (String)this.getTxCountry().getText();
+        address = (String)this.getTxaAddress().getText();
+
+        //Crear el DTO para persistir
+        PersonDTO myDTO = new PersonDTO();
+        myDTO.setDeathYear(deathDate);
+        myDTO.setBirthYear(birthDate);
+        myDTO.setFirstName(name);
+        myDTO.setLastName(lastName1);
+        myDTO.setSecondLastName(lastName2);
+        myDTO.setInitials(initials);
+        myDTO.setOccupation(ocupation);
+        myDTO.setEmail(email);
+        myDTO.setUrl(webSite);
+        myDTO.setTelephone(phone);
+        myDTO.setFax(fax);
+        myDTO.setCity(city);
+        myDTO.setStateProvince(province);
+        myDTO.setCountry(country);
+        myDTO.setStreetAddress(address);
+
+        //Persistir el DTO
+        try{
+            //Mandar a persistir
+            this.getPersonSessionBean().setCurrentPerson(myDTO);
+            PersonDTO aux = this.getPersonSessionBean().savePerson();
+            //Setear el currentDTO con el DTO recien persistido
+            this.getPersonSessionBean().getCurrentPerson().setPersonKey
+                    (aux.getPersonKey());
+            //Persistir las listas asociadas
+            this.getPersonSessionBean().savePersonInstitutionsAndProfiles();
+        }
+        catch(Exception e){
+            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+            return null;
+        }
+
+        //Refrescar la lista de perosnas
+        PersonSessionBean psb = this.getPersonSessionBean();
+        psb.getPagination().refreshList();
+
+        //Limpiar los datos de la pantalla
+        this.getPersonSessionBean().setArInstitutionesNew(new AddRemoveList());
+        this.getPersonSessionBean().setArProfilesNew(new AddRemoveList());
+        this.getTx1lastName().setText(null);
+        this.getTx2lastName().setText(null);
+        this.getTxBirthDate().setText(null);
+        this.getTxCity().setText(null);
+        this.getTxCountry().setText(null);
+        this.getTxDeathDate().setText(null);
+        this.getTxEmail().setText(null);
+        this.getTxFax().setText(null);
+        this.getTxInitials().setText(null);
+        this.getTxName().setText(null);
+        this.getTxOcupation().setText(null);
+        this.getTxPhoneNumber().setText(null);
+        this.getTxProvience().setText(null);
+        this.getTxWebSite().setText(null);
+        this.getTxaAddress().setText(null);
+
+        //Notificar al usuario
+        MessageBean.setSuccessMessageFromBundle("create_person_succces", this.getMyLocale());
+
+        return null;
     }
 
     /**
@@ -223,6 +302,24 @@ public class NewPerson extends AbstractPageBean {
                 ("available", this.getMyLocale()));
         psb.getArInstitutionesNew().setLbSelected(BundleHelper.getDefaultBundleValue
                 ("selected", this.getMyLocale()));
+    }
+    
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected PersonSessionBean getPersonSessionBean() {
+        return (PersonSessionBean) getBean("admin$PersonSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
     }
 
     /**
@@ -440,104 +537,6 @@ public class NewPerson extends AbstractPageBean {
      */
     public Locale getMyLocale() {
 		return this.getAraSessionBean().getCurrentLocale();
-    }
-
-    /**
-     * Metodo ejecutado por el boton de crear nueva persona
-     * @return
-     */
-    public String btnSavePerson_action() {
-
-        //Capturar datos de la pantalla
-        Long deathDate = null,birthDate = null;
-        String deathAux = (String)this.getTxDeathDate().getText();
-        if(deathAux!=null){
-            deathDate = Long.parseLong(deathAux);
-        }
-        String birthAux = (String)this.getTxBirthDate().getText();
-        if(birthAux!=null){
-            birthDate = Long.parseLong(birthAux);
-        }
-        String name=null,lastName1=null,lastName2=null,initials=null,
-                ocupation=null;
-        name = (String)this.getTxName().getText();
-        lastName1 = (String)this.getTx1lastName().getText();
-        lastName2 = (String)this.getTx2lastName().getText();
-        initials = (String)this.getTxInitials().getText();
-        ocupation = (String)this.getTxOcupation().getText();
-        String email=null,webSite=null,phone=null,fax=null,city=null,
-                province=null,country=null,address=null;
-        email = (String)this.getTxEmail().getText();
-        webSite = (String)this.getTxWebSite().getText();
-        phone = (String)this.getTxPhoneNumber().getText();
-        fax = (String)this.getTxFax().getText();
-        city = (String)this.getTxCity().getText();
-        province = (String)this.getTxProvience().getText();
-        country = (String)this.getTxCountry().getText();
-        address = (String)this.getTxaAddress().getText();
-
-        //Crear el DTO para persistir
-        PersonDTO myDTO = new PersonDTO();
-        myDTO.setDeathYear(deathDate);
-        myDTO.setBirthYear(birthDate);
-        myDTO.setFirstName(name);
-        myDTO.setLastName(lastName1);
-        myDTO.setSecondLastName(lastName2);
-        myDTO.setInitials(initials);
-        myDTO.setOccupation(ocupation);
-        myDTO.setEmail(email);
-        myDTO.setUrl(webSite);
-        myDTO.setTelephone(phone);
-        myDTO.setFax(fax);
-        myDTO.setCity(city);
-        myDTO.setStateProvince(province);
-        myDTO.setCountry(country);
-        myDTO.setStreetAddress(address);
-
-        //Persistir el DTO
-        try{
-            //Mandar a persistir
-            this.getPersonSessionBean().setCurrentPerson(myDTO);
-            PersonDTO aux = this.getPersonSessionBean().savePerson();
-            //Setear el currentDTO con el DTO recien persistido
-            this.getPersonSessionBean().getCurrentPerson().setPersonKey
-                    (aux.getPersonKey());
-            //Persistir las listas asociadas
-            this.getPersonSessionBean().savePersonInstitutionsAndProfiles();
-        }
-        catch(Exception e){
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-            return null;
-        }        
-
-        //Refrescar la lista de perosnas
-        this.getPersonSessionBean().getPagination().addItem();
-        this.getPersonSessionBean().getPagination().refreshList();
-
-        //Limpiar los datos de la pantalla
-        this.getPersonSessionBean().setArInstitutionesNew(new AddRemoveList());
-        this.getPersonSessionBean().setArProfilesNew(new AddRemoveList());
-        this.getTx1lastName().setText(null);
-        this.getTx2lastName().setText(null);
-        this.getTxBirthDate().setText(null);
-        this.getTxCity().setText(null);
-        this.getTxCountry().setText(null);
-        this.getTxDeathDate().setText(null);
-        this.getTxEmail().setText(null);
-        this.getTxFax().setText(null);
-        this.getTxInitials().setText(null);
-        this.getTxName().setText(null);
-        this.getTxOcupation().setText(null);
-        this.getTxPhoneNumber().setText(null);
-        this.getTxProvience().setText(null);
-        this.getTxWebSite().setText(null);
-        this.getTxaAddress().setText(null);
-
-        //Notificar al usuario
-        MessageBean.setSuccessMessageFromBundle("create_person_succces", this.getMyLocale());
-
-        return null;
-    }
-    
+    }    
 }
 

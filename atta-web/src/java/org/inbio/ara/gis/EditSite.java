@@ -35,7 +35,6 @@ import org.inbio.ara.dto.gis.ProjectionDTO;
 import org.inbio.ara.dto.gis.ProvinceDTO;
 import org.inbio.ara.dto.gis.SiteCalculationMethodDTO;
 import org.inbio.ara.dto.gis.SiteCoordinateDTO;
-import org.inbio.ara.dto.gis.SiteDTO;
 import org.inbio.ara.dto.taxonomy.CountryDTO;
 import org.inbio.ara.persistence.gis.FeatureTypeEnum;
 import org.inbio.ara.util.BundleHelper;
@@ -618,35 +617,10 @@ public class EditSite extends AbstractPageBean {
     }
 
     /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected SiteSessionBean getSiteSessionBean() {
-        return (SiteSessionBean) getBean("gis$SiteSessionBean");
-    }
-
-    /**
-     * @return the myLocale
-     */
-    public Locale getMyLocale() {
-		return this.getAraSessionBean().getCurrentLocale();
-    }
-
-    /**
      * Boton editar sitio
      * @return
      */
-    public String btnNewSite_action() {
+    public String btnEditSite_action() {
         SiteSessionBean ssb = this.getSiteSessionBean();
 
         boolean validation = validateCoordinates();
@@ -710,6 +684,31 @@ public class EditSite extends AbstractPageBean {
         }
 
         return true;
+    }
+
+     /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected SiteSessionBean getSiteSessionBean() {
+        return (SiteSessionBean) getBean("gis$SiteSessionBean");
+    }
+
+    /**
+     * @return the myLocale
+     */
+    public Locale getMyLocale() {
+		return this.getAraSessionBean().getCurrentLocale();
     }
 
     /**

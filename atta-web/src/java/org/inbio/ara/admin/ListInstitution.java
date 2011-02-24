@@ -126,9 +126,15 @@ public class ListInstitution extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        if(this.getInstitutionSessionBean().getPagination()==null){
-            this.getInstitutionSessionBean().initDataProvider();
+        InstitutionSessionBean isb = this.getInstitutionSessionBean();
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (isb.getPagination()==null) {
+            isb.initDataProvider();
         }
+        //Actualizar los datos del paginador si no es nula ni es ninguna búsqueda (osea, listado base)
+        //Actualizar los datos del paginador
+        else
+            isb.getPagination().refreshList();
     }
 
     /**
@@ -141,55 +147,6 @@ public class ListInstitution extends AbstractPageBean {
      */
     @Override
     public void destroy() {
-    }
-
-     protected InstitutionSessionBean getInstitutionSessionBean() {
-        return (InstitutionSessionBean) getBean("admin$InstitutionSessionBean");
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
-    }
-
-    /**
-     * @return the quantityTotal
-     */
-    public String getQuantityTotal() {
-        quantityTotal = this.getInstitutionSessionBean().getQuantityTotal();
-        return quantityTotal;
-    }
-
-    /**
-     * @param quantityTotal the quantityTotal to set
-     */
-    public void setQuantityTotal(String quantityTotal) {
-        this.quantityTotal = quantityTotal;
-    }
-
-    /**
-     * @return the dataTable
-     */
-    public HtmlDataTable getDataTable() {
-        return dataTable;
-    }
-
-    /**
-     * @param dataTable the dataTable to set
-     */
-    public void setDataTable(HtmlDataTable dataTable) {
-        this.dataTable = dataTable;
-    }
-
-    /**
-     * @return the myLocale
-     */
-    public Locale getMyLocale() {
-		return this.getAraSessionBean().getCurrentLocale();
     }
 
     /**
@@ -244,7 +201,7 @@ public class ListInstitution extends AbstractPageBean {
         else if(selectedInstitutions.size() == 1){ //En caso de que solo se seleccione un elemento
             //Obtener la institucion
             InstitutionDTO aux = selectedInstitutions.get(0);
-            
+
             //Verificar si tiene especimenes asociados
             if(!isDeletable(aux.getInstitutionId())){
                 MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
@@ -254,7 +211,6 @@ public class ListInstitution extends AbstractPageBean {
             this.getInstitutionSessionBean().deleteInstitution(aux.getInstitutionId());
 
             //Refrescar la lista de instituciones
-            this.getInstitutionSessionBean().getPagination().deleteItem();
             this.getInstitutionSessionBean().getPagination().refreshList();
             //Notificar al usuario
             MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
@@ -289,6 +245,54 @@ public class ListInstitution extends AbstractPageBean {
         this.getInstitutionSessionBean().setCurrentInstitution(new InstitutionDTO());
         return "new";
     }
-    
+
+     protected InstitutionSessionBean getInstitutionSessionBean() {
+        return (InstitutionSessionBean) getBean("admin$InstitutionSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
+    }
+
+    /**
+     * @return the quantityTotal
+     */
+    public String getQuantityTotal() {
+        quantityTotal = this.getInstitutionSessionBean().getQuantityTotal();
+        return quantityTotal;
+    }
+
+    /**
+     * @param quantityTotal the quantityTotal to set
+     */
+    public void setQuantityTotal(String quantityTotal) {
+        this.quantityTotal = quantityTotal;
+    }
+
+    /**
+     * @return the dataTable
+     */
+    public HtmlDataTable getDataTable() {
+        return dataTable;
+    }
+
+    /**
+     * @param dataTable the dataTable to set
+     */
+    public void setDataTable(HtmlDataTable dataTable) {
+        this.dataTable = dataTable;
+    }
+
+    /**
+     * @return the myLocale
+     */
+    public Locale getMyLocale() {
+		return this.getAraSessionBean().getCurrentLocale();
+    }    
 }
 

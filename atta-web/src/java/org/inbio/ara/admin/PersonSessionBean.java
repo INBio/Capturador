@@ -289,20 +289,12 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
         this.getAdminFacade().savePersonProfiles(dto, profiles);
     }
 
-     /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
-    }
-
     /**
      * Inicializar el data provider
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(this.getAdminFacade().countPerson().intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(this.getAdminFacade().countPerson().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -313,6 +305,60 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
         int resultsPerPage = this.getPagination().getResultsPerPage();
         int totalResults = this.getPagination().getTotalResults();
         return "  "+(actualPage+1)+" - "+(actualPage+resultsPerPage)+"  | "+totalResults+"  ";
+    }
+
+    /**
+     * Para evitar que retorne null al data provider del paginador
+     * @param l lista retornada para el paginador
+     * @return
+     */
+    public List myReturn(List l) {
+        if (l == null) {
+            return new ArrayList<PersonDTO>();
+        } else {
+            return l;
+        }
+    }
+
+    public List getResults(int firstResult, int maxResults) {
+
+        List<PersonDTO> auxResult = new ArrayList<PersonDTO>();
+        List<PersonDTO> aListDTO;
+
+        if (isQueryModeSimple())
+        { //En caso de que sea busqueda simple
+            try
+            {
+                getPagination().setTotalResults(this.getAdminFacade().countPersonSimpleSearch(this.consultaSimple).intValue());
+                aListDTO =  myReturn(getAdminFacade().
+                        getPersonSimpleSearch(this.consultaSimple, firstResult, maxResults));
+                return aListDTO;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return auxResult;
+            }
+        }
+        else //Valores default
+        {
+            try {
+                getPagination().setTotalResults(this.getAdminFacade().countPerson().intValue());
+                return adminFacade.getAllPersonPaginated(firstResult, maxResults);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return auxResult;
+            }
+        }
+    }
+
+
+     /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
     }
 
     /**
@@ -426,53 +472,6 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
      */
     public void setArInstitutionesEdit(AddRemoveList arInstitutionesEdit) {
         this.arInstitutionesEdit = arInstitutionesEdit;
-    }
-
-    /**
-     * Para evitar que retorne null al data provider del paginador
-     * @param l lista retornada para el paginador
-     * @return
-     */
-    public List myReturn(List l) {
-        if (l == null) {
-            return new ArrayList<PersonDTO>();
-        } else {
-            return l;
-        }
-    }
-
-    public List getResults(int firstResult, int maxResults) {
-
-        List<PersonDTO> auxResult = new ArrayList<PersonDTO>();
-
-        List<PersonDTO> aListDTO;
-
-        if (isQueryModeSimple())
-        { //En caso de que sea busqueda simple
-            try
-            {
-
-                aListDTO =  myReturn(getAdminFacade().
-                        getPersonSimpleSearch(consultaSimple, firstResult, maxResults));
-
-                return aListDTO;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return auxResult;
-            }
-        }
-        else //Valores default
-        {
-            try {
-                return adminFacade.getAllPersonPaginated(firstResult, maxResults);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return auxResult;
-            }
-        }
-        
     }
 
     /**

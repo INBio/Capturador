@@ -179,7 +179,8 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(inventoryFacade.countIdentifications().intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(inventoryFacade.countIdentifications().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
     
@@ -376,6 +377,7 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
                 IdentificationDTO idto = queryIdentificationDTO;
                 idto.setCollectionId(collectionId);
                 try {
+                    getPagination().setTotalResults(getSearchFacade().countIdentificationByCriteria(idto).intValue());
                     return myReturn(searchFacade.searchIdentificationByCriteria(idto,
                             firstResult, maxResults));
                 } catch (Exception e) {
@@ -383,6 +385,7 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
                 }
             } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
                 try {
+                    getPagination().setTotalResults(getSearchFacade().countIdentificationByCriteria(consultaSimple).intValue());
                     return myReturn(searchFacade.searchIdentificationByCriteria(consultaSimple,
                             collectionId, firstResult, maxResults));
                 } catch (Exception e) {
@@ -390,6 +393,7 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
                 }
             } else { //Valores default
                 try {
+                    getPagination().setTotalResults(countAllIdentification().intValue());
                     return myReturn(inventoryFacade.getAllIdentificationPaginated(firstResult,
                             maxResults, collectionId));
                 } catch (Exception e) {

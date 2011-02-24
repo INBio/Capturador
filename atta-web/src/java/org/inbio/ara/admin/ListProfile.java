@@ -125,9 +125,14 @@ public class ListProfile extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        if(this.getProfileSessionBean().getPagination()==null){
-            this.getProfileSessionBean().initDataProvider();
+        ProfileSessionBean psb = this.getProfileSessionBean();
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (psb.getPagination()==null) {
+            psb.initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            psb.getPagination().refreshList();
     }
 
     /**

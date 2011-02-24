@@ -18,7 +18,6 @@
 package org.inbio.ara.admin;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
-import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
@@ -182,7 +181,8 @@ public class InstitutionSessionBean extends AbstractSessionBean implements Pagin
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(this.getAdminFacadeImpl().countInstitutions().intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(this.getAdminFacadeImpl().countInstitutions().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -240,6 +240,7 @@ public class InstitutionSessionBean extends AbstractSessionBean implements Pagin
     }
 
     public List getResults(int firstResult, int maxResults) {
+        getPagination().setTotalResults(getAdminFacadeImpl().countInstitutions().intValue());
         return adminFacadeImpl.getAllInstitutionsPaginated(firstResult, maxResults);
     }
 

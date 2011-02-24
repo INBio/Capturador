@@ -19,7 +19,6 @@
 package org.inbio.ara.security;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
-import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
@@ -267,10 +266,9 @@ public class SystemUserSessionBean extends AbstractSessionBean implements Pagina
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(this.securityFacade.countUsers().intValue(), getQuantity(), this));
-    }
-
-    
+        this.setPagination(new PaginationControllerRemix(this.securityFacade.countUsers().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
+    }    
 
     /**
      * @return the quantity
@@ -367,6 +365,7 @@ public class SystemUserSessionBean extends AbstractSessionBean implements Pagina
     }
 
     public List getResults(int firstResult, int maxResults) {
+        this.getPagination().setTotalResults(this.securityFacade.countUsers().intValue());
         return securityFacade.getAllUsersPaginated(firstResult, maxResults);
     }
 

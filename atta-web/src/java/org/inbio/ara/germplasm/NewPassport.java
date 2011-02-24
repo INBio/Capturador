@@ -7,17 +7,11 @@ package org.inbio.ara.germplasm;
 
 import com.sun.rave.faces.data.DefaultSelectItemsArray;
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
-import com.sun.webui.jsf.component.DropDown;
 import com.sun.webui.jsf.component.TextField;
-import com.sun.webui.jsf.model.SingleSelectOptionsList;
 import com.sun.webui.jsf.component.Calendar;
 import com.sun.webui.jsf.component.DropDown;
-import com.sun.webui.jsf.component.TextArea;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
-import java.util.AbstractList;
-import javax.faces.component.html.HtmlSelectOneMenu;
-import javax.faces.event.ValueChangeEvent;
 import org.inbio.ara.util.BundleHelper;
 
 import java.util.ArrayList;
@@ -25,7 +19,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlDataTable;
@@ -44,7 +37,6 @@ import org.inbio.ara.admin.ProfileSessionBean;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.dto.germplasm.PassportDTO;
-import org.inbio.ara.dto.germplasm.PassportNomenclaturalGroupDTO;
 import org.inbio.ara.dto.gis.GeographicLayerDTO;
 import org.inbio.ara.dto.inventory.GatheringObservationDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
@@ -603,9 +595,6 @@ public class NewPassport extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getPassportSessionBean().setQueryModeSimple(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getPassportSessionBean().getPagination().setTotalResults
-                (this.getPassportSessionBean().getSearchFacade().
-                countGathObsByCriteria(consulta).intValue());
         this.getPassportSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
 
@@ -796,10 +785,6 @@ public class NewPassport extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getPassportSessionBean().setQueryModeSimple(false);
             this.getPassportSessionBean().setQueryMode(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getPassportSessionBean().getPagination().setTotalResults
-                    (this.getPassportSessionBean().getInventoryFacadeRemote().
-                    countGatheringObservations().intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -808,10 +793,6 @@ public class NewPassport extends AbstractPageBean {
             this.getPassportSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getPassportSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getPassportSessionBean().getPagination().setTotalResults
-                    (this.getPassportSessionBean().getSearchFacade().
-                    countGathObsByCriteria(userInput).intValue());
         }
         this.getPassportSessionBean().getPagination().firstResults();
         return null;
@@ -1219,7 +1200,6 @@ public class NewPassport extends AbstractPageBean {
 
                     getPassportSessionBean().resetValues();
                     //Refrescar la lista de recolecciones
-                    this.getPassportListSessionBean().getPagination().addItem();
                     this.getPassportListSessionBean().getPagination().refreshList();
                 }
                 else

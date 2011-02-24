@@ -408,10 +408,6 @@ public class NewGathering extends AbstractPageBean {
         }
 
         //Refrescar la lista de recolecciones
-        Long collectionId = getAraSessionBean().getGlobalCollectionId();
-        this.getinventory$GatheringSessionBean().getPagination().setTotalResults
-                    (this.getinventory$GatheringSessionBean().getInventoryFacade().
-                    countGatheringObservations(collectionId).intValue());
         this.getinventory$GatheringSessionBean().getPagination().refreshList();
 
         /*Indicar a la pantalla de edit que cargue 1 sola ves los datos

@@ -20,16 +20,16 @@
                         <webuijsf:panelLayout id="contenido">
                             <webuijsf:form id="form1">
                                 <h:outputLabel id="lbTitle" style="height: 24px; left: 24px; position: relative; width: 850px" styleClass="Page_title" value="#{resources.list_dublin_core}"/>
-                                <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; position: relative" width="850">
+                                <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; position: relative;width:95%;">
                                     <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                         style="height: 50px; width: 840px" warnClass="warnMessage"/>
 
                                     <!-- Tabla que posee la lista de sementals -->
-                                    <h:panelGrid id="gridpGathering_Main" style="position: relative" width="850">
+                                    <h:panelGrid id="gridpGathering_Main" style="position: relative;width:100%">
 
                                         <h:panelGrid binding="#{dublincore$ListDublinCore.gridDublinCore}">
                                                 <!-- panelGrid que contiene los botones de búsquedas -->
-                                                <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">
+                                                <h:panelGrid columns="3" id="gridpSearch" style="height: 24px;width:100%">
                                                     <h:inputText binding="#{dublincore$ListDublinCore.txSearch}" id="txSearch" style="height: 18px; width: 408px">
                                                         <f:validateLength maximum="100" minimum="0"/>
                                                     </h:inputText>
@@ -40,9 +40,9 @@
                                                 </h:panelGrid>
                                                 <!-- panelGrid que contiene los elementos para la búsqueda avanzada -->
                                                 <h:panelGrid binding="#{dublincore$ListDublinCore.gridpAdvancedSearch}" columns="1" id="gridpAdvancedSearch" rendered="false"
-                                                    style="height: 5px" styleClass="My_panel_blue" width="680">
+                                                    style="height: 5px;width:100%;" styleClass="My_panel_blue">
                                                     <!-- formulario para la búsqueda avanzada -->
-                                                    <h:panelGrid columns="4" id="gridpAdvancedSearch1" style="height: 24px"  width="670px">
+                                                    <h:panelGrid columns="4" id="gridpAdvancedSearch1" style="height: 24px;width:100%;">
                                                         <webuijsf:label for="txTitle" id="lbTitle2" text="#{resources.title_dublin_core}"/>
                                                         <webuijsf:textField binding="#{dublincore$ListDublinCore.txTitle}" id="txTitle" />
                                                         <webuijsf:label for="txCreator" id="lbCreator" text="#{resources.author_dublin_core}"/>
@@ -53,18 +53,18 @@
                                                         <webuijsf:textField binding="#{dublincore$ListDublinCore.txIdentifier}" id="txIdentifier" />
                                                     </h:panelGrid>
                                                     <!-- panelGrid que con el botón "Proceder" -->
-                                                    <h:panelGrid columns="2" id="gridpAS2" style="height: 24px" width="390">
+                                                    <h:panelGrid columns="2" id="gridpAS2" style="height: 24px;width:100%;">
                                                         <h:commandButton action="#{dublincore$ListDublinCore.btnProceedSearch_action}" id="btnAdvSearchGO"
                                                         style="width: 160px" styleClass="My_Button" value="#{resources.button_proceed}"/>
                                                     </h:panelGrid>
                                                 </h:panelGrid>
 
                                             </h:panelGrid>
-                                            <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="height: 24px" styleClass="My_table" width="840">
+                                            <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="width:100%" styleClass="My_table">
 
                                                 <webuijsf:panelGroup id="grouppButtons">
 
-                                                    <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" width="840">
+                                                    <h:panelGrid columns="1" id="gridpquantity" styleClass="My_table_top" style="width:100%">
                                                         <h:outputLabel id="labelQuantity" value="#{dublincore$ListDublinCore.quantityTotal}"/>
                                                     </h:panelGrid>
 
@@ -94,18 +94,18 @@
                                                     </webuijsf:panelGroup>
                                                 </webuijsf:panelGroup>
 
-                                                        <h:dataTable binding="#{dublincore$ListDublinCore.dataTableDublinCore}" cellspacing="0" columnClasses="list-columns"
-                                                    headerClass="list-header" id="dataTablegathering" rowClasses="list-row-even,list-row-odd"
-                                                    rows="#{dublincore$DublinCoreSessionBean.pagination.resultsPerPage}"
-                                                    style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
-                                                    value="#{dublincore$DublinCoreSessionBean.pagination.dataProvider.list}" var="currentRow" width="839">
+                                                <h:dataTable binding="#{dublincore$ListDublinCore.dataTableDublinCore}" cellspacing="0" columnClasses="list-columns"
+                                                             headerClass="list-header" id="dataTablegathering" rowClasses="list-row-even,list-row-odd"
+                                                             rows="#{dublincore$DublinCoreSessionBean.pagination.resultsPerPage}"
+                                                             style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px;width:100%;"
+                                                             value="#{dublincore$DublinCoreSessionBean.pagination.dataProvider.list}" var="currentRow">
                                                     <h:column>
 
                                                         <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow.selected}"/>
 
                                                     </h:column>
 
-                                                   <h:column>
+                                                    <h:column>
                                                         <f:facet name="header">
                                                             <h:outputText value="#{resources.title_dublin_core}"/>
                                                         </f:facet>

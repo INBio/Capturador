@@ -230,9 +230,9 @@ public class EditIndicator extends AbstractPageBean {
         if(this.getindicator$IndicatorSessionBean().isAdvancedSearch()){            
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (this.getindicator$IndicatorSessionBean().getPagination()==null) {
-                       
+
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (this.getindicator$IndicatorSessionBean().getPagination()==null) {                       
             //Colocar el modo editar en true, es una indicación para el getResults del paginador
             this.getindicator$IndicatorSessionBean().setEditMode(true);
             //Inicializar el map
@@ -241,10 +241,11 @@ public class EditIndicator extends AbstractPageBean {
             //this.getindicator$IndicatorSessionBean().setEditReference(new HashMap[3]);
             this.getindicator$IndicatorSessionBean().initEditReferenceMap();
             //inicializar el paginador
-            this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));
-            
+            this.getindicator$IndicatorSessionBean().initEditDataProvider(new Long(hiddenNodeId.getValue().toString()));            
         }
-               
+        //Actualizar los datos del paginador
+        else
+            this.getindicator$IndicatorSessionBean().getPagination().refreshList();
 
     }
 

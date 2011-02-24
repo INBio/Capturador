@@ -198,7 +198,8 @@ public class ProfileSessionBean extends AbstractSessionBean implements Paginatio
      * Inicializar el data provider
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(this.getAdminFacade().countProfiles().intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(this.getAdminFacade().countProfiles().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -240,6 +241,7 @@ public class ProfileSessionBean extends AbstractSessionBean implements Paginatio
     }
 
     public List getResults(int firstResult, int maxResults) {
+        getPagination().setTotalResults(this.getAdminFacade().countProfiles().intValue());
         return adminFacade.getAllProfilesPaginated(firstResult, maxResults);
     }
 }

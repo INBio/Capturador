@@ -352,9 +352,9 @@ public class PassportSessionBean extends AbstractSessionBean implements Paginati
     /**
      * Inicializar el data provider de especimenes
      */
-    public void initDataProvider() {
-        //pagination = new PaginationControllerImpl(getInventoryFacadeRemote().countGatheringObservations().intValue(), this.getQuantity());
-        setPagination(new PaginationControllerRemix(this.getInventoryFacadeRemote().countGatheringObservations().intValue(), quantity, this));
+    public void initDataProvider() {        
+        this.setPagination(new PaginationControllerRemix(this.getInventoryFacadeRemote().countGatheringObservations().intValue(), quantity, this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -436,33 +436,19 @@ public class PassportSessionBean extends AbstractSessionBean implements Paginati
                 GatheringObservationDTO gdto = getQueryGatheringDTO();
                 gdto.setCollectionId(collectionId);
                 try {
+                    getPagination().setTotalResults(getSearchFacade().countGathObsByCriteria(gdto).intValue());
                     gListDTO =  myReturn(getSearchFacade().searchGathObsByCriteria(gdto,
                             firstResult, maxResults));
-                    /*if(passportDTO.getGatheringId() != null && gListDTO != null && !gListDTO.isEmpty())
-                    {
-                        for (GatheringObservationDTO gatheringObservationDTO : gListDTO)
-                        {
-                            if(gatheringObservationDTO.getGatheringObservationId().equals(passportDTO.getGatheringId()))
-                                gatheringObservationDTO.setSelected(true);
-                        }
-                    }*/
                     return gListDTO;
                 } catch (Exception e) {
                     return auxResult;
                 }
             } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
                 try {
+                    getPagination().setTotalResults(getSearchFacade().countGathObsByCriteria(getConsultaSimple(),collectionId).intValue());
                     gListDTO =  myReturn(getSearchFacade().
                             searchGathObsByCriteria(getConsultaSimple(), collectionId, firstResult,
                             maxResults));
-                    /*if(passportDTO.getGatheringId() != null && gListDTO != null && !gListDTO.isEmpty())
-                    {
-                        for (GatheringObservationDTO gatheringObservationDTO : gListDTO)
-                        {
-                            if(gatheringObservationDTO.getGatheringObservationId().equals(passportDTO.getGatheringId()))
-                                gatheringObservationDTO.setSelected(true);
-                        }
-                    }*/
                     return gListDTO;
                 } catch (Exception e) {
                     return auxResult;
@@ -470,21 +456,12 @@ public class PassportSessionBean extends AbstractSessionBean implements Paginati
             } else //Valores default
             {
                 try {
-                    //return myReturn(getInventoryFacadeRemote().getAllGatheringObservationPaginated(firstResult, maxResults, collectionId));
+                    getPagination().setTotalResults(getInventoryFacadeRemote().countGatheringObservations(collectionId).intValue());
                     gListDTO =
                             myReturn(
                             getInventoryFacadeRemote().
                             getAllGatheringObservationPaginated(
                             firstResult, maxResults, collectionId));
-
-                    /*if(passportDTO.getGatheringId() != null && gListDTO != null && !gListDTO.isEmpty())
-                    {
-                        for (GatheringObservationDTO gatheringObservationDTO : gListDTO)
-                        {
-                            if(gatheringObservationDTO.getGatheringObservationId().equals(passportDTO.getGatheringId()))
-                                gatheringObservationDTO.setSelected(true);
-                        }
-                    }*/
                     return gListDTO;
                 } catch (Exception e) {
                     return auxResult;

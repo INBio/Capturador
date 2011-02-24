@@ -152,11 +152,14 @@ public class ListSemental extends AbstractPageBean {
             conditions.setOptions(getSelectionListDropDownData(SelectionListEntity.CONDITION.getId()));
             this.getGridpAdvancedSearch().setRendered(true);//Muestra el panel de busqueda avanzada
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (getgermplasm$SementalSessionBean().getPagination()==null) {
 
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (getgermplasm$SementalSessionBean().getPagination()==null) {
             getgermplasm$SementalSessionBean().initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            getgermplasm$SementalSessionBean().getPagination().refreshList();
     }
 
     /**
@@ -334,7 +337,6 @@ public class ListSemental extends AbstractPageBean {
                 getgermplasm$SementalSessionBean().getGermplasmFacadeRemote().
                         deleteSemental(selected.get(0).getSementalId());
                 //refresh the list
-                getgermplasm$SementalSessionBean().getPagination().deleteItem();
                 getgermplasm$SementalSessionBean().getPagination().refreshList();
                 getgermplasm$SemenGatheringSessionBean().setPagination(null);
                 MessageBean.setSuccessMessageFromBundle("delete_semental_success", this.getMyLocale());
@@ -398,10 +400,6 @@ public class ListSemental extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getgermplasm$SementalSessionBean().setQueryModeSimple(false);
             this.getgermplasm$SementalSessionBean().setQueryMode(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getgermplasm$SementalSessionBean().getPagination().setTotalResults
-                    (getgermplasm$SementalSessionBean().getGermplasmFacadeRemote().
-                    countAllSemental().intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -410,11 +408,6 @@ public class ListSemental extends AbstractPageBean {
             this.getgermplasm$SementalSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getgermplasm$SementalSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getgermplasm$SementalSessionBean().getPagination().setTotalResults
-                    (getgermplasm$SementalSessionBean().getGermplasmFacadeRemote().
-                    countSementalSimpleSearch(
-                    userInput).intValue());
         }
         //set the first result of the query
         this.getgermplasm$SementalSessionBean().getPagination().firstResults();
@@ -465,22 +458,13 @@ public class ListSemental extends AbstractPageBean {
             birth.setTime(bdate);
             getgermplasm$SementalSessionBean().getQuerySementalDTO().setBirthDate(birth);
         }
-
-
+        
         //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda avanzada
         this.getgermplasm$SementalSessionBean().setQueryMode(true);
         //Desabilitar la bandera de busqueda simple
         this.getgermplasm$SementalSessionBean().setQueryModeSimple(false);
-        //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getgermplasm$SementalSessionBean().getPagination().setTotalResults(
-                this.getgermplasm$SementalSessionBean().
-                getGermplasmFacadeRemote().
-                countSementalAdvancedSearch(
-                getgermplasm$SementalSessionBean().
-                getQuerySementalDTO()).intValue());
 
         this.getgermplasm$SementalSessionBean().getPagination().firstResults();
-        this.getgermplasm$SementalSessionBean().getPagination().refreshList();
 
         this.getTxSimpleSearch().setValue("");
 

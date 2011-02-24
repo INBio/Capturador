@@ -120,14 +120,18 @@ public class ListBreed extends AbstractPageBean {
 
         if(getgermplasm$BreedSessionBean().isFirstTime())
         {
-
             dataTableBreeds = new HtmlDataTable();
             quantityTotal = new String();
             getgermplasm$BreedSessionBean().setFirstTime(false);
         }
 
-         if (getgermplasm$BreedSessionBean().getPagination()==null)
-             getgermplasm$BreedSessionBean().initDataProvider();
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (getgermplasm$BreedSessionBean().getPagination()==null) {
+            getgermplasm$BreedSessionBean().initDataProvider();
+        }
+        //Actualizar los datos del paginador
+        else
+            getgermplasm$BreedSessionBean().getPagination().refreshList();
     }
 
     /**
@@ -230,7 +234,6 @@ public class ListBreed extends AbstractPageBean {
                 getgermplasm$BreedSessionBean().getGermplasmFacadeRemote().
                         deleteBreed(selected.get(0).getBreedId());
                 //refresh the list
-                getgermplasm$BreedSessionBean().getPagination().deleteItem();
                 getgermplasm$BreedSessionBean().getPagination().refreshList();
                 MessageBean.setSuccessMessageFromBundle("delete_breed_success", this.getMyLocale());
             }
@@ -254,7 +257,6 @@ public class ListBreed extends AbstractPageBean {
                 deleteBreed(
                 getgermplasm$BreedSessionBean().getDeleteBreed());
         //refresh the list
-        getgermplasm$BreedSessionBean().getPagination().deleteItem();
         getgermplasm$BreedSessionBean().getPagination().refreshList();
         getgermplasm$SementalSessionBean().getPagination().refreshList();
 
@@ -291,20 +293,12 @@ public class ListBreed extends AbstractPageBean {
         if(userInput.length()==0){
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getgermplasm$BreedSessionBean().setQueryModeSimple(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getgermplasm$BreedSessionBean().getPagination().setTotalResults
-                    (getgermplasm$BreedSessionBean().getGermplasmFacadeRemote().
-                    countAllBreed().intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
             this.getgermplasm$BreedSessionBean().setConsultaSimple(userInput);
             //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda simple
             this.getgermplasm$BreedSessionBean().setQueryModeSimple(true);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getgermplasm$BreedSessionBean().getPagination().setTotalResults
-                    (getgermplasm$BreedSessionBean().getGermplasmFacadeRemote().
-                    countBreedSimpleSearch(userInput).intValue());
         }
         //set the first result of the query
         this.getgermplasm$BreedSessionBean().getPagination().firstResults();

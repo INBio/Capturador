@@ -141,9 +141,14 @@ public class ListSpecies extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        if(this.gettaxonomy$SpeciesSessionBean().getPagination()==null){
-            this.gettaxonomy$SpeciesSessionBean().initDataProvider();
+        SpeciesSessionBean ssb = this.gettaxonomy$SpeciesSessionBean();
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (ssb.getPagination()==null) {
+            ssb.initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            ssb.getPagination().refreshList();
     }
 
     /**
@@ -156,6 +161,157 @@ public class ListSpecies extends AbstractPageBean {
      */
     @Override
     public void destroy() {
+    }
+
+    public String newButton_action() {
+        //Limpiar el currentDTO
+        this.gettaxonomy$SpeciesSessionBean().setCurrentTaxDescripDTO
+                (new TaxonDescriptionDTO());
+        this.gettaxonomy$SpeciesSessionBean().setSelectedLanguage(null);
+        this.gettaxonomy$SpeciesSessionBean().setSelectedScientificName(null);
+        this.gettaxonomy$SpeciesSessionBean().setSelectedStatus(null);
+        return "new";
+    }
+
+    /**
+     * Metodo ejecutado por el boton para editar un registro de especie
+     * @return
+     */
+    public String editButton_action() {
+        int n = this.getTaxonDescriptionTable().getRowCount();
+        ArrayList<TaxonDescriptionDTO> selectedDescriptions = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getTaxonDescriptionTable().setRowIndex(i);
+            TaxonDescriptionDTO aux = (TaxonDescriptionDTO)
+                    this.getTaxonDescriptionTable().getRowData();
+            if (aux.isSelected()) {
+                selectedDescriptions.add(aux);
+            }
+        }
+        if(selectedDescriptions == null || selectedDescriptions.size() == 0){
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        else if(selectedDescriptions.size() == 1){ //En caso de que solo se seleccione un elemento
+            //Reestablecer el valor default del DTO y de los add remove components
+            this.gettaxonomy$SpeciesSessionBean().
+                    setCurrentTaxDescripDTO(selectedDescriptions.get(0));
+            this.gettaxonomy$SpeciesSessionBean().setArAudiences(new AddRemoveList());
+            this.gettaxonomy$SpeciesSessionBean().setArAuthors(new AddRemoveList());
+            this.gettaxonomy$SpeciesSessionBean().setArInstitutions(new AddRemoveList());
+            /*Indicar a la pantalla de edit que cargue 1 sola ves los datos
+            seleccionados de los AddRemove*/
+            this.gettaxonomy$SpeciesSessionBean().setFirstTime(true);
+            return "edit";
+        }
+        else{ //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
+    }
+
+    /**
+     * Metodo ejecutado por el boton para eliminar un registro de especie
+     * @return
+     */
+    public String deleteButton_action() {
+        int n = this.getTaxonDescriptionTable().getRowCount();
+        ArrayList<TaxonDescriptionDTO> selectedItems = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getTaxonDescriptionTable().setRowIndex(i);
+            TaxonDescriptionDTO aux = (TaxonDescriptionDTO)
+                    this.getTaxonDescriptionTable().getRowData();
+            if (aux.isSelected()) {
+                selectedItems.add(aux);
+            }
+        }
+        if(selectedItems == null || selectedItems.size() == 0){
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        //En caso de que solo se seleccione un elemento
+        else if(selectedItems.size() == 1){
+            TaxonDescriptionDTO selected = selectedItems.get(0);
+            //Mandar a borrar la audiencia
+            try{
+                this.gettaxonomy$SpeciesSessionBean().
+                        deleteTaxonDescription(selected.getTaxonId(),
+                        selected.getTaxonDescriptionSequence());
+            }
+            catch(Exception e){
+                MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
+                return null;
+            }
+            //Refrescar la lista de audiencias
+            this.gettaxonomy$SpeciesSessionBean().getPagination().refreshList();
+
+            //Notificar al usuario
+            MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
+            return null;
+        }
+        else{ //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
+    }
+
+    /**
+     * Metodo ejecutado por el boton de mostrar el preview del registro seleccionado
+     * @return
+     */
+    public String previewButton_action() {
+        int n = this.getTaxonDescriptionTable().getRowCount();
+        ArrayList<TaxonDescriptionDTO> selectedItems = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getTaxonDescriptionTable().setRowIndex(i);
+            TaxonDescriptionDTO aux = (TaxonDescriptionDTO)
+                    this.getTaxonDescriptionTable().getRowData();
+            if (aux.isSelected()) {
+                selectedItems.add(aux);
+            }
+        }
+        if(selectedItems == null || selectedItems.size() == 0){
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        //En caso de que solo se seleccione un elemento
+        else if(selectedItems.size() == 1){
+            TaxonDescriptionDTO selected = selectedItems.get(0);
+            this.gettaxonomy$SpeciesSessionBean().setCurrentTaxDescripDTO(selected);
+            return "preview";
+        }
+        else{ //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
+    }
+
+    /**
+     * Metodo ejecutado por el boton de busqueda simple
+     * @return
+     */
+    public String btnSpeciesSearch_action() {
+        String userInput = "";
+        if(this.getTxSearchSpecies().getValue()!= null)
+            userInput = this.getTxSearchSpecies().getValue().toString();
+        userInput = userInput.trim();
+        System.out.println(1);
+        if(userInput.length()==0){
+            //Se desabilitan las banderas de busqueda simple y avanzada
+            this.gettaxonomy$SpeciesSessionBean().setQueryModeSimple(false);
+        }
+        else{
+            //Setear el string para consulta simple del SessionBean
+            this.gettaxonomy$SpeciesSessionBean().setConsultaSimple(userInput);
+            //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda simple
+            this.gettaxonomy$SpeciesSessionBean().setQueryModeSimple(true);
+        }
+        //set the first result of the query
+        this.gettaxonomy$SpeciesSessionBean().getPagination().firstResults();
+        return null;
     }
 
     /**
@@ -279,166 +435,6 @@ public class ListSpecies extends AbstractPageBean {
      * Metodo ejecutado por el boton para crear un nuevo registro de especie
      * @return
      */
-    public String newButton_action() {
-        //Limpiar el currentDTO
-        this.gettaxonomy$SpeciesSessionBean().setCurrentTaxDescripDTO
-                (new TaxonDescriptionDTO());
-        this.gettaxonomy$SpeciesSessionBean().setSelectedLanguage(null);
-        this.gettaxonomy$SpeciesSessionBean().setSelectedScientificName(null);
-        this.gettaxonomy$SpeciesSessionBean().setSelectedStatus(null);
-        return "new";
-    }
-
-    /**
-     * Metodo ejecutado por el boton para editar un registro de especie
-     * @return
-     */
-    public String editButton_action() {
-        int n = this.getTaxonDescriptionTable().getRowCount();
-        ArrayList<TaxonDescriptionDTO> selectedDescriptions = new ArrayList();
-        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
-            this.getTaxonDescriptionTable().setRowIndex(i);
-            TaxonDescriptionDTO aux = (TaxonDescriptionDTO)
-                    this.getTaxonDescriptionTable().getRowData();
-            if (aux.isSelected()) {
-                selectedDescriptions.add(aux);
-            }
-        }
-        if(selectedDescriptions == null || selectedDescriptions.size() == 0){
-            //En caso de que no se seleccione ningun elemento
-            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
-            return null;
-        }
-        else if(selectedDescriptions.size() == 1){ //En caso de que solo se seleccione un elemento
-            //Reestablecer el valor default del DTO y de los add remove components
-            this.gettaxonomy$SpeciesSessionBean().
-                    setCurrentTaxDescripDTO(selectedDescriptions.get(0));
-            this.gettaxonomy$SpeciesSessionBean().setArAudiences(new AddRemoveList());
-            this.gettaxonomy$SpeciesSessionBean().setArAuthors(new AddRemoveList());
-            this.gettaxonomy$SpeciesSessionBean().setArInstitutions(new AddRemoveList());
-            /*Indicar a la pantalla de edit que cargue 1 sola ves los datos
-            seleccionados de los AddRemove*/
-            this.gettaxonomy$SpeciesSessionBean().setFirstTime(true);
-            return "edit";
-        }
-        else{ //En caso de que sea seleccion multiple
-            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
-            return null;
-        }
-    }
-
-    /**
-     * Metodo ejecutado por el boton para eliminar un registro de especie
-     * @return
-     */
-    public String deleteButton_action() {
-        int n = this.getTaxonDescriptionTable().getRowCount();
-        ArrayList<TaxonDescriptionDTO> selectedItems = new ArrayList();
-        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
-            this.getTaxonDescriptionTable().setRowIndex(i);
-            TaxonDescriptionDTO aux = (TaxonDescriptionDTO)
-                    this.getTaxonDescriptionTable().getRowData();
-            if (aux.isSelected()) {
-                selectedItems.add(aux);
-            }
-        }
-        if(selectedItems == null || selectedItems.size() == 0){
-            //En caso de que no se seleccione ningun elemento
-            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
-            return null;
-        }
-        //En caso de que solo se seleccione un elemento
-        else if(selectedItems.size() == 1){
-            TaxonDescriptionDTO selected = selectedItems.get(0);
-            //Mandar a borrar la audiencia
-            try{
-                this.gettaxonomy$SpeciesSessionBean().
-                        deleteTaxonDescription(selected.getTaxonId(),
-                        selected.getTaxonDescriptionSequence());
-            }
-            catch(Exception e){
-                MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
-                return null;
-            }
-            //Refrescar la lista de audiencias
-            this.gettaxonomy$SpeciesSessionBean().getPagination().deleteItem();
-            this.gettaxonomy$SpeciesSessionBean().getPagination().refreshList();
-            //Notificar al usuario
-            MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
-            return null;
-        }
-        else{ //En caso de que sea seleccion multiple
-            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
-            return null;
-        }
-    }
-
-    /**
-     * Metodo ejecutado por el boton de mostrar el preview del registro seleccionado
-     * @return
-     */
-    public String previewButton_action() {
-        int n = this.getTaxonDescriptionTable().getRowCount();
-        ArrayList<TaxonDescriptionDTO> selectedItems = new ArrayList();
-        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
-            this.getTaxonDescriptionTable().setRowIndex(i);
-            TaxonDescriptionDTO aux = (TaxonDescriptionDTO)
-                    this.getTaxonDescriptionTable().getRowData();
-            if (aux.isSelected()) {
-                selectedItems.add(aux);
-            }
-        }
-        if(selectedItems == null || selectedItems.size() == 0){
-            //En caso de que no se seleccione ningun elemento
-            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
-            return null;
-        }
-        //En caso de que solo se seleccione un elemento
-        else if(selectedItems.size() == 1){
-            TaxonDescriptionDTO selected = selectedItems.get(0);
-            this.gettaxonomy$SpeciesSessionBean().setCurrentTaxDescripDTO(selected);
-            return "preview";
-        }
-        else{ //En caso de que sea seleccion multiple
-            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
-            return null;
-        }
-    }
-
-    /**
-     * Metodo ejecutado por el boton de busqueda simple
-     * @return
-     */
-    public String btnSpeciesSearch_action() {
-        String userInput = "";
-        if(this.getTxSearchSpecies().getValue()!= null)
-            userInput = this.getTxSearchSpecies().getValue().toString();
-        userInput = userInput.trim();
-        System.out.println(1);
-        if(userInput.length()==0){
-            //Se desabilitan las banderas de busqueda simple y avanzada
-            this.gettaxonomy$SpeciesSessionBean().setQueryModeSimple(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.gettaxonomy$SpeciesSessionBean().getPagination().setTotalResults
-                    (gettaxonomy$SpeciesSessionBean().getTaxonomyFacadeImpl().
-                    countTaxonDescriptions().intValue());
-        }
-        else{
-            //Setear el string para consulta simple del SessionBean
-            this.gettaxonomy$SpeciesSessionBean().setConsultaSimple(userInput);
-            //Indicarle al SessionBean que el paginador debe "trabajar" en modo busqueda simple
-            this.gettaxonomy$SpeciesSessionBean().setQueryModeSimple(true);
-            
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.gettaxonomy$SpeciesSessionBean().getPagination().setTotalResults
-                    (gettaxonomy$SpeciesSessionBean().getTaxonomyFacadeImpl().
-                    countTaxonDescriptionSimpleSearch(
-                    userInput).intValue());
-        }
-        //set the first result of the query
-        this.gettaxonomy$SpeciesSessionBean().getPagination().firstResults();
-        return null;
-    }
 
     /**
      * @return the btnSearchSpecies

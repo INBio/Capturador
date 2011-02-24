@@ -326,9 +326,6 @@ public class EditTransaction extends AbstractPageBean {
         }
 
         //Refrescar la paginacion
-        Long collectionId = getAraSessionBean().getGlobalCollectionId();
-        this.getTransactionSessionBean().getPagination().setTotalResults(this.getTransactionSessionBean().
-                getTransactionFacade().countTransaction(collectionId).intValue());
         this.getTransactionSessionBean().getPagination().refreshList();
 
         //Notificar al usuario
@@ -405,8 +402,8 @@ public class EditTransaction extends AbstractPageBean {
             MessageBean.setSuccessMessageFromBundle("add_transacted_specimen_succces", this.getMyLocale());
 
             //Refrescar la lista de transacciones
-            this.getTransactionSessionBean().getPagination().addItem();
             this.getTransactionSessionBean().getPagination().refreshList();
+
             this.txCatalogNumber.setValue(null);
         }
         else {
@@ -456,6 +453,7 @@ public class EditTransaction extends AbstractPageBean {
 
             //Refrescar la lista de transacciones
             this.getTransactionSessionBean().getPagination().refreshList();
+
             this.txCatalogNumber.setValue(null);
         }
         else {
@@ -492,10 +490,9 @@ public class EditTransaction extends AbstractPageBean {
                 MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
                 return null;
             }
-            //Refrescar la lista de audiencias
-            for (int i = 0; i < selectedTransactedSpecimens.size(); i++)
-                this.getTransactionSessionBean().getPagination().deleteItem();
+            //Refrescar la lista de transacted specimens
             this.getTransactionSessionBean().getPagination().refreshList();
+
             //Notificar al usuario
             MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
             return null;
@@ -532,7 +529,6 @@ public class EditTransaction extends AbstractPageBean {
             }
         }
 
-
         transactedSpecimenDTO.setDescription(this.getTransactionSessionBean().getTransactedSpecimenDescription());
         transactedSpecimenDTO.setTransactedSpecimenStatusId(this.getTransactionSessionBean().getTransactedSpecimenStatusId());
 
@@ -560,9 +556,9 @@ public class EditTransaction extends AbstractPageBean {
                 MessageBean.setErrorMessageFromBundle("imposible_to_edit", this.getMyLocale());
                 return null;
             }
-            //Refrescar la lista de audiencias
-            
+            //Refrescar la paginacion
             this.getTransactionSessionBean().getPagination().refreshList();
+
             //Notificar al usuario
             MessageBean.setSuccessMessageFromBundle("edit_success", this.getMyLocale());
             return null;

@@ -19,7 +19,6 @@
 package org.inbio.ara.inventory;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -187,10 +186,9 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(getInventoryFacade().countSpecimens().intValue(), getQuantity(), this));
-    }
-
-    
+        this.setPagination(new PaginationControllerRemix(getInventoryFacade().countSpecimens().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
+    }    
 
     /**
      *
@@ -519,6 +517,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
                 SpecimenDTO s = getQuerySpecimenDTO();
                 s.setCollectionId(collectionId);
                 try{
+                    getPagination().setTotalResults(getSearchFacade().countSpecimensByCriteria(s).intValue());
                     return myReturn(searchFacade.searchSpecimenByCriteria
                             (s, firstResult, maxResults));
                 }
@@ -526,6 +525,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
             }
             else if(isQueryModeSimple()){ //En caso de que sea busqueda simple
                 try{
+                    getPagination().setTotalResults(getSearchFacade().countSpecimensByCriteria(getConsultaSimple()).intValue());
                     return myReturn(searchFacade.searchSpecimenByCriteria
                             (getConsultaSimple(), collectionId, firstResult,
                             maxResults));
@@ -534,6 +534,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
             }
             else { //Valores default
                 try{
+                    getPagination().setTotalResults(getInventoryFacade().countSpecimens().intValue());
                     return myReturn(inventoryFacade.getAllSpecimenPaginated
                             (firstResult, maxResults, collectionId));
                 }

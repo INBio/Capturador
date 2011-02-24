@@ -200,7 +200,8 @@ public class AudienceSessionBean extends AbstractSessionBean implements Serializ
      * Inicializar el data provider
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(this.getAdminFacade().countAudiences().intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(this.getAdminFacade().countAudiences().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -243,6 +244,7 @@ public class AudienceSessionBean extends AbstractSessionBean implements Serializ
     }
 
     public List getResults(int firstResult, int maxResults) {
+        getPagination().setTotalResults(getAdminFacade().countAudiences().intValue());
         return adminFacade.getAllAudiencesPaginated(firstResult, maxResults);
     }
 

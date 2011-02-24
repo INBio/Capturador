@@ -193,7 +193,6 @@ public class NewUser extends AbstractPageBean {
         }
 
         //Refrescar la lista de usuarios
-        this.getUserSessionBean().getPagination().addItem();
         this.getUserSessionBean().getPagination().refreshList();
 
         //Informo al usuario

@@ -126,9 +126,14 @@ public class ListAudience extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        if(this.getAudienceSessionBean().getPagination()==null){
-            this.getAudienceSessionBean().initDataProvider();
+        AudienceSessionBean asb = this.getAudienceSessionBean();
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (asb.getPagination()==null) {
+            asb.initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            asb.getPagination().refreshList();
     }
 
     /**
@@ -141,6 +146,80 @@ public class ListAudience extends AbstractPageBean {
      */
     @Override
     public void destroy() {
+    }
+
+    /**
+     * Metodo ejecutado por el boton de editar audiencias
+     * @return
+     */
+    public String btnAudienceEdit(){
+        int n = this.getAudiencesTable().getRowCount();
+        ArrayList<AudienceDTO> selectedAudiences = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getAudiencesTable().setRowIndex(i);
+            AudienceDTO aux = (AudienceDTO) this.getAudiencesTable().getRowData();
+            if (aux.isSelected()) {
+                selectedAudiences.add(aux);
+            }
+        }
+        if(selectedAudiences == null || selectedAudiences.size() == 0){
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        else if(selectedAudiences.size() == 1){ //En caso de que solo se seleccione un elemento
+            this.getAudienceSessionBean().setCurrentAudienceDTO(selectedAudiences.get(0));
+            return "edit";
+        }
+        else{ //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
+    }
+
+    /**
+     * Metodo ejecutado por el boton de eliminar audiencias
+     * @return
+     */
+    public String btnAudienceDelete(){
+
+        int n = this.getAudiencesTable().getRowCount();
+        ArrayList<AudienceDTO> selectedAudiences = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getAudiencesTable().setRowIndex(i);
+            AudienceDTO aux = (AudienceDTO) this.getAudiencesTable().getRowData();
+            if (aux.isSelected()) {
+                selectedAudiences.add(aux);
+            }
+        }
+        if(selectedAudiences == null || selectedAudiences.size() == 0){
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        //En caso de que solo se seleccione un elemento
+        else if(selectedAudiences.size() == 1){
+            AudienceDTO selected = selectedAudiences.get(0);
+            //Mandar a borrar la audiencia
+            try{
+                this.getAudienceSessionBean().deleteAudience(selected.getAudienceId());
+            }
+            catch(Exception e){
+                MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
+                return null;
+            }
+
+            //Refrescar la lista de audiencias
+            this.getAudienceSessionBean().getPagination().refreshList();
+
+            //Notificar al usuario
+            MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
+            return null;
+        }
+        else{ //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
     }
 
     /**
@@ -206,82 +285,6 @@ public class ListAudience extends AbstractPageBean {
         //Limpiar el current DTO
         this.getAudienceSessionBean().setCurrentAudienceDTO(new AudienceDTO());
         return "new";
-    }
-
-    /**
-     * Metodo ejecutado por el boton de editar audiencias
-     * @return
-     */
-    public String btnAudienceEdit(){
-        int n = this.getAudiencesTable().getRowCount();
-        ArrayList<AudienceDTO> selectedAudiences = new ArrayList();
-        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
-            this.getAudiencesTable().setRowIndex(i);
-            AudienceDTO aux = (AudienceDTO) this.getAudiencesTable().getRowData();
-            if (aux.isSelected()) {
-                selectedAudiences.add(aux);
-            }
-        }
-        if(selectedAudiences == null || selectedAudiences.size() == 0){
-            //En caso de que no se seleccione ningun elemento
-            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
-            return null;
-        }
-        else if(selectedAudiences.size() == 1){ //En caso de que solo se seleccione un elemento
-            this.getAudienceSessionBean().setCurrentAudienceDTO(selectedAudiences.get(0));
-            return "edit";
-        }
-        else{ //En caso de que sea seleccion multiple
-            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
-            return null;
-        }
-    }
-
-    /**
-     * Metodo ejecutado por el boton de eliminar audiencias
-     * @return
-     */
-    public String btnAudienceDelete(){
-
-        int n = this.getAudiencesTable().getRowCount();
-        ArrayList<AudienceDTO> selectedAudiences = new ArrayList();
-        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
-            this.getAudiencesTable().setRowIndex(i);
-            AudienceDTO aux = (AudienceDTO) this.getAudiencesTable().getRowData();
-            if (aux.isSelected()) {
-                selectedAudiences.add(aux);
-            }
-        }
-        if(selectedAudiences == null || selectedAudiences.size() == 0){
-            //En caso de que no se seleccione ningun elemento
-            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
-            return null;
-        }
-        //En caso de que solo se seleccione un elemento
-        else if(selectedAudiences.size() == 1){
-            AudienceDTO selected = selectedAudiences.get(0);
-            //Mandar a borrar la audiencia
-            try{
-                this.getAudienceSessionBean().deleteAudience(selected.getAudienceId());
-            }
-            catch(Exception e){
-                MessageBean.setErrorMessageFromBundle("imposible_to_delete", this.getMyLocale());
-                return null;
-            }
-
-            //Refrescar la lista de audiencias
-            this.getAudienceSessionBean().getPagination().deleteItem();
-            this.getAudienceSessionBean().getPagination().refreshList();
-
-            //Notificar al usuario
-            MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
-            return null;
-        }
-        else{ //En caso de que sea seleccion multiple
-            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
-            return null;
-        }
-    }
-    
+    }    
 }
 

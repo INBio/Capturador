@@ -106,8 +106,6 @@ implements Serializable, PaginationCoreInterface {
     //Objeto AddRemoveList para manejar los valores del tab de instituciones (ventana edit)
     private AddRemoveList arInstitutions = new AddRemoveList();
 
-
-
     //Bandera para indicarle al paginador que trabaje en modo busqueda simple
     private boolean queryModeSimple = false;
     //String que indica la consulta del usuario en la busqueda simple
@@ -600,7 +598,9 @@ implements Serializable, PaginationCoreInterface {
      * Inicializar el data provider
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(this.getTaxonomyFacadeImpl().countTaxonDescriptions().intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix
+                (this.getTaxonomyFacadeImpl().countTaxonDescriptions().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -829,13 +829,11 @@ implements Serializable, PaginationCoreInterface {
     }
 
     public List getResults(int firstResult, int maxResults) {
-        
 
         if (isQueryModeSimple()) { //En caso de que sea busqueda simple
             try {
-            
-                return myReturn(taxonomyFacadeImpl.getTaxonDescriptionSimpleSearch
-                       (getConsultaSimple(),
+                getPagination().setTotalResults(getTaxonomyFacadeImpl().countTaxonDescriptionSimpleSearch(getConsultaSimple()).intValue());
+                return myReturn(taxonomyFacadeImpl.getTaxonDescriptionSimpleSearch(getConsultaSimple(),
                         firstResult, maxResults));
             } catch (Exception e) {
                 return new ArrayList<TaxonDescriptionDTO>();
@@ -843,6 +841,7 @@ implements Serializable, PaginationCoreInterface {
         } else //Valores default
         {
             try {
+                getPagination().setTotalResults(getTaxonomyFacadeImpl().countTaxonDescriptions().intValue());
                 return taxonomyFacadeImpl.getAllTaxonDescriptionPaginated(firstResult, maxResults);
 
             } catch (Exception e) {

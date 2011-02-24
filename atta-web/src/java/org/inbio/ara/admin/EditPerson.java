@@ -161,14 +161,12 @@ public class EditPerson extends AbstractPageBean {
             this.getTxProvience().setText(aux.getStateProvince());
             this.getTxWebSite().setText(aux.getUrl());
             this.getTxaAddress().setText(aux.getStreetAddress());
-
             if(aux.getDeathYear()!=null){
                 this.getTxDeathDate().setText(aux.getDeathYear()+"");
             }
             if(aux.getBirthYear()!=null){
                 this.getTxBirthDate().setText(aux.getBirthYear()+"");
             }
-
             //Cargar datos de los add remove
             this.loadAddRemoveData();
             //Cargar datos seleccionados de los add remove
@@ -187,6 +185,160 @@ public class EditPerson extends AbstractPageBean {
      */
     @Override
     public void destroy() {
+    }
+
+    /**
+     * Metodo encargado de cargar los datos de los distintos add remove de la
+     * ventana de nueva perosna
+     */
+    private void loadAddRemoveData() {
+        PersonSessionBean psb = this.getPersonSessionBean();
+        //Cargar datos del add remove de perfiles
+        if (psb.getArProfilesEdit().getAvailableOptions() == null ||
+                psb.getArProfilesEdit().getAvailableOptions().length == 0) {
+
+            List<ProfileDTO> profilesList = psb.getprofilesData();
+            List<Option> list = new ArrayList<Option>();
+
+            for (ProfileDTO dto : profilesList) {
+                list.add(new Option(dto.getProfileId(), dto.getName()));
+            }
+            psb.getArProfilesEdit().setAvailableOptions(list.toArray(new Option[list.size()]));
+        }
+        //Cargar los datos del add remove de instituciones
+        if (psb.getArInstitutionesEdit().getAvailableOptions() == null ||
+                psb.getArInstitutionesEdit().getAvailableOptions().length == 0) {
+
+            List<InstitutionDTO> institutionsList = psb.getinstitutionsData();
+            List<Option> list = new ArrayList<Option>();
+
+            for (InstitutionDTO ins : institutionsList) {
+                list.add(new Option(ins.getInstitutionId(), ins.getInstitutionName()));
+            }
+            psb.getArInstitutionesEdit().setAvailableOptions(list.toArray(new Option[list.size()]));
+        }
+        //Setea los labels del componente add remove
+        psb.getArProfilesEdit().setLbTitle(BundleHelper.getDefaultBundleValue
+                ("menuModuleProfiles", this.getMyLocale()));
+        psb.getArProfilesEdit().setLbAvailable(BundleHelper.getDefaultBundleValue
+                ("available", this.getMyLocale()));
+        psb.getArProfilesEdit().setLbSelected(BundleHelper.getDefaultBundleValue
+                ("selected", this.getMyLocale()));
+
+        psb.getArInstitutionesEdit().setLbTitle(BundleHelper.getDefaultBundleValue
+                ("menuModuleInstitutions", this.getMyLocale()));
+        psb.getArInstitutionesEdit().setLbAvailable(BundleHelper.getDefaultBundleValue
+                ("available", this.getMyLocale()));
+        psb.getArInstitutionesEdit().setLbSelected(BundleHelper.getDefaultBundleValue
+                ("selected", this.getMyLocale()));
+    }
+
+    /**
+     * Metodo encargado de cargar los datos de los distintos add remove de la
+     * ventana de editar persona, carga los seleccionados segun el
+     * currentPersonDTO para edicion
+     */
+    private void loadAddRemoveSelectedData(){
+        PersonSessionBean psb = this.getPersonSessionBean();
+        Long person = psb.getCurrentPerson().getPersonKey();
+
+        //Cargar datos del add remove de instituciones (Seleccionados)
+        List<InstitutionDTO> institutionsList = psb.getAdminFacade().
+                getInstitutionsByPersonId(person);
+        List<Long> list = new ArrayList<Long>();
+        for (InstitutionDTO myDTO : institutionsList) {
+            list.add(myDTO.getInstitutionId());
+        }
+        psb.getArInstitutionesEdit().setSelectedOptions(list.toArray(new Long[list.size()]));
+
+        //Cargar los datos del add remove de perfiles (Seleccionados)
+        List<ProfileDTO> nomenclaturalList = psb.getAdminFacade().getProfilesByPersonId(person);
+        List<Long> listP = new ArrayList<Long>();
+        for (ProfileDTO myDTO : nomenclaturalList) {
+            listP.add(myDTO.getProfileId());
+        }
+        psb.getArProfilesEdit().setSelectedOptions(listP.toArray(new Long[listP.size()]));
+
+    }
+
+    /**
+     * Metodo ejecutado por el boton de actualizar persona
+     * @return
+     */
+    public String btnUpdatePerson_action() {
+        //Capturar nuevos datos de la pantalla
+        Long deathDate = null,birthDate = null;
+        String deathAux = (String)this.getTxDeathDate().getText();
+        if(deathAux!=null){
+            deathDate = Long.parseLong(deathAux);
+        }
+        String birthAux = (String)this.getTxBirthDate().getText();
+        if(birthAux!=null){
+            birthDate = Long.parseLong(birthAux);
+        }
+        String name=null,lastName1=null,lastName2=null,initials=null,
+                ocupation=null;
+        name = (String)this.getTxName().getText();
+        lastName1 = (String)this.getTx1lastName().getText();
+        lastName2 = (String)this.getTx2lastName().getText();
+        initials = (String)this.getTxInitials().getText();
+        ocupation = (String)this.getTxOcupation().getText();
+        String email=null,webSite=null,phone=null,fax=null,city=null,
+                province=null,country=null,address=null;
+        email = (String)this.getTxEmail().getText();
+        webSite = (String)this.getTxWebSite().getText();
+        phone = (String)this.getTxPhoneNumber().getText();
+        fax = (String)this.getTxFax().getText();
+        city = (String)this.getTxCity().getText();
+        province = (String)this.getTxProvience().getText();
+        country = (String)this.getTxCountry().getText();
+        address = (String)this.getTxaAddress().getText();
+
+        //Crear el DTO para persistir
+        PersonDTO myDTO = this.getPersonSessionBean().getCurrentPerson();
+        myDTO.setDeathYear(deathDate);
+        myDTO.setBirthYear(birthDate);
+        myDTO.setFirstName(name);
+        myDTO.setLastName(lastName1);
+        myDTO.setSecondLastName(lastName2);
+        myDTO.setInitials(initials);
+        myDTO.setOccupation(ocupation);
+        myDTO.setEmail(email);
+        myDTO.setUrl(webSite);
+        myDTO.setTelephone(phone);
+        myDTO.setFax(fax);
+        myDTO.setCity(city);
+        myDTO.setStateProvince(province);
+        myDTO.setCountry(country);
+        myDTO.setStreetAddress(address);
+
+        //Persistir el DTO (Merge)
+        try{
+            //Eliminar listas asociadas
+            this.getPersonSessionBean().getAdminFacade().
+                    deleteInstitutionsByPersonId(myDTO.getPersonKey());
+            this.getPersonSessionBean().getAdminFacade().
+                    deleteProfilesByPersonId(myDTO.getPersonKey());
+            //Merge de la entidad
+            this.getPersonSessionBean().updatePerson(myDTO);
+            //Crear listas asociadas
+            this.getPersonSessionBean().savePersonInstitutionsAndProfiles(myDTO);
+            //Setear el current
+            this.getPersonSessionBean().setCurrentPerson(myDTO);
+        }
+        catch(Exception e){
+            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+            return null;
+        }
+
+        //Refrescar la lista de personas
+        PersonSessionBean psb = this.getPersonSessionBean();
+        psb.getPagination().refreshList();
+
+        //Notificar al usuario
+        MessageBean.setSuccessMessageFromBundle("edit_person_succces", this.getMyLocale());
+
+        return null;
     }
 
     /**
@@ -422,160 +574,6 @@ public class EditPerson extends AbstractPageBean {
      */
     public Locale getMyLocale() {
 		return this.getAraSessionBean().getCurrentLocale();
-    }
-
-    /**
-     * Metodo encargado de cargar los datos de los distintos add remove de la
-     * ventana de nueva perosna
-     */
-    private void loadAddRemoveData() {
-        PersonSessionBean psb = this.getPersonSessionBean();
-        //Cargar datos del add remove de perfiles
-        if (psb.getArProfilesEdit().getAvailableOptions() == null ||
-                psb.getArProfilesEdit().getAvailableOptions().length == 0) {
-
-            List<ProfileDTO> profilesList = psb.getprofilesData();
-            List<Option> list = new ArrayList<Option>();
-
-            for (ProfileDTO dto : profilesList) {
-                list.add(new Option(dto.getProfileId(), dto.getName()));
-            }
-            psb.getArProfilesEdit().setAvailableOptions(list.toArray(new Option[list.size()]));
-        }
-        //Cargar los datos del add remove de instituciones
-        if (psb.getArInstitutionesEdit().getAvailableOptions() == null ||
-                psb.getArInstitutionesEdit().getAvailableOptions().length == 0) {
-
-            List<InstitutionDTO> institutionsList = psb.getinstitutionsData();
-            List<Option> list = new ArrayList<Option>();
-
-            for (InstitutionDTO ins : institutionsList) {
-                list.add(new Option(ins.getInstitutionId(), ins.getInstitutionName()));
-            }
-            psb.getArInstitutionesEdit().setAvailableOptions(list.toArray(new Option[list.size()]));
-        }
-        //Setea los labels del componente add remove
-        psb.getArProfilesEdit().setLbTitle(BundleHelper.getDefaultBundleValue
-                ("menuModuleProfiles", this.getMyLocale()));
-        psb.getArProfilesEdit().setLbAvailable(BundleHelper.getDefaultBundleValue
-                ("available", this.getMyLocale()));
-        psb.getArProfilesEdit().setLbSelected(BundleHelper.getDefaultBundleValue
-                ("selected", this.getMyLocale()));
-
-        psb.getArInstitutionesEdit().setLbTitle(BundleHelper.getDefaultBundleValue
-                ("menuModuleInstitutions", this.getMyLocale()));
-        psb.getArInstitutionesEdit().setLbAvailable(BundleHelper.getDefaultBundleValue
-                ("available", this.getMyLocale()));
-        psb.getArInstitutionesEdit().setLbSelected(BundleHelper.getDefaultBundleValue
-                ("selected", this.getMyLocale()));
-    }
-
-    /**
-     * Metodo encargado de cargar los datos de los distintos add remove de la
-     * ventana de editar persona, carga los seleccionados segun el
-     * currentPersonDTO para edicion
-     */
-    private void loadAddRemoveSelectedData(){
-        PersonSessionBean psb = this.getPersonSessionBean();
-        Long person = psb.getCurrentPerson().getPersonKey();
-
-        //Cargar datos del add remove de instituciones (Seleccionados)
-        List<InstitutionDTO> institutionsList = psb.getAdminFacade().
-                getInstitutionsByPersonId(person);
-        List<Long> list = new ArrayList<Long>();
-        for (InstitutionDTO myDTO : institutionsList) {
-            list.add(myDTO.getInstitutionId());
-        }
-        psb.getArInstitutionesEdit().setSelectedOptions(list.toArray(new Long[list.size()]));
-
-        //Cargar los datos del add remove de perfiles (Seleccionados)
-        List<ProfileDTO> nomenclaturalList = psb.getAdminFacade().getProfilesByPersonId(person);
-        List<Long> listP = new ArrayList<Long>();
-        for (ProfileDTO myDTO : nomenclaturalList) {
-            listP.add(myDTO.getProfileId());
-        }
-        psb.getArProfilesEdit().setSelectedOptions(listP.toArray(new Long[listP.size()]));
-
-    }
-
-    /**
-     * Metodo ejecutado por el boton de actualizar persona
-     * @return
-     */
-    public String btnUpdatePerson_action() {
-        //Capturar nuevos datos de la pantalla
-        Long deathDate = null,birthDate = null;
-        String deathAux = (String)this.getTxDeathDate().getText();
-        if(deathAux!=null){
-            deathDate = Long.parseLong(deathAux);
-        }
-        String birthAux = (String)this.getTxBirthDate().getText();
-        if(birthAux!=null){
-            birthDate = Long.parseLong(birthAux);
-        }
-        String name=null,lastName1=null,lastName2=null,initials=null,
-                ocupation=null;
-        name = (String)this.getTxName().getText();
-        lastName1 = (String)this.getTx1lastName().getText();
-        lastName2 = (String)this.getTx2lastName().getText();
-        initials = (String)this.getTxInitials().getText();
-        ocupation = (String)this.getTxOcupation().getText();
-        String email=null,webSite=null,phone=null,fax=null,city=null,
-                province=null,country=null,address=null;
-        email = (String)this.getTxEmail().getText();
-        webSite = (String)this.getTxWebSite().getText();
-        phone = (String)this.getTxPhoneNumber().getText();
-        fax = (String)this.getTxFax().getText();
-        city = (String)this.getTxCity().getText();
-        province = (String)this.getTxProvience().getText();
-        country = (String)this.getTxCountry().getText();
-        address = (String)this.getTxaAddress().getText();
-
-        //Crear el DTO para persistir
-        PersonDTO myDTO = this.getPersonSessionBean().getCurrentPerson();
-        myDTO.setDeathYear(deathDate);
-        myDTO.setBirthYear(birthDate);
-        myDTO.setFirstName(name);
-        myDTO.setLastName(lastName1);
-        myDTO.setSecondLastName(lastName2);
-        myDTO.setInitials(initials);
-        myDTO.setOccupation(ocupation);
-        myDTO.setEmail(email);
-        myDTO.setUrl(webSite);
-        myDTO.setTelephone(phone);
-        myDTO.setFax(fax);
-        myDTO.setCity(city);
-        myDTO.setStateProvince(province);
-        myDTO.setCountry(country);
-        myDTO.setStreetAddress(address);
-
-        //Persistir el DTO (Merge)
-        try{
-            //Eliminar listas asociadas
-            this.getPersonSessionBean().getAdminFacade().
-                    deleteInstitutionsByPersonId(myDTO.getPersonKey());
-            this.getPersonSessionBean().getAdminFacade().
-                    deleteProfilesByPersonId(myDTO.getPersonKey());
-            //Merge de la entidad
-            this.getPersonSessionBean().updatePerson(myDTO);
-            //Crear listas asociadas
-            this.getPersonSessionBean().savePersonInstitutionsAndProfiles(myDTO);
-            //Setear el current
-            this.getPersonSessionBean().setCurrentPerson(myDTO);
-        }
-        catch(Exception e){
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-            return null;
-        }
-
-        //Refrescar la lista de personas
-        this.getPersonSessionBean().getPagination().refreshList();
-
-        //Notificar al usuario
-        MessageBean.setSuccessMessageFromBundle("edit_person_succces", this.getMyLocale());
-
-        return null;
-    }
-    
+    }    
 }
 

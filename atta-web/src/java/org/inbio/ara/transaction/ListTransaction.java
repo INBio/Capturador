@@ -202,13 +202,9 @@ public class ListTransaction extends AbstractPageBean {
             tsb.setTransactionPaginator(true);
             tsb.initDataProvider();
         }
-        //Actualizar los datos del paginador si no es nula ni es ninguna búsqueda (osea, listado base)
-        else if(!tsb.isAdvancedSearch() && !tsb.isSimpleSearch()){
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
-            tsb.getPagination().setTotalResults(tsb.getTransactionFacade().
-                    countTransaction(collectionId).intValue());
+        //Actualizar los datos del paginador
+        else
             tsb.getPagination().refreshList();
-        }
     }
 
     /**
@@ -549,10 +545,6 @@ public class ListTransaction extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             tsb.setSimpleSearch(false);
             tsb.setAdvancedSearch(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            tsb.getPagination().setTotalResults
-                    (tsb.getTransactionFacade().
-                    countTransaction(this.getAraSessionBean().getGlobalCollectionId()).intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -561,10 +553,6 @@ public class ListTransaction extends AbstractPageBean {
             tsb.setSimpleSearch(true);
             //Desabilitar la bandera de busqueda avanzada
             tsb.setAdvancedSearch(false);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            tsb.getPagination().setTotalResults
-                    (tsb.getSearchFacade().
-                    countTransactionsByCriteria(userInput, this.getAraSessionBean().getGlobalCollectionId()).intValue());
         }
         tsb.getPagination().firstResults();
         return null;
@@ -693,12 +681,8 @@ public class ListTransaction extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getTransactionSessionBean().setSimpleSearch(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getTransactionSessionBean().getPagination().setTotalResults (this.getTransactionSessionBean().getSearchFacade().
-            countTransactionsByCriteria(this.getTransactionSessionBean().getSearchDataDTO(),
-                this.getTransactionSessionBean().getTransactedSpecimenSearchDataDTO()).intValue());
         this.getTransactionSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
-
         return null;
     }
 
@@ -766,9 +750,6 @@ public class ListTransaction extends AbstractPageBean {
                 return null;
             }
             //Refrescar la paginacion
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
-            this.getTransactionSessionBean().getPagination().setTotalResults(this.getTransactionSessionBean().
-                    getTransactionFacade().countTransaction(collectionId).intValue());
             this.getTransactionSessionBean().getPagination().refreshList();
             //Notificar al usuario
             MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());

@@ -121,6 +121,7 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
     private List<CollectionDTO> collectionData = null;
     private List<PersonDTO> colectorData = null;
     private List<ProjectDTO> projectData = null;
+
     /**
      * Bandera muy importante para el correcto funcionamiento de los
      * AddRemove components de la pantalla de editar
@@ -314,8 +315,9 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
      */
     public void initDataProvider() {
         Long collectionId = getAraSessionBean().getGlobalCollectionId();
-        setPagination(new PaginationControllerRemix(getInventoryFacade().countGatheringObservations(collectionId).intValue(),
+        this.setPagination(new PaginationControllerRemix(getInventoryFacade().countGatheringObservations(collectionId).intValue(),
                 getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -804,6 +806,7 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
                 GatheringObservationDTO gdto = getQueryGatheringDTO();
                 gdto.setCollectionId(collectionId); //Used to filter by collection
                 try {
+                    getPagination().setTotalResults(getSearchFacade().countGathObsByCriteria(gdto).intValue());
                     return myReturn(searchFacade.searchGathObsByCriteria(gdto,
                             firstResult, maxResults));
                 } catch (Exception e) {
@@ -811,6 +814,7 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
                 }
             } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
                 try {
+                    getPagination().setTotalResults(getSearchFacade().countGathObsByCriteria(getConsultaSimple(),collectionId).intValue());
                     return myReturn(searchFacade.
                             searchGathObsByCriteria(getConsultaSimple(), collectionId, firstResult,
                             maxResults));
@@ -820,6 +824,7 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
             } else //Valores default
             {
                 try {
+                    getPagination().setTotalResults(getInventoryFacade().countGatheringObservations(collectionId).intValue());
                     return myReturn(getInventoryFacade().getAllGatheringObservationPaginated(firstResult, maxResults, collectionId));
                 } catch (Exception e) {
                     return auxResult;

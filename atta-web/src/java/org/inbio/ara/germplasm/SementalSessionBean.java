@@ -196,19 +196,18 @@ public class SementalSessionBean extends AbstractSessionBean implements Paginati
         if (isQueryMode()) { //En caso de que sea busqueda avanzada
             //Set the collectionId into the DTO
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countSementalAdvancedSearch(getQuerySementalDTO()).intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getSementalAdvancedSearch(getQuerySementalDTO(), firstResult, maxResults));
 
                 return aListDTO;
-
-
             } catch (Exception e) {
                 e.printStackTrace();
                 return auxResult;
             }
         } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
             try {
-
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countSementalSimpleSearch(getConsultaSimple()).intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getSementalSimpleSearch(getConsultaSimple(), firstResult, maxResults));
                 return aListDTO;
@@ -220,6 +219,7 @@ public class SementalSessionBean extends AbstractSessionBean implements Paginati
         } else //Valores default
         {
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countAllSemental().intValue());
                 aListDTO =  myReturn(getGermplasmFacadeRemote().
                         getAllSementalPaginated(firstResult, maxResults));
 
@@ -236,6 +236,7 @@ public class SementalSessionBean extends AbstractSessionBean implements Paginati
      */
     public void initDataProvider() {
         setPagination(new PaginationControllerRemix(this.getGermplasmFacadeRemote().countAllSemental().intValue(), getQuantity(), this));
+        getPagination().firstResults();
     }
 
     /**

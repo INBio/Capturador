@@ -926,6 +926,253 @@ public class EditSpecies extends AbstractPageBean {
     }
 
     /**
+     * Metodo ejecutado por el boton del panel de descripciones
+     * ActionMethod5
+     */
+     public String saveRecordData_action() {
+        SpeciesSessionBean ssb = this.gettaxonomy$SpeciesSessionBean();
+
+        List<UIComponent> graphicalComponents =
+                dynamicPanelForm.getPanel().getChildren();
+
+        for (int i = 0; i < graphicalComponents.size(); i++) {
+            UIComponent c = graphicalComponents.get(i);
+            if ((i % 4) == 0) {
+                Long taxonDescriptionRecordId = getIdFromGUIComponent(c);
+
+                //Si el id del TDR es 0 significa q es uno nuevo!
+                if (taxonDescriptionRecordId.equals(new Long(0))) {
+
+                    TaxonDescriptionRecordDTO TDR = new TaxonDescriptionRecordDTO();
+                    TaxonDescriptionElementDTO TDE;
+                    try {
+                        TDR.setUserName(this.getAraSessionBean().getGlobalUserName());
+                    } catch (Exception e) {
+                        System.err.println("Debe iniciar sesion. " + e.toString());
+                    }
+                    //Este valor siempre debe ser 0L para las descripciones asociadas a una categorúa no repetible.
+                    TDR.setSequence(0L);
+                    TDR.setTaxonomicalTimestamp(new GregorianCalendar());
+                    i++;
+                    c = graphicalComponents.get(i);
+
+                    Long tdeId = getIdFromGUIComponent(c);
+                    if (tdeId != null) {
+                        TDE = ssb.getTaxonomyFacadeImpl().getElementById(tdeId);
+                        i += 2;
+                        c = graphicalComponents.get(i);
+                        try {
+                            if (TDE.getTaxonDescriptionDatatypeId() == 15L) {
+                                // En esta sección se administran las referencias asociadas a un taxonDescriptionRecord
+                                this.manageReferences(TDE);
+                            } else {
+                                TDR.setTaxonDescriptionElementId(TDE.getTaxonDescriptionElementId());
+                                if (TDE.getTableName() == null) {
+                                    TDR.setContentsNumeric(0L);
+                                    TDR.setContentsText(c.getAttributes().get("value").toString());
+                                } else {
+                                    Long foreignId = getIdFromGUIComponent(c);
+                                    if (foreignId != null) {
+                                        TDR.setContentsNumeric(foreignId);
+                                    }
+                                }
+                                //Mandar a persistir el nuevo taxon descriptin record
+                                ssb.getTaxonomyFacadeImpl().saveTaxonDescriptionRecord
+                                (TDR, ssb.getCurrentTaxDescripDTO());
+
+                            }
+                        } catch (Exception e) {
+                            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+                            return null;
+                        }
+                    }
+                    //Actualizar estado (Ya no es para crear nuevo, sino, para editar el que ya existe)
+                    this.treeItemClickHandler();
+                }//Fin: Si el id del TDR es 0 significa q es uno nuevo!
+
+                else {  //Guardar un TaxonDescription que ya existe -> EDITAR
+                    TaxonDescriptionRecordDTO TDR;
+
+                    TDR = ssb.getTaxonomyFacadeImpl().
+                            getTaxonDescriptionRecordById(taxonDescriptionRecordId);
+                    i += 3;
+                    c = graphicalComponents.get(i);
+                    if (TDR.getContentsNumeric() == 0L) {
+                        String modifiedValue =
+                                c.getAttributes().get("value").toString();
+                        TDR.setContentsText(modifiedValue);
+                    } else {
+                        Long foreignId = getIdFromGUIComponent(c);
+                        if (foreignId != null) {
+                            TDR.setContentsNumeric(foreignId);
+                        }
+                    }
+                    try{
+                        //Mandar a realizar el update
+                        ssb.getTaxonomyFacadeImpl().updateTaxonDescriptionRecord(TDR);
+                    }
+                    catch(Exception e){
+                        MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+                        return null;
+                    }
+
+                } //Fin: Guardar un TaxonDescription que ya existe -> EDITAR
+            }
+        }
+
+        //Notificar al usuario que la operacion se llevo con exito
+        MessageBean.setSuccessMessageFromBundle("successfull_operation", this.getMyLocale());
+
+        if (ssb.isCategoryRepeatable()) {
+            this.saveRecordDataButton.setActionExpression(actionMethod6);
+            this.drawDynamicTable();
+        }
+        return null;
+     }
+
+    private Long getIdFromGUIComponent(UIComponent comp) {
+        try {
+            return Long.parseLong(comp.getAttributes().get("value").toString());
+        } catch (NumberFormatException e) {
+            System.err.println("ID invalido: " + e.getLocalizedMessage());
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private void manageReferences(TaxonDescriptionElementDTO taxonDescriptionElement) {
+        SpeciesSessionBean ssb = this.gettaxonomy$SpeciesSessionBean();
+        TaxonDescriptionRecordDTO taxonDescriptionRecord = new TaxonDescriptionRecordDTO();
+
+        taxonDescriptionRecord.setTaxonomicalTimestamp(new GregorianCalendar());
+        taxonDescriptionRecord.setContentsNumeric(0L);
+        taxonDescriptionRecord.setContentsText("");
+        taxonDescriptionRecord.setUserName(this.getAraSessionBean().getGlobalUserName());
+        if (ssb.isCategoryRepeatable()) {
+            taxonDescriptionRecord.setSequence(ssb.getNextSequence());
+        } else {
+            taxonDescriptionRecord.setSequence(0L);
+        }
+        taxonDescriptionRecord.setTaxonDescriptionElementId
+                (taxonDescriptionElement.getTaxonDescriptionElementId());
+        ssb.getTaxonomyFacadeImpl().saveTaxonDescriptionRecord
+                                (taxonDescriptionRecord, ssb.getCurrentTaxDescripDTO());
+        MessageBean.setSuccessMessageFromBundle("created_successfully", this.getMyLocale());
+    }
+
+     /**
+      * ActionMetho6
+      * @return
+      */
+     public String saveRepeatableRecordData_action() {
+         SpeciesSessionBean ssb = this.gettaxonomy$SpeciesSessionBean();
+
+        List<UIComponent> graphicalComponents = dynamicPanelForm.getPanel().
+                getChildren();
+
+        //*Por cada TaxonDescription se imprime 1) Tid 2) TDE id 3) etiqueta (omitir)
+        //*4) el valor del textfield
+        //*Se deben conservar el valor del 1 y el 3 para crear un nuevo taxonDesc
+        //*o para modificar uno ya existente.
+        Long aux = ssb.getNextSequence();
+        for (int i = 0; i < graphicalComponents.size(); i++) {
+            UIComponent c = graphicalComponents.get(i);
+            if ((i % 4) == 0) {
+                Long taxonDescriptionRecordId = getIdFromGUIComponent(c);
+
+                //Si el id del TDR es 0 significa q es uno nuevo!
+                if (taxonDescriptionRecordId.equals(new Long(0))) {
+                    TaxonDescriptionRecordDTO TDR = new TaxonDescriptionRecordDTO();
+                    TaxonDescriptionElementDTO TDE;
+                    try {
+                        TDR.setUserName(this.getAraSessionBean().getGlobalUserName());
+                    } catch (Exception e) {
+                        System.err.println("Debe iniciar sesion. " + e.toString());
+                    }
+                    TDR.setSequence(aux);
+                    TDR.setTaxonomicalTimestamp(new GregorianCalendar());
+                    i++;
+                    c = graphicalComponents.get(i);
+
+                    Long tdeId = getIdFromGUIComponent(c);
+                    if (tdeId != null) {
+                        TDE = ssb.getTaxonomyFacadeImpl().getElementById(tdeId);
+                        i += 2;
+                        c = graphicalComponents.get(i);
+                        try {
+
+                            if (TDE.getTaxonDescriptionDatatypeId() == 15L) {
+                                // En esta sección se administran las referencias asociadas a un taxonDescriptionRecord
+                                this.manageReferences(TDE);
+                            } else {
+                                TDR.setTaxonDescriptionElementId(TDE.getTaxonDescriptionElementId());
+                                if (TDE.getTableName() == null) {
+                                    TDR.setContentsNumeric(0L);
+                                    TDR.setContentsText(c.getAttributes().get("value").toString());
+                                } else {
+                                    Long foreignId = getIdFromGUIComponent(c);
+                                    if (foreignId != null) {
+                                        TDR.setContentsNumeric(foreignId);
+                                    }
+                                }
+                                //Mandar a persistir el nuevo taxon descriptin record
+                                ssb.getTaxonomyFacadeImpl().saveTaxonDescriptionRecord
+                                (TDR, ssb.getCurrentTaxDescripDTO());
+                            }
+                        }
+                        catch (Exception e) {
+                            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+                            return null;
+                        }
+                    }
+                }
+            }
+        }
+
+        //Notificar al usuario que la operacion se llevo con exito
+        MessageBean.setSuccessMessageFromBundle("successfull_operation", this.getMyLocale());
+
+        this.drawDynamicTable();
+        return null;
+     }
+
+    /**
+     * Metodo ejecutado por el boton de guardar edicion de taxonDescriptionRecord
+     * @return
+     */
+    public String btnEditSpeciesRecord_action() {
+        SpeciesSessionBean ssb = this.gettaxonomy$SpeciesSessionBean();
+
+        //Capturar datos de la pantalla (Ficha de descripcion taxonomica)
+        String title = (String)this.getTxTitle().getText();
+        Long sequence = null;
+        String sequenceAux = (String)this.getTxSequence().getText();
+        if(sequenceAux!=null){
+            sequence = Long.parseLong(sequenceAux);
+        }
+        //Setear el current DTO
+        ssb.getCurrentTaxDescripDTO().setTaxonDescriptionSequence
+                (sequence);
+        ssb.getCurrentTaxDescripDTO().setTitle(title);
+
+        //Persistir los cambios realizados
+        try {
+            ssb.updateTaxonDescription();
+        } catch (Exception e) {
+            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+            return null;
+        }
+
+        //Refrescar el paginador
+        ssb.getPagination().refreshList();
+
+        //Notificar al usuario
+        MessageBean.setSuccessMessageFromBundle("modified_successfully", this.getMyLocale());
+
+        return null;
+    }
+
+    /**
      * <p>Return a reference to the scoped data bean.</p>
      *
      * @return reference to the scoped data bean
@@ -1120,217 +1367,6 @@ public class EditSpecies extends AbstractPageBean {
     }
 
     /**
-     * Metodo ejecutado por el boton del panel de descripciones
-     * ActionMethod5
-     */
-     public String saveRecordData_action() {
-        SpeciesSessionBean ssb = this.gettaxonomy$SpeciesSessionBean();
-
-        List<UIComponent> graphicalComponents =
-                dynamicPanelForm.getPanel().getChildren();
-
-        for (int i = 0; i < graphicalComponents.size(); i++) {
-            UIComponent c = graphicalComponents.get(i);
-            if ((i % 4) == 0) {
-                Long taxonDescriptionRecordId = getIdFromGUIComponent(c);
-
-                //Si el id del TDR es 0 significa q es uno nuevo!
-                if (taxonDescriptionRecordId.equals(new Long(0))) {
-
-                    TaxonDescriptionRecordDTO TDR = new TaxonDescriptionRecordDTO();
-                    TaxonDescriptionElementDTO TDE;
-                    try {
-                        TDR.setUserName(this.getAraSessionBean().getGlobalUserName());
-                    } catch (Exception e) {
-                        System.err.println("Debe iniciar sesion. " + e.toString());
-                    }
-                    //Este valor siempre debe ser 0L para las descripciones asociadas a una categorúa no repetible.
-                    TDR.setSequence(0L);
-                    TDR.setTaxonomicalTimestamp(new GregorianCalendar());
-                    i++;
-                    c = graphicalComponents.get(i);
-
-                    Long tdeId = getIdFromGUIComponent(c);
-                    if (tdeId != null) {
-                        TDE = ssb.getTaxonomyFacadeImpl().getElementById(tdeId);
-                        i += 2;
-                        c = graphicalComponents.get(i);
-                        try {
-                            if (TDE.getTaxonDescriptionDatatypeId() == 15L) {
-                                // En esta sección se administran las referencias asociadas a un taxonDescriptionRecord
-                                this.manageReferences(TDE);
-                            } else {
-                                TDR.setTaxonDescriptionElementId(TDE.getTaxonDescriptionElementId());
-                                if (TDE.getTableName() == null) {
-                                    TDR.setContentsNumeric(0L);
-                                    TDR.setContentsText(c.getAttributes().get("value").toString());
-                                } else {
-                                    Long foreignId = getIdFromGUIComponent(c);
-                                    if (foreignId != null) {
-                                        TDR.setContentsNumeric(foreignId);
-                                    }
-                                }
-                                //Mandar a persistir el nuevo taxon descriptin record
-                                ssb.getTaxonomyFacadeImpl().saveTaxonDescriptionRecord
-                                (TDR, ssb.getCurrentTaxDescripDTO());
-                                
-                            }
-                        } catch (Exception e) {
-                            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-                            return null;
-                        }
-                    }
-                    //Actualizar estado (Ya no es para crear nuevo, sino, para editar el que ya existe)
-                    this.treeItemClickHandler();
-                }//Fin: Si el id del TDR es 0 significa q es uno nuevo!
-
-                else {  //Guardar un TaxonDescription que ya existe -> EDITAR
-                    TaxonDescriptionRecordDTO TDR;
-
-                    TDR = ssb.getTaxonomyFacadeImpl().
-                            getTaxonDescriptionRecordById(taxonDescriptionRecordId);
-                    i += 3;
-                    c = graphicalComponents.get(i);
-                    if (TDR.getContentsNumeric() == 0L) {
-                        String modifiedValue =
-                                c.getAttributes().get("value").toString();
-                        TDR.setContentsText(modifiedValue);
-                    } else {
-                        Long foreignId = getIdFromGUIComponent(c);
-                        if (foreignId != null) {
-                            TDR.setContentsNumeric(foreignId);
-                        }
-                    }
-                    try{
-                        //Mandar a realizar el update
-                        ssb.getTaxonomyFacadeImpl().updateTaxonDescriptionRecord(TDR);                        
-                    }
-                    catch(Exception e){
-                        MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-                        return null;
-                    }
-
-                } //Fin: Guardar un TaxonDescription que ya existe -> EDITAR
-            }
-        }
-
-        //Notificar al usuario que la operacion se llevo con exito
-        MessageBean.setSuccessMessageFromBundle("successfull_operation", this.getMyLocale());
-
-        if (ssb.isCategoryRepeatable()) {
-            this.saveRecordDataButton.setActionExpression(actionMethod6);
-            this.drawDynamicTable();
-        }
-        return null;
-     }
-
-    private Long getIdFromGUIComponent(UIComponent comp) {
-        try {
-            return Long.parseLong(comp.getAttributes().get("value").toString());
-        } catch (NumberFormatException e) {
-            System.err.println("ID invalido: " + e.getLocalizedMessage());
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    private void manageReferences(TaxonDescriptionElementDTO taxonDescriptionElement) {
-        SpeciesSessionBean ssb = this.gettaxonomy$SpeciesSessionBean();
-        TaxonDescriptionRecordDTO taxonDescriptionRecord = new TaxonDescriptionRecordDTO();
-
-        taxonDescriptionRecord.setTaxonomicalTimestamp(new GregorianCalendar());
-        taxonDescriptionRecord.setContentsNumeric(0L);
-        taxonDescriptionRecord.setContentsText("");
-        taxonDescriptionRecord.setUserName(this.getAraSessionBean().getGlobalUserName());
-        if (ssb.isCategoryRepeatable()) {
-            taxonDescriptionRecord.setSequence(ssb.getNextSequence());
-        } else {
-            taxonDescriptionRecord.setSequence(0L);
-        }
-        taxonDescriptionRecord.setTaxonDescriptionElementId
-                (taxonDescriptionElement.getTaxonDescriptionElementId());
-        ssb.getTaxonomyFacadeImpl().saveTaxonDescriptionRecord
-                                (taxonDescriptionRecord, ssb.getCurrentTaxDescripDTO());
-        MessageBean.setSuccessMessageFromBundle("created_successfully", this.getMyLocale());
-    }
-
-     /**
-      * ActionMetho6
-      * @return
-      */
-     public String saveRepeatableRecordData_action() {
-         SpeciesSessionBean ssb = this.gettaxonomy$SpeciesSessionBean();
-
-        List<UIComponent> graphicalComponents = dynamicPanelForm.getPanel().
-                getChildren();
-
-        //*Por cada TaxonDescription se imprime 1) Tid 2) TDE id 3) etiqueta (omitir)
-        //*4) el valor del textfield
-        //*Se deben conservar el valor del 1 y el 3 para crear un nuevo taxonDesc
-        //*o para modificar uno ya existente.
-        Long aux = ssb.getNextSequence();
-        for (int i = 0; i < graphicalComponents.size(); i++) {
-            UIComponent c = graphicalComponents.get(i);
-            if ((i % 4) == 0) {
-                Long taxonDescriptionRecordId = getIdFromGUIComponent(c);
-
-                //Si el id del TDR es 0 significa q es uno nuevo!
-                if (taxonDescriptionRecordId.equals(new Long(0))) {
-                    TaxonDescriptionRecordDTO TDR = new TaxonDescriptionRecordDTO();
-                    TaxonDescriptionElementDTO TDE;
-                    try {
-                        TDR.setUserName(this.getAraSessionBean().getGlobalUserName());
-                    } catch (Exception e) {
-                        System.err.println("Debe iniciar sesion. " + e.toString());
-                    }
-                    TDR.setSequence(aux);
-                    TDR.setTaxonomicalTimestamp(new GregorianCalendar());
-                    i++;
-                    c = graphicalComponents.get(i);
-
-                    Long tdeId = getIdFromGUIComponent(c);
-                    if (tdeId != null) {
-                        TDE = ssb.getTaxonomyFacadeImpl().getElementById(tdeId);
-                        i += 2;
-                        c = graphicalComponents.get(i);
-                        try {
-
-                            if (TDE.getTaxonDescriptionDatatypeId() == 15L) {
-                                // En esta sección se administran las referencias asociadas a un taxonDescriptionRecord
-                                this.manageReferences(TDE);
-                            } else {
-                                TDR.setTaxonDescriptionElementId(TDE.getTaxonDescriptionElementId());
-                                if (TDE.getTableName() == null) {
-                                    TDR.setContentsNumeric(0L);
-                                    TDR.setContentsText(c.getAttributes().get("value").toString());
-                                } else {
-                                    Long foreignId = getIdFromGUIComponent(c);
-                                    if (foreignId != null) {
-                                        TDR.setContentsNumeric(foreignId);
-                                    }
-                                }
-                                //Mandar a persistir el nuevo taxon descriptin record
-                                ssb.getTaxonomyFacadeImpl().saveTaxonDescriptionRecord
-                                (TDR, ssb.getCurrentTaxDescripDTO());                                
-                            }
-                        }
-                        catch (Exception e) {
-                            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-                            return null;
-                        }
-                    }
-                }
-            }
-        }
-
-        //Notificar al usuario que la operacion se llevo con exito
-        MessageBean.setSuccessMessageFromBundle("successfull_operation", this.getMyLocale());
-        
-        this.drawDynamicTable();
-        return null;
-     }
-
-    /**
      * @return the saveRecordDataButton
      */
     public HtmlCommandButton getSaveRecordDataButton() {
@@ -1398,42 +1434,6 @@ public class EditSpecies extends AbstractPageBean {
      */
     public void setReferenceOptions(Option[] referenceOptions) {
         this.referenceOptions = referenceOptions;
-    }
-
-    /**
-     * Metodo ejecutado por el boton de guardar edicion de taxonDescriptionRecord
-     * @return
-     */
-    public String btnEditSpeciesRecord_action() {
-        SpeciesSessionBean ssb = this.gettaxonomy$SpeciesSessionBean();
-
-        //Capturar datos de la pantalla (Ficha de descripcion taxonomica)
-        String title = (String)this.getTxTitle().getText();
-        Long sequence = null;
-        String sequenceAux = (String)this.getTxSequence().getText();
-        if(sequenceAux!=null){
-            sequence = Long.parseLong(sequenceAux);
-        }
-        //Setear el current DTO
-        ssb.getCurrentTaxDescripDTO().setTaxonDescriptionSequence
-                (sequence);
-        ssb.getCurrentTaxDescripDTO().setTitle(title);
-
-        //Persistir los cambios realizados
-        try {
-            ssb.updateTaxonDescription();
-        } catch (Exception e) {
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-            return null;
-        }
-
-        //Refrescar el paginador
-        ssb.getPagination().refreshList();
-
-        //Notificar al usuario
-        MessageBean.setSuccessMessageFromBundle("modified_successfully", this.getMyLocale());
-
-        return null;
     }
 
     /**

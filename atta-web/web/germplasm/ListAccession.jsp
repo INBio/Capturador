@@ -91,7 +91,7 @@
                                                         style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.new}"/>
                                                     <h:commandButton action="#{germplasm$ListAccession.btn_edit_action}" id="btn_edit"
                                                         style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnEdit}"/>
-                                                    -<h:commandButton action="#{germplasm$ListAccession.btn_delete_action}" id="btn_delete"
+                                                    <h:commandButton action="#{germplasm$ListAccession.btn_delete_action}" id="btn_delete"
                                                                 style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnDelete}"/>
 
                                                     <!-- Botones de paginacion -->

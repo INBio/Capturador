@@ -289,10 +289,9 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(getGisFacade().countSites().intValue(), getQuantity(), this));
-    }
-
-    
+        this.setPagination(new PaginationControllerRemix(this.getGisFacade().countSites().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
+    }    
 
     /**
      *
@@ -647,13 +646,17 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
 
     public List getResults(int firstResult, int maxResults) {
         if(isQueryMode()){ //En caso de que sea busqueda avanzada
+            getPagination().setTotalResults(getSearchFacade().countSitesByCriteria(getQuerySiteDTO()).intValue());
             return searchFacade.searchSiteByCriteria(getQuerySiteDTO(), firstResult, maxResults);
         }
         else if(isQueryModeSimple()){ //En caso de que sea busqueda simple
+            getPagination().setTotalResults(getSearchFacade().countSitesByCriteria(getConsultaSimple()).intValue());
             return searchFacade.searchSiteByCriteria(getConsultaSimple(), firstResult, maxResults);
         }
-        else //Valores default
+        else { //Valores defaul
+            getPagination().setTotalResults(getGisFacade().countSites().intValue());
             return gisFacade.getAllSitePaginated(firstResult, maxResults);
+        }
     }
 
 }

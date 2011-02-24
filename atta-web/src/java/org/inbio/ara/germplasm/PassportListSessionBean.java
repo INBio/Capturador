@@ -170,8 +170,8 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        //pagination = new PaginationControllerImpl(getInventoryFacadeRemote().countGatheringObservations().intValue(), this.getQuantity());
-        setPagination(new PaginationControllerRemix(this.getGermplasmFacadeRemote().countPassport().intValue(), quantity, this));
+        this.setPagination(new PaginationControllerRemix(this.getGermplasmFacadeRemote().countPassport().intValue(), quantity, this));
+        this.getPagination().firstResults();
     }
 
     /**
@@ -203,6 +203,9 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
         if (isQueryMode()) { //En caso de que sea busqueda avanzada
             //Set the collectionId into the DTO
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countPassportAdvancedSearch(
+                getQueryPassportDTO(),
+                this.getAraSessionBean().getGlobalCollectionId()).intValue());
                 pListDTO = myReturn(
                         getGermplasmFacadeRemote().
                         getPassportAdvancedSearch(getQueryPassportDTO(),
@@ -215,6 +218,8 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
             }
         } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countPassportSimpleSearch(getConsultaSimple(),
+                    getAraSessionBean().getGlobalCollectionId()).intValue());
                 pListDTO = myReturn(getGermplasmFacadeRemote().
                         getPassportSimpleSearch(
                         getConsultaSimple(), 
@@ -229,6 +234,7 @@ public class PassportListSessionBean extends AbstractSessionBean  implements Pag
         } else //Valores default
         {
             try {
+                getPagination().setTotalResults(getGermplasmFacadeRemote().countPassport().intValue());
                 pListDTO = myReturn(getGermplasmFacadeRemote().
                         getPassportListPaginated(firstResult, maxResults));
 

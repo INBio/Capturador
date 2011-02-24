@@ -24,15 +24,16 @@
                                         style="height: 30px; width: 840px" warnClass="warnMessage"/>
 
                                     <!-- panel de busquedas -->
-                                    <h:panelGrid columns="3" id="gridpSearch" style="height: 24px" width="719">
+                                    <h:panelGrid columns="2" id="gridpSearch" style="height: 24px">
                                         <h:inputText binding="#{taxonomy$ListSpecies.txSearchSpecies}" id="txSearchSpecies"
                                                      style="height: 18px; width: 408px">
                                             <f:validateLength maximum="100" minimum="0"/>
                                         </h:inputText>
                                         <h:commandButton action="#{taxonomy$ListSpecies.btnSpeciesSearch_action}"
-                                            binding="#{taxonomy$ListSpecies.btnSearchSpecies}" id="btnSpeciesSearch"
-                                            style="height: 25px; width: 160px"
-                                            styleClass="My_Button" value="#{resources.search}"/>
+                                                         binding="#{taxonomy$ListSpecies.btnSearchSpecies}" id="btnSpeciesSearch"
+                                                         style="height: 25px; width: 160px"
+                                                         styleClass="My_Button" value="#{resources.search}">
+                                        </h:commandButton>
                                     </h:panelGrid>
 
                                     <h:panelGrid cellspacing="1" columns="1" id="gridpTableMain" style="height: 24px;width:100%;" styleClass="My_table">

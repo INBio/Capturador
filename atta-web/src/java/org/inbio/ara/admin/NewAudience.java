@@ -138,6 +138,44 @@ public class NewAudience extends AbstractPageBean {
     }
 
     /**
+     * Metodo ejecutado por el boton de crear una nueva audiencia
+     * @return
+     */
+    public String btnNewAudience_action() {
+
+        //Capturar datos de la pantalla
+        String name=null,description=null;
+        name = (String)this.getTxName().getText();
+        description = (String)this.getTxaDescription().getText();
+
+        //Setear el current DTO
+        this.getAudienceSessionBean().getCurrentAudienceDTO().setName(name);
+        this.getAudienceSessionBean().getCurrentAudienceDTO().setDescription(description);
+
+        //Persistir nueva Audiencia
+        try{
+            this.getAudienceSessionBean().saveAudience
+                    (this.getAudienceSessionBean().getCurrentAudienceDTO());
+        }
+        catch(Exception e){
+            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+            return null;
+        }
+
+        //Limpiar la pantalla
+        this.getTxName().setText(null);
+        this.getTxaDescription().setText(null);
+
+        //Refrescar el paginador
+        this.getAudienceSessionBean().getPagination().refreshList();
+
+        //Notificar al usuario
+        MessageBean.setSuccessMessageFromBundle("create_audience_succces", this.getMyLocale());
+
+        return null;
+    }
+
+    /**
      * <p>Return a reference to the scoped data bean.</p>
      *
      * @return reference to the scoped data bean
@@ -188,47 +226,6 @@ public class NewAudience extends AbstractPageBean {
      */
     public void setTxaDescription(TextArea txaDescription) {
         this.txaDescription = txaDescription;
-    }
-
-    /**
-     * Metodo ejecutado por el boton de crear una nueva audiencia
-     * @return
-     */
-    public String btnNewAudience_action() {
-
-        //Capturar datos de la pantalla
-        String name=null,description=null;
-        name = (String)this.getTxName().getText();
-        description = (String)this.getTxaDescription().getText();
-
-        //Setear el current DTO
-        this.getAudienceSessionBean().getCurrentAudienceDTO().setName(name);
-        this.getAudienceSessionBean().getCurrentAudienceDTO().setDescription(description);
-
-        //Persistir nueva Audiencia
-        try{
-            this.getAudienceSessionBean().saveAudience
-                    (this.getAudienceSessionBean().getCurrentAudienceDTO());
-        }
-        catch(Exception e){
-            MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
-            return null;
-        }
-
-        //Limpiar la pantalla
-        this.getTxName().setText(null);
-        this.getTxaDescription().setText(null);
-
-        //Refrescar el paginador
-        this.getAudienceSessionBean().getPagination().addItem();
-        this.getAudienceSessionBean().getPagination().refreshList();
-
-        //Notificar al usuario
-        MessageBean.setSuccessMessageFromBundle("create_audience_succces", this.getMyLocale());
-
-        return null;
-    }
-
-    
+    }    
 }
 

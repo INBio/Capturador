@@ -165,7 +165,6 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         int totalResults = this.getPagination().getTotalResults();
         return "  " + (actualPage + 1) + " - " + (actualPage + resultsPerPage) + "  | " + totalResults + "  ";
     }
-
     
     /**
      * <p>This method is called when the session containing it is about to be
@@ -205,9 +204,6 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     @Override
     public void destroy() {
     }
-
-
-
 
     /**
      * @return the nodeId
@@ -250,9 +246,6 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     public void setResultRadioGroup(Long resultRadioGroup) {
         this.resultRadioGroup = resultRadioGroup;
     }
-
-
-
 
     /**
      * @return the quantity
@@ -351,8 +344,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     /*
      * Crea un nuevo indicador
      */
-    public void saveNewIndicator(){
-      
+    public void saveNewIndicator(){      
         IndicatorDTO newDTO = this.getIndicatorFacade().saveNewIndicator(this.getCurrentIndicatorDTO());
         this.setCurrentIndicatorDTO(newDTO);
     }
@@ -361,10 +353,8 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
     /*
      * Actualiza la información de un indicador
      */
-    public void updateIndicator(){
-      
-        this.getIndicatorFacade().updateIndicator(this.getCurrentIndicatorDTO());
-      
+    public void updateIndicator(){      
+        this.getIndicatorFacade().updateIndicator(this.getCurrentIndicatorDTO());      
     }
 
     /*
@@ -398,7 +388,6 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
        return indicatorFacade.getIndicatorByIndicatorId(indicatorId);
     }
 
-
     /*
      * Obtener los datos de una Referencia en formato dublin core de acuerdo al id del recurso
      */
@@ -407,31 +396,25 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
        return dublinCoreFacade.getMetadataByResourceKey(resuorceId.toString());
     }
 
-
    /**
      * Inicializar el data provider
      */
-    public void initDataProvider() {
-       
-        setPagination(new PaginationControllerRemix(getDublinCoreFacade().countResourceByTypeId(ResourceTypeEnum.REFERENCE.getId()).intValue(), getQuantity(), this));
+    public void initDataProvider() {       
+        this.setPagination(new PaginationControllerRemix(getDublinCoreFacade().countResourceByTypeId(ResourceTypeEnum.REFERENCE.getId()).intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
-
 
     /**
      * Inicializar el data provider para el edit
      */
     public void initEditDataProvider(Long indicatorId) {
-
-        setPagination(new PaginationControllerRemix(getIndicatorFacade().countDublinCoreByIndicator(indicatorId).intValue(), getQuantity(), this));
-
-
+        this.setPagination(new PaginationControllerRemix(getIndicatorFacade().countDublinCoreByIndicator(indicatorId).intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
-
 
     public void initEditReferenceMap()
     {
-        dbRelationsDublinCore = new HashMap<String, ReferenceDTO>();
-        
+        dbRelationsDublinCore = new HashMap<String, ReferenceDTO>();        
     }
 
     /**
@@ -501,6 +484,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
 
         if (isQueryMode()) { //En caso de que sea busqueda avanzada
             try {
+                getPagination().setTotalResults(this.dublinCoreFacade.countDublinCoreAdvancedSearch(getQueryDublinCoreDTO()).intValue());
                 //Se realiza la consulta utilizando los datos del query en un DublinCoreDTO
                 aListDTO =  myReturn(
                         this.getDublinCoreFacade().getDublinCoreAdvancedSearch
@@ -519,6 +503,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
             }
         } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
             try {
+                getPagination().setTotalResults(this.dublinCoreFacade.countSimpleSearch(this.getSimpleConsult()).intValue());
                 //Se realiza la consulta utilizando el String que el usuario ingresó
                 aListDTO =  myReturn(this.getDublinCoreFacade().getReferenceSimpleSearch(this.getSimpleConsult(), firstResult, maxResults));
                 /* Se convierte el resultado de la consulta de DublinCoreDTO a ReferenceDTO
@@ -536,6 +521,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         } else if(isEditMode()) //En caso de que sean relaciones Dublin Core utilizados para editar un indicador
         {
             try {
+                getPagination().setTotalResults(this.dublinCoreFacade.countResourceByTypeId(-1).intValue());
                 /*
                  * Se realiza la consulta para traer todas las relaciones indicator-dublinCore dado
                  * el nodo indicador actual sobre el cual se está editando
@@ -561,6 +547,7 @@ public class IndicatorSessionBean extends AbstractSessionBean implements Paginat
         else//Valores default
         {
             try {
+                getPagination().setTotalResults(this.dublinCoreFacade.countResourceByTypeId(-1).intValue());
                 // Se traen todas las referencias Dublin Core
                 aListDTO =  myReturn(this.getDublinCoreFacade().getAllDublinCorePaginated(firstResult, maxResults));
                 /* Se convierte el resultado de la consulta de DublinCoreDTO a ReferenceDTO

@@ -201,31 +201,6 @@ public class NewSite extends AbstractPageBean {
     public void destroy() {
     }
 
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected SiteSessionBean getSiteSessionBean() {
-        return (SiteSessionBean) getBean("gis$SiteSessionBean");
-    }
-
-    /**
-     * @return the myLocale
-     */
-    public Locale getMyLocale() {
-		return this.getAraSessionBean().getCurrentLocale();
-    }
-
    /**
      * Obtener los datos del drop down de feature type
      */
@@ -481,7 +456,6 @@ public class NewSite extends AbstractPageBean {
         ssb.setCoordinateDataProvider(new ArrayList<SiteCoordinateDTO>());
 
         //Actualizar el paginador de sitios
-        ssb.getPagination().addItem();
         ssb.getPagination().refreshList();
 
         //Notificar al usuario
@@ -511,6 +485,222 @@ public class NewSite extends AbstractPageBean {
         }
 
         return true;
+    }
+    
+    /**
+     * Boton para agregar coordenada
+     */
+    public String btnAddCoordinate_action() {
+        if (canAddCoordinate()) {
+            Object lon_degrees = this.getTxLongitudeDegrees().getValue();
+            Object lon_minutes = this.getTxLongitudeMinutes().getValue();
+            Object lon_seconds = this.getTxLongitudeSeconds().getValue();
+            Object lat_degrees = this.getTxLatitudeDegrees().getValue();
+            Object lat_minutes = this.getTxLatitudeMinutes().getValue();
+            Object lat_seconds = this.getTxLatitudeSeconds().getValue();
+            if (validateLongitude()) {
+                if (validateLatitude()) {
+                    //All data (degrees, minutes and seconds)
+                    if(validateMandS(lon_minutes) && validateMandS(lon_seconds)
+                            && validateMandS(lat_minutes) && validateMandS(lat_seconds)){
+                        //Translate from sexagecimal to decimal notation
+                        String lon_result,lat_result;
+                        lon_result = translateCoor(lon_degrees.toString(),
+                                lon_minutes.toString(),lon_seconds.toString());
+                        lat_result = translateCoor(lat_degrees.toString(),
+                                lat_minutes.toString(),lat_seconds.toString());
+                        SiteCoordinateDTO coord = new SiteCoordinateDTO();
+                        coord.setLongitude(getDoubleValue(lon_result));
+                        coord.setLatitude(getDoubleValue(lat_result));
+                         if (!this.getSiteSessionBean().addElement(coord)) {
+                            MessageBean.setErrorMessageFromBundle(DUPLICATED_COORDINATES,
+                                    this.getMyLocale());
+                        this.txLongitudeDegrees.setValue("");
+                        this.txLongitudeMinutes.setValue("0");
+                        this.txLongitudeSeconds.setValue("0");
+                        this.txLatitudeDegrees.setValue("");
+                        this.txLatitudeMinutes.setValue("0");
+                        this.txLatitudeSeconds.setValue("0");
+                         }
+                        this.txLongitudeDegrees.setValue("");
+                        this.txLongitudeMinutes.setValue("0");
+                        this.txLongitudeSeconds.setValue("0");
+                        this.txLatitudeDegrees.setValue("");
+                        this.txLatitudeMinutes.setValue("0");
+                        this.txLatitudeSeconds.setValue("0");
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean canAddCoordinate() {
+        if (this.getSiteSessionBean().getSelectedType().equals(1L)) {
+            if (this.getSiteSessionBean().getCoordinateDataProvider().size() == 1) {
+                MessageBean.setErrorMessageFromBundle(ONLY_ONE_COORDINATE_ALLOWED,
+                        this.getMyLocale());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateLongitude() {
+        Float tmp;
+        String coordinate;
+        if (this.txLongitudeDegrees.getValue() == null) {
+            MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
+                    this.getMyLocale());
+            return false;
+        }
+        coordinate = this.txLongitudeDegrees.getValue().toString();
+        if (coordinate.length() <= 0) {
+            MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
+                    this.getMyLocale());
+            return false;
+        }
+        try {
+            tmp = Float.parseFloat(coordinate);
+            if ((tmp >= -180) & (tmp <= 180)) {
+                return true;
+            } else {
+                MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE_RANGE,
+                    this.getMyLocale());
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
+                    this.getMyLocale());
+            return false;
+        }
+    }
+
+    private boolean validateLatitude() {
+        Float tmp;
+        String coordinate;
+        if (this.txLatitudeDegrees.getValue() == null) {
+            MessageBean.setErrorMessageFromBundle(INVALID_LATITUDE,
+                    this.getMyLocale());
+            return false;
+        }
+        coordinate = this.txLatitudeDegrees.getValue().toString();
+        if (coordinate.length() <= 0) {
+            MessageBean.setErrorMessageFromBundle(INVALID_LATITUDE,
+                    this.getMyLocale());
+            return false;
+        }
+        try {
+            tmp = Float.parseFloat(coordinate);
+            if ((tmp >= -90) & (tmp <= 90)) {
+                return true;
+            } else {
+                MessageBean.setErrorMessageFromBundle(INVALID_LATITUDE_RANGE,
+                    this.getMyLocale());
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            MessageBean.setErrorMessageFromBundle(INVALID_LATITUDE,
+                    this.getMyLocale());
+            return false;
+        }
+    }
+
+    //Validate minutes and seconds (MandS)
+    private boolean validateMandS(Object in) {
+        Float tmp;
+        String time;
+        if (in == null) {
+            MessageBean.setErrorMessageFromBundle("invalid_coor_ms",
+                    this.getMyLocale());
+            return false;
+        }
+        time = in.toString();
+        try {
+            tmp = Float.parseFloat(time);
+            if ((tmp >= 0) && (tmp < 60)) {
+                return true;
+            } else {
+                MessageBean.setErrorMessageFromBundle("invalid_coor_ms",
+                        this.getMyLocale());
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            MessageBean.setErrorMessageFromBundle("invalid_coor_ms",
+                    this.getMyLocale());
+            return false;
+        }
+    }
+
+    //Method to translate from sexagecimal to decimal notation
+    public String translateCoor(String degrees,String minutes,String seconds){
+        Float d,m,s,result;
+        try{
+            //Get float values
+            d = Float.parseFloat(degrees);
+            m = Float.parseFloat(minutes);
+            s = Float.parseFloat(seconds);
+            result = Math.abs(d)+Math.abs((m*60)/3600)+Math.abs(s/3600);
+            if(d>=0)
+                return result.toString();
+            else{
+                result = result * -1;
+                return result.toString();
+            }
+        }
+        catch(NumberFormatException e){return "";}
+    }
+
+    private Double getDoubleValue(String value) {
+        try {
+            Double tmp = Double.parseDouble(value);
+            return tmp;
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * Boton para eliminar coordenadas
+     */
+    public String btnRemoveCoord_action() {
+        // Se elimina el ultimo sexo y estadio ingresado
+        int elements = this.getSiteSessionBean().getCoordinateDataProvider().size();
+        //No se puede eliminar un elemento si no hay nada que borrar
+        if(elements==0){
+            MessageBean.setErrorMessageFromBundle("error_delete_generic",
+                    this.getMyLocale());
+            return null;
+        }
+        else{
+            this.getSiteSessionBean().getCoordinateDataProvider().remove(elements-1);
+            return null;
+        }
+    }
+    
+    /**
+     * @return the myLocale
+     */
+    public Locale getMyLocale() {
+		return this.getAraSessionBean().getCurrentLocale();
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected SiteSessionBean getSiteSessionBean() {
+        return (SiteSessionBean) getBean("gis$SiteSessionBean");
     }
 
     /**
@@ -707,197 +897,6 @@ public class NewSite extends AbstractPageBean {
      */
     public void setDataTableCoordinates(HtmlDataTable dataTableCoordinates) {
         this.dataTableCoordinates = dataTableCoordinates;
-    }
-
-    /**
-     * Boton para agregar coordenada
-     */
-    public String btnAddCoordinate_action() {
-        if (canAddCoordinate()) {
-            Object lon_degrees = this.getTxLongitudeDegrees().getValue();
-            Object lon_minutes = this.getTxLongitudeMinutes().getValue();
-            Object lon_seconds = this.getTxLongitudeSeconds().getValue();
-            Object lat_degrees = this.getTxLatitudeDegrees().getValue();
-            Object lat_minutes = this.getTxLatitudeMinutes().getValue();
-            Object lat_seconds = this.getTxLatitudeSeconds().getValue();
-            if (validateLongitude()) {
-                if (validateLatitude()) {
-                    //All data (degrees, minutes and seconds)
-                    if(validateMandS(lon_minutes) && validateMandS(lon_seconds)
-                            && validateMandS(lat_minutes) && validateMandS(lat_seconds)){
-                        //Translate from sexagecimal to decimal notation
-                        String lon_result,lat_result;
-                        lon_result = translateCoor(lon_degrees.toString(),
-                                lon_minutes.toString(),lon_seconds.toString());
-                        lat_result = translateCoor(lat_degrees.toString(),
-                                lat_minutes.toString(),lat_seconds.toString());
-                        SiteCoordinateDTO coord = new SiteCoordinateDTO();
-                        coord.setLongitude(getDoubleValue(lon_result));
-                        coord.setLatitude(getDoubleValue(lat_result));
-                         if (!this.getSiteSessionBean().addElement(coord)) {
-                            MessageBean.setErrorMessageFromBundle(DUPLICATED_COORDINATES,
-                                    this.getMyLocale());
-                        this.txLongitudeDegrees.setValue("");
-                        this.txLongitudeMinutes.setValue("0");
-                        this.txLongitudeSeconds.setValue("0");
-                        this.txLatitudeDegrees.setValue("");
-                        this.txLatitudeMinutes.setValue("0");
-                        this.txLatitudeSeconds.setValue("0");
-                         }
-                        this.txLongitudeDegrees.setValue("");
-                        this.txLongitudeMinutes.setValue("0");
-                        this.txLongitudeSeconds.setValue("0");
-                        this.txLatitudeDegrees.setValue("");
-                        this.txLatitudeMinutes.setValue("0");
-                        this.txLatitudeSeconds.setValue("0");
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private boolean canAddCoordinate() {
-        if (this.getSiteSessionBean().getSelectedType().equals(1L)) {
-            if (this.getSiteSessionBean().getCoordinateDataProvider().size() == 1) {
-                MessageBean.setErrorMessageFromBundle(ONLY_ONE_COORDINATE_ALLOWED,
-                        this.getMyLocale());
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean validateLongitude() {
-        Float tmp;
-        String coordinate;
-        if (this.txLongitudeDegrees.getValue() == null) {
-            MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
-                    this.getMyLocale());
-            return false;
-        }
-        coordinate = this.txLongitudeDegrees.getValue().toString();
-        if (coordinate.length() <= 0) {
-            MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
-                    this.getMyLocale());
-            return false;
-        }
-        try {
-            tmp = Float.parseFloat(coordinate);
-            if ((tmp >= -180) & (tmp <= 180)) {
-                return true;
-            } else {
-                MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE_RANGE,
-                    this.getMyLocale());
-                return false;
-            }
-        } catch (NumberFormatException ex) {
-            MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
-                    this.getMyLocale());
-            return false;
-        }
-    }
-
-    private boolean validateLatitude() {
-        Float tmp;
-        String coordinate;
-        if (this.txLatitudeDegrees.getValue() == null) {
-            MessageBean.setErrorMessageFromBundle(INVALID_LATITUDE,
-                    this.getMyLocale());
-            return false;
-        }
-        coordinate = this.txLatitudeDegrees.getValue().toString();
-        if (coordinate.length() <= 0) {
-            MessageBean.setErrorMessageFromBundle(INVALID_LATITUDE,
-                    this.getMyLocale());
-            return false;
-        }
-        try {
-            tmp = Float.parseFloat(coordinate);
-            if ((tmp >= -90) & (tmp <= 90)) {
-                return true;
-            } else {
-                MessageBean.setErrorMessageFromBundle(INVALID_LATITUDE_RANGE,
-                    this.getMyLocale());
-                return false;
-            }
-        } catch (NumberFormatException ex) {
-            MessageBean.setErrorMessageFromBundle(INVALID_LATITUDE,
-                    this.getMyLocale());
-            return false;
-        }
-    }
-
-    //Validate minutes and seconds (MandS)
-    private boolean validateMandS(Object in) {
-        Float tmp;
-        String time;
-        if (in == null) {
-            MessageBean.setErrorMessageFromBundle("invalid_coor_ms",
-                    this.getMyLocale());
-            return false;
-        }
-        time = in.toString();
-        try {
-            tmp = Float.parseFloat(time);
-            if ((tmp >= 0) && (tmp < 60)) {
-                return true;
-            } else {
-                MessageBean.setErrorMessageFromBundle("invalid_coor_ms",
-                        this.getMyLocale());
-                return false;
-            }
-        } catch (NumberFormatException ex) {
-            MessageBean.setErrorMessageFromBundle("invalid_coor_ms",
-                    this.getMyLocale());
-            return false;
-        }
-    }
-
-    //Method to translate from sexagecimal to decimal notation
-    public String translateCoor(String degrees,String minutes,String seconds){
-        Float d,m,s,result;
-        try{
-            //Get float values
-            d = Float.parseFloat(degrees);
-            m = Float.parseFloat(minutes);
-            s = Float.parseFloat(seconds);
-            result = Math.abs(d)+Math.abs((m*60)/3600)+Math.abs(s/3600);
-            if(d>=0)
-                return result.toString();
-            else{
-                result = result * -1;
-                return result.toString();
-            }
-        }
-        catch(NumberFormatException e){return "";}
-    }
-
-    private Double getDoubleValue(String value) {
-        try {
-            Double tmp = Double.parseDouble(value);
-            return tmp;
-        } catch (NumberFormatException ex) {
-            return null;
-        }
-    }
-
-    /**
-     * Boton para eliminar coordenadas
-     */
-    public String btnRemoveCoord_action() {
-        // Se elimina el ultimo sexo y estadio ingresado
-        int elements = this.getSiteSessionBean().getCoordinateDataProvider().size();
-        //No se puede eliminar un elemento si no hay nada que borrar
-        if(elements==0){
-            MessageBean.setErrorMessageFromBundle("error_delete_generic",
-                    this.getMyLocale());
-            return null;
-        }
-        else{
-            this.getSiteSessionBean().getCoordinateDataProvider().remove(elements-1);
-            return null;
-        }
     }
 
     /**

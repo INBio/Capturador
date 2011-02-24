@@ -194,12 +194,9 @@ public class ListIdentification extends AbstractPageBean {
         if (isb.getPagination()==null) {
             isb.initDataProvider();
         }
-        //Actualizar los datos del paginador si no es nula ni es ninguna búsqueda (osea, listado base)
-        else if(!isb.isQueryMode() && !isb.isQueryModeSimple()){
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
-            isb.getPagination().setTotalResults(isb.getInventoryFacade().countIdentifications().intValue());
+        //Actualizar los datos del paginador
+        else
             isb.getPagination().refreshList();
-        }
     }
 
     /**
@@ -542,9 +539,6 @@ public class ListIdentification extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             isb.setQueryModeSimple(false);
             isb.setQueryMode(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            totalResults = isb.countAllIdentification().intValue();
-            isb.getPagination().setTotalResults(totalResults);
 
         } else {
 
@@ -556,10 +550,6 @@ public class ListIdentification extends AbstractPageBean {
 
             //Desabilitar la bandera de busqueda avanzada
             isb.setQueryMode(false);
-
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            totalResults = isb.getSearchFacade().countIdentificationByCriteria(userImput).intValue();
-            isb.getPagination().setTotalResults(totalResults);
         }
 
         isb.getPagination().firstResults();
@@ -567,6 +557,9 @@ public class ListIdentification extends AbstractPageBean {
         return null;
     }
 
+    /**
+     * Búsqueda avanzada
+     */
     public String btnProceedSearcAction() {
 
         //Crear el specimenDTO para la consulta
@@ -614,8 +607,6 @@ public class ListIdentification extends AbstractPageBean {
 
 
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        totalResults = isb.getSearchFacade().countIdentificationByCriteria(consulta).intValue();
-        isb.getPagination().setTotalResults(totalResults);
         isb.getPagination().firstResults();
 
         this.getTxSearch().setValue("");
@@ -741,8 +732,6 @@ public class ListIdentification extends AbstractPageBean {
         this.btnReIdentifyAction();
 
         //Refresca los datos cargados.
-        this.getIdentificationSessionBean().getPagination().
-                setTotalResults(this.getIdentificationSessionBean().getInventoryFacade().countIdentifications().intValue());
         this.getIdentificationSessionBean().getPagination().refreshList();
               
         this.loadAddRemoveData(true);

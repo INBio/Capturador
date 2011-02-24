@@ -232,7 +232,6 @@ public class NewAccessionMovement extends AbstractPageBean {
                     getAccessionMovementDTO().getWeight());
 
             //Refrescar la lista de accessiones y movimientos
-            this.getgermplasm$AccessionMovementSessionBean().getPagination().addItem();
             this.getgermplasm$AccessionMovementSessionBean().getPagination().refreshList();
             this.getgermplasm$AccessionSessionBean().getPagination().refreshList();
             MessageBean.setSuccessMessageFromBundle("create_accession_movement_succces", this.getMyLocale());

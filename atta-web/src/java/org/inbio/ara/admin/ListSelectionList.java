@@ -82,16 +82,18 @@ public class ListSelectionList extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        if(getAdminSelectionListSessionBean().getSelectedSelectionListEntityId() == null){
+        SelectionListSessionBean slsb = getAdminSelectionListSessionBean();
+        if(slsb.getSelectedSelectionListEntityId() == null){
             //Cargar valores del DD de listas de seleccion
              this.getAdminSelectionListSessionBean().
                      setSelectionListDropDownData();
              valuesTable.setRendered(false);
         }
         else{
-            getAdminSelectionListSessionBean().getPagination().refreshList();
+            slsb.getPagination().refreshList();
             valuesTable.setRendered(true);
         }
+
     }
 
     /**
@@ -179,9 +181,6 @@ public class ListSelectionList extends AbstractPageBean {
                 getActualSelectionListElementDTO());
         this.gridEditOrNew.setRendered(false);
 
-        if(val==0){ //if create
-            this.getAdminSelectionListSessionBean().getPagination().addItem();
-        }
         this.getAdminSelectionListSessionBean().getPagination().refreshList();
 
         MessageBean.setSuccessMessageFromBundle
@@ -211,7 +210,6 @@ public class ListSelectionList extends AbstractPageBean {
                         ("delete_selection_list_value_error",
                         this.getAdminSelectionListSessionBean().getMyLocale());
             }
-            this.getAdminSelectionListSessionBean().getPagination().deleteItem();
             this.getAdminSelectionListSessionBean().getPagination().refreshList();
             this.gridEditOrNew.setRendered(false);
         }

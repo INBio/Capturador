@@ -242,21 +242,25 @@ public class ListSite extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        //Cargar valores del DD de paises
-        this.SetCountryDropDownData();
-
-        //Cargar valores del DD de provincias
-        this.SetProvincesDropDownData();
-
+        SiteSessionBean ssb = getGis$SiteSessionBean();
+        //------------------------------ Control de GUI -------------------------------
         //Preguntar si la bandera de busqueda avanzada esta prendida
-        if(getGis$SiteSessionBean().isAdvancedSearch()){
+        if (ssb.isAdvancedSearch()) {
             //Muestra el panel de busqueda avanzada
             this.getGridpAdvancedSearch().setRendered(true);
+            //Cargar valores del DD de paises
+            this.SetCountryDropDownData();
+            //Cargar valores del DD de provincias
+            this.SetProvincesDropDownData();
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado
-        else if (getGis$SiteSessionBean().getPagination()==null) {
-            getGis$SiteSessionBean().initDataProvider();
+        //-------------------------- Control de Paginador ------------------------------
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (ssb.getPagination()==null) {
+            ssb.initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            ssb.getPagination().refreshList();
     }
 
     /**
@@ -270,89 +274,6 @@ public class ListSite extends AbstractPageBean {
     @Override
     public void destroy() {
     }
-    
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected SiteSessionBean getGis$SiteSessionBean() {
-        return (SiteSessionBean) getBean("gis$SiteSessionBean");
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
-    }
-
-    /**
-     * Accion del boton de buscar que esta dentro del panel de busqueda avanzada
-     * @return
-     */
-    public String btnBuscar_action() {
-        //Crear el siteDTO para la consulta
-        SiteDTO consulta = new SiteDTO();
-
-        String locality = (String) this.getTxLocality().getText();
-        if(locality!=null)
-            consulta.setDescription(locality);
-
-        String taxonName = (String) this.getTxTaxonName().getText();
-        if(taxonName!=null)
-            consulta.setTaxonName(taxonName);
-
-        Double latitude_short = null;
-        Double longitude_short = null;
-        Integer radio = null;
-        try{
-            latitude_short = Double.valueOf
-                    (this.getTxLatitudeShort().getText().toString());
-            longitude_short = Double.valueOf
-                    (this.getTxLongitudeShort().getText().toString());
-            radio = Integer.valueOf(this.getTxRadio().getText().toString());
-        }
-        catch(Exception e){}
-        if(latitude_short!=null&&longitude_short!=null&&radio!=null){
-            consulta.setLatitude(latitude_short);
-            consulta.setLongitude(longitude_short);
-            consulta.setRadio(radio);
-        }
-        //En caso de que alguno de los tres sea nulo
-        if((latitude_short==null||longitude_short==null||radio==null)&&
-                (latitude_short!=null||longitude_short!=null||radio!=null)){
-            MessageBean.setErrorMessageFromBundle
-                    ("error_coordinates_search", this.getMyLocale());
-        }
-
-        Object country = this.getDdCountry().getSelected();
-        Object province = this.getDdProvince().getSelected();
-
-        if(country!=null){
-            consulta.setCountryId((Long)country);
-        }
-        if(province!=null){
-            consulta.setProvinceId((Long)province);
-        }
-
-        //Setear el SiteDTO del SessionBean utilizado para realizar la consulta
-        this.getGis$SiteSessionBean().setQuerySiteDTO(consulta);
-        //Paginador debe "trabajar" en modo busqueda avanzada
-        this.getGis$SiteSessionBean().setQueryMode(true);
-        //Desabilitar la bandera de busqueda simple
-        this.getGis$SiteSessionBean().setQueryModeSimple(false);
-        //Inicializar el paginador con los resultados de la consulta
-        this.getGis$SiteSessionBean().getPagination().setTotalResults
-                (this.getGis$SiteSessionBean().getSearchFacade().
-                countSitesByCriteria(consulta).intValue());
-        this.getGis$SiteSessionBean().getPagination().firstResults();
-        this.getTxSearch().setValue("");
-        return null;
-    }
-
     
     /**
      * Metodo ejecutado por el boton que muestra el panel de busqueda avanzada
@@ -408,9 +329,6 @@ public class ListSite extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getGis$SiteSessionBean().setQueryModeSimple(false);
             this.getGis$SiteSessionBean().setQueryMode(false);
-            //Setear el data provider del paginador con los datos por default
-            this.getGis$SiteSessionBean().getPagination().setTotalResults
-                    (this.getGis$SiteSessionBean().getGisFacade().countSites().intValue());
         } else {
             //Setear el string para consulta simple del SessionBean
             this.getGis$SiteSessionBean().setConsultaSimple(userInput);
@@ -418,10 +336,6 @@ public class ListSite extends AbstractPageBean {
             this.getGis$SiteSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getGis$SiteSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el paginador con los resultados de la consulta
-            this.getGis$SiteSessionBean().getPagination().setTotalResults
-                    (this.getGis$SiteSessionBean().getSearchFacade().
-                    countSitesByCriteria(userInput).intValue());
         }
         this.getGis$SiteSessionBean().getPagination().firstResults();
         return null;
@@ -437,7 +351,6 @@ public class ListSite extends AbstractPageBean {
         SiteDTO consulta = new SiteDTO();
         consulta.setDescription((String)this.getTxLocality().getText());
         consulta.setTaxonName((String)this.getTxTaxonName().getText());
-        //----------------------------------------------------------------------
         Double latitude_short = null;
         Double longitude_short = null;
         Integer radio = null;
@@ -460,7 +373,6 @@ public class ListSite extends AbstractPageBean {
             MessageBean.setErrorMessageFromBundle("error_coordinates_search",
                     this.getMyLocale());
         }
-        //----------------------------------------------------------------------
         consulta.setCountryId(this.getGis$SiteSessionBean().getSelectedCountry());
         consulta.setProvinceId(this.getGis$SiteSessionBean().getSelectedProvince());
 
@@ -471,9 +383,6 @@ public class ListSite extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getGis$SiteSessionBean().setQueryModeSimple(false);
         //Finalmente se inicializa el paginador con los resultados de la consulta
-        this.getGis$SiteSessionBean().getPagination().setTotalResults
-                (this.getGis$SiteSessionBean().getSearchFacade().
-                countSitesByCriteria(consulta).intValue());
         this.getGis$SiteSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
 
@@ -539,6 +448,130 @@ public class ListSite extends AbstractPageBean {
         this.getCountriesData().setOptions(allOptions.toArray(allOptionsInArray));
     }
 
+    /**
+     * Metodo ejecutado por el boton de new site
+     * @return
+     */
+    public String btn_new_action() {
+        //Limpiar el current DTO
+        this.getGis$SiteSessionBean().setCurrentSiteDTO(new SiteDTO());
+        this.getGis$SiteSessionBean().setSelectedBaseProjection(null);
+        this.getGis$SiteSessionBean().setSelectedDeterminationMethod(null);
+        this.getGis$SiteSessionBean().setSelectedOriginProjection(null);
+        this.getGis$SiteSessionBean().setSelectedType(null);
+        this.getGis$SiteSessionBean().setSelectedCountryId(INVALID_VALUE_ID);
+        this.getGis$SiteSessionBean().setSelectedProvinceId(INVALID_VALUE_ID);
+        this.getGis$SiteSessionBean().setCoordinateDataProvider
+                (new ArrayList<SiteCoordinateDTO>());
+        return "new";
+    }
+
+    /**
+     * Metodo ejecutado por el boton para editar sitios
+     * @return
+     */
+    public String btn_edit_action(){
+        int n = this.getDataTableSite().getRowCount();
+        ArrayList<SiteDTO> selectedSites = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getDataTableSite().setRowIndex(i);
+            SiteDTO aux = (SiteDTO) this.getDataTableSite().getRowData();
+            if (aux.isSelected()) {
+                selectedSites.add(aux);
+            }
+        }
+        if(selectedSites == null || selectedSites.size() == 0){
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        else if(selectedSites.size() == 1){ //En caso de que solo se seleccione un elemento
+            /*Indicar a la pantalla de edit que cargue 1 sola ves los datos
+            actuales del dto seleccionado*/
+            this.getGis$SiteSessionBean().setFirstTime(true);
+            this.getGis$SiteSessionBean().setCurrentSiteDTO(selectedSites.get(0));
+            return "edit";
+        }
+        else{ //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
+    }
+
+    /**
+     * Metodo ejecutado por el boton para eliminar un sitio existente
+     * @return
+     */
+    public String btn_delete_action(){
+        int n = this.getDataTableSite().getRowCount();
+        ArrayList<SiteDTO> selectedSites = new ArrayList();
+        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
+            this.getDataTableSite().setRowIndex(i);
+            SiteDTO aux = (SiteDTO) this.getDataTableSite().getRowData();
+            if (aux.isSelected()) {
+                selectedSites.add(aux);
+            }
+        }
+        if(selectedSites == null || selectedSites.size() == 0){
+            //En caso de que no se seleccione ningun elemento
+            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
+            return null;
+        }
+        //En caso de que solo se seleccione un elemento
+        else if(selectedSites.size() == 1){
+            SiteDTO selected = selectedSites.get(0);
+            //Mandar a borrar el sitio
+            try{
+                this.getGis$SiteSessionBean().deleteSite(selected.getSiteId());
+            }
+            catch(Exception e){
+                MessageBean.setErrorMessageFromBundle("imposible_to_delete",
+                        this.getMyLocale());
+                return null;
+            }
+
+            //Refrescar la lista de sitios
+            this.getGis$SiteSessionBean().getPagination().refreshList();
+
+            //Notificar al usuario
+            MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
+            return null;
+        }
+        else{ //En caso de que sea seleccion multiple
+            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
+            return null;
+        }
+    }
+
+    /**
+     * Mostrar todas las localidades existentes
+     * @return
+     */
+    public String btnShowAllLocalities_action() {
+        List<SiteDTO> localities = this.getGis$SiteSessionBean().
+                getResults(0, 1000000);
+        this.getGis$SiteSessionBean().getPagination().getDataProvider().
+                setList(localities);
+        return null;
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected SiteSessionBean getGis$SiteSessionBean() {
+        return (SiteSessionBean) getBean("gis$SiteSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
+    }
 
     /**
      * Metodo ejecutado por el drop down de paises para calcular las provincias
@@ -768,102 +801,6 @@ public class ListSite extends AbstractPageBean {
     }
 
     /**
-     * Metodo ejecutado por el boton de new site
-     * @return
-     */
-    public String btn_new_action() {
-        //Limpiar el current DTO
-        this.getGis$SiteSessionBean().setCurrentSiteDTO(new SiteDTO());
-        this.getGis$SiteSessionBean().setSelectedBaseProjection(null);
-        this.getGis$SiteSessionBean().setSelectedDeterminationMethod(null);
-        this.getGis$SiteSessionBean().setSelectedOriginProjection(null);
-        this.getGis$SiteSessionBean().setSelectedType(null);
-        this.getGis$SiteSessionBean().setSelectedCountryId(INVALID_VALUE_ID);
-        this.getGis$SiteSessionBean().setSelectedProvinceId(INVALID_VALUE_ID);
-        this.getGis$SiteSessionBean().setCoordinateDataProvider
-                (new ArrayList<SiteCoordinateDTO>());
-        return "new";
-    }
-
-    /**
-     * Metodo ejecutado por el boton para editar sitios
-     * @return
-     */
-    public String btn_edit_action(){
-        int n = this.getDataTableSite().getRowCount();
-        ArrayList<SiteDTO> selectedSites = new ArrayList();
-        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
-            this.getDataTableSite().setRowIndex(i);
-            SiteDTO aux = (SiteDTO) this.getDataTableSite().getRowData();
-            if (aux.isSelected()) {
-                selectedSites.add(aux);
-            }
-        }
-        if(selectedSites == null || selectedSites.size() == 0){
-            //En caso de que no se seleccione ningun elemento
-            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
-            return null;
-        }
-        else if(selectedSites.size() == 1){ //En caso de que solo se seleccione un elemento
-            /*Indicar a la pantalla de edit que cargue 1 sola ves los datos
-            actuales del dto seleccionado*/
-            this.getGis$SiteSessionBean().setFirstTime(true);
-            this.getGis$SiteSessionBean().setCurrentSiteDTO(selectedSites.get(0));
-            return "edit";
-        }
-        else{ //En caso de que sea seleccion multiple
-            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
-            return null;
-        }
-    }
-
-    /**
-     * Metodo ejecutado por el boton para eliminar un sitio existente
-     * @return
-     */
-    public String btn_delete_action(){
-        int n = this.getDataTableSite().getRowCount();
-        ArrayList<SiteDTO> selectedSites = new ArrayList();
-        for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
-            this.getDataTableSite().setRowIndex(i);
-            SiteDTO aux = (SiteDTO) this.getDataTableSite().getRowData();
-            if (aux.isSelected()) {
-                selectedSites.add(aux);
-            }
-        }
-        if(selectedSites == null || selectedSites.size() == 0){
-            //En caso de que no se seleccione ningun elemento
-            MessageBean.setErrorMessageFromBundle("not_selected", this.getMyLocale());
-            return null;
-        }
-        //En caso de que solo se seleccione un elemento
-        else if(selectedSites.size() == 1){
-            SiteDTO selected = selectedSites.get(0);
-            //Mandar a borrar el sitio
-            try{
-                this.getGis$SiteSessionBean().deleteSite(selected.getSiteId());
-            }
-            catch(Exception e){
-                MessageBean.setErrorMessageFromBundle("imposible_to_delete",
-                        this.getMyLocale());
-                return null;
-            }
-
-            //Refrescar la lista de sitios
-            this.getGis$SiteSessionBean().getPagination().deleteItem();
-            this.getGis$SiteSessionBean().getPagination().refreshList();
-
-            //Notificar al usuario
-            MessageBean.setSuccessMessageFromBundle("delete_success", this.getMyLocale());
-            return null;
-        }
-        else{ //En caso de que sea seleccion multiple
-            MessageBean.setErrorMessageFromBundle("not_yet", this.getMyLocale());
-            return null;
-        }
-    }
-
-    /**
      * @return the btnShowAllLocalities
      */
     public HtmlCommandButton getBtnShowAllLocalities() {
@@ -875,18 +812,6 @@ public class ListSite extends AbstractPageBean {
      */
     public void setBtnShowAllLocalities(HtmlCommandButton btnShowAllLocalities) {
         this.btnShowAllLocalities = btnShowAllLocalities;
-    }
-
-    /**
-     * Mostrar todas las localidades existentes
-     * @return
-     */
-    public String btnShowAllLocalities_action() {
-        List<SiteDTO> localities = this.getGis$SiteSessionBean().
-                getResults(0, 1000000);
-        this.getGis$SiteSessionBean().getPagination().getDataProvider().
-                setList(localities);
-        return null;
     }
     
 }

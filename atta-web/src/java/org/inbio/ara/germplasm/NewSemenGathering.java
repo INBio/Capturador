@@ -10,14 +10,11 @@ import com.sun.webui.jsf.component.Calendar;
 import com.sun.webui.jsf.component.TextField;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
-import java.util.TimeZone;
 import javax.faces.FacesException;
 import org.inbio.ara.admin.SelectionListSessionBean;
 import org.inbio.ara.admin.PersonSessionBean;
@@ -317,7 +314,6 @@ public class NewSemenGathering extends AbstractPageBean {
                 {
                     getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().saveSemenGathering(
                         getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO());
-                    getgermplasm$SemenGatheringSessionBean().getPagination().addItem();
                     getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
                     getgermplasm$SemenGatheringSessionBean().setSemenGatheringDTO(new SemenGatheringDTO());
                     getgermplasm$SemenGatheringSessionBean().setSelectedHour(null);
@@ -335,7 +331,6 @@ public class NewSemenGathering extends AbstractPageBean {
                 
                 getgermplasm$SemenGatheringSessionBean().getGermplasmFacadeRemote().saveSemenGathering(
                         getgermplasm$SemenGatheringSessionBean().getSemenGatheringDTO());
-                getgermplasm$SemenGatheringSessionBean().getPagination().addItem();
                 getgermplasm$SemenGatheringSessionBean().getPagination().refreshList();
                 getgermplasm$SemenGatheringSessionBean().setSemenGatheringDTO(new SemenGatheringDTO());
                 getgermplasm$SemenGatheringSessionBean().setSelectedHour(null);

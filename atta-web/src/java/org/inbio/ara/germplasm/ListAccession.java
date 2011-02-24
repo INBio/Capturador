@@ -151,10 +151,13 @@ public class ListAccession extends AbstractPageBean {
         if(getgermplasm$AccessionSessionBean().isAdvancedSearch()){
             this.getGridpAdvancedSearchAccession().setRendered(true);//Muestra el panel de busqueda avanzada
         }
-        //Inicializar el dataprovider si la paginacion es nula y no es filtrado por busquedas
-        else if (getgermplasm$AccessionSessionBean().getPagination()==null) {
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (getgermplasm$AccessionSessionBean().getPagination()==null) {
             getgermplasm$AccessionSessionBean().initDataProvider();
         }
+        //Actualizar los datos del paginador
+        else
+            getgermplasm$AccessionSessionBean().getPagination().refreshList();
     }
 
     /**
@@ -171,10 +174,6 @@ public class ListAccession extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getgermplasm$AccessionSessionBean().setQueryModeSimple(false);
             this.getgermplasm$AccessionSessionBean().setQueryMode(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getgermplasm$AccessionSessionBean().getPagination().setTotalResults
-                    (getgermplasm$AccessionSessionBean().getGermplasmFacadeRemote().
-                    countAccessions().intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -183,12 +182,6 @@ public class ListAccession extends AbstractPageBean {
             this.getgermplasm$AccessionSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getgermplasm$AccessionSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getgermplasm$AccessionSessionBean().getPagination().setTotalResults
-                    (getgermplasm$AccessionSessionBean().getGermplasmFacadeRemote().
-                    countAccessionSimpleSearch(
-                    userInput,
-                    getAraSessionBean().getGlobalCollectionId()).intValue());
         }
         //set the first result of the query
         this.getgermplasm$AccessionSessionBean().getPagination().firstResults();        
@@ -390,7 +383,6 @@ public class ListAccession extends AbstractPageBean {
                 getgermplasm$AccessionSessionBean().getGermplasmFacadeRemote().
                         deleteAccession(selectedAccession.get(0).getAccessionId());
                 //refresh the list
-                getgermplasm$AccessionSessionBean().getPagination().deleteItem();
                 getgermplasm$AccessionSessionBean().getPagination().refreshList();
             }
 
@@ -434,14 +426,6 @@ public class ListAccession extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getgermplasm$AccessionSessionBean().setQueryModeSimple(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getgermplasm$AccessionSessionBean().getPagination().setTotalResults(
-                this.getgermplasm$AccessionSessionBean().
-                getGermplasmFacadeRemote().
-                countAccessionAdvancedSearch(
-                getgermplasm$AccessionSessionBean().
-                getQueryAccessionDTO(), getAraSessionBean().
-                getGlobalCollectionId()).intValue());
-
         this.getgermplasm$AccessionSessionBean().getPagination().firstResults();
 
         this.getTxSearchAccession().setValue("");

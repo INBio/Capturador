@@ -172,12 +172,9 @@ public class ListSpecimen extends AbstractPageBean {
         if (ssb.getPagination()==null) {
             ssb.initDataProvider();
         }
-        //Actualizar los datos del paginador si no es nula ni es ninguna búsqueda (osea, listado base)
-        else if(!ssb.isQueryMode() && !ssb.isQueryModeSimple()){
-            Long collectionId = getAraSessionBean().getGlobalCollectionId();
-            ssb.getPagination().setTotalResults(ssb.getInventoryFacade().countSpecimens().intValue());
+        //Actualizar los datos del paginador
+        else
             ssb.getPagination().refreshList();
-        }
     }
 
     /**
@@ -309,8 +306,6 @@ public class ListSpecimen extends AbstractPageBean {
         //Desabilitar la bandera de busqueda simple
         this.getinventory$SpecimenSessionBean().setQueryModeSimple(false);
         //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-        this.getinventory$SpecimenSessionBean().getPagination().
-                setTotalResults(this.getinventory$SpecimenSessionBean().getSearchFacade().countSpecimensByCriteria(consulta).intValue());
         this.getinventory$SpecimenSessionBean().getPagination().firstResults();
         this.getTxSearch().setValue("");
         return null;
@@ -329,9 +324,6 @@ public class ListSpecimen extends AbstractPageBean {
             //Se desabilitan las banderas de busqueda simple y avanzada
             this.getinventory$SpecimenSessionBean().setQueryModeSimple(false);
             this.getinventory$SpecimenSessionBean().setQueryMode(false);
-            //Finalmente se setea el data provider del paginador con los datos por default
-            this.getinventory$SpecimenSessionBean().getPagination().
-                    setTotalResults(this.getinventory$SpecimenSessionBean().getInventoryFacade().countSpecimens().intValue());
         }
         else{
             //Setear el string para consulta simple del SessionBean
@@ -340,9 +332,6 @@ public class ListSpecimen extends AbstractPageBean {
             this.getinventory$SpecimenSessionBean().setQueryModeSimple(true);
             //Desabilitar la bandera de busqueda avanzada
             this.getinventory$SpecimenSessionBean().setQueryMode(false);
-            //Finalmente se inicializa el data provider del paginador con los resultados de la consulta
-            this.getinventory$SpecimenSessionBean().getPagination().
-                    setTotalResults(this.getinventory$SpecimenSessionBean().getSearchFacade().countSpecimensByCriteria(userInput).intValue());
         }
         this.getinventory$SpecimenSessionBean().getPagination().firstResults(); 
         return null;

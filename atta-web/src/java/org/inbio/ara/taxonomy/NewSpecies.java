@@ -258,24 +258,6 @@ public class NewSpecies extends AbstractPageBean {
     }
 
     /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected SpeciesSessionBean gettaxonomy$SpeciesSessionBean() {
-        return (SpeciesSessionBean) getBean("taxonomy$SpeciesSessionBean");
-    }
-
-    /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
-    }
-
-    /**
      * Metodo ejecutado por el boton para crear un nuevo taxon description
      * @return
      */
@@ -332,7 +314,6 @@ public class NewSpecies extends AbstractPageBean {
         ssb.setArInstitutions(new AddRemoveList());
 
         //Refrescar el paginador
-        ssb.getPagination().addItem();
         ssb.getPagination().refreshList();
 
         /*//Notificar al usuario
@@ -356,6 +337,24 @@ public class NewSpecies extends AbstractPageBean {
         Long sequenceId = ssb.getCurrentTaxDescripDTO().getTaxonDescriptionSequence();
         return ssb.getTaxonomyFacadeImpl().existTaxonDescription
                 (taxonId, sequenceId);
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected SpeciesSessionBean gettaxonomy$SpeciesSessionBean() {
+        return (SpeciesSessionBean) getBean("taxonomy$SpeciesSessionBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
     }
 
     /**

@@ -16,11 +16,12 @@
                     <div id="pageFormated">
                         <jsp:directive.include file="/Header_Login.jspf"/>
                         <webuijsf:panelLayout id="contenido">
-                            <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1" infoClass="infoMessage" warnClass="warnMessage"/>
                             <table align="center" style="padding: 50px 0 60px 0;" width="60%">
                                 <tbody>
                                     <tr>
                                         <td align="center">
+                                            <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="messageList1" infoClass="infoMessage"
+                                                        style="height: 30px; width: 840px" warnClass="warnMessage"/>
                                             <h:outputLabel id="lb_title" styleClass="Page_title" value="#{resources.enter_system}"/>
                                             <webuijsf:form id="form1" style="border-style: solid; border-color: rgb(216, 241, 139); text-align: center; vertical-align: middle; width: 258px">
                                                 <h:panelGrid columns="1" id="gridPanel1" width="261">
