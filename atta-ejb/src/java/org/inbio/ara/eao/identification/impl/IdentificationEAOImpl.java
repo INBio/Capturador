@@ -145,5 +145,12 @@ public class IdentificationEAOImpl
         return (Long)q.getSingleResult();
     }
 
+    public List<Identification> findByCatalogNumber(String catalogNumber){
 
+        StringBuffer query = new StringBuffer();
+        query.append("from Identification as i where i.specimen.catalogNumber = :catalogNumber");
+        Query q = em.createQuery(query.toString());
+        q.setParameter("catalogNumber", catalogNumber);
+        return q.getResultList();
+    }
 }

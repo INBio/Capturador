@@ -28,9 +28,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import org.inbio.ara.dto.agent.CollectionDTO;
 import org.inbio.ara.dto.agent.CollectionDTOFactory;
-import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.dto.agent.InstitutionDTOFactory;
-import org.inbio.ara.dto.agent.ProfileDTO;
 import org.inbio.ara.dto.agent.ProfileDTOFactory;
 import org.inbio.ara.dto.inventory.GatheringObservationDTO;
 import org.inbio.ara.dto.inventory.GatheringObservationDTOFactory;
@@ -120,10 +118,6 @@ import org.inbio.ara.persistence.identification.IdentificationType;
 import org.inbio.ara.persistence.identification.Identifier;
 import org.inbio.ara.persistence.identification.IdentifierHistory;
 import org.inbio.ara.persistence.identification.IdentifierPK;
-import org.inbio.ara.persistence.person.PersonInstitution;
-import org.inbio.ara.persistence.person.PersonInstitutionPK;
-import org.inbio.ara.persistence.person.PersonProfile;
-import org.inbio.ara.persistence.person.PersonProfilePK;
 import org.inbio.ara.persistence.specimen.SpecimenCategoryEntity;
 import org.inbio.ara.persistence.specimen.SpecimenLifeForm;
 import org.inbio.ara.persistence.taxonomy.Taxon;
@@ -1357,5 +1351,18 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         if(sDTO.getInstitutionId() == null) {
             throw new IllegalArgumentException("Null institution");
         }
+    }
+
+    public IdentificationDTO getIdentificationByCatalogNumber(String catalogNumber){
+
+        // get the identifications
+        List<Identification> identList =
+                identificationEAOImpl.findByCatalogNumber(catalogNumber);
+
+        IdentificationDTOFactory idtof = new IdentificationDTOFactory();
+
+        IdentificationDTO result = idtof.createDTO(identList);
+
+        return result;
     }
 }

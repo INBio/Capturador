@@ -185,5 +185,12 @@ public interface InventoryFacadeRemote {
     public List<GatheringObservationDTO> getGathObsBySiteId(java.lang.Long siteId);
 
     public SelectionListDTO getSelectionListElementById(Long selectionListEntityId, Long selectionListValueId);
+    
+    /**
+     * find the identification associated to a catalogNumber.
+     * @param catalogNumber
+     * @return An IdentificationDTO.
+     */
+    public IdentificationDTO getIdentificationByCatalogNumber(String catalogNumber);
 }
 

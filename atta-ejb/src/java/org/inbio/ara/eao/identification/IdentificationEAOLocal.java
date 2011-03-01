@@ -51,4 +51,11 @@ public interface IdentificationEAOLocal
 
     public List<Long> findSpecimenByTaxonNameAndTaxonomicalLevel(String  taxonRange,String taxonName);
 
+    /**
+     * find all the identification records associated to a catalogNumber (barcode).
+     * @param catalogNumber.
+     * @return Identification entity List.
+     */
+    public List<Identification> findByCatalogNumber(String catalogNumber);
+
 }

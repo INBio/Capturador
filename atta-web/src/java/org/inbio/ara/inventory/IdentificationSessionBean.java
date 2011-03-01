@@ -20,6 +20,7 @@
 package org.inbio.ara.inventory;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
+import com.sun.webui.jsf.model.Option;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
@@ -94,6 +95,11 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
     private AddRemoveList arTaxonList = new AddRemoveList();
     //Variable para el addRemove de Taxones
     private AddRemoveList arIdentifierList = new AddRemoveList();
+
+    // Elementos para soportar la lista de barcodes a agregar.
+    private Long[] specimenBarcodeSelected = new Long[0];
+    private Option[] specimenBarcodeList = new Option[0];
+    private String specimenBarcode = new String("");
 
     /**
      * <p>Construct a new session data bean instance.</p>
@@ -416,5 +422,27 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
         this.pagination = pagination;
     }
 
-    
+    public Option[] getSpecimenBarcodeList() {
+        return specimenBarcodeList;
+    }
+
+    public void setSpecimenBarcodeList(Option[] specimenBarcodeList) {
+        this.specimenBarcodeList = specimenBarcodeList;
+    }
+
+    public Long[] getSpecimenBarcodeSelected() {
+        return specimenBarcodeSelected;
+    }
+
+    public void setSpecimenBarcodeSelected(Long[] specimenBarcodeSelected) {
+        this.specimenBarcodeSelected = specimenBarcodeSelected;
+    }
+
+    public String getSpecimenBarcode() {
+        return specimenBarcode;
+    }
+
+    public void setSpecimenBarcode(String specimenBarcode) {
+        this.specimenBarcode = specimenBarcode;
+    }
 }

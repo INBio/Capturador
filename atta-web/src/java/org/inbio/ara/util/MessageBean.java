@@ -19,6 +19,7 @@
 package org.inbio.ara.util;
 
 import com.sun.rave.web.ui.appbase.AbstractApplicationBean;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.faces.FacesException;
@@ -136,6 +137,13 @@ public class MessageBean extends AbstractApplicationBean {
     public static void setErrorMessageFromBundle(String key,Locale locale){
         String errorMsj = ResourceBundle.getBundle(bundle,locale).getString(key);
         MessageBean.addErrorMessage(errorMsj);
+    }
+    
+    public static void setErrorMessageFromBundle(String key,Locale locale, Object... params){
+        String errorMsj = ResourceBundle.getBundle(bundle,locale).getString(key);
+        String formatMsj = MessageFormat.format(errorMsj, params);
+        
+        MessageBean.addErrorMessage(formatMsj);
     }
 
     public static void setSuccessMessageFromBundle(String key,Locale locale) {
