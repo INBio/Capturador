@@ -20,7 +20,6 @@ import org.inbio.ara.eao.security.UserTaxonEAOLocal;
 import org.inbio.ara.eao.taxonomy.TaxonEAOLocal;
 import org.inbio.ara.persistence.security.SystemUser;
 import org.inbio.ara.persistence.taxonomy.NomenclaturalGroup;
-import org.inbio.ara.persistence.taxonomy.Taxon;
 import org.inbio.ara.persistence.taxonomy.UserNomenclaturalGroup;
 import org.inbio.ara.persistence.taxonomy.UserNomenclaturalGroupPK;
 import org.inbio.ara.persistence.taxonomy.UserTaxon;
@@ -141,7 +140,7 @@ public class SecurityFacadeImpl implements SecurityFacadeRemote {
      */
     public boolean isAdmin(Long userId){
         Long userGroup = this.systemUserEAOImpl.getUserGroupIDbyUserId(userId);
-        if(userGroup != null && userGroup == 70L) //70 is administrators group id in db. This solution is temporary (Hope so!)
+        if(userGroup != null && userGroup == 1L) //1 is Administrador group id in db. This solution is temporary (Hope so!)
             return true;
         else
             return false;
