@@ -33,8 +33,22 @@ public class TaxonAuthorDTOFactory extends BaseEntityOrDTOFactory<TaxonAuthor ,T
     }
 
     @Override
-    public TaxonAuthor updateEntityWithPlainValues(TaxonAuthorDTO dto, TaxonAuthor e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public TaxonAuthor updateEntityWithPlainValues(TaxonAuthorDTO dto, TaxonAuthor entity) {
+        if(dto == null || entity == null)
+        {
+            return null;
+        }
+        else
+        {
+            entity.getTaxonAuthorPK().setTaxonId(dto.getTaxonId());
+            entity.getTaxonAuthorPK().setCategory(dto.getCategory());
+            entity.getTaxonAuthorPK().setTaxonAuthorSequence(dto.getTaxonAuthorSequence());
+            entity.setTaxonAuthorConnectorId(dto.getTaxonAuthorConnectorId());
+            entity.setTaxonAuthorPersonId(dto.getTaxonAuthorPersonId());
+
+            return entity;
+        }
+
     }
 
     public TaxonAuthorDTO createDTO(TaxonAuthor entity) {

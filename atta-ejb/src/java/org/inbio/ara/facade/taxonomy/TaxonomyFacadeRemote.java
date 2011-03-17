@@ -257,5 +257,8 @@ public interface TaxonomyFacadeRemote {
     public void saveTaxonAuthors(Long taxonId, List<TaxonAuthorDTO> taxonAuthors, String userName);
 
     public void deleteTaxonAuthorByTaxonId(Long taxonId);
+    public List<TaxonAuthorDTO> getTaxonAuthorsByTaxonCategory(Long taxonId, String category);
+    public void updateTaxonAuthor(TaxonAuthorDTO taxonAuthorDTO);
+    public void deleteTaxonAuthorByTaxonAuthorIds(List<TaxonAuthorDTO> elements);
 
 }

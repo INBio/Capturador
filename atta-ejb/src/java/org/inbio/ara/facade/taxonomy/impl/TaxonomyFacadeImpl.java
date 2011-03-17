@@ -1673,8 +1673,43 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
         taxonAuthorEAOImpl.deleteTaxonAuthorByTaxonId(taxonId);
     }
 
+    public void deleteTaxonAuthorByTaxonAuthorIds(Long taxonId, Long taxonAuthorPersonId, String category)
+    {
+        taxonAuthorEAOImpl.deleteTaxonAuthorByTaxonAuthorIds(taxonId, taxonAuthorPersonId, category);
+    }
+
+    public void deleteTaxonAuthorByTaxonAuthorIds(List<TaxonAuthorDTO> elements)
+    {
+        for(TaxonAuthorDTO taxonAuthorDTO: elements)
+        {
+            deleteTaxonAuthorByTaxonAuthorIds(taxonAuthorDTO.getTaxonId(),
+                    taxonAuthorDTO.getTaxonAuthorPersonId(),
+                    taxonAuthorDTO.getCategory());
+        }
+    }
+
+    public List<TaxonAuthorDTO> getTaxonAuthorsByTaxonCategory(Long taxonId, String category)
+    {
+        List<TaxonAuthor> taxonAuthors = taxonAuthorEAOImpl.findTaxonAuthorsByTaxonCategory(taxonId, category);
+        return taxonAuthorDTOFactory.createDTOList(taxonAuthors);
+    }
 
 
+    public void updateTaxonAuthor(TaxonAuthorDTO taxonAuthorDTO) {
+
+        System.out.println("\t - taxonId = "+taxonAuthorDTO.getTaxonId());
+        System.out.println("\t - taxonAuthorId = "+taxonAuthorDTO.getTaxonAuthorPersonId());
+        System.out.println("\t - category = "+taxonAuthorDTO.getCategory());
+        TaxonAuthor ta = taxonAuthorEAOImpl.findTaxonAuthorByTaxonAuthorIds(taxonAuthorDTO.getTaxonId(), taxonAuthorDTO.getTaxonAuthorSequence(), taxonAuthorDTO.getCategory());
+        ta = this.taxonAuthorDTOFactory.updatePlainEntity(taxonAuthorDTO, ta);
+        System.out.println("UPDATE");
+        System.out.println("\t - taxonId = "+ta.getTaxonAuthorPK().getTaxonId());
+        System.out.println("\t - taxonAuthorId = "+ta.getTaxonAuthorPersonId());
+        System.out.println("\t - category = "+ta.getTaxonAuthorPK().getCategory());
+        System.out.println("\t - connectorId = "+ta.getTaxonAuthorConnectorId());
+        System.out.println("\t - sequence = "+ta.getTaxonAuthorPK().getTaxonAuthorSequence());
+        this.taxonAuthorEAOImpl.update(ta);
+    }
 
 
 }
