@@ -91,6 +91,9 @@
                                     <!-- Tab para relación entre taxon - author -->
                                     <webuijsf:tab id="tabTaxonAuthor" text="#{resources.title_author}">
                                         <h:panelGrid columns="1" id="panelTaxonAuthor">
+                                            <h:panelGrid columns="1" id="panelAuthorLabel" style="display: block; margin-left: auto; margin-right: auto" >
+                                                <webuijsf:label id="lbAuthors" text="#{taxonomy$TaxonSessionBean.authors}" style=" display: block;  text-align: center;"/>
+                                            </h:panelGrid>
                                             <h:panelGrid columns="2" id="panelAuthorType">
                                                 <webuijsf:label for="ddAuthorType" id="lbAuthorType" text="#{resources.author_type}"/>
                                                 <webuijsf:dropDown binding="#{taxonomy$NewTaxonomy.ddAuthorType}" id="ddAuthorType"

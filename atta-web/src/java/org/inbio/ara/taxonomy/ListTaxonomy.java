@@ -465,6 +465,25 @@ public class ListTaxonomy extends AbstractPageBean {
         this.getTaxonSessionBean().setSelectedTaxonIndicatorDublinCoreId(null);
 
         this.getTaxonSessionBean().setDdIndicatorDCSelected(null);
+
+
+        this.getTaxonSessionBean().setTaxonAuthorSequence(-1L);
+        this.getTaxonSessionBean().setConnectorSelected(-1L);
+        this.getTaxonSessionBean().setAuthorOriginalSequence(0L);
+        this.getTaxonSessionBean().setAuthorModificatorSequence(0L);
+        this.getTaxonSessionBean().setVisiblePanelAuthorAction(false);
+        this.getTaxonSessionBean().setReadOnlySequence(false);
+        this.getTaxonSessionBean().setTaxonAuthorsMap(new HashMap<Long, Set<Option>>());
+        this.getTaxonSessionBean().setTaxonAuthorSequenceMap(new HashMap<Long, Long>());
+        this.getTaxonSessionBean().setAuthorListMap(new HashMap<Long, List<TaxonAuthorDTO>>());
+        this.getTaxonSessionBean().setDbAuthorListMap(new HashMap<Long, List<TaxonAuthorDTO>>());
+        this.getTaxonSessionBean().setCountTaxonAuthorSelected(0);
+        this.getTaxonSessionBean().setNewAuthorAction(true);
+        this.getTaxonSessionBean().setNewAuthor(null);
+        this.getTaxonSessionBean().setPositionTaxonAuthorSelected(-1);
+        this.getTaxonSessionBean().setAuthorList(new ArrayList<TaxonAuthorDTO>());
+        this.getTaxonSessionBean().setAllTaxonAuthorsDBMap(new HashMap<Long, Option>());
+
         return "edit";
     }
 

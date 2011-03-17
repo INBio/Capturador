@@ -23,7 +23,6 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
 import javax.faces.model.SelectItem;
-import javax.print.attribute.Size2DSyntax;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.indicator.IndicatorDTO;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
@@ -39,7 +38,6 @@ import org.inbio.ara.facade.gis.GisFacadeRemote;
 import org.inbio.ara.facade.indicator.IndicatorFacadeRemote;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.taxonomy.TaxonomyFacadeRemote;
-import org.inbio.ara.persistence.taxonomy.TaxonAuthor;
 import org.inbio.ara.persistence.taxonomy.TaxonAuthorProfile;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
@@ -213,7 +211,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
     private boolean ableTabTaxonIndicatorComponentPart = false;
 
 
-    
+    //Taxon Author
     private Long taxonAuthorSequence = -1L;
     private String taxonAuthorName;
     private Long connectorSelected = -1L;
@@ -227,6 +225,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
     private Map<Long, Set<Option>> taxonAuthorsMap = new HashMap<Long, Set<Option>>();
     private Map<Long, Long> taxonAuthorSequenceMap = new HashMap<Long, Long>();
     private Map<Long, List<TaxonAuthorDTO>> authorListMap = new HashMap<Long, List<TaxonAuthorDTO>>();
+    private Map<Long, List<TaxonAuthorDTO>> dbAuthorListMap = new HashMap<Long, List<TaxonAuthorDTO>>();
 
     private int countTaxonAuthorSelected = 0;
 
@@ -236,6 +235,10 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
 
     private TaxonAuthorDTO newAuthor = null;
     private int positionTaxonAuthorSelected = -1;
+    //private Set<Option> allTaxonAuthors = new HashSet<Option>();
+    private Map<Long, Option> allTaxonAuthorsDBMap = new HashMap<Long, Option>();
+
+    private String authors = "";
 
 
     /**
@@ -1427,6 +1430,20 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
 
     }
 
+
+    public void setEditAuthorList(Long taxonId)
+    {
+        TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
+        for(int pos = 0; pos < tap.length; pos++)
+        {
+            authorListMap.put(tap[pos].getId(), getTaxonAuthorsByTaxonCategory(taxonId, tap[pos].getIdentifier()));
+
+            List<TaxonAuthorDTO> tmpImprimir = authorListMap.get(tap[pos].getId());            
+
+        }
+    }
+
+
     public void initTaxonAuthorSequence()
     {
         TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
@@ -1775,6 +1792,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
 
     public void deleteTaxonAuthorsByTaxon(Long taxonId)
     {
+
         this.getTaxonomyFacade().deleteTaxonAuthorByTaxonId(taxonId);
     }
 
@@ -2024,6 +2042,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
 
     public List<TaxonAuthorDTO> reorderSequence(TaxonAuthorDTO element, List<TaxonAuthorDTO> list )
     {
+        
         List<TaxonAuthorDTO> listResult= new ArrayList<TaxonAuthorDTO>();
         List<TaxonAuthorDTO> tmpList = new ArrayList<TaxonAuthorDTO>();
 
@@ -2031,16 +2050,14 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
 
         boolean divide = false;
         for(int pos = 0; pos < size; pos++)
-        {
-            
-            //
+        {                                    
             if(list.get(pos).getTaxonAuthorConnectorId() == null && list.get(pos).getTaxonAuthorConnector().equals("&"))
             {
                 list.get(pos).setTaxonAuthorConnector(",");
             }
             
-            if(list.get(pos).getTaxonAuthorSequence() == element.getTaxonAuthorSequence() || divide)
-            {         
+            if(list.get(pos).getTaxonAuthorSequence().equals(element.getTaxonAuthorSequence()) || divide)
+            {                
                 TaxonAuthorDTO ta = list.get(pos);
                 Long sequenceValue =ta.getTaxonAuthorSequence( )+1;
                 ta.setTaxonAuthorSequence(sequenceValue);
@@ -2055,14 +2072,14 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
         }
 
         listResult.add(element);      
-        listResult.addAll(tmpList);        
-        
+        listResult.addAll(tmpList);                
         return listResult;
     }
 
     public void editSequence(TaxonAuthorDTO element, List<TaxonAuthorDTO> list )
     {
-        int newPos = element.getTaxonAuthorSequence().intValue()-1;
+        
+        int newPos = element.getTaxonAuthorSequence().intValue()-1;        
         list.remove(positionTaxonAuthorSelected);
         list.add(newPos, element);
         Long sequence = 0L;
@@ -2285,6 +2302,238 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
         return positionTaxonAuthorSelected;
     }
 
- 
+
+    public List<TaxonAuthorDTO> getTaxonAuthorsByTaxonCategory(Long taxonId, String category)
+    {
+        return taxonomyFacade.getTaxonAuthorsByTaxonCategory(taxonId, category);
+    }
+
+    /**
+     * @return the allTaxonAuthors
+     */
+    /*
+    public Set<Option> getAllTaxonAuthors() {
+        return allTaxonAuthors;
+    }
+*/
+    /**
+     * @param allTaxonAuthors the allTaxonAuthors to set
+     */
+    /*
+    public void setAllTaxonAuthors(Set<Option> allTaxonAuthors) {
+        this.allTaxonAuthors = allTaxonAuthors;
+    }
+     * */
+
+    public void loadAllTaxonAuthors()
+    {
+        List<PersonAuthorDTO> personAuthorDTOs = this.getTaxonomyFacade().getAllPersonsByProfileId(10L, new Short("0") , false);
+
+
+        for(PersonAuthorDTO personAuthor: personAuthorDTOs)
+        {
+//            allTaxonAuthors.add(new Option(personAuthor.getPersonId(),personAuthor.getName()));
+            allTaxonAuthorsDBMap.put(personAuthor.getPersonId(), new Option(personAuthor.getPersonId(),
+                                                                             personAuthor.getName()));
+
+        }
+
+    }
+
+
+    public void setTaxonAuthors(Long taxonId)
+    {      
+        TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
+        for(int pos = 0; pos < tap.length; pos++)
+        {
+            //authorListMap.put(tap[pos].getId(), getTaxonAuthorsByTaxonCategory(taxonId, tap[pos].getIdentifier()));
+            Map allTaxonAuthors = new HashMap();
+            allTaxonAuthors.putAll(allTaxonAuthorsDBMap);
+
+            //List<TaxonAuthorDTO> tmpTaxonAuthors = authorListMap.get(tap[pos].getId());
+            List<TaxonAuthorDTO> tmpTaxonAuthors = new ArrayList<TaxonAuthorDTO>();
+            //List<TaxonAuthorDTO> dbtmpTaxonAuthors = new ArrayList<TaxonAuthorDTO>();
+            tmpTaxonAuthors.addAll(authorListMap.get(tap[pos].getId()));
+            //dbtmpTaxonAuthors.addAll(authorListMap.get(tap[pos].getId()));
+            
+            //for(TaxonAuthorDTO taxonAuthor: tmpTaxonAuthors)
+            for(int posAuthor = 0; posAuthor < tmpTaxonAuthors.size();posAuthor++)
+            {
+                //TaxonAuthorDTO taxonAuthor = tmpTaxonAuthors.get(posAuthor);
+                Long tmpPersonId = tmpTaxonAuthors.get(posAuthor).getTaxonAuthorPersonId();
+            
+                if(allTaxonAuthors.containsKey(tmpPersonId))
+                {
+            
+                    Option tmpPersonAuthor = (Option) allTaxonAuthors.get(tmpPersonId);
+                    tmpTaxonAuthors.get(posAuthor).setTaxonAuthorName(tmpPersonAuthor.getLabel());
+                    //dbtmpTaxonAuthors.get(posAuthor).setTaxonAuthorName(tmpPersonAuthor.getLabel());
+                    allTaxonAuthors.remove(tmpPersonId);
+                }
+                else
+                {
+                    System.out.println("\t\tNo cumple");
+                    //USAR getName del Facade
+                    //taxonAuthor.setTaxonAuthorName();
+                }
+
+                //set label connector
+                if(tmpTaxonAuthors.get(posAuthor).getTaxonAuthorConnectorId() != null)
+                {
+                    
+                    tmpTaxonAuthors.get(posAuthor).setTaxonAuthorConnector(getLabelConnector(tmpTaxonAuthors.get(posAuthor).getTaxonAuthorConnectorId()));
+                    //dbtmpTaxonAuthors.get(posAuthor).setTaxonAuthorConnector(getLabelConnector(dbtmpTaxonAuthors.get(posAuthor).getTaxonId()));
+                }
+                else
+                {
+                    tmpTaxonAuthors.get(posAuthor).setTaxonAuthorConnector(",");
+                    //dbtmpTaxonAuthors.get(posAuthor).setTaxonAuthorConnector(",");
+                }
+            }
+
+            if(tmpTaxonAuthors.size() >1 && tmpTaxonAuthors.get(tmpTaxonAuthors.size()-2).getTaxonAuthorConnectorId()==null)
+            {
+                tmpTaxonAuthors.get(tmpTaxonAuthors.size()-2).setTaxonAuthorConnector("&");
+            }
+            //loadTaxonAuthorLabelConnectors(tmpTaxonAuthors);            
+            authorListMap.put(tap[pos].getId(), tmpTaxonAuthors);
+            //dbAuthorListMap.put(tap[pos].getId(), tmpTaxonAuthors);
+            dbAuthorListMap.put(tap[pos].getId(), (List<TaxonAuthorDTO>)deepCopy(tmpTaxonAuthors));
+            Set<Option> tmpOptions = new HashSet<Option>(allTaxonAuthors.values());
+            taxonAuthorsMap.put(tap[pos].getId(), tmpOptions);
+            
+        }        
+    }
+
+    /**
+     * @return the allTaxonAuthorsDBMap
+     */
+    public Map<Long, Option> getAllTaxonAuthorsDBMap() {
+        return allTaxonAuthorsDBMap;
+    }
+
+    /**
+     * @param allTaxonAuthorsDBMap the allTaxonAuthorsDBMap to set
+     */
+    public void setAllTaxonAuthorsDBMap(Map<Long, Option> allTaxonAuthorsDBMap) {
+        this.allTaxonAuthorsDBMap = allTaxonAuthorsDBMap;
+    }
+
+    public void loadTaxonAuthorSequence()
+    {        
+        TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
+        for(int pos = 0; pos < tap.length; pos++)
+        {
+            List<TaxonAuthorDTO> tmpList = new ArrayList<TaxonAuthorDTO>();
+            tmpList.addAll(authorListMap.get(tap[pos].getId()));
+            if(tmpList.size() != 0)
+            {
+                TaxonAuthorDTO tmpAuthor = tmpList.get(tmpList.size()-1);
+                Long sequence = tmpAuthor.getTaxonAuthorSequence()+1;
+                taxonAuthorSequenceMap.put(tap[pos].getId(), sequence);                
+            }
+            else
+            {
+                taxonAuthorSequenceMap.put(tap[pos].getId(), 1L);
+            }
+        }        
+    }
+
+    public void loadTaxonAuthorLabelConnectors(List<TaxonAuthorDTO> authors)
+    {
+        
+        for(TaxonAuthorDTO author: authors)
+        {
+            if(author.getTaxonAuthorConnectorId() != null)
+            {
+                author.setTaxonAuthorConnector(getLabelConnector(author.getTaxonId()));
+            }
+            else
+            {
+                author.setTaxonAuthorConnector(",");
+            }
+        }
+
+        if(authors.size() >1 && authors.get(authors.size()-1).getTaxonAuthorConnectorId()==null)
+        {
+            authors.get(authors.size()-1).setTaxonAuthorConnector("&");
+        }
+
+        
+
+    }
+
+
+    public void deleteTaxonAuthorByTaxonAuthorIds(List<TaxonAuthorDTO> taxonAuthorsDTO)
+    {        
+        this.getTaxonomyFacade().deleteTaxonAuthorByTaxonAuthorIds(taxonAuthorsDTO);
+    }
+
+    public void  updateTaxonAuthors(List<TaxonAuthorDTO> taxonAuthorsDTO)
+    {        
+        for(TaxonAuthorDTO taxonAuthorDTO: taxonAuthorsDTO)
+        {
+            taxonAuthorDTO.setUserName(this.getAraSessionBean().getGlobalUserName());
+            this.getTaxonomyFacade().updateTaxonAuthor(taxonAuthorDTO);
+        }
+    }
+
+    /**
+     * @return the dbAuthorListMap
+     */
+    public Map<Long, List<TaxonAuthorDTO>> getDbAuthorListMap() {
+        return dbAuthorListMap;
+    }
+
+    /**
+     * @param dbAuthorListMap the dbAuthorListMap to set
+     */
+    public void setDbAuthorListMap(Map<Long, List<TaxonAuthorDTO>> dbAuthorListMap) {
+        this.dbAuthorListMap = dbAuthorListMap;
+    }
+
+    public String getAuthorsLabel()
+    {
+        String result ="";
+        TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
+
+        for(int pos = 0; pos < tap.length; pos++)
+        {
+            List<TaxonAuthorDTO> tmpList = authorListMap.get(tap[pos].getId());
+            for(TaxonAuthorDTO taxonAuthor :tmpList)
+            {
+                result +=taxonAuthor.getTaxonAuthorName()+" "+taxonAuthor.getTaxonAuthorConnector()+" ";
+            }
+            
+            if(tap[pos].getIdentifier().equals("o") &&
+                    (isCheckedParentheses()==true || ((pos+1 < tap.length) && authorListMap.get(tap[pos+1].getId()).size() > 0)))
+            {
+                result = "( "+result+" ) ";
+            }
+
+        }
+        result = result.trim();
+
+
+        return result;
+    }
+
+    /**
+     * @return the authors
+     */
+    public String getAuthors() {
+        return authors;
+    }
+
+    /**
+     * @param authors the authors to set
+     */
+    public void setAuthors(String authors) {
+        this.authors = authors;
+    }
+
+
+   
+
 
 }

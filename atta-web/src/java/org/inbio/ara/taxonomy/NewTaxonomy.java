@@ -276,44 +276,23 @@ public class NewTaxonomy extends AbstractPageBean {
 
             //load AuthorList
             if(tsb.getTaxonAuthorsMap().size() == 0)
-            {
-                //System.out.println("=== taxonAuthorMap esta vacio");
-                //System.out.print("-> AuthorList size:"+tsb.getTaxonAuthorsMap().size());
+            {                
                 tsb.setAuthorList();
                 tsb.initTaxonAuthorSequence();
-                tsb.initAuthorList();
-                //System.out.println("-> AuthorTypeSelected:"+tsb.getAuthorTypeSelected());
+                tsb.initAuthorList();           
                 
-                
-             
             }
             //set authorSequence
             if(tsb.getTaxonAuthorSequence() == -1)
             {
                 tsb.setTaxonAuthorSequence(tsb.getTaxonAuthorSequenceMap().get(tsb.getAuthorTypeSelected()));
-            }
-            //System.out.print("TaxonAuthorSequence-> :"+tsb.getTaxonAuthorSequence());
-            /*
-            taxonAuthors = new Option[tsb.getTaxonAuthors().size()];
-            tsb.getTaxonAuthors().toArray(taxonAuthors);
-            */
-            /*
-            if(tsb.getAuthorTypeSelected() == TaxonAuthorProfile.ORIGINALS.getId())
-            {
-                //taxonAuthors = tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId());
-                taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId()).size()];
-                tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId()).toArray(taxonAuthors);
-            }
-            else
-            {
-                //taxonAuthors = tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId());
-                taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId()).size()];
-                tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId()).toArray(taxonAuthors);
-            }
-            */
-            //taxonAuthors = new Option[];
+            }            
             taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(tsb.getAuthorTypeSelected()).size()];
             tsb.getTaxonAuthorsMap().get(tsb.getAuthorTypeSelected()).toArray(taxonAuthors);
+
+            tsb.getAuthorListMap().put(tsb.getAuthorTypeSelected(), tsb.getAuthorList());
+            //set authorsLabel
+            tsb.setAuthors(tsb.getAuthorsLabel());
         }
         //On focus tabTaxonIndicatorCountry:
         if(tsb.getTaxonTabSelected().equals("tabTaxonIndicatorCountry"))
@@ -339,7 +318,6 @@ public class NewTaxonomy extends AbstractPageBean {
             if(tsb.getDdIndicatorCPSelected() == null && indicatorRelations.length>0)
             {
                 tsb.setDdIndicatorCPSelected((Long)indicatorRelations[0].getValue());
-
             }
 
 
@@ -711,8 +689,7 @@ public class NewTaxonomy extends AbstractPageBean {
 
            TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
            for(int pos = 0; pos < tap.length; pos++)
-            {
-             //   taxonAuthorSequenceMap.put(tap[pos].getId(), 1L);
+            {             
                List<TaxonAuthorDTO> tmpList = TSB.getAuthorListMap().get(tap[pos].getId());
                if(tmpList != null && tmpList.size()>0)
                {
@@ -721,9 +698,6 @@ public class NewTaxonomy extends AbstractPageBean {
 
             }
            
-          
-             
-
            /* CREATE NEW TAXON-INDICATOR RELATIONS*/
 
            List<String> indicatorIds = new ArrayList<String>();
@@ -773,8 +747,6 @@ public class NewTaxonomy extends AbstractPageBean {
                         TSB.saveTaxonIndicatorComponentPartIds(TSB.getCurrentTaxon().getTaxonKey(), indicatorId, componentPartIds, this.getAraSessionBean().getGlobalUserName());
                     }
 
-
-
                }
                catch(Exception e)
                {
@@ -785,7 +757,6 @@ public class NewTaxonomy extends AbstractPageBean {
           
 
         }
-
 
        /* CLEAR */
         //Taxon
@@ -1109,9 +1080,6 @@ public class NewTaxonomy extends AbstractPageBean {
     
      public String btnEditAuthor_action()
     {
-
-
-         //System.out.println("=== Entra al Editar Author ===");
         TaxonSessionBean tsb = this.getTaxonSessionBean();
 
         tsb.setCountTaxonAuthorSelected(0);
@@ -1127,22 +1095,16 @@ public class NewTaxonomy extends AbstractPageBean {
             tsb.setNewAuthor(tsb.getAuthorList().get(tsb.getPositionTaxonAuthorSelected()));
             //set default value to connectorId
             Long connectorId = -1L;
-            //System.out.println("Cantidad de autores seleccionados = "+tsb.getCountTaxonAuthorSelected());
             if(tsb.getCountTaxonAuthorSelected() == 1)
             {
-
                 tsb.setTaxonAuthorSequence(tsb.getNewAuthor().getTaxonAuthorSequence());
-
-
                 tsb.setTaxonAuthorName(tsb.getNewAuthor().getTaxonAuthorName());
-                //System.out.println("--> ConnectorId = "+taxonAuthorSelected.getTaxonAuthorConnectorId());
-
+             
                 if(tsb.getNewAuthor().getTaxonAuthorConnectorId() != null)
                 {
 
                     connectorId = tsb.getNewAuthor().getTaxonAuthorConnectorId();
                 }
-
 
                 tsb.setConnectorSelected(connectorId);
                 tsb.setVisiblePanelAuthorAction(true);
@@ -1167,9 +1129,7 @@ public class NewTaxonomy extends AbstractPageBean {
     public String btnRemoveAuthor_action()
     {
 
-        //System.out.println("=== Entra al Eliminar Author ===");
         TaxonSessionBean tsb = this.getTaxonSessionBean();
-
 
         TaxonAuthorDTO taxonAuthorSelected = tsb.getTaxonAuthorSelected();
 
@@ -1177,15 +1137,11 @@ public class NewTaxonomy extends AbstractPageBean {
         {
             if(tsb.getCountTaxonAuthorSelected() == 1)
             {
-                //tsb.setTaxonAuthorSequence(taxonAuthorSelected.getTaxonAuthorSequence());
                 tsb.removeTaxonAuthorSelected();
                 tsb.addOptionToTaxonAuthors(taxonAuthorSelected);
-                Long newSequence = tsb.getTaxonAuthorSequenceMap().get(tsb.getAuthorTypeSelected())-1L;
-                //System.out.println("Editando sequence FINAL => sequence = "+tsb.getTaxonAuthorSequence() +" , new sequence = "+newSequence);
-                //tsb.setTaxonAuthorSequence(newSequence);
+                Long newSequence = tsb.getTaxonAuthorSequenceMap().get(tsb.getAuthorTypeSelected())-1L;             
                 tsb.getTaxonAuthorSequenceMap().put(tsb.getAuthorTypeSelected(), newSequence);
                 tsb.setCountTaxonAuthorSelected(0);
-
             }
             else
             {
@@ -1246,9 +1202,7 @@ public class NewTaxonomy extends AbstractPageBean {
          else
          {
              if(tsb.getTaxonAuthorSequence()>0 && tsb.getTaxonAuthorSequence() < tsb.getTaxonAuthorSequenceMap().get(tsb.getAuthorTypeSelected()))
-             {
-                
-                //if(tsb.getConnectorSelected() != null && tsb.getConnectorSelected() >= 0)
+             { 
                 if(tsb.getConnectorSelected() >= 0)
                 {
                     tsb.getNewAuthor().setTaxonAuthorConnectorId(tsb.getConnectorSelected());
@@ -1261,14 +1215,13 @@ public class NewTaxonomy extends AbstractPageBean {
                     tsb.getNewAuthor().setTaxonAuthorConnector(",");
                 }
                 tsb.getNewAuthor().setTaxonAuthorSequence(tsb.getTaxonAuthorSequence());
-                //tsb.getAuthorList().set(tsb.getPositionTaxonAuthorSelected(), tsb.getNewAuthor());
+              
                 tsb.editSequence(tsb.getNewAuthor(), tsb.getAuthorList());
                 //Set & and , connectors
                 setDefaultConnector();
              }
              else
              {
-                //CAMBIAR EL MENSAJE DE ERROR
                  MessageBean.setErrorMessageFromBundle("error_taxon_indicator",this.getMyLocale());
              }
          }
@@ -1287,16 +1240,14 @@ public class NewTaxonomy extends AbstractPageBean {
     {
          TaxonSessionBean tsb = this.getTaxonSessionBean();
          if(tsb.isNewAuthorAction() && tsb.getNewAuthor() != null)
-         {
-             //tsb.getTaxonAuthorsMap().get(tsb.getAuthorTypeSelected()).add(tsb.getAuthorRemove());
+         {             
              tsb.addOptionToTaxonAuthors(tsb.getNewAuthor());
          }
 
          //Clean
          tsb.setTaxonAuthorSequence(-1L);
          tsb.setConnectorSelected(-1L);
-         tsb.setVisiblePanelAuthorAction(false);
-         //tsb.setAuthorRemove(null);
+         tsb.setVisiblePanelAuthorAction(false);         
          tsb.setNewAuthor(null);
 
         return null;
@@ -1310,14 +1261,11 @@ public class NewTaxonomy extends AbstractPageBean {
          int lastPosition = tsb.getAuthorList().size() - 1;
          if(tsb.getAuthorList().size() > 2)
          {             
-             position = tsb.getAuthorList().size() - 2;
-           //  System.out.println("** Entro a calcular la posicion = "+position);
+             position = tsb.getAuthorList().size() - 2;           
          }
-         //System.out.println("*** \tConnectorId = "+tsb.getAuthorList().get(position).getTaxonAuthorConnectorId());
-         //System.out.println("*** \tAuthorList.size() =  "+tsb.getAuthorList().size());
+         
          if(tsb.getAuthorList().get(position).getTaxonAuthorConnectorId() == null && tsb.getAuthorList().size() > 1)
-         {
-             //System.out.println("** Entro a asignar el & y corregir el , ");
+         {         
              tsb.getAuthorList().get(position).setTaxonAuthorConnector("&");
              if(position > 0 && tsb.getAuthorList().get(position-1).getTaxonAuthorConnectorId() == null)
              {
@@ -1325,8 +1273,7 @@ public class NewTaxonomy extends AbstractPageBean {
              }
          }
          if(tsb.getAuthorList().get(lastPosition).getTaxonAuthorConnectorId() == null)
-         {
-             //System.out.println("** Entro a asignar , al ultimo elemento ");
+         {          
              tsb.getAuthorList().get(lastPosition).setTaxonAuthorConnector(",");
          }
      }
@@ -1342,7 +1289,7 @@ public class NewTaxonomy extends AbstractPageBean {
             ReferenceDTO aux = (ReferenceDTO) selectedResources.getRowData();
 
             if (aux.isSelected() && (!selectedResourcesId.containsKey(aux.getKey()))) {
-                //System.out.println("Seleccionado "+ aux.getTitle());
+          
                 selectedResourcesId.put(aux.getKey(), aux);
 
             }
@@ -1380,23 +1327,16 @@ public class NewTaxonomy extends AbstractPageBean {
     public String setAuthorList()
     {
         TaxonSessionBean tsb = this.getTaxonSessionBean();
-        System.out.println("\t\t\ttsb.getAuthorTypeSelected() = "+tsb.getAuthorTypeSelected());
-        System.out.println("\t\t\tTaxonAuthorProfile.ORIGINALS.getId() = "+TaxonAuthorProfile.ORIGINALS.getId());
+       
         if(tsb.getAuthorTypeSelected().equals(TaxonAuthorProfile.ORIGINALS.getId()))
         {
-            System.out.println("--> Cambiar la lista a ORIGINALS");
+       
             //set taxonAuthor
             taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId()).size()];
             tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.ORIGINALS.getId()).toArray(taxonAuthors);
 
-            //switch authorList
-           // List<TaxonAuthorDTO> tmpList = tsb.getAuthorList();
-            tsb.getAuthorListMap().put(TaxonAuthorProfile.MODIFICATORS.getId(),tsb.getAuthorList());
-            //Collection<Object> tmpArray = tsb.getAuthorListMap().get(TaxonAuthorProfile.ORIGINALS.getId()).toArray();
-            //tsb.setAuthorList(new ArrayList<TaxonAuthorDTO>());
-           /* tsb.getAuthorListMap().put(TaxonAuthorProfile.MODIFICATORS.getId(),
-                   (List<TaxonAuthorDTO>)tsb.deepCopy(tsb.getAuthorList()));
-            */
+            //switch authorList          
+            tsb.getAuthorListMap().put(TaxonAuthorProfile.MODIFICATORS.getId(),tsb.getAuthorList());            
             tsb.setAuthorList(tsb.getAuthorListMap().get(TaxonAuthorProfile.ORIGINALS.getId()));
 
             //switch taxonAuthorSequence
@@ -1405,20 +1345,12 @@ public class NewTaxonomy extends AbstractPageBean {
 
         }
         else
-        {
-            System.out.println("--> Cambiar la lista a MODIFICATORS");
-                //taxonAuthors = tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId());
+        {            
             taxonAuthors = new Option[tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId()).size()];
             tsb.getTaxonAuthorsMap().get(TaxonAuthorProfile.MODIFICATORS.getId()).toArray(taxonAuthors);
 
-            //switch authorList
-            //List<TaxonAuthorDTO> tmpList = tsb.getAuthorList();
-            tsb.getAuthorListMap().put(TaxonAuthorProfile.ORIGINALS.getId(),tsb.getAuthorList());
-            //tsb.setAuthorList(new ArrayList<TaxonAuthorDTO>());
-            /*
-            tsb.getAuthorListMap().put(TaxonAuthorProfile.ORIGINALS.getId(),
-                   (List<TaxonAuthorDTO>)tsb.deepCopy(tsb.getAuthorList()));
-             */
+            //switch authorList         
+            tsb.getAuthorListMap().put(TaxonAuthorProfile.ORIGINALS.getId(),tsb.getAuthorList());            
             tsb.setAuthorList(tsb.getAuthorListMap().get(TaxonAuthorProfile.MODIFICATORS.getId()));
 
             //switch taxonAuthorSequence
