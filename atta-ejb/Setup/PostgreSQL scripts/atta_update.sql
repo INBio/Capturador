@@ -1,4 +1,4 @@
--- Atta - capture species and specimen data
+﻿-- Atta - capture species and specimen data
 --
 -- Copyright (C) 2011  INBio (Instituto Nacional de Biodiversidad)
 --
@@ -15,3 +15,21 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --
+
+--2011.03.23 gsulca
+
+--Set start profile_seq
+ALTER SEQUENCE ATTA.PROFILE_SEQ RESTART WITH 22;
+
+-- Adding profiles
+INSERT INTO ATTA.PROFILE (name, description, creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('Autor de registros de especies', null, '2011-03-24', 'admin', '2011-03-24', 'admin');
+
+INSERT INTO ATTA.PROFILE (name, description, creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('Autor de descripciones morfologicas',  null, '2011-03-24', 'admin', '2011-03-24', 'admin');
+
+INSERT INTO ATTA.PROFILE (name, description, creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('Donor person',  null, '2011-03-24', 'admin', '2011-03-24', 'admin');
+
+INSERT INTO ATTA.PROFILE (name, description, creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('Responsible person',  null, '2011-03-24', 'admin', '2011-03-24', 'admin');
