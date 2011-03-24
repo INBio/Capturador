@@ -834,7 +834,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      */
     public List<PersonDTO> getAllColectors() {
         return personDTOFactory.createDTOList(personEAOImpl.
-                findByProfile(ProfileEntity.COLECTOR_PROFILE.getId()));
+                findByProfile(ProfileEntity.RECOLECTOR.getId()));
     }
 
     /**

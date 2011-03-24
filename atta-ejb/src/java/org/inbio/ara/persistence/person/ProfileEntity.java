@@ -23,17 +23,34 @@ package org.inbio.ara.persistence.person;
  * @author esmata
  */
 public enum ProfileEntity {
-    GATHERING_RESPONSIBLE_PROFILE(new Long(9)),
-    COLECTOR_PROFILE(new Long(13)),
-    SPECIES_RECORD_AUTHOR(new Long(14)),
-    MORPHOLOGICAL_DESCRIPTOR(new Long(15)),
-    IDENTIFICATION_VALIDATOR(new Long(16)),
-    IDENTIFIER_PROFILE(new Long(17)),
-    CERTIFIER(new Long(18)),
-    SPECIMEN_IDENTIFIER(new Long(19)),
-    DONOR_PERSON_PROFILE(new Long(20)),
-    RESPONSABLE_PERSON_GERMPLASM_PROFILE(new Long(21));
 
+    TAXONOMIC_AUTHOR(new Long(2)),
+    RECOLECTOR(new Long(3)),
+    IDENTIFIER_PROFILE(new Long(4)),
+    PREPARER(new Long(5)),
+    LITERARY_AUTHOR(new Long(6)),
+    TAXON_OBSERVER(new Long(7)),
+    TAXONOMIC_INDICATORS_ESTIMATOR(new Long(8)),
+    SPECIMENS_DESCRIPTOR(new Long(9)),
+    GATHERING_RESPONSIBLE_PROFILE(new Long(10)),
+    SPECIMENS_SCORER(new Long(11)),
+    IMAGES_PROCESSOR(new Long(12)),
+    OBSERVATIONS_VALIDATOR(new Long(13)),
+    PUBLICATIONS_EDITOR(new Long(14)),
+    PUBLICATIONS_COMPILER(new Long(15)),
+    PUBLICATIONS_TRADUCTOR(new Long(16)),
+    SPECIMENS_OBSERVATION_RESPONSIBLE(new Long(17)),
+    IDENTIFICATION_VALIDATOR(new Long(18)),
+    CULTURE_RESPONSIBLE(new Long(19)),
+    CERTIFIER(new Long(20)),
+    IMAGE_AUTHOR(new Long(21)),
+    SPECIES_RECORD_AUTHOR(new Long(22)),
+    MORPHOLOGICAL_DESCRIPTOR(new Long(23)),
+    DONOR_PERSON_PROFILE(new Long(24)),
+    RESPONSABLE_PERSON_GERMPLASM_PROFILE(new Long(25))
+    ;
+    
+   
     private Long id;
 
     private ProfileEntity(Long id){
