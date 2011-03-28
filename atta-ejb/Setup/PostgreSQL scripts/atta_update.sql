@@ -33,3 +33,17 @@ INSERT INTO ATTA.PROFILE (name, description, creation_date, created_by, last_mod
 
 INSERT INTO ATTA.PROFILE (name, description, creation_date, created_by, last_modification_date, last_modification_by)
     VALUES ('Responsible person',  null, '2011-03-24', 'admin', '2011-03-24', 'admin');
+
+--2011.03.28 gsulca
+
+--Set start profile_seq
+ALTER SEQUENCE ATTA.TAXON_SEQ RESTART WITH 74762;
+
+INSERT INTO ATTA.TAXON (taxonomical_range_id, current_name, current_name_timestamp, default_name, current_predecessor_timestamp, taxon_category_id, author_format_parenthesis, creation_date, created_by, last_modification_date, last_modification_by)
+	VALUES('0', 'Base taxonómica', '2011-03-28', 'Base taxonómica', '2011-03-28', 1, 0, '2011-03-28', 'admin', '2011-03-28', 'admin');
+
+UPDATE ATTA.TAXON SET ancestor_id = 74762 WHERE taxonomical_range_id = 23;
+
+
+
+
