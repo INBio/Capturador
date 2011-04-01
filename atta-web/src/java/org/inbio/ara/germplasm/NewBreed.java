@@ -17,6 +17,7 @@ import org.inbio.ara.admin.SelectionListSessionBean;
 import org.inbio.ara.admin.PersonSessionBean;
 import org.inbio.ara.dto.germplasm.BreedDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
+import org.inbio.ara.persistence.taxonomy.TaxonomicalRangeEntity;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
 
@@ -110,7 +111,7 @@ public class NewBreed extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        scientificName.setOptions(updateTaxonListAction(new Long (18)));
+        scientificName.setOptions(updateTaxonListAction());
     }
 
 
@@ -158,16 +159,12 @@ public class NewBreed extends AbstractPageBean {
      * Update the taxon drop down
      * @return
      */
-    public Option[] updateTaxonListAction(Long taxonomicLevel) {
+    public Option[] updateTaxonListAction() {
 
-        /*List<TaxonDTO> taxonList = getgermplasm$BreedSessionBean().
-                getGermplasmFacadeRemote().
-                getAllTaxonsByCollectionIdAndTaxonomicalRangeId(
-                getAraSessionBean().getGlobalCollectionId(), taxonomicLevel);*/
 
         List<TaxonDTO> taxonList = getgermplasm$BreedSessionBean().
                 getGermplasmFacadeRemote().
-                getAllTaxonsByAnimaliaKingdomAndTaxonomicalRangeId(taxonomicLevel);
+                getAllTaxonsByAnimaliaKingdomAndTaxonomicalRangeId(TaxonomicalRangeEntity.SPECIES.getId());
 
             return this.setTaxonListOptions(taxonList);
 
