@@ -1515,12 +1515,44 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     }
 
 
+    public String getAuthorName(PersonProfile personProfile,short formatId, boolean orientation)
+    {
+        String result;
+        switch(formatId)
+        {
+            case 0: result = perfilFormat(personProfile);
+                    if(result == null)
+                    {
+                        result = shortFormat(personProfile, orientation);
+                    }
+                    break;
+            case 1: result = shortFormat(personProfile, orientation);
+                    break;
+            case 2: result = LongFormat(personProfile, orientation);
+                    break;
+            case 3: result = completeFormat(personProfile, orientation);
+                    break;
+            default: result = shortFormat(personProfile, orientation);
+        }
+        return result;
+    }
+
+
+
 
     private String perfilFormat(Long personId, Long profileId)
     {
         //System.out.println("entro a perfilFormat");
         return personProfileEAOImpl.findPersonByPersonProfileId(personId, profileId);
     }
+
+    private String perfilFormat(PersonProfile personProfile)
+    {
+        //System.out.println("entro a perfilFormat");
+        //return personProfileEAOImpl.findPersonByPersonProfileId(personId, profileId);
+        return personProfile.getShortName();
+    }
+
 
 
     private String shortFormat(Long personId,boolean orientation)
@@ -1558,6 +1590,21 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
 
     }
 
+     private String shortFormat(PersonProfile personProfile,boolean orientation)
+    {
+         String result = "";
+         if(orientation)
+         {
+             result = personProfile.getPerson().getNaturalShortName();
+         }
+         else
+         {
+             result = personProfile.getPerson().getFormalShortName();
+         }      
+         return result;
+
+    }
+
     private String LongFormat(Long personId, boolean orientation)
     {
      //   System.out.println("entro a longFormat");
@@ -1591,6 +1638,21 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
 
         return result;
     }
+
+     private String LongFormat(PersonProfile personProfile, boolean orientation)
+     {
+
+         String result = "";
+         if(orientation)
+         {
+             result= personProfile.getPerson().getNaturalLongName();
+         }
+         else
+         {
+             result= personProfile.getPerson().getFormalLongName();
+         }
+         return result;
+     }
 
     private String completeFormat(Long personId, boolean orientation)
     {
@@ -1636,17 +1698,39 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
     }
 
 
+    private String completeFormat(PersonProfile personProfile, boolean orientation)
+    {
+         String result = "";
+         if(orientation)
+         {
+             result= personProfile.getPerson().getNaturalFullName();
+         }
+         else
+         {
+             result= personProfile.getPerson().getFormalFullName();
+         }
+         return result;
+        
+    }
+
     public List<PersonAuthorDTO> getAllPersonsByProfileId(Long profileId, Short formatId, boolean orientation)
     {
-
+              
         List<PersonProfile> personProfiles = personProfileEAOImpl.findPersonsByProfileId(profileId);
+
+        
         List<PersonAuthorDTO> personAuthors = new ArrayList<PersonAuthorDTO>();
         for(PersonProfile personProfile: personProfiles)
         {
+            /*System.out.print("\t- "+personProfile.getPersonProfilePK().getPersonId()+", "+personProfile.getShortName()+
+                    ", "+personProfile.getPerson().getFirstName()+", "+personProfile.getPerson().getLastName()+" => "+getAuthorName(personProfile, formatId, orientation));*/
             Long personId = personProfile.getPersonProfilePK().getPersonId();
             personAuthors.add(new PersonAuthorDTO(personId,
-                    getAuthorName(personId, profileId, formatId, orientation)));
+                    /*getAuthorName(personId, profileId, formatId, orientation)*/
+                    getAuthorName(personProfile, formatId, orientation)));
+       
         }
+
         return personAuthors;
 
     }
@@ -1697,18 +1781,18 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
 
     public void updateTaxonAuthor(TaxonAuthorDTO taxonAuthorDTO) {
 
-        System.out.println("\t - taxonId = "+taxonAuthorDTO.getTaxonId());
-        System.out.println("\t - taxonAuthorId = "+taxonAuthorDTO.getTaxonAuthorPersonId());
-        System.out.println("\t - category = "+taxonAuthorDTO.getCategory());
+       
         TaxonAuthor ta = taxonAuthorEAOImpl.findTaxonAuthorByTaxonAuthorIds(taxonAuthorDTO.getTaxonId(), taxonAuthorDTO.getTaxonAuthorSequence(), taxonAuthorDTO.getCategory());
-        ta = this.taxonAuthorDTOFactory.updatePlainEntity(taxonAuthorDTO, ta);
-        System.out.println("UPDATE");
-        System.out.println("\t - taxonId = "+ta.getTaxonAuthorPK().getTaxonId());
-        System.out.println("\t - taxonAuthorId = "+ta.getTaxonAuthorPersonId());
-        System.out.println("\t - category = "+ta.getTaxonAuthorPK().getCategory());
-        System.out.println("\t - connectorId = "+ta.getTaxonAuthorConnectorId());
-        System.out.println("\t - sequence = "+ta.getTaxonAuthorPK().getTaxonAuthorSequence());
+        ta = this.taxonAuthorDTOFactory.updatePlainEntity(taxonAuthorDTO, ta);       
         this.taxonAuthorEAOImpl.update(ta);
+    }
+
+
+    public List<TaxonDTO> getTaxonByName(String taxonName, Long kingdomId, Long categoryId , int base, int offset)
+    {
+        //System.out.println("taxonName = "+taxonName+" , kingdomId = "+kingdomId+ " , categoryId = "+categoryId+ " , base = "+ base + " , offset = "+offset);
+        List<Taxon> taxonEntities = taxonEAOImpl.findTaxonByName(taxonName, kingdomId, categoryId, base, offset);
+        return taxonDTOFactory.createDTOList(taxonEntities);
     }
 
 

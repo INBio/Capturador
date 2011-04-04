@@ -63,6 +63,7 @@ public class TaxonEAOImpl extends BaseEAOImpl<Taxon,Long> implements TaxonEAOLoc
     }
 
     public List<Taxon> findByTaxononimcalRange(Long taxonomicalRangeId) {
+        //System.out.println("TaxonomicalRangeId = "+taxonomicalRangeId);
         StringBuffer query = new StringBuffer();
         query.append("from Taxon as t where t.taxonomicalRangeId = :taxonomicalRangeId" +
                 " order by t.defaultName");
@@ -193,6 +194,22 @@ public class TaxonEAOImpl extends BaseEAOImpl<Taxon,Long> implements TaxonEAOLoc
                 q.setParameter("taxonId", taxonId);
                 return (Long)q.getSingleResult();
 
+    }
+
+    public List<Taxon> findTaxonByName(String taxonName, Long kingdomId, Long categoryId , int base, int offset)
+    {
+        Query q = em.createQuery(" SELECT t " +
+                     " FROM Taxon t "+
+                     " WHERE t.kingdomTaxonId = :kingdomId" +
+                     " AND t.taxonCategoryId = :categoryId"+
+                     " AND LOWER(t.defaultName) LIKE :taxonName");
+
+        q.setParameter("taxonName", "%"+taxonName.toLowerCase()+"%");
+        q.setParameter("kingdomId", kingdomId);
+        q.setParameter("categoryId", categoryId);
+        q.setFirstResult(base);
+        q.setMaxResults(offset);
+        return q.getResultList();
     }
 
 }
