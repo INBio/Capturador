@@ -38,6 +38,8 @@ import org.inbio.ara.facade.gis.GisFacadeRemote;
 import org.inbio.ara.facade.indicator.IndicatorFacadeRemote;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.taxonomy.TaxonomyFacadeRemote;
+import org.inbio.ara.persistence.person.AuthorNameEntity;
+import org.inbio.ara.persistence.person.ProfileEntity;
 import org.inbio.ara.persistence.taxonomy.TaxonAuthorProfile;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
@@ -47,6 +49,7 @@ import org.inbio.commons.dublincore.dto.DublinCoreDTO;
 import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
 import org.inbio.commons.dublincore.facade.ara.DublinCoreFacadeRemote;
 import org.inbio.commons.dublincore.model.ResourceTypeEnum;
+import org.inbio.ara.persistence.person.ProfileEntity;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -1380,8 +1383,9 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
      * Obtener los datos del drop down de las listas de seleccion
      */
     public void setTaxonAuthorProfileDropDownData(){
-
+   
         List<TaxonAuthorProfileDTO> tapDTOList = this.getTaxonomyFacade().getAllTaxonAuthorProfile();
+        
         ArrayList<Option> allOptions = new ArrayList<Option>();
         Option[] allOptionsInArray;
         //Option option;
@@ -1394,39 +1398,34 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
             taxonAuthorProfileName = BundleHelper.getDefaultBundleValue(tapDTO.getNameAsProperty(), getMyLocale());
             //option = new Option(sleDTO.getSelectionListEntityId(), selectionListName);
             allOptions.add(new Option(tapDTO.getTaxonAuthorProfileId(), taxonAuthorProfileName));
-        }
+        }       
         //Sets the elements in the SingleSelectedOptionList Object
         allOptionsInArray = new Option[allOptions.size()];        
-        this.setAuthorType(allOptions.toArray(allOptionsInArray));
-
+        this.setAuthorType(allOptions.toArray(allOptionsInArray));        
     }
 
     public void setAuthorList()
     {
-        //System.out.println("Entro a SetAuthorList");
-        List<PersonAuthorDTO> personAuthorDTOs = this.getTaxonomyFacade().getAllPersonsByProfileId(10L, new Short("0") , false);
-        //int size = personAuthorDTOs.size();
-        /*
-        Option[] taxonOriginalAuthors = new Option[size];
-        Option[] taxonModificatorAuthors = new Option[size];
-         */
+                
+        List<PersonAuthorDTO> personAuthorDTOs = this.getTaxonomyFacade().getAllPersonsByProfileId(ProfileEntity.TAXONOMIC_AUTHOR.getId(), AuthorNameEntity.PERFIL_FORMAT.getId() , false);
+
+        
         Set<Option> taxonOriginalAuthors = new HashSet<Option>();
         Set<Option> taxonModificatorAuthors = new HashSet<Option>();
 
-        //ArrayList<Option> allOptions = new ArrayList<Option>();
-
-        for(PersonAuthorDTO personAuthor: personAuthorDTOs)
-        //for(int pos = 0; pos < size; pos++)
+        
+        for(PersonAuthorDTO personAuthor: personAuthorDTOs)        
         {
+            //System.out.println("Option "+personAuthor.getPersonId()+" - "+personAuthor.getName());
             taxonOriginalAuthors.add(new Option(personAuthor.getPersonId(),personAuthor.getName()));
-            taxonModificatorAuthors.add(new Option(personAuthor.getPersonId(),personAuthor.getName()));           
+            taxonModificatorAuthors.add(new Option(personAuthor.getPersonId(),personAuthor.getName()));
+
         }
 
         
         getTaxonAuthorsMap().put(TaxonAuthorProfile.ORIGINALS.getId(), taxonOriginalAuthors);
         getTaxonAuthorsMap().put(TaxonAuthorProfile.MODIFICATORS.getId(), taxonModificatorAuthors);
-        
-
+       
 
     }
 
@@ -2327,7 +2326,7 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
 
     public void loadAllTaxonAuthors()
     {
-        List<PersonAuthorDTO> personAuthorDTOs = this.getTaxonomyFacade().getAllPersonsByProfileId(10L, new Short("0") , false);
+        List<PersonAuthorDTO> personAuthorDTOs = this.getTaxonomyFacade().getAllPersonsByProfileId(ProfileEntity.TAXONOMIC_AUTHOR.getId(), new Short("0") , false);
 
 
         for(PersonAuthorDTO personAuthor: personAuthorDTOs)
@@ -2361,7 +2360,8 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
             {
                 //TaxonAuthorDTO taxonAuthor = tmpTaxonAuthors.get(posAuthor);
                 Long tmpPersonId = tmpTaxonAuthors.get(posAuthor).getTaxonAuthorPersonId();
-            
+                System.out.println("tmpPersonId = "+tmpPersonId);
+                System.out.println("se encuentra en el map? "+allTaxonAuthors.containsKey(tmpPersonId));
                 if(allTaxonAuthors.containsKey(tmpPersonId))
                 {
             

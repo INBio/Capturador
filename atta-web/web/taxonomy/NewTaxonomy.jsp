@@ -14,7 +14,7 @@
     <f:view>
         <webuijsf:page id="page1">
             <webuijsf:html id="html1">
-                <webuijsf:head binding="#{Header_Login.head1}" id="head1">
+                <webuijsf:head binding="#{Header_Login.head1}" debug="true" id="head1" webuiAll="true" webuiJsfx="true">
                 
                     <webuijsf:link id="link1" url="/resources/css/stylesheet.css"/>
                     <webuijsf:link id="link3" url="/resources/js/yui/build/fonts/fonts-min.css"/>
@@ -71,11 +71,29 @@
                                                     <h:selectOneMenu id="ddCategory" value="#{taxonomy$TaxonSessionBean.taxonomicalCategorySelected}">
                                                         <f:selectItems id="dropdown2SelectItems" value="#{taxonomy$NewTaxonomy.ddCategoryItems}"/>
                                                     </h:selectOneMenu>
-                                                    <h:panelGrid columns="2" id="selectionPanel" style="position: relative; -rave-layout: grid">
+                                                    <!--
+                                                    <div id="pageFormated">
+                                                    -->
+                                                    <webuijsf:label for="tfAutocomplete" id="lbAutocomplete" text="#{resources.synonym_of}"/>
+                                                    <webuijsf:textField
+                                                        autoComplete="true"
+                                                        autoCompleteExpression = "#{taxonomy$TaxonAutoCompleteBean.getOptions}"
+                                                        text="#{taxonomy$TaxonAutoCompleteBean.text}"
+                                                        style="z-order: 1;"
+                                                        id = "tfAutocomplete"
+                                                        columns="25"
+
+                                                        >
+                                                    </webuijsf:textField>
+                                                    <!--
+                                                    </div>
+                                                    -->
+                                                    <h:panelGrid columns="2" id="selectionPanel" style="position: relative;width:200px; -rave-layout: grid">
                                                         <h:selectBooleanCheckbox id="checkParentheses" value="#{taxonomy$TaxonSessionBean.checkedParentheses}"/>
                                                         <webuijsf:label for="checkParentheses" id="lbParentheses" text="#{resources.author_parentheses}"/>
                                                     </h:panelGrid>
                                                 </h:panelGrid>
+
                                                 <h:panelGrid columns="4" id="description" style="position: relative; width: 400px; -rave-layout: grid" styleClass="My_subpanel_blue">
                                                     <webuijsf:label for="ddMonth" id="lbMonth" text="#{resources.month}"/>
                                                     <h:selectOneMenu id="ddMonth" value="#{taxonomy$TaxonSessionBean.monthSelected}">

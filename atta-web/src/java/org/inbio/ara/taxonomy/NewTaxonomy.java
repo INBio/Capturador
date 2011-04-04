@@ -45,6 +45,7 @@ import org.inbio.ara.util.MessageBean;
 import org.inbio.commons.dublincore.dto.DublinCoreDTO;
 import org.inbio.commons.dublincore.dto.ara.ReferenceDTO;
 import org.inbio.commons.dublincore.model.ResourceTypeEnum;
+import org.inbio.ara.persistence.person.ProfileEntity;
 
 /**
  * <p>Page bean that corresponds to a similarly named JSP page.  This
@@ -217,7 +218,12 @@ public class NewTaxonomy extends AbstractPageBean {
     public void prerender() {
 
         TaxonSessionBean tsb = this.getTaxonSessionBean();
-        //System.out.println("Hizo prerender");
+        TaxonAutoCompleteSessionBean tacb = this.getTaxonAutoCompleteSessionBean();
+        System.out.println("Hizo prerender");
+
+        System.out.println("Cantidad de opciones en el autocomplete = "+tacb.options.length);
+        System.out.println("Sinonimo -> TaxonId = "+tacb.getOptionHash().get(tacb.getText()));
+        
          
         //Set hidden value from session bean
         hiddenTaxonNodeId.setValue(tsb.getTaxonNodeId());
@@ -228,6 +234,9 @@ public class NewTaxonomy extends AbstractPageBean {
         hiddenPathNode.setValue(tsb.getPathNode());
 
         List<TaxonomicalRangeDTO> tmpTaxonomicalRange = this.getTaxonSessionBean().getNextLevelsByTaxon(new Long(this.getHiddenTaxonNodeId().getValue().toString()));
+
+        
+       
         
         tsb.setDbRanges(new HashSet<Option>());
         for(int pos = 0; pos < tmpTaxonomicalRange.size(); pos++)
@@ -276,10 +285,10 @@ public class NewTaxonomy extends AbstractPageBean {
 
             //load AuthorList
             if(tsb.getTaxonAuthorsMap().size() == 0)
-            {                
+            {
                 tsb.setAuthorList();
                 tsb.initTaxonAuthorSequence();
-                tsb.initAuthorList();           
+                tsb.initAuthorList();
                 
             }
             //set authorSequence
@@ -376,6 +385,11 @@ public class NewTaxonomy extends AbstractPageBean {
             tsb.setAbleTabTaxonIndicatorDublinCore(false);
         }
 
+         tacb.setCategoryId(1L);//ACEPTED
+         //System.out.println("currentTaxon "+tsb.getCurrentTaxon());
+         
+         //tacb.setKingdomId(tsb.getCurrentTaxon().getKingdomTaxonId());
+
     }
     
     /**
@@ -402,6 +416,12 @@ public class NewTaxonomy extends AbstractPageBean {
     protected TaxonSessionBean getTaxonSessionBean() {
         return (TaxonSessionBean) getBean("taxonomy$TaxonSessionBean");
     }
+
+
+    protected TaxonAutoCompleteSessionBean getTaxonAutoCompleteSessionBean() {
+        return (TaxonAutoCompleteSessionBean) getBean("taxonomy$TaxonAutoCompleteBean");
+    }
+
 
 
     /**
@@ -1423,6 +1443,7 @@ public class NewTaxonomy extends AbstractPageBean {
             tsb.getArContries().addSelectedOptions();
             
         }
+
 
       
         return null;

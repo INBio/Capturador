@@ -179,6 +179,10 @@ public class ListTaxonomy extends AbstractPageBean {
         return (AraSessionBean) getBean("AraSessionBean");
     }
 
+    protected TaxonAutoCompleteSessionBean getTaxonAutoCompleteSessionBean() {
+        return (TaxonAutoCompleteSessionBean) getBean("taxonomy$TaxonAutoCompleteBean");
+    }
+
     /**
      * @return the myLocale
      */
@@ -297,6 +301,7 @@ public class ListTaxonomy extends AbstractPageBean {
         else
         {
 
+            this.getTaxonAutoCompleteSessionBean().setKingdomId(taxon.getKingdomTaxonId());
             this.getTaxonSessionBean().setCurrentTaxon(null);
             this.getTaxonSessionBean().setBasionymName(null);
             this.getTaxonSessionBean().setCheckedParentheses(false);
