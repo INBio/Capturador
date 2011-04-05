@@ -711,6 +711,12 @@
     </managed-bean>
 
 
+    <managed-bean>
+        <managed-bean-name>taxonomy$TaxonAutoCompleteBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.taxonomy.TaxonAutoCompleteSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
  <!-- FIN MODULO DE ETIQUETAS -->
  
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS DE NAVEGACION ENTRE LOS DIFERENTES JSP'S -->
