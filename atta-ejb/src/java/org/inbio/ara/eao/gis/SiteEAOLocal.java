@@ -27,4 +27,13 @@ public interface SiteEAOLocal extends BaseLocalEAO<Site,Long> {
 
     public java.util.List<org.inbio.ara.persistence.gis.Site> findAllOrdered();
 
+    /**
+     * Get Sites for a fragment of a site description. The results are obtain in a given range
+     * @param siteDescription
+     * @param base
+     * @param offset
+     * @return List<Site>
+     */
+    public List<Site> getSiteByDescription(String siteDescription, int base, int offset);
+
 }

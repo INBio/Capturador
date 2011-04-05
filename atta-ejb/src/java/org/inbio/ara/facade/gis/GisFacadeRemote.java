@@ -86,5 +86,14 @@ public interface GisFacadeRemote {
     public void deleteSite(Long Id);
 
     public CountryDTO getCountryByCountryId(Long countryId);
+
+    /**
+     * Get all sites for a fragment of a site description. The results are obtain in a given range
+     * @param siteDescription String
+     * @param base int
+     * @param offset int
+     * @return List<SiteDTO>
+     */
+    public List<SiteDTO> getSiteByDescription(String siteDescription, int base, int offset);
     
 }

@@ -83,5 +83,17 @@ public class SiteEAOImpl extends BaseEAOImpl<Site,Long> implements SiteEAOLocal 
         Query q = em.createQuery("from Site s order by s.description");
         return q.getResultList();
     }
+    
+    public List<Site> getSiteByDescription(String siteDescription, int base, int offset)
+    {
+        Query q = em.createQuery(
+                " from Site as s " +
+                " where lower(s.description) like :siteDescription");
+
+        q.setParameter("siteDescription", "%"+siteDescription.toLowerCase()+"%");
+        q.setFirstResult(base);
+        q.setMaxResults(offset);
+        return q.getResultList();
+    }
 
 }

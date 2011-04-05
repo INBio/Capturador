@@ -595,4 +595,12 @@ public class GisFacadeImpl implements GisFacadeRemote {
         return result;
     }
 
+    public List<SiteDTO> getSiteByDescription(String siteDescription, int base, int offset)
+    {
+        if(siteDescription != null)
+            return siteDTOFactory.createDTOList(siteEAOImpl.getSiteByDescription(siteDescription, base, offset));
+        else
+            return null;
+    }
+
 }
