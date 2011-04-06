@@ -2533,6 +2533,10 @@ public class TaxonSessionBean extends AbstractSessionBean implements PaginationC
     }
 
 
+    public String getTaxonNameByTaxonId(Long taxonId)
+    {
+        return this.getTaxonomyFacade().getTaxonNameByTaxonId(taxonId);
+    }
    
 
 

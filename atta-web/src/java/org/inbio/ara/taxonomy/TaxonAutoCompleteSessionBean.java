@@ -67,6 +67,11 @@ public class TaxonAutoCompleteSessionBean extends OptionsList implements AutoCom
         return this.options;
     }
 
+    public Long getIdSelected()
+    {
+       return this.optionHash.get(text);
+    }
+
     //Method that retrive the corresponding results
     public boolean filter(String filter) {
         //System.out.println("filter = "+filter);
