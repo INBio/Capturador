@@ -1790,9 +1790,16 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
 
     public List<TaxonDTO> getTaxonByName(String taxonName, Long kingdomId, Long categoryId , int base, int offset)
     {
-        //System.out.println("taxonName = "+taxonName+" , kingdomId = "+kingdomId+ " , categoryId = "+categoryId+ " , base = "+ base + " , offset = "+offset);
-        List<Taxon> taxonEntities = taxonEAOImpl.findTaxonByName(taxonName, kingdomId, categoryId, base, offset);
-        return taxonDTOFactory.createDTOList(taxonEntities);
+        if(kingdomId == null && categoryId == null)
+        {
+            return taxonDTOFactory.createDTOList(taxonEAOImpl.findTaxonByName(taxonName, base, offset));
+        }
+        else
+        {
+            //System.out.println("taxonName = "+taxonName+" , kingdomId = "+kingdomId+ " , categoryId = "+categoryId+ " , base = "+ base + " , offset = "+offset);
+            List<Taxon> taxonEntities = taxonEAOImpl.findTaxonByName(taxonName, kingdomId, categoryId, base, offset);
+            return taxonDTOFactory.createDTOList(taxonEntities);
+        }
     }
 
     public String getTaxonNameByTaxonId(Long taxonId)

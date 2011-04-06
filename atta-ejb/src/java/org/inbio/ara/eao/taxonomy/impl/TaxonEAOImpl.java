@@ -212,4 +212,17 @@ public class TaxonEAOImpl extends BaseEAOImpl<Taxon,Long> implements TaxonEAOLoc
         return q.getResultList();
     }
 
+
+    public List<Taxon> findTaxonByName(String taxonName, int base, int offset)
+    {
+        Query q = em.createQuery(" SELECT t " +
+                     " FROM Taxon t "+
+                     " WHERE LOWER(t.defaultName) LIKE :taxonName");
+
+        q.setParameter("taxonName", "%"+taxonName.toLowerCase()+"%");
+        q.setFirstResult(base);
+        q.setMaxResults(offset);
+        return q.getResultList();
+    }
+
 }

@@ -65,5 +65,13 @@ public interface TaxonEAOLocal extends BaseLocalEAO<Taxon,Long> {
 
     public List<Taxon> findTaxonByName(String taxonName, Long kingdomId, Long categoryId , int base, int offset);
 
+    /**
+     * Find taxon names for a given fragment
+     * @param taxonName
+     * @param base
+     * @param offset
+     * @return
+     */
+    public List<Taxon> findTaxonByName(String taxonName, int base, int offset);
 
 }
