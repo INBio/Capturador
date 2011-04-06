@@ -1795,5 +1795,9 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
         return taxonDTOFactory.createDTOList(taxonEntities);
     }
 
+    public String getTaxonNameByTaxonId(Long taxonId)
+    {
+        return taxonEAOImpl.findById(Taxon.class, taxonId).getDefaultName();
+    }
 
 }

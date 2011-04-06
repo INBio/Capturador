@@ -262,5 +262,6 @@ public interface TaxonomyFacadeRemote {
     public void deleteTaxonAuthorByTaxonAuthorIds(List<TaxonAuthorDTO> elements);
 
     public List<TaxonDTO> getTaxonByName(String taxonName, Long kingdomId, Long categoryId , int base, int offset);
+    public String getTaxonNameByTaxonId(Long taxonId);
 
 }
