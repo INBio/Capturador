@@ -138,6 +138,10 @@ public class SiteAutoCompleteSessionBean extends OptionsList implements AutoComp
         this.optionHash = optionHash;
     }
 
+    public Long getIdSelected()
+    {
+       return this.optionHash.get(text);
+    }
     
     
 }
