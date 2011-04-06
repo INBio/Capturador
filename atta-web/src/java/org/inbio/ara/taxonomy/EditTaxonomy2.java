@@ -215,7 +215,9 @@ public class EditTaxonomy2 extends AbstractPageBean {
     @Override
     public void prerender() {
 
+        
         TaxonSessionBean tsb = this.getTaxonSessionBean();
+        TaxonAutoCompleteSessionBean tacb = this.getTaxonAutoCompleteSessionBean();
 
         //LOAD TAXON
         
@@ -457,7 +459,9 @@ public class EditTaxonomy2 extends AbstractPageBean {
             tsb.setAbleTabTaxonIndicatorComponentPart(false);
             tsb.setAbleTabTaxonIndicatorDublinCore(false);
         }
-  
+
+        tacb.setCategoryId(1L);//ACEPTED
+        
     }
 
 
@@ -944,473 +948,486 @@ public class EditTaxonomy2 extends AbstractPageBean {
 
         //SAVE TAXON
         TaxonSessionBean TSB = this.getTaxonSessionBean();
-        //set userName
-        TSB.getCurrentTaxon().setUserName(this.getAraSessionBean().getGlobalUserName());
-        //setCurrentPredecessorTimestamp
-         TSB.getCurrentTaxon().setCurrentPredecessorTimestamp(TSB.getCurrentTaxon().getCurrentNameTimestamp());
-        //setCurrentNameTimestamp
-         TSB.getCurrentTaxon().setCurrentNameTimestamp(GregorianCalendar.getInstance());
-        //setDefaultName
-         String defaultTaxonName ="";
-         if(TSB.getCurrentTaxon().getTaxonomicalRangeId() == 18){ // specie
-             String[] names = TSB.getCurrentTaxon().getDefaultName().split(" ");
-             defaultTaxonName = names[0]+" "+TSB.getCurrentTaxon().getCurrentName();
-         }else{
-             defaultTaxonName = TSB.getCurrentTaxon().getCurrentName();
-         }
-         TSB.getCurrentTaxon().setDefaultName(defaultTaxonName);
-        //set authorParenthesis
-        if(TSB.isCheckedParentheses())
+        TaxonAutoCompleteSessionBean TACSB = this.getTaxonAutoCompleteSessionBean();
+
+        if((TACSB.getIdSelected()!= null && TACSB.getText().length()>0) ||
+                (TACSB.getIdSelected() == null && TACSB.getText().length() ==0))
         {
-            TSB.getCurrentTaxon().setAuthorFormatParenthesis(new Short("1"));
+            //set userName
+            TSB.getCurrentTaxon().setUserName(this.getAraSessionBean().getGlobalUserName());
+            //setCurrentPredecessorTimestamp
+             TSB.getCurrentTaxon().setCurrentPredecessorTimestamp(TSB.getCurrentTaxon().getCurrentNameTimestamp());
+            //setCurrentNameTimestamp
+             TSB.getCurrentTaxon().setCurrentNameTimestamp(GregorianCalendar.getInstance());
+            //setDefaultName
+             String defaultTaxonName ="";
+             if(TSB.getCurrentTaxon().getTaxonomicalRangeId() == 18){ // specie
+                 String[] names = TSB.getCurrentTaxon().getDefaultName().split(" ");
+                 defaultTaxonName = names[0]+" "+TSB.getCurrentTaxon().getCurrentName();
+             }else{
+                 defaultTaxonName = TSB.getCurrentTaxon().getCurrentName();
+             }
+             TSB.getCurrentTaxon().setDefaultName(defaultTaxonName);
+            //set authorParenthesis
+            if(TSB.isCheckedParentheses())
+            {
+                TSB.getCurrentTaxon().setAuthorFormatParenthesis(new Short("1"));
+            }
+            else
+            {
+                TSB.getCurrentTaxon().setAuthorFormatParenthesis(new Short("0"));
+            }
+
+             TSB.getCurrentTaxon().setSynonymTaxonId(TACSB.getIdSelected());
+             //UPDATE TAXON
+            TSB.updateTaxon(TSB.getCurrentTaxon());
+
+            //PREPARE TAXON-AUTHOR
+            Map<Long, List<TaxonAuthorDTO>> newAuthorListMap = new HashMap<Long, List<TaxonAuthorDTO>>();
+            Map<Long, List<TaxonAuthorDTO>> deleteAuthorListMap = new HashMap<Long, List<TaxonAuthorDTO>>();
+            Map<Long, List<TaxonAuthorDTO>> updateAuthorListMap = new HashMap<Long, List<TaxonAuthorDTO>>();
+
+            TSB.getAuthorListMap().put(TSB.getAuthorTypeSelected(), TSB.getAuthorList());
+
+            TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
+            if(TSB.getDbAuthorListMap() != null || TSB.getDbAuthorListMap().size() > 0)
+            {
+                for(int pos = 0; pos < tap.length; pos++)
+                {
+                    Long authorType = tap[pos].getId();
+                    //si contiene el tipo de autor
+                    if(TSB.getAuthorListMap().containsKey(authorType))
+                    {
+                        List<TaxonAuthorDTO> taxonAuthorDTOs = TSB.getAuthorListMap().get(authorType);
+                        //si el respaldo de la bd contiene relaciones autor-taxon
+                        if(TSB.getDbAuthorListMap().containsKey(authorType))
+                        {
+                            List<TaxonAuthorDTO> newTaxonAuthorDTOs = new ArrayList<TaxonAuthorDTO>();
+                            List<TaxonAuthorDTO> updateTaxonAuthorDTOs = new ArrayList<TaxonAuthorDTO>();
+                            List<TaxonAuthorDTO> deleteTaxonAuthorDTOs = new ArrayList<TaxonAuthorDTO>();
+
+
+                            List<TaxonAuthorDTO> dbTaxonAuthorDTOs = TSB.getDbAuthorListMap().get(authorType);
+
+
+                            int listSize = 0;
+                            boolean delete = false;
+
+                            if(taxonAuthorDTOs.size() < dbTaxonAuthorDTOs.size())
+                            {
+                                listSize = taxonAuthorDTOs.size();
+                                delete = true;
+                            }
+                            else
+                            {
+                                listSize = dbTaxonAuthorDTOs.size();
+                                delete = false;
+                            }
+
+                            for(int posList = 0; posList < listSize; posList++)
+                            {
+                                if(!taxonAuthorDTOs.get(posList).getTaxonAuthorPersonId().equals(dbTaxonAuthorDTOs.get(posList).getTaxonAuthorPersonId()))                           {
+
+                                    updateTaxonAuthorDTOs.add(taxonAuthorDTOs.get(posList));
+                                }
+                                else
+                                {
+                                     if((dbTaxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() != null &&
+                                                taxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() == null) ||
+                                                (dbTaxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() == null &&
+                                                    taxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() != null))
+                                        {
+                                            updateTaxonAuthorDTOs.add(taxonAuthorDTOs.get(posList));
+                                        }
+                                        else
+                                        {
+                                             if(((dbTaxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() != null && taxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() != null)
+                                                     && !(dbTaxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId().equals(taxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId()))))                                        {
+
+                                                    updateTaxonAuthorDTOs.add(taxonAuthorDTOs.get(posList));
+                                             }
+                                        }
+                                }
+
+
+                            }
+                            if(delete)
+                            {
+                                deleteTaxonAuthorDTOs.addAll(dbTaxonAuthorDTOs.subList(taxonAuthorDTOs.size(),dbTaxonAuthorDTOs.size()));
+                            }
+                            else
+                            {
+                                newTaxonAuthorDTOs.addAll(taxonAuthorDTOs.subList(dbTaxonAuthorDTOs.size(), taxonAuthorDTOs.size()));
+                            }
+
+
+                            if(newTaxonAuthorDTOs.size() > 0)
+                            {
+                                TSB.saveTaxonAuthorDTOs(TSB.getCurrentTaxon().getTaxonKey(), newTaxonAuthorDTOs, this.getAraSessionBean().getGlobalUserName());
+                            }
+                            if(deleteTaxonAuthorDTOs.size() > 0)
+                            {
+                                TSB.deleteTaxonAuthorByTaxonAuthorIds(deleteTaxonAuthorDTOs);
+                            }
+                            if(updateTaxonAuthorDTOs.size() > 0)
+                            {
+                                TSB.updateTaxonAuthors(updateTaxonAuthorDTOs);
+                            }
+                        }
+                        //todos son relaciones nuevas
+                        else
+                        {
+                            TSB.saveTaxonAuthorDTOs(TSB.getCurrentTaxon().getTaxonKey(), taxonAuthorDTOs, this.getAraSessionBean().getGlobalUserName());
+                        }
+                    }
+                }
+            }
+
+
+            //PREPARE TAXON-INDICATOR-COUTRY
+            Map<Long,List<Long>> newTaxonIndicatorCountry = new HashMap<Long, List<Long>>();
+            Map<Long,List<Long>> deleteTaxonIndicatorCountry = new HashMap<Long, List<Long>>();
+
+            if(TSB.getIndicatorRelations().size()>0)
+            {
+                for(Option indicatorOption: TSB.getIndicatorRelations())
+                {
+
+                    Long indicatorId = new Long(indicatorOption.getValue().toString());
+
+                    //si contiene relaciones taxon-indicator-country
+                    if(TSB.getSelectedTaxonIndicatorCountriesId().containsKey(indicatorId))
+                    {
+                        if(TSB.getdBTaxonIndicatorCountriesId().containsKey(indicatorId))
+                        {
+
+                            //Convert database country relations
+                            List<Long> dbCountries = new ArrayList<Long>();
+                            for(Option dbCountry: TSB.getdBTaxonIndicatorCountriesId().get(indicatorId))
+                            {
+                                dbCountries.add((Long)dbCountry.getValue());
+                            }
+                            //Convert selected country relations
+                            List<Long> selectedCountries = new ArrayList<Long>();
+                            for(Option sCountry: TSB.getSelectedTaxonIndicatorCountriesId().get(indicatorId))
+                            {
+                                selectedCountries.add((Long)sCountry.getValue());
+                            }
+
+                            //Filter new relation and delet relations
+                            List<Long> newCountries = new ArrayList<Long>();
+                            for(Long  country: selectedCountries)
+                            {
+                                if(dbCountries.contains(country))//not changes on relacion, exist
+                                {
+
+                                      dbCountries.remove(country);
+                                }
+                                else
+                                {
+
+                                    newCountries.add(country);
+                                }
+                            }
+                            newTaxonIndicatorCountry.put(indicatorId,newCountries);
+                            deleteTaxonIndicatorCountry.put(indicatorId,dbCountries);
+                        }
+                        else
+                        {
+
+                            //Prepare all new relation from a new taxon-indicator
+                            List<Long> tmp  = new ArrayList<Long>();
+                            for(Option tmpCountry :TSB.getSelectedTaxonIndicatorCountriesId().get(indicatorId))
+                            {
+                                tmp.add(new Long(tmpCountry.getValue().toString()));
+                            }
+                            newTaxonIndicatorCountry.put(indicatorId, tmp);
+
+                        }
+                    }
+
+
+                }
+
+            }
+
+
+            //PREPARE TAXON-INDICATOR-COMPONENT_PART
+            Map<Long,List<Long>> newTaxonIndicatorComponentPart = new HashMap<Long, List<Long>>();
+            Map<Long,List<Long>> deleteTaxonIndicatorComponentPart = new HashMap<Long, List<Long>>();
+
+            if(TSB.getIndicatorRelationsAP().size()>0)
+            {
+                for(Option indicatorOption: TSB.getIndicatorRelationsAP())
+                {
+
+                    Long indicatorId = new Long(indicatorOption.getValue().toString());
+
+                    //si contiene relaciones taxon-indicator-country
+                    if(TSB.getSelectedTaxonIndicatorComponentPartId().containsKey(indicatorId))
+                    {
+                        if(TSB.getdBTaxonIndicatorComponentPartId().containsKey(indicatorId))
+                        {
+
+                            //Convert database country relations
+                            List<Long> dbComponentParts = new ArrayList<Long>();
+                            for(Option dbComponentPart: TSB.getdBTaxonIndicatorComponentPartId().get(indicatorId))
+                            {
+                                dbComponentParts.add((Long)dbComponentPart.getValue());
+                            }
+                            //Convert selected country relations
+                            List<Long> selectedComponentParts = new ArrayList<Long>();
+                            for(Option sComponentPart: TSB.getSelectedTaxonIndicatorComponentPartId().get(indicatorId))
+                            {
+                                selectedComponentParts.add((Long)sComponentPart.getValue());
+                            }
+
+                            //Filter new relation and delet relations
+                            List<Long> newComponentPart = new ArrayList<Long>();
+                            for(Long  componentPart: selectedComponentParts)
+                            {
+                                if(dbComponentParts.contains(componentPart))//not changes on relacion, exist
+                                {
+
+                                      dbComponentParts.remove(componentPart);
+                                }
+                                else
+                                {
+
+                                    newComponentPart.add(componentPart);
+                                }
+                            }
+                            newTaxonIndicatorComponentPart.put(indicatorId,newComponentPart);
+                            deleteTaxonIndicatorComponentPart.put(indicatorId,dbComponentParts);
+                        }
+                        else
+                        {
+
+                            //Prepare all new relation from a new taxon-indicator
+                            List<Long> tmp  = new ArrayList<Long>();
+                            for(Option tmpComponentPart :TSB.getSelectedTaxonIndicatorComponentPartId().get(indicatorId))
+                            {
+                                tmp.add(new Long(tmpComponentPart.getValue().toString()));
+                            }
+                            newTaxonIndicatorComponentPart.put(indicatorId, tmp);
+
+                        }
+                    }
+
+                }
+            }
+
+
+            //PREPARE TAXON-INDICATOR-DUBLIN_CORE
+            Map<Long,List<String>> newTaxonIndicatorDublinCore = new HashMap<Long, List<String>>();
+            Map<Long,List<String>> deleteTaxonIndicatorDublinCore = new HashMap<Long, List<String>>();
+
+            if(TSB.getIndicatorRelations().size()>0)
+            {
+                for(Option indicatorOption: TSB.getIndicatorRelations())
+                {
+                    Long indicatorId = new Long(indicatorOption.getValue().toString());
+                    //si contiene relaciones taxon-indicator-country
+                    if(TSB.getSelectedTaxonIndicatorDublinCoreId() != null && TSB.getSelectedTaxonIndicatorDublinCoreId().containsKey(indicatorId))
+                    {
+                        if(TSB.getdBTaxonIndicatorDublinCoreId().containsKey(indicatorId))
+                        {
+                            //Convert data base country relations
+                            List<String> dbDublinCore = new ArrayList<String>();
+                            Collection<ReferenceDTO> copydbDC = (TSB.getdBTaxonIndicatorDublinCoreId().get(indicatorId)).values();
+                            for(ReferenceDTO dataBaseDublinCoreId: copydbDC)
+                            {
+                                dbDublinCore.add(dataBaseDublinCoreId.getKey());
+                            }
+
+                            //Convert selected country relations
+                            List<String> selectedDublinCore = new ArrayList<String>();
+                            Collection<ReferenceDTO> copySelectedDC = TSB.getSelectedTaxonIndicatorDublinCoreId().get(indicatorId).values();
+                            for(ReferenceDTO sDublinCoreId: copySelectedDC)
+                            {
+                                selectedDublinCore.add(sDublinCoreId.getKey());
+                            }
+
+                            //Filter new relation and delet relations
+                            List<String> newDublinCore = new ArrayList<String>();
+                            for(String  dublinCore: selectedDublinCore)
+                            {
+                                if(dbDublinCore.contains(dublinCore))//not changes on relacion, exist
+                                {
+                                      dbDublinCore.remove(dublinCore);
+                                }
+                                else
+                                {
+                                    newDublinCore.add(dublinCore);
+                                }
+                            }
+                            newTaxonIndicatorDublinCore.put(indicatorId,newDublinCore);
+                            deleteTaxonIndicatorDublinCore.put(indicatorId,dbDublinCore);
+                        }
+                        else
+                        {
+                            //Prepare all new relation from a new taxon-indicator
+                            List<String> tmp  = new ArrayList<String>();
+                            Set<String> slDublinCore = TSB.getSelectedTaxonIndicatorDublinCoreId().get(indicatorId).keySet();
+                            for(String tmpDublinCore: slDublinCore)
+                            {
+                                tmp.add(tmpDublinCore);
+                            }
+                            newTaxonIndicatorDublinCore.put(indicatorId, tmp);
+                        }
+                    }
+                }
+
+            }
+
+
+
+            //PREPARE TAXON-INDICATOR
+            if(this.getTaxonSessionBean().getIndicatorRelations() != null || this.getTaxonSessionBean().getIndicatorRelations().size()>0)
+            {
+                //Parche feo que luego debo arreglar, al comparar Option no quiere reconocer los que son iguales
+                List<String> newIndicatorTaxonIds = new ArrayList<String>();
+                List<String> dbIndicatorTaxonIds = new  ArrayList<String>();
+
+
+                List<String> copiaDb = new ArrayList<String>();
+                //Copia los Id de la Base de datos a una lista copiaDb
+                for(Option p: TSB.getDbIndicatorRelations())
+                {
+                    copiaDb.add(p.getValue().toString());
+
+                }
+
+                //Copia los Id seleccionadas a una lista copiaSelected
+                List<String> copiaSelected = new ArrayList<String>();
+                for(Option q: TSB.getIndicatorRelations())
+                {
+                    copiaSelected.add(q.getValue().toString());
+
+                }
+
+                //Obtiene la lista de nuevas relaciones y de las relaciones que se deben eliminar
+                for(String element: copiaSelected)
+                {
+                    if(copiaDb.contains(element))
+                    {
+
+                          dbIndicatorTaxonIds.add(element);
+                          copiaDb.remove(element);
+                    }
+                    else
+                    {
+                        newIndicatorTaxonIds.add(element);
+                    }
+                }
+
+                //Salva las nuevas relaciones
+                Long taxonId = TSB.getCurrentTaxon().getTaxonKey();
+                for(String newIndicator: newIndicatorTaxonIds)
+                {   Long indicatorId = new Long(newIndicator);
+                    TSB.saveTaxonIndicatorId(taxonId, newIndicator, this.getAraSessionBean().getGlobalUserName());
+                    if(newTaxonIndicatorCountry.containsKey(indicatorId))
+                    {
+                        TSB.saveTaxonIndicatorCountries(taxonId, indicatorId, newTaxonIndicatorCountry.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
+                    }
+                    if(newTaxonIndicatorComponentPart.containsKey(indicatorId))
+                    {
+                        TSB.saveTaxonIndicatorComponentPartIds(taxonId, indicatorId, newTaxonIndicatorComponentPart.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
+                    }
+                    if(newTaxonIndicatorDublinCore.containsKey(indicatorId))
+                    {
+                        TSB.saveTaxonIndicatorDublinCoreIds(taxonId, indicatorId, newTaxonIndicatorDublinCore.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
+                    }
+                }
+                //Update relations
+                for(String dbIndicator: dbIndicatorTaxonIds)
+                {   Long indicatorId = new Long(dbIndicator);
+                    if(newTaxonIndicatorCountry.containsKey(indicatorId))
+                    {
+                        TSB.saveTaxonIndicatorCountries(taxonId, indicatorId, newTaxonIndicatorCountry.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
+                    }
+                    if(newTaxonIndicatorComponentPart.containsKey(indicatorId))
+                    {
+                        TSB.saveTaxonIndicatorComponentPartIds(taxonId, indicatorId, newTaxonIndicatorComponentPart.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
+                    }
+                    if(newTaxonIndicatorDublinCore.containsKey(indicatorId))
+                    {
+                        TSB.saveTaxonIndicatorDublinCoreIds(taxonId, indicatorId, newTaxonIndicatorDublinCore.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
+                    }
+                    if(deleteTaxonIndicatorCountry.containsKey(indicatorId))
+                    {
+                        TSB.deleteTaxonIndicatorCountryByIds(taxonId, indicatorId, deleteTaxonIndicatorCountry.get(indicatorId) );
+                    }
+                    if(deleteTaxonIndicatorComponentPart.containsKey(indicatorId))
+                    {
+                        TSB.deleteTaxonIndicatorComponentPartIds(taxonId, indicatorId, deleteTaxonIndicatorComponentPart.get(indicatorId) );
+                    }
+                    if(deleteTaxonIndicatorDublinCore.containsKey(indicatorId))
+                    {
+                        TSB.deleteTaxonIndicatorDublinCoreIds(taxonId, indicatorId, deleteTaxonIndicatorDublinCore.get(indicatorId));
+                    }
+                }
+
+                //Elminina las relaciones deseleccionadas
+                for(String deleteIndicator: copiaDb)
+                {   Long indicatorId = new Long(deleteIndicator);
+
+                    TSB.deleteTaxonIndicatorCountryByTaxonIndicator(taxonId, indicatorId);
+                    TSB.deleteTaxonIndicatorComponentPartByTaxonIndicator(taxonId, indicatorId);
+                    TSB.deleteTaxonIndicatorDublinCoreByTaxonIndicator(taxonId, indicatorId);
+                    TSB.deleteTaxonIndicatorById(taxonId, indicatorId.toString());
+                }
+
+            }
+
+           /* CLEAR */
+           //Taxon
+           TSB.setCurrentTaxon(null);
+           TSB.setBasionymName(null);
+           TSB.setCheckedParentheses(false);
+           TSB.setMonthSelected(null);
+           TSB.setTaxonName(null);
+           TSB.setTaxonomicalCategorySelected(null);
+           TSB.setTaxonomicalRangeSelected(null);
+           TSB.setYear(null);
+
+           //Taxon-Indicator
+           TSB.getIndicatorRelations().clear();
+           TSB.setElementSelected(null);
+
+           //Taxon-Indicator-Country
+           TSB.setSelectedTaxonIndicatorCountriesId(null);
+           TSB.setdBTaxonIndicatorCountriesId(null);
+
+           TSB.setArContries(null);
+           TSB.setDdIndicatorSelected(null);
+           TSB.setIndicatorRelations(null);
+           TSB.getIndicatorRelationIds().clear();
+           TSB.setIndicatorRelationsAP(null);
+           TSB.setElementSelected(null);
+
+           //Dublin Core
+           TSB.setSelectedTaxonIndicatorDublinCoreId(null);
+           TSB.setdBTaxonIndicatorDublinCoreId(null);
+           TSB.setDdIndicatorDCSelected(null);
+
+           //Component Part
+            TSB.setdBTaxonIndicatorComponentPartId(null);
+            TSB.setSelectedTaxonIndicatorComponentPartId(null);
+            TSB.setArComponentPart(null);
+            TSB.setDdIndicatorCPSelected(null);
+            TSB.setIndicatorRelationsAP(null);
+
+            
+
+
+           return "back";
         }
         else
         {
-            TSB.getCurrentTaxon().setAuthorFormatParenthesis(new Short("0"));
+            MessageBean.setErrorMessageFromBundle("error_synonym",this.getMyLocale());
+            return null;
         }
-         //UPDATE TAXON
-        TSB.updateTaxon(TSB.getCurrentTaxon());
-
-        //PREPARE TAXON-AUTHOR
-        Map<Long, List<TaxonAuthorDTO>> newAuthorListMap = new HashMap<Long, List<TaxonAuthorDTO>>();
-        Map<Long, List<TaxonAuthorDTO>> deleteAuthorListMap = new HashMap<Long, List<TaxonAuthorDTO>>();
-        Map<Long, List<TaxonAuthorDTO>> updateAuthorListMap = new HashMap<Long, List<TaxonAuthorDTO>>();
-
-        TSB.getAuthorListMap().put(TSB.getAuthorTypeSelected(), TSB.getAuthorList());
-
-        TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
-        if(TSB.getDbAuthorListMap() != null || TSB.getDbAuthorListMap().size() > 0)
-        {            
-            for(int pos = 0; pos < tap.length; pos++)
-            {
-                Long authorType = tap[pos].getId();
-                //si contiene el tipo de autor
-                if(TSB.getAuthorListMap().containsKey(authorType))
-                {
-                    List<TaxonAuthorDTO> taxonAuthorDTOs = TSB.getAuthorListMap().get(authorType);
-                    //si el respaldo de la bd contiene relaciones autor-taxon
-                    if(TSB.getDbAuthorListMap().containsKey(authorType))
-                    {
-                        List<TaxonAuthorDTO> newTaxonAuthorDTOs = new ArrayList<TaxonAuthorDTO>();
-                        List<TaxonAuthorDTO> updateTaxonAuthorDTOs = new ArrayList<TaxonAuthorDTO>();
-                        List<TaxonAuthorDTO> deleteTaxonAuthorDTOs = new ArrayList<TaxonAuthorDTO>();
-
-
-                        List<TaxonAuthorDTO> dbTaxonAuthorDTOs = TSB.getDbAuthorListMap().get(authorType);
-
-
-                        int listSize = 0;
-                        boolean delete = false;
-
-                        if(taxonAuthorDTOs.size() < dbTaxonAuthorDTOs.size())
-                        {
-                            listSize = taxonAuthorDTOs.size();
-                            delete = true;
-                        }
-                        else
-                        {
-                            listSize = dbTaxonAuthorDTOs.size();
-                            delete = false;
-                        }
-
-                        for(int posList = 0; posList < listSize; posList++)
-                        {
-                            if(!taxonAuthorDTOs.get(posList).getTaxonAuthorPersonId().equals(dbTaxonAuthorDTOs.get(posList).getTaxonAuthorPersonId()))                           {
-                                
-                                updateTaxonAuthorDTOs.add(taxonAuthorDTOs.get(posList));
-                            }
-                            else
-                            {
-                                 if((dbTaxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() != null &&
-                                            taxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() == null) ||
-                                            (dbTaxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() == null &&
-                                                taxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() != null))
-                                    {                                        
-                                        updateTaxonAuthorDTOs.add(taxonAuthorDTOs.get(posList));
-                                    }
-                                    else
-                                    {                                        
-                                         if(((dbTaxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() != null && taxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId() != null)
-                                                 && !(dbTaxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId().equals(taxonAuthorDTOs.get(posList).getTaxonAuthorConnectorId()))))                                        {
-                                                
-                                                updateTaxonAuthorDTOs.add(taxonAuthorDTOs.get(posList));
-                                         }
-                                    }
-                            }
-
-
-                        }
-                        if(delete)
-                        {
-                            deleteTaxonAuthorDTOs.addAll(dbTaxonAuthorDTOs.subList(taxonAuthorDTOs.size(),dbTaxonAuthorDTOs.size()));
-                        }
-                        else
-                        {
-                            newTaxonAuthorDTOs.addAll(taxonAuthorDTOs.subList(dbTaxonAuthorDTOs.size(), taxonAuthorDTOs.size()));
-                        }
-                        
-
-                        if(newTaxonAuthorDTOs.size() > 0)
-                        {                            
-                            TSB.saveTaxonAuthorDTOs(TSB.getCurrentTaxon().getTaxonKey(), newTaxonAuthorDTOs, this.getAraSessionBean().getGlobalUserName());
-                        }                        
-                        if(deleteTaxonAuthorDTOs.size() > 0)
-                        {
-                            TSB.deleteTaxonAuthorByTaxonAuthorIds(deleteTaxonAuthorDTOs);
-                        }
-                        if(updateTaxonAuthorDTOs.size() > 0)
-                        {                         
-                            TSB.updateTaxonAuthors(updateTaxonAuthorDTOs);
-                        }
-                    }
-                    //todos son relaciones nuevas
-                    else
-                    {                        
-                        TSB.saveTaxonAuthorDTOs(TSB.getCurrentTaxon().getTaxonKey(), taxonAuthorDTOs, this.getAraSessionBean().getGlobalUserName());
-                    }
-                }
-
-
-            }            
-        }
-
-        
-        //PREPARE TAXON-INDICATOR-COUTRY
-        Map<Long,List<Long>> newTaxonIndicatorCountry = new HashMap<Long, List<Long>>();
-        Map<Long,List<Long>> deleteTaxonIndicatorCountry = new HashMap<Long, List<Long>>();
-
-        if(TSB.getIndicatorRelations().size()>0)
-        {
-            for(Option indicatorOption: TSB.getIndicatorRelations())
-            {
-                
-                Long indicatorId = new Long(indicatorOption.getValue().toString());
-                
-                //si contiene relaciones taxon-indicator-country
-                if(TSB.getSelectedTaxonIndicatorCountriesId().containsKey(indicatorId))
-                {
-                    if(TSB.getdBTaxonIndicatorCountriesId().containsKey(indicatorId))
-                    {
-                
-                        //Convert database country relations
-                        List<Long> dbCountries = new ArrayList<Long>();
-                        for(Option dbCountry: TSB.getdBTaxonIndicatorCountriesId().get(indicatorId))
-                        {
-                            dbCountries.add((Long)dbCountry.getValue());
-                        }
-                        //Convert selected country relations
-                        List<Long> selectedCountries = new ArrayList<Long>();
-                        for(Option sCountry: TSB.getSelectedTaxonIndicatorCountriesId().get(indicatorId))
-                        {
-                            selectedCountries.add((Long)sCountry.getValue());
-                        }
-                        
-                        //Filter new relation and delet relations
-                        List<Long> newCountries = new ArrayList<Long>();
-                        for(Long  country: selectedCountries)
-                        {
-                            if(dbCountries.contains(country))//not changes on relacion, exist
-                            {
-                
-                                  dbCountries.remove(country);
-                            }
-                            else
-                            {
-                
-                                newCountries.add(country);
-                            }
-                        }
-                        newTaxonIndicatorCountry.put(indicatorId,newCountries);
-                        deleteTaxonIndicatorCountry.put(indicatorId,dbCountries);
-                    }
-                    else
-                    {
-                
-                        //Prepare all new relation from a new taxon-indicator
-                        List<Long> tmp  = new ArrayList<Long>();
-                        for(Option tmpCountry :TSB.getSelectedTaxonIndicatorCountriesId().get(indicatorId))
-                        {
-                            tmp.add(new Long(tmpCountry.getValue().toString()));
-                        }
-                        newTaxonIndicatorCountry.put(indicatorId, tmp);
-
-                    }
-                }
-
-
-            }
-
-        }
-
-
-        //PREPARE TAXON-INDICATOR-COMPONENT_PART
-        Map<Long,List<Long>> newTaxonIndicatorComponentPart = new HashMap<Long, List<Long>>();
-        Map<Long,List<Long>> deleteTaxonIndicatorComponentPart = new HashMap<Long, List<Long>>();
-
-        if(TSB.getIndicatorRelationsAP().size()>0)
-        {
-            for(Option indicatorOption: TSB.getIndicatorRelationsAP())
-            {
-
-                Long indicatorId = new Long(indicatorOption.getValue().toString());
-
-                //si contiene relaciones taxon-indicator-country
-                if(TSB.getSelectedTaxonIndicatorComponentPartId().containsKey(indicatorId))
-                {
-                    if(TSB.getdBTaxonIndicatorComponentPartId().containsKey(indicatorId))
-                    {
-
-                        //Convert database country relations
-                        List<Long> dbComponentParts = new ArrayList<Long>();
-                        for(Option dbComponentPart: TSB.getdBTaxonIndicatorComponentPartId().get(indicatorId))
-                        {
-                            dbComponentParts.add((Long)dbComponentPart.getValue());
-                        }
-                        //Convert selected country relations
-                        List<Long> selectedComponentParts = new ArrayList<Long>();
-                        for(Option sComponentPart: TSB.getSelectedTaxonIndicatorComponentPartId().get(indicatorId))
-                        {
-                            selectedComponentParts.add((Long)sComponentPart.getValue());
-                        }
-
-                        //Filter new relation and delet relations
-                        List<Long> newComponentPart = new ArrayList<Long>();
-                        for(Long  componentPart: selectedComponentParts)
-                        {
-                            if(dbComponentParts.contains(componentPart))//not changes on relacion, exist
-                            {
-
-                                  dbComponentParts.remove(componentPart);
-                            }
-                            else
-                            {
-
-                                newComponentPart.add(componentPart);
-                            }
-                        }
-                        newTaxonIndicatorComponentPart.put(indicatorId,newComponentPart);
-                        deleteTaxonIndicatorComponentPart.put(indicatorId,dbComponentParts);
-                    }
-                    else
-                    {
-
-                        //Prepare all new relation from a new taxon-indicator
-                        List<Long> tmp  = new ArrayList<Long>();
-                        for(Option tmpComponentPart :TSB.getSelectedTaxonIndicatorComponentPartId().get(indicatorId))
-                        {
-                            tmp.add(new Long(tmpComponentPart.getValue().toString()));
-                        }
-                        newTaxonIndicatorComponentPart.put(indicatorId, tmp);
-
-                    }
-                }
-
-            }
-        }
-
-
-        //PREPARE TAXON-INDICATOR-DUBLIN_CORE
-        Map<Long,List<String>> newTaxonIndicatorDublinCore = new HashMap<Long, List<String>>();
-        Map<Long,List<String>> deleteTaxonIndicatorDublinCore = new HashMap<Long, List<String>>();
-
-        if(TSB.getIndicatorRelations().size()>0)
-        {
-            for(Option indicatorOption: TSB.getIndicatorRelations())
-            {
-                Long indicatorId = new Long(indicatorOption.getValue().toString());
-                //si contiene relaciones taxon-indicator-country
-                if(TSB.getSelectedTaxonIndicatorDublinCoreId() != null && TSB.getSelectedTaxonIndicatorDublinCoreId().containsKey(indicatorId))
-                {
-                    if(TSB.getdBTaxonIndicatorDublinCoreId().containsKey(indicatorId))
-                    {
-                        //Convert data base country relations
-                        List<String> dbDublinCore = new ArrayList<String>();                                        
-                        Collection<ReferenceDTO> copydbDC = (TSB.getdBTaxonIndicatorDublinCoreId().get(indicatorId)).values();                        
-                        for(ReferenceDTO dataBaseDublinCoreId: copydbDC)
-                        {
-                            dbDublinCore.add(dataBaseDublinCoreId.getKey());
-                        }
-
-                        //Convert selected country relations
-                        List<String> selectedDublinCore = new ArrayList<String>();                        
-                        Collection<ReferenceDTO> copySelectedDC = TSB.getSelectedTaxonIndicatorDublinCoreId().get(indicatorId).values();                        
-                        for(ReferenceDTO sDublinCoreId: copySelectedDC)
-                        {                           
-                            selectedDublinCore.add(sDublinCoreId.getKey());
-                        }
-
-                        //Filter new relation and delet relations
-                        List<String> newDublinCore = new ArrayList<String>();
-                        for(String  dublinCore: selectedDublinCore)
-                        {
-                            if(dbDublinCore.contains(dublinCore))//not changes on relacion, exist
-                            {
-                                  dbDublinCore.remove(dublinCore);
-                            }
-                            else
-                            {                             
-                                newDublinCore.add(dublinCore);
-                            }
-                        }
-                        newTaxonIndicatorDublinCore.put(indicatorId,newDublinCore);
-                        deleteTaxonIndicatorDublinCore.put(indicatorId,dbDublinCore);
-                    }
-                    else
-                    {                        
-                        //Prepare all new relation from a new taxon-indicator
-                        List<String> tmp  = new ArrayList<String>();
-                        Set<String> slDublinCore = TSB.getSelectedTaxonIndicatorDublinCoreId().get(indicatorId).keySet();
-                        for(String tmpDublinCore: slDublinCore)
-                        {                     
-                            tmp.add(tmpDublinCore);
-                        }
-                        newTaxonIndicatorDublinCore.put(indicatorId, tmp);
-                    }
-                }
-            }
-            
-        }
-
-
-
-        //PREPARE TAXON-INDICATOR
-        if(this.getTaxonSessionBean().getIndicatorRelations() != null || this.getTaxonSessionBean().getIndicatorRelations().size()>0)
-        {
-            //Parche feo que luego debo arreglar, al comparar Option no quiere reconocer los que son iguales
-            List<String> newIndicatorTaxonIds = new ArrayList<String>();
-            List<String> dbIndicatorTaxonIds = new  ArrayList<String>();
-
-            
-            List<String> copiaDb = new ArrayList<String>();
-            //Copia los Id de la Base de datos a una lista copiaDb
-            for(Option p: TSB.getDbIndicatorRelations())
-            {             
-                copiaDb.add(p.getValue().toString());
-
-            }
-            
-            //Copia los Id seleccionadas a una lista copiaSelected
-            List<String> copiaSelected = new ArrayList<String>();
-            for(Option q: TSB.getIndicatorRelations())
-            {                
-                copiaSelected.add(q.getValue().toString());
-
-            }
-
-            //Obtiene la lista de nuevas relaciones y de las relaciones que se deben eliminar
-            for(String element: copiaSelected)
-            {               
-                if(copiaDb.contains(element))
-                {            
-                      
-                      dbIndicatorTaxonIds.add(element);
-                      copiaDb.remove(element);
-                }
-                else
-                {                    
-                    newIndicatorTaxonIds.add(element);
-                }
-            }
-
-            //Salva las nuevas relaciones            
-            Long taxonId = TSB.getCurrentTaxon().getTaxonKey();
-            for(String newIndicator: newIndicatorTaxonIds)
-            {   Long indicatorId = new Long(newIndicator);
-                TSB.saveTaxonIndicatorId(taxonId, newIndicator, this.getAraSessionBean().getGlobalUserName());
-                if(newTaxonIndicatorCountry.containsKey(indicatorId))
-                {
-                    TSB.saveTaxonIndicatorCountries(taxonId, indicatorId, newTaxonIndicatorCountry.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
-                }
-                if(newTaxonIndicatorComponentPart.containsKey(indicatorId))
-                {
-                    TSB.saveTaxonIndicatorComponentPartIds(taxonId, indicatorId, newTaxonIndicatorComponentPart.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
-                }
-                if(newTaxonIndicatorDublinCore.containsKey(indicatorId))
-                {
-                    TSB.saveTaxonIndicatorDublinCoreIds(taxonId, indicatorId, newTaxonIndicatorDublinCore.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
-                }
-            }
-            //Update relations
-            for(String dbIndicator: dbIndicatorTaxonIds)
-            {   Long indicatorId = new Long(dbIndicator);                
-                if(newTaxonIndicatorCountry.containsKey(indicatorId))
-                {
-                    TSB.saveTaxonIndicatorCountries(taxonId, indicatorId, newTaxonIndicatorCountry.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
-                }
-                if(newTaxonIndicatorComponentPart.containsKey(indicatorId))
-                {
-                    TSB.saveTaxonIndicatorComponentPartIds(taxonId, indicatorId, newTaxonIndicatorComponentPart.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
-                }
-                if(newTaxonIndicatorDublinCore.containsKey(indicatorId))
-                {
-                    TSB.saveTaxonIndicatorDublinCoreIds(taxonId, indicatorId, newTaxonIndicatorDublinCore.get(indicatorId) , this.getAraSessionBean().getGlobalUserName());
-                }
-                if(deleteTaxonIndicatorCountry.containsKey(indicatorId))
-                {
-                    TSB.deleteTaxonIndicatorCountryByIds(taxonId, indicatorId, deleteTaxonIndicatorCountry.get(indicatorId) );
-                }
-                if(deleteTaxonIndicatorComponentPart.containsKey(indicatorId))
-                {
-                    TSB.deleteTaxonIndicatorComponentPartIds(taxonId, indicatorId, deleteTaxonIndicatorComponentPart.get(indicatorId) );
-                }
-                if(deleteTaxonIndicatorDublinCore.containsKey(indicatorId))
-                {
-                    TSB.deleteTaxonIndicatorDublinCoreIds(taxonId, indicatorId, deleteTaxonIndicatorDublinCore.get(indicatorId));
-                }
-            }
-
-            //Elminina las relaciones deseleccionadas            
-            for(String deleteIndicator: copiaDb)
-            {   Long indicatorId = new Long(deleteIndicator);                
-                                                
-                TSB.deleteTaxonIndicatorCountryByTaxonIndicator(taxonId, indicatorId);
-                TSB.deleteTaxonIndicatorComponentPartByTaxonIndicator(taxonId, indicatorId);
-                TSB.deleteTaxonIndicatorDublinCoreByTaxonIndicator(taxonId, indicatorId);
-                TSB.deleteTaxonIndicatorById(taxonId, indicatorId.toString());
-            }
-
-        }
-
-       /* CLEAR */
-       //Taxon
-       TSB.setCurrentTaxon(null);
-       TSB.setBasionymName(null);
-       TSB.setCheckedParentheses(false);
-       TSB.setMonthSelected(null);
-       TSB.setTaxonName(null);
-       TSB.setTaxonomicalCategorySelected(null);
-       TSB.setTaxonomicalRangeSelected(null);
-       TSB.setYear(null);
-
-       //Taxon-Indicator
-       TSB.getIndicatorRelations().clear();
-       TSB.setElementSelected(null);
-
-       //Taxon-Indicator-Country
-       TSB.setSelectedTaxonIndicatorCountriesId(null);       
-       TSB.setdBTaxonIndicatorCountriesId(null);
-       
-       TSB.setArContries(null);
-       TSB.setDdIndicatorSelected(null);
-       TSB.setIndicatorRelations(null);
-       TSB.getIndicatorRelationIds().clear();
-       TSB.setIndicatorRelationsAP(null);
-       TSB.setElementSelected(null);
-
-       //Dublin Core
-       TSB.setSelectedTaxonIndicatorDublinCoreId(null);
-       TSB.setdBTaxonIndicatorDublinCoreId(null);
-       TSB.setDdIndicatorDCSelected(null);
-
-       //Component Part
-        TSB.setdBTaxonIndicatorComponentPartId(null);
-        TSB.setSelectedTaxonIndicatorComponentPartId(null);
-        TSB.setArComponentPart(null);
-        TSB.setDdIndicatorCPSelected(null);
-        TSB.setIndicatorRelationsAP(null);
-
-
-       return "back";
     }
 
     public String btnAddTaxonIndicator_action()
@@ -1469,6 +1486,9 @@ public class EditTaxonomy2 extends AbstractPageBean {
         return null;
     }
 
+      protected TaxonAutoCompleteSessionBean getTaxonAutoCompleteSessionBean() {
+        return (TaxonAutoCompleteSessionBean) getBean("taxonomy$TaxonAutoCompleteBean");
+    }
 
     public String btnAssociateDublinCore_action()
     {

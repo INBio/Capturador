@@ -12,7 +12,7 @@
     <f:view>
         <webuijsf:page id="page1">
             <webuijsf:html id="html1">
-            <webuijsf:head binding="#{Header_Login.head1}" id="head1">
+                <webuijsf:head binding="#{Header_Login.head1}" debug="true" id="head1" webuiAll="true" webuiJsfx="true">
                     <webuijsf:link id="link1" url="/resources/css/stylesheet.css"/>
                     <webuijsf:link id="link3" url="/resources/js/yui/build/fonts/fonts-min.css"/>
                     <webuijsf:link id="link4" url="/resources/js/yui/build/treeview/assets/skins/sam/treeview.css"/>
@@ -74,7 +74,19 @@
                                                     <h:selectOneMenu id="ddCategory" value="#{taxonomy$TaxonSessionBean.currentTaxon.taxonCategoryId}">
                                                         <f:selectItems id="dropdown2SelectItems" value="#{taxonomy$EditTaxonomy2.ddCategoryItems}"/>
                                                     </h:selectOneMenu>
-
+                                                    
+                                                    <webuijsf:label for="tfAutocomplete" id="lbAutocomplete" text="#{resources.synonym_of}"/>
+                                                    
+                                                    <webuijsf:textField
+                                                        autoComplete="true"
+                                                        autoCompleteExpression = "#{taxonomy$TaxonAutoCompleteBean.getOptions}"
+                                                        text="#{taxonomy$TaxonAutoCompleteBean.text}"
+                                                        style="z-order: 1;"
+                                                        id = "tfAutocomplete"
+                                                        columns="25"
+                                                        >
+                                                    </webuijsf:textField>
+                                                    
                                                     <h:panelGrid columns="2" id="selectionPanel" style="position: relative; -rave-layout: grid">
                                                         <h:selectBooleanCheckbox id="checkParentheses" value="#{taxonomy$TaxonSessionBean.checkedParentheses}"/>
                                                         <webuijsf:label for="checkParentheses" id="lbParentheses" text="#{resources.author_parentheses}"/>
