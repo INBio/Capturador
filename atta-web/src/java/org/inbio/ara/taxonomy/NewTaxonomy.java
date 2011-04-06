@@ -221,8 +221,8 @@ public class NewTaxonomy extends AbstractPageBean {
         TaxonAutoCompleteSessionBean tacb = this.getTaxonAutoCompleteSessionBean();
         System.out.println("Hizo prerender");
 
-        System.out.println("Cantidad de opciones en el autocomplete = "+tacb.options.length);
-        System.out.println("Sinonimo -> TaxonId = "+tacb.getOptionHash().get(tacb.getText()));
+        //System.out.println("Cantidad de opciones en el autocomplete = "+tacb.options.length);
+        //System.out.println("Sinonimo -> TaxonId = "+tacb.getIdSelected());
         
          
         //Set hidden value from session bean
@@ -639,171 +639,184 @@ public class NewTaxonomy extends AbstractPageBean {
         /*CREATE NEW TAXON*/
 
         
-        TaxonSessionBean TSB = this.getTaxonSessionBean();    
+        TaxonSessionBean TSB = this.getTaxonSessionBean();
+        TaxonAutoCompleteSessionBean TACSB = this.getTaxonAutoCompleteSessionBean();
         
          // Gets the current taxonDTO
         Long fatherRangeId = -1L;
         Long fatherTaxonId = -1L;        
-        
-        if(this.getHiddenTaxonNodeId().getValue() != null){
-           fatherTaxonId = new Long((String)this.getHiddenTaxonNodeId().getValue());
-           //set current Taxon
-           TSB.setCurrentTaxon(TSB.getTaxon(fatherTaxonId));
-           //backup fatherRangeId
-           fatherRangeId = TSB.getCurrentTaxon().getTaxonomicalRangeId();
-           //set taxonomicalRangeId        
-           TSB.getCurrentTaxon().setTaxonomicalRangeId(TSB.getTaxonomicalRangeSelected());
-           //set key like antecesor
-           TSB.getCurrentTaxon().setAncestorId(TSB.getCurrentTaxon().getTaxonKey());
-           //set current key = null
-           TSB.getCurrentTaxon().setTaxonKey(null);
-           //set user name
-           TSB.getCurrentTaxon().setUserName(this.getAraSessionBean().getGlobalUserName());
-           //set collection id = null
-	   TSB.getCurrentTaxon().setCollectionId(null);
-           //set currentPredecessorTimestamp
-           TSB.getCurrentTaxon().setCurrentPredecessorTimestamp(
-                   TSB.getCurrentTaxon().getCurrentNameTimestamp());
-           //set currentNameTimestamp
-           TSB.getCurrentTaxon().setCurrentNameTimestamp(GregorianCalendar.getInstance());
+        if((TACSB.getIdSelected()!= null && TACSB.getText().length()>0) ||
+                (TACSB.getIdSelected() == null && TACSB.getText().length() ==0))
+        {
+            if(this.getHiddenTaxonNodeId().getValue() != null){
+            
+               fatherTaxonId = new Long((String)this.getHiddenTaxonNodeId().getValue());
+               //set current Taxon
+               TSB.setCurrentTaxon(TSB.getTaxon(fatherTaxonId));
+               //backup fatherRangeId
+               fatherRangeId = TSB.getCurrentTaxon().getTaxonomicalRangeId();
+               //set taxonomicalRangeId
+               TSB.getCurrentTaxon().setTaxonomicalRangeId(TSB.getTaxonomicalRangeSelected());
+               //set key like antecesor
+               TSB.getCurrentTaxon().setAncestorId(TSB.getCurrentTaxon().getTaxonKey());
+               //set current key = null
+               TSB.getCurrentTaxon().setTaxonKey(null);
+               //set user name
+               TSB.getCurrentTaxon().setUserName(this.getAraSessionBean().getGlobalUserName());
+               //set collection id = null
+               TSB.getCurrentTaxon().setCollectionId(null);
+               //set currentPredecessorTimestamp
+               TSB.getCurrentTaxon().setCurrentPredecessorTimestamp(
+                       TSB.getCurrentTaxon().getCurrentNameTimestamp());
+               //set currentNameTimestamp
+               TSB.getCurrentTaxon().setCurrentNameTimestamp(GregorianCalendar.getInstance());
 
-           //set basionymName
-           TSB.getCurrentTaxon().setBasionym(TSB.getBasionymName());
+               //set basionymName
+               TSB.getCurrentTaxon().setBasionym(TSB.getBasionymName());
 
-           //set defaultName
-           String defaultTaxonName ="";
-           if(TSB.getCurrentTaxon().getTaxonomicalRangeId() == 18){ // specie
-               defaultTaxonName = TSB.getCurrentTaxon().getCurrentName()+" "+TSB.getTaxonName();
-           }else{
-               defaultTaxonName = TSB.getTaxonName();
-           }
-           TSB.getCurrentTaxon().setDefaultName(defaultTaxonName);
-           //set currentName
-           TSB.getCurrentTaxon().setCurrentName(TSB.getTaxonName());
-          
-           //set taxonCategoryId
-           TSB.getCurrentTaxon().setTaxonCategoryId(TSB.getTaxonomicalCategorySelected());
+               //set synonym
+               TSB.getCurrentTaxon().setSynonymTaxonId(TACSB.getIdSelected());
 
-           //set descriptionMonth
-           TSB.getCurrentTaxon().setDescriptionMonth(TSB.getMonthSelected());
-           //set descriptionYear
-           TSB.getCurrentTaxon().setDescriptionYear(TSB.getYear());
-           //set authorFormatParenthesis
-           if(TSB.isCheckedParentheses())
-           {
-               TSB.getCurrentTaxon().setAuthorFormatParenthesis(new Short("1"));
-           }
-           else
-           {
-               TSB.getCurrentTaxon().setAuthorFormatParenthesis(new Short("0"));
-           }
-
-           //set taxomonomy hierarchy
-           TSB.setFullTaxonomicalAttributes(TSB.getCurrentTaxon(), fatherRangeId);
-
-           //save new Taxon
-           TSB.saveTaxon(TSB.getCurrentTaxon());
-
-           /* CREATE NEW TAXON-AUTHOR RELATIONS*/
-           TSB.getAuthorListMap().put(TSB.getAuthorTypeSelected(), TSB.getAuthorList());
-
-           TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
-           for(int pos = 0; pos < tap.length; pos++)
-            {             
-               List<TaxonAuthorDTO> tmpList = TSB.getAuthorListMap().get(tap[pos].getId());
-               if(tmpList != null && tmpList.size()>0)
-               {
-                   TSB.saveTaxonAuthorDTOs(TSB.getCurrentTaxon().getTaxonKey(), tmpList, this.getAraSessionBean().getGlobalUserName());
+               //set defaultName
+               String defaultTaxonName ="";
+               if(TSB.getCurrentTaxon().getTaxonomicalRangeId() == 18){ // specie
+                   defaultTaxonName = TSB.getCurrentTaxon().getCurrentName()+" "+TSB.getTaxonName();
+               }else{
+                   defaultTaxonName = TSB.getTaxonName();
                }
+               TSB.getCurrentTaxon().setDefaultName(defaultTaxonName);
+               //set currentName
+               TSB.getCurrentTaxon().setCurrentName(TSB.getTaxonName());
+
+               //set taxonCategoryId
+               TSB.getCurrentTaxon().setTaxonCategoryId(TSB.getTaxonomicalCategorySelected());
+
+               //set descriptionMonth
+               TSB.getCurrentTaxon().setDescriptionMonth(TSB.getMonthSelected());
+               //set descriptionYear
+               TSB.getCurrentTaxon().setDescriptionYear(TSB.getYear());
+               //set authorFormatParenthesis
+               if(TSB.isCheckedParentheses())
+               {
+                   TSB.getCurrentTaxon().setAuthorFormatParenthesis(new Short("1"));
+               }
+               else
+               {
+                   TSB.getCurrentTaxon().setAuthorFormatParenthesis(new Short("0"));
+               }
+
+               //set taxomonomy hierarchy
+               TSB.setFullTaxonomicalAttributes(TSB.getCurrentTaxon(), fatherRangeId);
+
+               //save new Taxon
+               TSB.saveTaxon(TSB.getCurrentTaxon());
+
+               /* CREATE NEW TAXON-AUTHOR RELATIONS*/
+               TSB.getAuthorListMap().put(TSB.getAuthorTypeSelected(), TSB.getAuthorList());
+
+               TaxonAuthorProfile[] tap = TaxonAuthorProfile.values();
+               for(int pos = 0; pos < tap.length; pos++)
+                {
+                   List<TaxonAuthorDTO> tmpList = TSB.getAuthorListMap().get(tap[pos].getId());
+                   if(tmpList != null && tmpList.size()>0)
+                   {
+                       TSB.saveTaxonAuthorDTOs(TSB.getCurrentTaxon().getTaxonKey(), tmpList, this.getAraSessionBean().getGlobalUserName());
+                   }
+
+                }
+
+               /* CREATE NEW TAXON-INDICATOR RELATIONS*/
+
+               List<String> indicatorIds = new ArrayList<String>();
+               for(Option elementIndicator: TSB.getIndicatorRelations())
+               {
+                   indicatorIds.add(elementIndicator.getValue().toString());
+
+                   try{
+                       Long indicatorId = new Long(elementIndicator.getValue().toString());
+                        //new relation taxon-indicator
+                        TSB.saveTaxonIndicatorId(TSB.getCurrentTaxon().getTaxonKey(), elementIndicator.getValue().toString(), this.getAraSessionBean().getGlobalUserName());
+                        if(TSB.getSelectedTaxonIndicatorCountriesId().containsKey(indicatorId))
+                        {
+                            List<Long> countryIds = new ArrayList<Long>();
+                            Option[] countriesSelected = TSB.getSelectedTaxonIndicatorCountriesId().get(indicatorId);
+                            for(int pos = 0; pos < countriesSelected.length;pos++)
+                            {
+                                countryIds.add((Long)countriesSelected[pos].getValue());
+                            }
+
+                            TSB.saveTaxonIndicatorCountries(TSB.getCurrentTaxon().getTaxonKey(), indicatorId, countryIds, this.getAraSessionBean().getGlobalUserName());
+                        }
+
+                        if(TSB.getSelectedTaxonIndicatorDublinCoreId().containsKey(indicatorId))
+                        {
+
+                            Map<String, ReferenceDTO> tmpRef = TSB.getSelectedTaxonIndicatorDublinCoreId().get(indicatorId);
+                            Set<String> referenceIds = tmpRef.keySet();
+                            List<String> newReferences = new ArrayList<String>();
+                            for(String referenceId:referenceIds)
+                            {
+
+                                newReferences.add(referenceId);
+                            }
+                            TSB.saveTaxonIndicatorDublinCoreIds(TSB.getCurrentTaxon().getTaxonKey(), indicatorId ,newReferences, this.getAraSessionBean().getGlobalUserName());
+                        }
+
+                        if(TSB.getSelectedTaxonIndicatorComponentPartId().containsKey(indicatorId))
+                        {
+                            List<Long> componentPartIds = new ArrayList<Long>();
+                            Option[] componentPartSelected = TSB.getSelectedTaxonIndicatorComponentPartId().get(indicatorId);
+                            for(int pos = 0; pos < componentPartSelected.length;pos++)
+                            {
+                                componentPartIds.add((Long)componentPartSelected[pos].getValue());
+                            }
+
+                            TSB.saveTaxonIndicatorComponentPartIds(TSB.getCurrentTaxon().getTaxonKey(), indicatorId, componentPartIds, this.getAraSessionBean().getGlobalUserName());
+                        }
+
+                   }
+                   catch(Exception e)
+                   {
+                       message += elementIndicator.getLabel()+"\n";
+
+                   }
+               }            
 
             }
-           
-           /* CREATE NEW TAXON-INDICATOR RELATIONS*/
 
-           List<String> indicatorIds = new ArrayList<String>();
-           for(Option elementIndicator: TSB.getIndicatorRelations())
-           {
-               indicatorIds.add(elementIndicator.getValue().toString());
-          
-               try{
-                   Long indicatorId = new Long(elementIndicator.getValue().toString());
-                    //new relation taxon-indicator
-                    TSB.saveTaxonIndicatorId(TSB.getCurrentTaxon().getTaxonKey(), elementIndicator.getValue().toString(), this.getAraSessionBean().getGlobalUserName());
-                    if(TSB.getSelectedTaxonIndicatorCountriesId().containsKey(indicatorId))
-                    {
-                        List<Long> countryIds = new ArrayList<Long>();
-                        Option[] countriesSelected = TSB.getSelectedTaxonIndicatorCountriesId().get(indicatorId);
-                        for(int pos = 0; pos < countriesSelected.length;pos++)
-                        {
-                            countryIds.add((Long)countriesSelected[pos].getValue());
-                        }
+           /* CLEAR */
+            //Taxon
+           TSB.setCurrentTaxon(null);
+           TSB.setBasionymName(null);
+           TSB.setCheckedParentheses(false);
+           TSB.setMonthSelected(null);
+           TSB.setTaxonName(null);
+           TSB.setTaxonomicalCategorySelected(null);
+           TSB.setTaxonomicalRangeSelected(null);
+           TSB.setYear(null);
+           TACSB.setText("");
 
-                        TSB.saveTaxonIndicatorCountries(TSB.getCurrentTaxon().getTaxonKey(), indicatorId, countryIds, this.getAraSessionBean().getGlobalUserName());
-                    }
+           //Taxon-Indicator
+           TSB.getIndicatorRelations().clear();
+           TSB.getIndicatorRelationIds().clear();
+           TSB.setElementSelected(null);
 
-                    if(TSB.getSelectedTaxonIndicatorDublinCoreId().containsKey(indicatorId))
-                    {
-          
-                        Map<String, ReferenceDTO> tmpRef = TSB.getSelectedTaxonIndicatorDublinCoreId().get(indicatorId);
-                        Set<String> referenceIds = tmpRef.keySet();
-                        List<String> newReferences = new ArrayList<String>();
-                        for(String referenceId:referenceIds)
-                        {
-          
-                            newReferences.add(referenceId);
-                        }
-                        TSB.saveTaxonIndicatorDublinCoreIds(TSB.getCurrentTaxon().getTaxonKey(), indicatorId ,newReferences, this.getAraSessionBean().getGlobalUserName());
-                    }
+           //Taxon-Indicator-Conutry
+           TSB.setSelectedTaxonIndicatorCountriesId(null);
+           TSB.setArContries(null);
+           TSB.setDdIndicatorSelected(null);
+           TSB.setIndicatorRelations(null);
+           TSB.setElementSelected(null);
 
-                    if(TSB.getSelectedTaxonIndicatorComponentPartId().containsKey(indicatorId))
-                    {
-                        List<Long> componentPartIds = new ArrayList<Long>();
-                        Option[] componentPartSelected = TSB.getSelectedTaxonIndicatorComponentPartId().get(indicatorId);
-                        for(int pos = 0; pos < componentPartSelected.length;pos++)
-                        {
-                            componentPartIds.add((Long)componentPartSelected[pos].getValue());
-                        }
 
-                        TSB.saveTaxonIndicatorComponentPartIds(TSB.getCurrentTaxon().getTaxonKey(), indicatorId, componentPartIds, this.getAraSessionBean().getGlobalUserName());
-                    }
 
-               }
-               catch(Exception e)
-               {
-                   message += elementIndicator.getLabel()+"\n";
-                   
-               }
-           }
-          
-
+            return "back";
         }
-
-       /* CLEAR */
-        //Taxon
-       TSB.setCurrentTaxon(null);
-       TSB.setBasionymName(null);
-       TSB.setCheckedParentheses(false);
-       TSB.setMonthSelected(null);
-       TSB.setTaxonName(null);
-       TSB.setTaxonomicalCategorySelected(null);
-       TSB.setTaxonomicalRangeSelected(null);
-       TSB.setYear(null);
-
-       //Taxon-Indicator
-       TSB.getIndicatorRelations().clear();
-       TSB.getIndicatorRelationIds().clear();
-       TSB.setElementSelected(null);
-
-       //Taxon-Indicator-Conutry
-       TSB.setSelectedTaxonIndicatorCountriesId(null);
-       TSB.setArContries(null);
-       TSB.setDdIndicatorSelected(null);
-       TSB.setIndicatorRelations(null);
-       TSB.setElementSelected(null);
-
-
-
-        return "back";
+        else
+        {
+            MessageBean.setErrorMessageFromBundle("error_synonym",this.getMyLocale());
+            return null;
+        }
     }
 
 

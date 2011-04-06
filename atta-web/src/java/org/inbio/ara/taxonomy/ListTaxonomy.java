@@ -302,6 +302,7 @@ public class ListTaxonomy extends AbstractPageBean {
         {
 
             this.getTaxonAutoCompleteSessionBean().setKingdomId(taxon.getKingdomTaxonId());
+            this.getTaxonAutoCompleteSessionBean().setText("");
             this.getTaxonSessionBean().setCurrentTaxon(null);
             this.getTaxonSessionBean().setBasionymName(null);
             this.getTaxonSessionBean().setCheckedParentheses(false);
@@ -488,6 +489,20 @@ public class ListTaxonomy extends AbstractPageBean {
         this.getTaxonSessionBean().setPositionTaxonAuthorSelected(-1);
         this.getTaxonSessionBean().setAuthorList(new ArrayList<TaxonAuthorDTO>());
         this.getTaxonSessionBean().setAllTaxonAuthorsDBMap(new HashMap<Long, Option>());
+
+        this.getTaxonAutoCompleteSessionBean().setKingdomId(this.getTaxonSessionBean().getCurrentTaxon().getKingdomTaxonId());
+        String text = "";
+        
+        if(this.getTaxonSessionBean().getCurrentTaxon().getSynonymTaxonId() != null)
+        {
+            //System.out.println("tiene sinonimo:");
+            text =  this.getTaxonSessionBean().getTaxonNameByTaxonId(this.getTaxonSessionBean().getCurrentTaxon().getSynonymTaxonId());
+            this.getTaxonAutoCompleteSessionBean().getOptionHash().put(text, this.getTaxonSessionBean().getCurrentTaxon().getSynonymTaxonId());
+            //System.out.println("encontro el nombre del sinonimo "+this.getTaxonSessionBean().getCurrentTaxon().getSynonymTaxonId());
+        }
+        this.getTaxonAutoCompleteSessionBean().setText(text);
+        
+
 
         return "edit";
     }
