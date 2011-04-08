@@ -115,5 +115,8 @@ INSERT INTO atta.list_table(
     VALUES (172, '', 0, 'Ara', '2010-8-12',
             'Ara', '2010-8-12', 'semen_consistency', 'semen_consistency_id');
 
+--2011.04.08 gsulca
 
+--Set start gathering_observation_seq
+select setval('atta.gathering_observation_seq',cast(max(gathering_observation_id) as bigint)+1) from atta.gathering_observation;
 
