@@ -304,3 +304,359 @@ select setval('atta.transaction_seq',cast(max(transaction_id) as bigint)+1) from
 
 --Set start transaction_type_seq
 select setval('atta.transaction_type_seq',cast(max(transaction_type_id) as bigint)+1) from atta.transaction_type;
+
+
+
+--  2011.04.13 TABLAS Y SEQUECE PARA EL MODULO DE MANEJO DE MUESTRAS
+
+CREATE SEQUENCE atta.bioprospecting_project_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.bioprospecting_project_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.sample_class_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.sample_class_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.permission_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.permission_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.micro_source_type_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.micro_source_type_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.micro_method_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.micro_method_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.micro_fome_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.micro_fome_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.micro_quality_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.micro_quality_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.sample_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.sample_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.enviromental_data_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.enviromental_data_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.forest_type_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.forest_type_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.vertical_strata_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.vertical_strata_seq OWNER TO atta;
+
+CREATE SEQUENCE atta.vegetation_type_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.vegetation_type_seq OWNER TO atta;
+
+
+
+CREATE TABLE atta.sample_class
+(
+  sample_class_id numeric NOT NULL DEFAULT nextval('atta.sample_class_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "SAMPLE_CLASS_ID_PK" PRIMARY KEY (sample_class_id)
+);
+ALTER TABLE atta.sample_class OWNER TO atta;
+
+CREATE TABLE atta.permission
+(
+  permission_id numeric NOT NULL DEFAULT nextval('atta.permission_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "PERMISSION_ID_PK" PRIMARY KEY (permission_id)
+);
+ALTER TABLE atta.permission OWNER TO atta;
+
+CREATE TABLE atta.micro_source_type
+(
+  micro_source_type_id numeric NOT NULL DEFAULT nextval('atta.micro_source_type_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "MICRO_SOURCE_TYPE_ID_PK" PRIMARY KEY (micro_source_type_id)
+);
+ALTER TABLE atta.micro_source_type OWNER TO atta;
+
+CREATE TABLE atta.micro_method
+(
+  micro_method_id numeric NOT NULL DEFAULT nextval('atta.micro_method_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "MICRO_METHOD_ID_PK" PRIMARY KEY (micro_method_id)
+);
+ALTER TABLE atta.micro_method OWNER TO atta;
+
+CREATE TABLE atta.micro_fome
+(
+  micro_fome_id numeric NOT NULL DEFAULT nextval('atta.micro_fome_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "MICRO_FOME_ID_PK" PRIMARY KEY (micro_fome_id)
+);
+ALTER TABLE atta.micro_fome OWNER TO atta;
+
+CREATE TABLE atta.micro_quality
+(
+  micro_quality_id numeric NOT NULL DEFAULT nextval('atta.micro_quality_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "MICRO_QUALITY_ID_PK" PRIMARY KEY (micro_quality_id)
+);
+ALTER TABLE atta.micro_quality OWNER TO atta;
+
+CREATE TABLE atta.forest_type
+(
+  forest_type_id numeric NOT NULL DEFAULT nextval('atta.forest_type_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "FOREST_TYPE_ID_PK" PRIMARY KEY (forest_type_id)
+);
+ALTER TABLE atta.forest_type OWNER TO atta;
+
+CREATE TABLE atta.vertical_strata
+(
+  vertical_strata_id numeric NOT NULL DEFAULT nextval('atta.vertical_strata_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "VERTICAL_STRATA_ID_PK" PRIMARY KEY (vertical_strata_id)
+);
+ALTER TABLE atta.vertical_strata OWNER TO atta;
+
+CREATE TABLE atta.vegetation_type
+(
+  vegetation_type_id numeric NOT NULL DEFAULT nextval('atta.vegetation_type_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "VEGETATION_TYPE_ID_PK" PRIMARY KEY (vegetation_type_id)
+);
+ALTER TABLE atta.vegetation_type OWNER TO atta;
+
+
+CREATE TABLE atta.bioprospecting_project
+(
+  bioprospecting_project_id numeric NOT NULL DEFAULT nextval('atta.bioprospecting_project_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "BIOPROSPECTING_PROJECT_ID_PK" PRIMARY KEY (bioprospecting_project_id)
+);
+ALTER TABLE atta.bioprospecting_project OWNER TO atta;
+
+
+
+CREATE TABLE atta.sample
+(
+  sample_id numeric NOT NULL DEFAULT nextval('atta.sample_seq'::regclass),
+  witness character varying(100) NOT NULL,
+  description character varying(5000),
+  sample_class_id numeric,
+  taxon_id numeric,
+  gathering_date date,
+  permission_id numeric,
+  micro_source_type_id numeric,
+  micro_method_id numeric,
+  micro_fome_id numeric,
+  micro_quality_id numeric,
+  sample_altitude numeric,
+  site_id numeric,
+  gathering_observation_id numeric,
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "SAMPLE_ID_PK" PRIMARY KEY (sample_id),
+
+  CONSTRAINT sample_class_id_fk FOREIGN KEY (sample_class_id)
+      REFERENCES atta.sample_class (sample_class_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT taxon_id_fk FOREIGN KEY (taxon_id)
+      REFERENCES atta.taxon (taxon_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT permission_id_fk FOREIGN KEY (permission_id)
+      REFERENCES atta.permission (permission_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT micro_source_type_id_fk FOREIGN KEY (micro_source_type_id)
+      REFERENCES atta.micro_source_type (micro_source_type_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT micro_method_id_fk FOREIGN KEY (micro_method_id)
+      REFERENCES atta.micro_method (micro_method_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT micro_fome_id_fk FOREIGN KEY (micro_fome_id)
+      REFERENCES atta.micro_fome (micro_fome_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT micro_quality_id_fk FOREIGN KEY (micro_quality_id)
+      REFERENCES atta.micro_quality (micro_quality_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT site_id_fk FOREIGN KEY (site_id)
+      REFERENCES atta.site (site_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT gathering_observation_id_fk FOREIGN KEY (gathering_observation_id)
+      REFERENCES atta.gathering_observation (gathering_observation_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT witness_key UNIQUE (witness)
+);
+ALTER TABLE atta.sample OWNER TO atta;
+
+
+CREATE TABLE atta.bioprospecting_project_sample
+(
+  bioprospecting_project_id numeric NOT NULL,
+  sample_id numeric NOT NULL,
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "BIOPROSPECTING_PROJECT_SAMPLE_ID_PK" PRIMARY KEY (bioprospecting_project_id,sample_id),
+  CONSTRAINT sample_id_fk FOREIGN KEY (sample_id)
+      REFERENCES atta.sample (sample_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT bioprospecting_project_id_fk FOREIGN KEY (bioprospecting_project_id)
+      REFERENCES atta.bioprospecting_project (bioprospecting_project_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+ALTER TABLE atta.bioprospecting_project_sample OWNER TO atta;
+
+CREATE TABLE atta.enviromental_data
+(
+  enviromental_data_id numeric NOT NULL DEFAULT nextval('atta.enviromental_data_seq'::regclass),
+  sample_id numeric,
+  elevation numeric,
+  diameter numeric,
+  ph numeric,
+  luminosity numeric,
+  tempeture numeric,
+  moisture numeric,
+  forest_type_id numeric,
+  habitat character varying(5000),
+  vertical_strata_id numeric,
+  vegetation_type_id numeric,
+  salinity numeric,
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "ENVIROMENTAL_DATA_ID_PK" PRIMARY KEY (sample_id),
+
+  CONSTRAINT sample_id_fk FOREIGN KEY (sample_id)
+      REFERENCES atta.sample (sample_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT forest_type_id_fk FOREIGN KEY (forest_type_id)
+      REFERENCES atta.forest_type (forest_type_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT vertical_strata_id_fk FOREIGN KEY (vertical_strata_id)
+      REFERENCES atta.vertical_strata (vertical_strata_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT vegetation_type_id_fk FOREIGN KEY (vegetation_type_id)
+      REFERENCES atta.vegetation_type (vegetation_type_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+
+);
+ALTER TABLE atta.enviromental_data OWNER TO atta;
