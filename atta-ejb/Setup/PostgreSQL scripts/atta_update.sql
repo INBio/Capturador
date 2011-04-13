@@ -159,7 +159,7 @@ select setval('atta.crop_type_seq',cast(max(crop_type_id) as bigint)+1) from att
 select setval('atta.cultivation_practice_seq',cast(max(cultivation_practice_id) as bigint)+1) from atta.cultivation_practice;
 
 --Set start dublin_core_description_seq
-select setval('atta.dublin_core_description_seq',cast(max(dublin_core_description_id) as bigint)+1) from atta.dublin_core_description;
+select setval('atta.dublin_core_description_seq',cast(max(resource_id) as bigint)+1) from atta.dublin_core_description;
 
 --Set start dublin_core_element_seq
 select setval('atta.dublin_core_element_seq',cast(max(dublin_core_element_id) as bigint)+1) from atta.dublin_core_element;
@@ -279,7 +279,7 @@ select setval('atta.storage_type_seq',cast(max(storage_type_id) as bigint)+1) fr
 select setval('atta.substrate_seq',cast(max(substrate_id) as bigint)+1) from atta.substrate;
 
 --Set start system_user_seq
-select setval('atta.system_user_seq',cast(max(system_user_id) as bigint)+1) from atta."system_user";
+select setval('atta.system_user_seq',cast(max(user_id) as bigint)+1) from atta."system_user";
 
 --Set start taxon_author_connector_seq
 select setval('atta.taxon_author_connector_seq',cast(max(taxon_author_connector_id) as bigint)+1) from atta.taxon_author_connector;
