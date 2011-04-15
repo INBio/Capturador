@@ -660,3 +660,60 @@ CREATE TABLE atta.enviromental_data
 
 );
 ALTER TABLE atta.enviromental_data OWNER TO atta;
+
+--2011.04.15 Insert para los seleccion list de manejo de muestras
+
+
+INSERT INTO atta.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (173, '', 0, 'Ara', '2010-4-15',
+            'Ara', '2010-4-15', 'sample_class', 'sample_class_id');
+
+INSERT INTO atta.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (174, '', 0, 'Ara', '2010-4-15',
+            'Ara', '2010-4-15', 'permission', 'permission_id');
+
+INSERT INTO atta.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (175, '', 0, 'Ara', '2010-4-15',
+            'Ara', '2010-4-15', 'micro_source_type', 'micro_source_type_id');
+
+INSERT INTO atta.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (176, '', 0, 'Ara', '2010-4-15',
+            'Ara', '2010-4-15', 'micro_method', 'micro_method_id');
+
+INSERT INTO atta.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (177, '', 0, 'Ara', '2010-4-15',
+            'Ara', '2010-4-15', 'micro_fome', 'micro_fome_id');
+
+INSERT INTO atta.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (178, '', 0, 'Ara', '2010-4-15',
+            'Ara', '2010-4-15', 'micro_quality', 'micro_quality_id');
+
+INSERT INTO atta.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (179, '', 0, 'Ara', '2010-4-15',
+            'Ara', '2010-4-15', 'forest_type', 'forest_type_id');
+
+INSERT INTO atta.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (180, '', 0, 'Ara', '2010-4-15',
+            'Ara', '2010-4-15', 'vertical_strata', 'vertical_strata_id');
+
+INSERT INTO atta.list_table(
+            list_table_id, description, obj_version, created_by, creation_date,
+            last_modification_by, last_modification_date, "name", key_field_name)
+    VALUES (181, '', 0, 'Ara', '2010-4-15',
+            'Ara', '2010-4-15', 'vegetation_type', 'vegetation_type_id');
