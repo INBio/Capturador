@@ -45,13 +45,6 @@ public class ForestType extends SelectionListGenericEntity {
     @Column(name = "forest_type_id")
     private Long forestTypeId;
 
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description")
-    private String description;
-
 
     public ForestType() {
     }
@@ -62,7 +55,7 @@ public class ForestType extends SelectionListGenericEntity {
 
     public ForestType(Long forestTypeId, String name, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.forestTypeId = forestTypeId;
-        this.name = name;
+        this.setName(name);
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -77,21 +70,7 @@ public class ForestType extends SelectionListGenericEntity {
         this.forestTypeId = forestTypeId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    
 
     
 

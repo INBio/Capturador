@@ -45,12 +45,6 @@ public class VerticalStrata extends SelectionListGenericEntity {
     @Column(name = "vertical_strata_id")
     private Long verticalStrataId;
 
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description")
-    private String description;
     
     public VerticalStrata() {
     }
@@ -61,7 +55,7 @@ public class VerticalStrata extends SelectionListGenericEntity {
 
     public VerticalStrata(Long verticalStrataId, String name, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.verticalStrataId = verticalStrataId;
-        this.name = name;
+        this.setName(name);
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -75,23 +69,6 @@ public class VerticalStrata extends SelectionListGenericEntity {
     public void setVerticalStrataId(Long verticalStrataId) {
         this.verticalStrataId = verticalStrataId;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 
     @Override
     public int hashCode() {

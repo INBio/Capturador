@@ -45,12 +45,7 @@ public class SampleClass extends SelectionListGenericEntity {
     @Column(name = "sample_class_id")
     private Long sampleClassId;
 
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description")
-    private String description;
+    
 
     public SampleClass() {
     }
@@ -61,7 +56,7 @@ public class SampleClass extends SelectionListGenericEntity {
 
     public SampleClass(Long sampleClassId, String name, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.sampleClassId = sampleClassId;
-        this.name = name;
+        this.setName(name);
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -75,23 +70,6 @@ public class SampleClass extends SelectionListGenericEntity {
     public void setSampleClassId(Long sampleClassId) {
         this.sampleClassId = sampleClassId;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 
     @Override
     public int hashCode() {

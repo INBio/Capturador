@@ -45,13 +45,6 @@ public class MicroSourceType extends SelectionListGenericEntity {
     @Column(name = "micro_source_type_id")
     private Long microSourceTypeId;
 
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description")
-    private String description;
-
 
     public MicroSourceType() {
     }
@@ -62,7 +55,7 @@ public class MicroSourceType extends SelectionListGenericEntity {
 
     public MicroSourceType(Long microSourceTypeId, String name, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.microSourceTypeId = microSourceTypeId;
-        this.name = name;
+        this.setName(name);
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -75,22 +68,6 @@ public class MicroSourceType extends SelectionListGenericEntity {
 
     public void setMicroSourceTypeId(Long microSourceTypeId) {
         this.microSourceTypeId = microSourceTypeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     

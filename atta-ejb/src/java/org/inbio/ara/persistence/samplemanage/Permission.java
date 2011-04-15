@@ -45,12 +45,6 @@ public class Permission extends SelectionListGenericEntity {
     @Column(name = "permission_id")
     private Long permissionId;
 
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description")
-    private String description;
 
 
     public Permission() {
@@ -62,7 +56,7 @@ public class Permission extends SelectionListGenericEntity {
 
     public Permission(Long permissionId, String name, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.permissionId = permissionId;
-        this.name = name;
+        this.setName(name);
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -77,21 +71,7 @@ public class Permission extends SelectionListGenericEntity {
         this.permissionId = permissionId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+   
 
     
 

@@ -45,12 +45,6 @@ public class VegetationType extends SelectionListGenericEntity {
     @Column(name = "vegetation_type_id")
     private Long vegetationTypeId;
     
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description")
-    private String description;
 
     public VegetationType() {
     }
@@ -61,7 +55,7 @@ public class VegetationType extends SelectionListGenericEntity {
 
     public VegetationType(Long vegetationTypeId, String name, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.vegetationTypeId = vegetationTypeId;
-        this.name = name;
+        this.setName(name);;
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -75,24 +69,6 @@ public class VegetationType extends SelectionListGenericEntity {
     public void setVegetationTypeId(Long vegetationTypeId) {
         this.vegetationTypeId = vegetationTypeId;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-   
 
     @Override
     public int hashCode() {

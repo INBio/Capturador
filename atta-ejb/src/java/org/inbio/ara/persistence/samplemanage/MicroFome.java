@@ -46,13 +46,6 @@ public class MicroFome extends SelectionListGenericEntity {
     @Basic(optional = false)
     @Column(name = "micro_fome_id")
     private Long microFomeId;
-    
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description")
-    private String description;
 
 
     public MicroFome() {
@@ -64,7 +57,7 @@ public class MicroFome extends SelectionListGenericEntity {
 
     public MicroFome(Long microFomeId, String name, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.microFomeId = microFomeId;
-        this.name = name;
+        this.setName(name);
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -79,21 +72,6 @@ public class MicroFome extends SelectionListGenericEntity {
         this.microFomeId = microFomeId;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     
     @Override

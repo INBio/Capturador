@@ -45,12 +45,6 @@ public class MicroMethod extends SelectionListGenericEntity {
     @Column(name = "micro_method_id")
     private Long microMethodId;
 
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-    
-    @Column(name = "description")
-    private String description;
     
     public MicroMethod() {
     }
@@ -61,7 +55,7 @@ public class MicroMethod extends SelectionListGenericEntity {
 
     public MicroMethod(Long microMethodId, String name, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.microMethodId = microMethodId;
-        this.name = name;
+        this.setName(name);
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -74,22 +68,6 @@ public class MicroMethod extends SelectionListGenericEntity {
 
     public void setMicroMethodId(Long microMethodId) {
         this.microMethodId = microMethodId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     

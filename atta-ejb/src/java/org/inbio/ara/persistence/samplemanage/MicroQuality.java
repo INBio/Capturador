@@ -46,13 +46,6 @@ public class MicroQuality extends SelectionListGenericEntity {
     @Column(name = "micro_quality_id")
     private Long microQualityId;
 
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "description")
-    private String description;
-
     public MicroQuality() {
     }
 
@@ -62,7 +55,7 @@ public class MicroQuality extends SelectionListGenericEntity {
 
     public MicroQuality(Long microQualityId, String name, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
         this.microQualityId = microQualityId;
-        this.name = name;
+        this.setName(name);
         this.setCreatedBy(createdBy);
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
@@ -75,22 +68,6 @@ public class MicroQuality extends SelectionListGenericEntity {
 
     public void setMicroQualityId(Long microQualityId) {
         this.microQualityId = microQualityId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     
