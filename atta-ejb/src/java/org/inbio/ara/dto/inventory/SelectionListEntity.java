@@ -116,15 +116,15 @@ public enum SelectionListEntity {
     /*fin de los agregados*/
 
     /*MODULO DE MANEJO DE MUESTRAS*/
-    SAMPLE_CLASS(new Long(172),new SampleClass(),true,"sle_sample_class",SampleClass.class.getName()),
-    PERMISSION(new Long(173),new Permission(),true,"sle_permission",Permission.class.getName()),
-    MICRO_SOURCE_TYPE(new Long(174),new MicroSourceType(),true,"sle_micro_source_type",MicroSourceType.class.getName()),
-    MICRO_METHOD(new Long(175),new MicroMethod(),true,"sle_micro_method",MicroMethod.class.getName()),
-    MICRO_FOME(new Long(176),new MicroFome(),true,"sle_micro_fome",MicroFome.class.getName()),
-    MICRO_QUALITY(new Long(177),new MicroQuality(),true,"sle_micro_quality",MicroQuality.class.getName()),
-    FOREST_TYPE(new Long(178),new ForestType(),true,"sle_forest_type",ForestType.class.getName()),
-    VERTICAL_STRATA(new Long(179),new VerticalStrata(),true,"sle_vertical_strata",VerticalStrata.class.getName()),
-    VEGETATION_TYPE(new Long(180),new VegetationType(),true,"sle_vegetation_type",VegetationType.class.getName()),
+    SAMPLE_CLASS(new Long(173),new SampleClass(),true,"sle_sample_class",SampleClass.class.getName()),
+    PERMISSION(new Long(174),new Permission(),true,"sle_permission",Permission.class.getName()),
+    MICRO_SOURCE_TYPE(new Long(175),new MicroSourceType(),true,"sle_micro_source_type",MicroSourceType.class.getName()),
+    MICRO_METHOD(new Long(176),new MicroMethod(),true,"sle_micro_method",MicroMethod.class.getName()),
+    MICRO_FOME(new Long(177),new MicroFome(),true,"sle_micro_fome",MicroFome.class.getName()),
+    MICRO_QUALITY(new Long(178),new MicroQuality(),true,"sle_micro_quality",MicroQuality.class.getName()),
+    FOREST_TYPE(new Long(179),new ForestType(),true,"sle_forest_type",ForestType.class.getName()),
+    VERTICAL_STRATA(new Long(180),new VerticalStrata(),true,"sle_vertical_strata",VerticalStrata.class.getName()),
+    VEGETATION_TYPE(new Long(181),new VegetationType(),true,"sle_vegetation_type",VegetationType.class.getName()),
     /*FIN MODULO DE MANEJO DE MUESTRAS*/
     ;
 
