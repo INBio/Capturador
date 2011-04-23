@@ -16,160 +16,130 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.ara.persistence.samplemanage;
+
+package org.inbio.ara.dto.samplemanage;
 
 import java.util.Calendar;
-import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import org.inbio.ara.persistence.LogGenericEntity;
+import org.inbio.ara.dto.GenericDTO;
 
 /**
  *
  * @author dasolano
  */
-@Entity
-@Table(name = "sample")
-public class Sample extends LogGenericEntity {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO, generator="sample")
-    @SequenceGenerator(name="sample", sequenceName="sample_seq")
-    @Basic(optional = false)
-    @Column(name = "sample_id")
+public class SampleDTO extends GenericDTO{
+
     private Long sampleId;
 
-    @Basic(optional = false)
-    @Column(name = "witness")
     private String witness;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "gathering_date")
-    @Temporal(TemporalType.DATE)
     private Calendar gatheringDate;
 
-    @Column(name = "sample_altitude")
     private Long sampleAltitude;
 
-    @Column(name = "gathering_observation_id")
     private Long gatheringObservationId;
 
-    @Column(name = "micro_fome_id")
+    private String microFome;
+
     private Long microFomeId;
 
-    @Column(name = "micro_method_id")
+    private String microMethod;
+
     private Long microMethodId;
 
-    @Column(name = "micro_quality_id")
+    private String microQuality;
+
     private Long microQualityId;
 
-    @Column(name = "micro_source_type_id")
+    private String microSource;
+
     private Long microSourceTypeId;
 
-    @Column(name = "permission_id")
+    private String permission;
+
     private Long permissionId;
 
-    @Column(name = "sample_class_id")
+    private String sampleClass;
+
     private Long sampleClassId;
 
-    @Column(name = "site_id")
+    private String site;
+
     private Long siteId;
 
-
-    @Column(name = "taxon_id")
+    private String taxon;
+    
     private Long taxonId;
 
-    public Sample() {
-    }
-
-    public Sample(Long sampleId) {
-        this.sampleId = sampleId;
-    }
-
-    public Sample(Long sampleId, String witness, String createdBy, Calendar creationDate, String lastModificationBy, Calendar lastModificationDate) {
-        this.sampleId = sampleId;
-        this.witness = witness;
-        this.setCreatedBy(createdBy);
-        this.setCreationDate(creationDate);
-        this.setLastModificationBy(lastModificationBy);
-        this.setLastModificationDate(lastModificationDate);
-    }
-
+    /**
+     * @return the sampleId
+     */
     public Long getSampleId() {
         return sampleId;
     }
 
+    /**
+     * @param sampleId the sampleId to set
+     */
     public void setSampleId(Long sampleId) {
         this.sampleId = sampleId;
     }
 
+    /**
+     * @return the witness
+     */
     public String getWitness() {
         return witness;
     }
 
+    /**
+     * @param witness the witness to set
+     */
     public void setWitness(String witness) {
         this.witness = witness;
     }
 
+    /**
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * @param description the description to set
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * @return the gatheringDate
+     */
     public Calendar getGatheringDate() {
         return gatheringDate;
     }
 
+    /**
+     * @param gatheringDate the gatheringDate to set
+     */
     public void setGatheringDate(Calendar gatheringDate) {
         this.gatheringDate = gatheringDate;
     }
 
+    /**
+     * @return the sampleAltitude
+     */
     public Long getSampleAltitude() {
         return sampleAltitude;
     }
 
+    /**
+     * @param sampleAltitude the sampleAltitude to set
+     */
     public void setSampleAltitude(Long sampleAltitude) {
         this.sampleAltitude = sampleAltitude;
-    }
-
-  
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (sampleId != null ? sampleId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Sample)) {
-            return false;
-        }
-        Sample other = (Sample) object;
-        if ((this.sampleId == null && other.sampleId != null) || (this.sampleId != null && !this.sampleId.equals(other.sampleId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "org.inbio.ara.persistence.samplemanage.Sample[sampleId=" + sampleId + "]";
     }
 
     /**
@@ -187,6 +157,20 @@ public class Sample extends LogGenericEntity {
     }
 
     /**
+     * @return the microFome
+     */
+    public String getMicroFome() {
+        return microFome;
+    }
+
+    /**
+     * @param microFome the microFome to set
+     */
+    public void setMicroFome(String microFome) {
+        this.microFome = microFome;
+    }
+
+    /**
      * @return the microFomeId
      */
     public Long getMicroFomeId() {
@@ -198,6 +182,20 @@ public class Sample extends LogGenericEntity {
      */
     public void setMicroFomeId(Long microFomeId) {
         this.microFomeId = microFomeId;
+    }
+
+    /**
+     * @return the microMethod
+     */
+    public String getMicroMethod() {
+        return microMethod;
+    }
+
+    /**
+     * @param microMethod the microMethod to set
+     */
+    public void setMicroMethod(String microMethod) {
+        this.microMethod = microMethod;
     }
 
     /**
@@ -215,6 +213,20 @@ public class Sample extends LogGenericEntity {
     }
 
     /**
+     * @return the microQuality
+     */
+    public String getMicroQuality() {
+        return microQuality;
+    }
+
+    /**
+     * @param microQuality the microQuality to set
+     */
+    public void setMicroQuality(String microQuality) {
+        this.microQuality = microQuality;
+    }
+
+    /**
      * @return the microQualityId
      */
     public Long getMicroQualityId() {
@@ -226,6 +238,20 @@ public class Sample extends LogGenericEntity {
      */
     public void setMicroQualityId(Long microQualityId) {
         this.microQualityId = microQualityId;
+    }
+
+    /**
+     * @return the microSource
+     */
+    public String getMicroSource() {
+        return microSource;
+    }
+
+    /**
+     * @param microSource the microSource to set
+     */
+    public void setMicroSource(String microSource) {
+        this.microSource = microSource;
     }
 
     /**
@@ -243,6 +269,20 @@ public class Sample extends LogGenericEntity {
     }
 
     /**
+     * @return the permission
+     */
+    public String getPermission() {
+        return permission;
+    }
+
+    /**
+     * @param permission the permission to set
+     */
+    public void setPermission(String permission) {
+        this.permission = permission;
+    }
+
+    /**
      * @return the permissionId
      */
     public Long getPermissionId() {
@@ -254,6 +294,20 @@ public class Sample extends LogGenericEntity {
      */
     public void setPermissionId(Long permissionId) {
         this.permissionId = permissionId;
+    }
+
+    /**
+     * @return the sampleClass
+     */
+    public String getSampleClass() {
+        return sampleClass;
+    }
+
+    /**
+     * @param sampleClass the sampleClass to set
+     */
+    public void setSampleClass(String sampleClass) {
+        this.sampleClass = sampleClass;
     }
 
     /**
@@ -271,6 +325,20 @@ public class Sample extends LogGenericEntity {
     }
 
     /**
+     * @return the site
+     */
+    public String getSite() {
+        return site;
+    }
+
+    /**
+     * @param site the site to set
+     */
+    public void setSite(String site) {
+        this.site = site;
+    }
+
+    /**
      * @return the siteId
      */
     public Long getSiteId() {
@@ -282,6 +350,20 @@ public class Sample extends LogGenericEntity {
      */
     public void setSiteId(Long siteId) {
         this.siteId = siteId;
+    }
+
+    /**
+     * @return the taxon
+     */
+    public String getTaxon() {
+        return taxon;
+    }
+
+    /**
+     * @param taxon the taxon to set
+     */
+    public void setTaxon(String taxon) {
+        this.taxon = taxon;
     }
 
     /**
@@ -297,5 +379,4 @@ public class Sample extends LogGenericEntity {
     public void setTaxonId(Long taxonId) {
         this.taxonId = taxonId;
     }
-
 }
