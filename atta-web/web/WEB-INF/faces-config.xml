@@ -730,7 +730,11 @@
         <managed-bean-class>org.inbio.ara.gis.SiteAutoCompleteSessionBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-
+    <managed-bean>
+        <managed-bean-name>samplemanage$SampleManageSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.samplemanage.SampleManageSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 <!-- FIN MODULO DE MANEJO DE MUESTRAS-->
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS DE NAVEGACION ENTRE LOS DIFERENTES JSP'S -->
 
@@ -1836,9 +1840,9 @@
     </navigation-rule>
 
      <!-- MODULO DE MODULO ETQ -->
-
-
+    
 </faces-config>
+
 
 
 
