@@ -92,10 +92,10 @@
                                         <h:panelGrid columns="2">
                                             <h:panelGrid columns="2">
                                                 <webuijsf:label id="labelSampleId" style="width: 260px; height: 24px" text="#{resources.collectornumber}"/>
-                                                <webuijsf:textField id="textFieldSampleId" columns="22" style="width: 220px;" binding="#{samplemanage$SampleManageSessionBean.sampleDTO.witness}"/>
+                                                <webuijsf:textField id="textFieldSampleId" columns="22" style="width: 220px;" text="#{samplemanage$SampleManageSessionBean.sampleDTO.witness}"/>
 
                                                 <webuijsf:label id="labelSampleClass" style="width: 200px; height: 24px" text="#{resources.sle_sample_class}"/>
-                                                <webuijsf:dropDown id="dropdownSampleClass" width="190px" items="#{samplemanage$NewSample.sampleClassData.options}" binding="#{samplemanage$SampleManageSessionBean.sampleDTO.sampleClassId}"/>
+                                                <webuijsf:dropDown id="dropdownSampleClass" width="190px" items="#{samplemanage$NewSample.sampleClassData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.sampleClassId}"/>
 
                                                 <webuijsf:label id="labelScientificName" style="width: 260px; height: 24px" text="#{resources.scientificname}"/>
                                                 <webuijsf:textField
@@ -113,23 +113,23 @@
                                                 <webuijsf:calendar id="calendarGatheringDate" columns="17" dateFormatPattern="yyyy-MM-dd" />
 
                                                 <webuijsf:label id="labelPermission" style="width: 260px; height: 24px" text="#{resources.sle_permission}"/>
-                                                <webuijsf:dropDown id="dropdownPermission" width="190px" items="#{samplemanage$NewSample.permissionData.options}" binding="#{samplemanage$SampleManageSessionBean.sampleDTO.permissionId}"/>
+                                                <webuijsf:dropDown id="dropdownPermission" width="190px" items="#{samplemanage$NewSample.permissionData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.permissionId}"/>
                                             </h:panelGrid>
-                                                <h:panelGrid columns="2">
+                                            <h:panelGrid columns="2">
                                                     <webuijsf:label id="labelMicroSourceType" style="width: 260px; height: 24px" text="#{resources.sle_micro_source_type}"/>
-                                                    <webuijsf:dropDown id="dropdownMicroSourceType" width="190px" items="#{samplemanage$NewSample.microSourceTypeData.options}" binding="#{samplemanage$SampleManageSessionBean.sampleDTO.microSourceTypeId}"/>
+                                                    <webuijsf:dropDown id="dropdownMicroSourceType" width="190px" items="#{samplemanage$NewSample.microSourceTypeData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microSourceTypeId}"/>
 
                                                     <webuijsf:label id="labelMicroMethod" style="width: 260px; height: 24px" text="#{resources.sle_micro_method}"/>
-                                                    <webuijsf:dropDown id="dropdownMicroMethod" width="190px" items="#{samplemanage$NewSample.microMethodData.options}" binding="#{samplemanage$SampleManageSessionBean.sampleDTO.microMethodId}"/>
+                                                    <webuijsf:dropDown id="dropdownMicroMethod" width="190px" items="#{samplemanage$NewSample.microMethodData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microMethodId}"/>
 
                                                     <webuijsf:label id="labelMicroFome" style="width: 260px; height: 24px" text="#{resources.sle_micro_fome}"/>
-                                                    <webuijsf:dropDown id="dropdownMicroFome" width="190px" items="#{samplemanage$NewSample.microFomeData.options}" binding="#{samplemanage$SampleManageSessionBean.sampleDTO.microFomeId}"/>
+                                                    <webuijsf:dropDown id="dropdownMicroFome" width="190px" items="#{samplemanage$NewSample.microFomeData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microFomeId}"/>
 
                                                     <webuijsf:label id="labelMicroQuality" style="width: 260px; height: 24px" text="#{resources.sle_micro_quality}"/>
-                                                    <webuijsf:dropDown id="dropdownMicroQuality" width="190px" items="#{samplemanage$NewSample.microQualityData.options}" binding="#{samplemanage$SampleManageSessionBean.sampleDTO.microQualityId}"/>
+                                                    <webuijsf:dropDown id="dropdownMicroQuality" width="190px" items="#{samplemanage$NewSample.microQualityData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microQualityId}"/>
 
                                                     <webuijsf:label id="labelSampleAltitude" style="width: 260px; height: 24px" text="#{resources.sample_altitude}"/>
-                                                    <webuijsf:textField id="textFieldSampleAltitude" columns="22" style="width: 220px;" binding="#{samplemanage$SampleManageSessionBean.sampleDTO.sampleAltitude}"/>
+                                                    <webuijsf:textField id="textFieldSampleAltitude" columns="22" style="width: 220px;" text="#{samplemanage$SampleManageSessionBean.sampleDTO.sampleAltitude}"/>
                                             </h:panelGrid>
                                         </h:panelGrid>
 
