@@ -381,13 +381,6 @@ CREATE SEQUENCE atta.enviromental_data_seq
   CACHE 1;
 ALTER TABLE atta.enviromental_data_seq OWNER TO atta;
 
-CREATE SEQUENCE atta.forest_type_seq
-  INCREMENT 1
-  MINVALUE 1
-  MAXVALUE 9223372036854775807
-  START 1
-  CACHE 1;
-ALTER TABLE atta.forest_type_seq OWNER TO atta;
 
 CREATE SEQUENCE atta.vertical_strata_seq
   INCREMENT 1
@@ -499,18 +492,6 @@ CREATE TABLE atta.micro_quality
 );
 ALTER TABLE atta.micro_quality OWNER TO atta;
 
-CREATE TABLE atta.forest_type
-(
-  forest_type_id numeric NOT NULL DEFAULT nextval('atta.forest_type_seq'::regclass),
-  "name" character varying(100) NOT NULL,
-  description character varying(500),
-  created_by character varying(20) NOT NULL,
-  creation_date date NOT NULL,
-  last_modification_by character varying(20) NOT NULL,
-  last_modification_date date NOT NULL,
-  CONSTRAINT "FOREST_TYPE_ID_PK" PRIMARY KEY (forest_type_id)
-);
-ALTER TABLE atta.forest_type OWNER TO atta;
 
 CREATE TABLE atta.vertical_strata
 (
