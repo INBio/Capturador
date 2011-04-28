@@ -35,7 +35,7 @@ import org.inbio.ara.persistence.germplasm.SemenGatheringMethod;
 import org.inbio.ara.persistence.germplasm.Condition;
 import org.inbio.ara.persistence.germplasm.SemenConsistency;
 import org.inbio.ara.persistence.indicator.ComponentPart;
-import org.inbio.ara.persistence.samplemanage.ForestType;
+import org.inbio.ara.persistence.samplemanage.SampleQuantityMeasurementUnit;
 import org.inbio.ara.persistence.samplemanage.MicroFome;
 import org.inbio.ara.persistence.samplemanage.MicroMethod;
 import org.inbio.ara.persistence.samplemanage.MicroQuality;
@@ -122,7 +122,7 @@ public enum SelectionListEntity {
     MICRO_METHOD(new Long(176),new MicroMethod(),true,"sle_micro_method",MicroMethod.class.getName()),
     MICRO_FOME(new Long(177),new MicroFome(),true,"sle_micro_fome",MicroFome.class.getName()),
     MICRO_QUALITY(new Long(178),new MicroQuality(),true,"sle_micro_quality",MicroQuality.class.getName()),
-    FOREST_TYPE(new Long(179),new ForestType(),true,"sle_forest_type",ForestType.class.getName()),
+    SAMPLE_QUANTITY_MEASUREMENT_UNIT(new Long(179),new SampleQuantityMeasurementUnit(),true,"sle_sample_quantity_measurement_unit",SampleQuantityMeasurementUnit.class.getName()),
     VERTICAL_STRATA(new Long(180),new VerticalStrata(),true,"sle_vertical_strata",VerticalStrata.class.getName()),
     VEGETATION_TYPE(new Long(181),new VegetationType(),true,"sle_vegetation_type",VegetationType.class.getName()),
     /*FIN MODULO DE MANEJO DE MUESTRAS*/

@@ -748,7 +748,7 @@ INSERT INTO atta.list_table(
             list_table_id, description, obj_version, created_by, creation_date,
             last_modification_by, last_modification_date, "name", key_field_name)
     VALUES (179, '', 0, 'Ara', '2010-4-15',
-            'Ara', '2010-4-15', 'forest_type', 'forest_type_id');
+            'Ara', '2010-4-15', 'sample_quantity_measurement_unit', 'sample_quantity_measurement_unit_id');
 
 INSERT INTO atta.list_table(
             list_table_id, description, obj_version, created_by, creation_date,
