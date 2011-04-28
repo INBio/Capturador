@@ -100,6 +100,9 @@ public class Sample extends LogGenericEntity {
     @Column(name = "sample_quantity_measurement_unit_id")
     private Long sampleQuantityMeasurementUnitId;
 
+    @Column(name = "sample_status_id")
+    private Long sampleStatusId;
+
     @Column(name = "site_id")
     private Long siteId;
 
@@ -398,6 +401,20 @@ public class Sample extends LogGenericEntity {
      */
     public void setSampleQuantity(Long sampleQuantity) {
         this.sampleQuantity = sampleQuantity;
+    }
+
+    /**
+     * @return the sampleStatusId
+     */
+    public Long getSampleStatusId() {
+        return sampleStatusId;
+    }
+
+    /**
+     * @param sampleStatusId the sampleStatusId to set
+     */
+    public void setSampleStatusId(Long sampleStatusId) {
+        this.sampleStatusId = sampleStatusId;
     }
 
 }

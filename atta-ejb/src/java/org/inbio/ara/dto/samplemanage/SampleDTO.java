@@ -76,6 +76,8 @@ public class SampleDTO extends GenericDTO{
 
     private Long sampleQuantityMeasurementUnitId;
 
+    private Long sampleStatusId;
+
     private String site;
 
     private Long siteId;
@@ -474,5 +476,19 @@ public class SampleDTO extends GenericDTO{
      */
     public void setReceptionDate(Calendar receptionDate) {
         this.receptionDate = receptionDate;
+    }
+
+    /**
+     * @return the sampleStatusId
+     */
+    public Long getSampleStatusId() {
+        return sampleStatusId;
+    }
+
+    /**
+     * @param sampleStatusId the sampleStatusId to set
+     */
+    public void setSampleStatusId(Long sampleStatusId) {
+        this.sampleStatusId = sampleStatusId;
     }
 }

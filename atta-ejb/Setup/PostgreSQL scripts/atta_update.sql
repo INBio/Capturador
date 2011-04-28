@@ -599,6 +599,7 @@ CREATE TABLE atta.sample
   salinity numeric,
   sample_quantity numeric,
   sample_quantity_measurement_unit_id numeric,
+  sample_status_id numeric,
   site_id numeric,
   gathering_observation_id numeric,
   created_by character varying(20) NOT NULL,
@@ -637,6 +638,10 @@ CREATE TABLE atta.sample
 
   CONSTRAINT micro_quality_id_fk FOREIGN KEY (micro_quality_id)
       REFERENCES atta.micro_quality (micro_quality_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT sample_status_id_fk FOREIGN KEY (sample_status_id)
+      REFERENCES atta.sample_status (sample_status_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
 
   CONSTRAINT site_id_fk FOREIGN KEY (site_id)

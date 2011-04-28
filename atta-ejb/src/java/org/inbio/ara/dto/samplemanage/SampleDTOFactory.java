@@ -45,6 +45,9 @@ public class SampleDTOFactory  extends BaseEntityOrDTOFactory<Sample ,SampleDTO>
         e.setPh(dto.getPh());
         e.setTempeture(dto.getTempeture());
         e.setSalinity(dto.getSalinity());
+        e.setSampleQuantity(dto.getSampleQuantity());
+        e.setSampleQuantityMeasurementUnitId(dto.getSampleQuantityMeasurementUnitId());
+        e.setSampleStatusId(dto.getSampleStatusId());
         e.setSiteId(dto.getSiteId());
         e.setTaxonId(dto.getTaxonId());
         e.setWitness(dto.getWitness());
@@ -68,6 +71,9 @@ public class SampleDTOFactory  extends BaseEntityOrDTOFactory<Sample ,SampleDTO>
         e.setPh(dto.getPh());
         e.setTempeture(dto.getTempeture());
         e.setSalinity(dto.getSalinity());
+        e.setSampleQuantity(dto.getSampleQuantity());
+        e.setSampleQuantityMeasurementUnitId(dto.getSampleQuantityMeasurementUnitId());
+        e.setSampleStatusId(dto.getSampleStatusId());
         e.setSiteId(dto.getSiteId());
         e.setTaxonId(dto.getTaxonId());
         e.setWitness(dto.getWitness());
@@ -91,6 +97,9 @@ public class SampleDTOFactory  extends BaseEntityOrDTOFactory<Sample ,SampleDTO>
         dto.setPh(entity.getPh());
         dto.setTempeture(entity.getTempeture());
         dto.setSalinity(entity.getSalinity());
+        dto.setSampleQuantity(entity.getSampleQuantity());
+        dto.setSampleQuantityMeasurementUnitId(entity.getSampleQuantityMeasurementUnitId());
+        dto.setSampleStatusId(entity.getSampleStatusId());
         dto.setSiteId(entity.getSiteId());
         dto.setTaxonId(entity.getTaxonId());
         dto.setWitness(entity.getWitness());
