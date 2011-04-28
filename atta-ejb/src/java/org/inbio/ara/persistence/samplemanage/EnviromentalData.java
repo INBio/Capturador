@@ -52,9 +52,6 @@ public class EnviromentalData extends LogGenericEntity {
     @Column(name = "elevation")
     private Long elevation;
 
-    @Column(name = "diameter")
-    private Long diameter;
-
     @Column(name = "ph")
     private Long ph;
     
@@ -119,14 +116,6 @@ public class EnviromentalData extends LogGenericEntity {
 
     public void setElevation(Long elevation) {
         this.elevation = elevation;
-    }
-
-    public Long getDiameter() {
-        return diameter;
-    }
-
-    public void setDiameter(Long diameter) {
-        this.diameter = diameter;
     }
 
     public Long getPh() {
