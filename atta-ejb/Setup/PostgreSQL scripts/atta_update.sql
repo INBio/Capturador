@@ -405,6 +405,14 @@ CREATE SEQUENCE atta.vegetation_type_seq
   CACHE 1;
 ALTER TABLE atta.vegetation_type_seq OWNER TO atta;
 
+CREATE SEQUENCE atta.sample_state_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.sample_state_seq OWNER TO atta;
+
 
 
 CREATE TABLE atta.sample_class
@@ -524,6 +532,18 @@ CREATE TABLE atta.vegetation_type
 );
 ALTER TABLE atta.vegetation_type OWNER TO atta;
 
+CREATE TABLE atta.sample_state
+(
+  sample_state_id numeric NOT NULL DEFAULT nextval('atta.sample_state_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "SAMPLE_STATE_ID_PK" PRIMARY KEY (sample_state_id)
+);
+ALTER TABLE atta.vegetation_type OWNER TO atta;
 
 CREATE TABLE atta.bioprospecting_project
 (
@@ -548,6 +568,7 @@ CREATE TABLE atta.sample
   sample_class_id numeric,
   taxon_id numeric,
   gathering_date date,
+  reception_date date,
   permission_id numeric,
   micro_source_type_id numeric,
   micro_method_id numeric,

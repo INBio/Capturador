@@ -25,8 +25,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.inbio.ara.persistence.LogGenericEntity;
@@ -74,9 +72,6 @@ public class EnviromentalData extends LogGenericEntity {
 
     @Column(name = "salinity")
     private Long salinity;
-
-    @Column(name = "forest_type_id")
-    private Long forestTypeId;
 
     @Column(name = "vertical_strata_id")
     private Long verticalStrataId;
@@ -208,20 +203,7 @@ public class EnviromentalData extends LogGenericEntity {
     public String toString() {
         return "org.inbio.ara.persistence.samplemanage.EnviromentalData[sampleId=" + sampleId + "]";
     }
-
-    /**
-     * @return the forestTypeId
-     */
-    public Long getForestTypeId() {
-        return forestTypeId;
-    }
-
-    /**
-     * @param forestTypeId the forestTypeId to set
-     */
-    public void setForestTypeId(Long forestTypeId) {
-        this.forestTypeId = forestTypeId;
-    }
+   
 
     /**
      * @return the verticalStrataId

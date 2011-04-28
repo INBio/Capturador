@@ -19,7 +19,6 @@
 package org.inbio.ara.persistence.samplemanage;
 
 import java.util.Calendar;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -58,6 +57,10 @@ public class Sample extends LogGenericEntity {
     @Temporal(TemporalType.DATE)
     private Calendar gatheringDate;
 
+    @Column(name = "reception_date")
+    @Temporal(TemporalType.DATE)
+    private Calendar receptionDate;
+
     @Column(name = "sample_altitude")
     private Long sampleAltitude;
 
@@ -81,6 +84,15 @@ public class Sample extends LogGenericEntity {
 
     @Column(name = "sample_class_id")
     private Long sampleClassId;
+
+    @Column(name = "ph")
+    private Long ph;
+
+    @Column(name = "tempeture")
+    private Long tempeture;
+
+    @Column(name = "salinity")
+    private Long salinity;
 
     @Column(name = "site_id")
     private Long siteId;
@@ -296,6 +308,62 @@ public class Sample extends LogGenericEntity {
      */
     public void setTaxonId(Long taxonId) {
         this.taxonId = taxonId;
+    }
+
+    /**
+     * @return the ph
+     */
+    public Long getPh() {
+        return ph;
+    }
+
+    /**
+     * @param ph the ph to set
+     */
+    public void setPh(Long ph) {
+        this.ph = ph;
+    }
+
+    /**
+     * @return the tempeture
+     */
+    public Long getTempeture() {
+        return tempeture;
+    }
+
+    /**
+     * @param tempeture the tempeture to set
+     */
+    public void setTempeture(Long tempeture) {
+        this.tempeture = tempeture;
+    }
+
+    /**
+     * @return the salinity
+     */
+    public Long getSalinity() {
+        return salinity;
+    }
+
+    /**
+     * @param salinity the salinity to set
+     */
+    public void setSalinity(Long salinity) {
+        this.salinity = salinity;
+    }
+
+    /**
+     * @return the receptionDate
+     */
+    public Calendar getReceptionDate() {
+        return receptionDate;
+    }
+
+    /**
+     * @param receptionDate the receptionDate to set
+     */
+    public void setReceptionDate(Calendar receptionDate) {
+        this.receptionDate = receptionDate;
     }
 
 }
