@@ -35,7 +35,7 @@ import org.inbio.ara.persistence.SelectionListGenericEntity;
  * @author dasolano
  */
 @Entity
-@Table(name = "forest_type")
+@Table(name = "sample_quantity_measurement_unit")
 public class SampleQuantityMeasurementUnit extends SelectionListGenericEntity {
     private static final long serialVersionUID = 1L;
     @Id
