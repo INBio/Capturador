@@ -554,6 +554,9 @@ CREATE TABLE atta.sample
   micro_fome_id numeric,
   micro_quality_id numeric,
   sample_altitude numeric,
+  ph numeric,
+  tempeture numeric,
+  salinity numeric,
   site_id numeric,
   gathering_observation_id numeric,
   created_by character varying(20) NOT NULL,
@@ -631,7 +634,6 @@ CREATE TABLE atta.enviromental_data
   luminosity numeric,
   tempeture numeric,
   moisture numeric,
-  forest_type_id numeric,
   habitat character varying(5000),
   vertical_strata_id numeric,
   vegetation_type_id numeric,
@@ -644,10 +646,6 @@ CREATE TABLE atta.enviromental_data
 
   CONSTRAINT sample_id_fk FOREIGN KEY (sample_id)
       REFERENCES atta.sample (sample_id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
-
-  CONSTRAINT forest_type_id_fk FOREIGN KEY (forest_type_id)
-      REFERENCES atta.forest_type (forest_type_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
 
   CONSTRAINT vertical_strata_id_fk FOREIGN KEY (vertical_strata_id)
