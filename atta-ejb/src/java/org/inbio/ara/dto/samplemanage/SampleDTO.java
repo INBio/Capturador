@@ -36,6 +36,8 @@ public class SampleDTO extends GenericDTO{
 
     private Calendar gatheringDate;
 
+    private Calendar receptionDate;
+
     private Long sampleAltitude;
 
     private Long gatheringObservationId;
@@ -63,6 +65,16 @@ public class SampleDTO extends GenericDTO{
     private String sampleClass;
 
     private Long sampleClassId;
+
+    private Long ph;
+
+    private Long tempeture;
+
+    private Long salinity;
+
+    private Long sampleQuantity;
+
+    private Long sampleQuantityMeasurementUnitId;
 
     private String site;
 
@@ -378,5 +390,89 @@ public class SampleDTO extends GenericDTO{
      */
     public void setTaxonId(Long taxonId) {
         this.taxonId = taxonId;
+    }
+
+    /**
+     * @return the ph
+     */
+    public Long getPh() {
+        return ph;
+    }
+
+    /**
+     * @param ph the ph to set
+     */
+    public void setPh(Long ph) {
+        this.ph = ph;
+    }
+
+    /**
+     * @return the tempeture
+     */
+    public Long getTempeture() {
+        return tempeture;
+    }
+
+    /**
+     * @param tempeture the tempeture to set
+     */
+    public void setTempeture(Long tempeture) {
+        this.tempeture = tempeture;
+    }
+
+    /**
+     * @return the salinity
+     */
+    public Long getSalinity() {
+        return salinity;
+    }
+
+    /**
+     * @param salinity the salinity to set
+     */
+    public void setSalinity(Long salinity) {
+        this.salinity = salinity;
+    }
+
+    /**
+     * @return the sampleQuantity
+     */
+    public Long getSampleQuantity() {
+        return sampleQuantity;
+    }
+
+    /**
+     * @param sampleQuantity the sampleQuantity to set
+     */
+    public void setSampleQuantity(Long sampleQuantity) {
+        this.sampleQuantity = sampleQuantity;
+    }
+
+    /**
+     * @return the sampleQuantityMeasurementUnitId
+     */
+    public Long getSampleQuantityMeasurementUnitId() {
+        return sampleQuantityMeasurementUnitId;
+    }
+
+    /**
+     * @param sampleQuantityMeasurementUnitId the sampleQuantityMeasurementUnitId to set
+     */
+    public void setSampleQuantityMeasurementUnitId(Long sampleQuantityMeasurementUnitId) {
+        this.sampleQuantityMeasurementUnitId = sampleQuantityMeasurementUnitId;
+    }
+
+    /**
+     * @return the receptionDate
+     */
+    public Calendar getReceptionDate() {
+        return receptionDate;
+    }
+
+    /**
+     * @param receptionDate the receptionDate to set
+     */
+    public void setReceptionDate(Calendar receptionDate) {
+        this.receptionDate = receptionDate;
     }
 }

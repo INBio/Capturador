@@ -33,6 +33,7 @@ public class SampleDTOFactory  extends BaseEntityOrDTOFactory<Sample ,SampleDTO>
         Sample e = new Sample();
         e.setDescription(dto.getDescription());
         e.setGatheringDate(dto.getGatheringDate());
+        e.setReceptionDate(dto.getReceptionDate());
         e.setGatheringObservationId(dto.getGatheringObservationId());
         e.setMicroFomeId(dto.getMicroFomeId());
         e.setMicroMethodId(dto.getMicroMethodId());
@@ -41,6 +42,9 @@ public class SampleDTOFactory  extends BaseEntityOrDTOFactory<Sample ,SampleDTO>
         e.setPermissionId(dto.getPermissionId());
         e.setSampleAltitude(dto.getSampleAltitude());
         e.setSampleClassId(dto.getSampleClassId());
+        e.setPh(dto.getPh());
+        e.setTempeture(dto.getTempeture());
+        e.setSalinity(dto.getSalinity());
         e.setSiteId(dto.getSiteId());
         e.setTaxonId(dto.getTaxonId());
         e.setWitness(dto.getWitness());
@@ -52,6 +56,7 @@ public class SampleDTOFactory  extends BaseEntityOrDTOFactory<Sample ,SampleDTO>
     public Sample updateEntityWithPlainValues(SampleDTO dto, Sample e) {
         e.setDescription(dto.getDescription());
         e.setGatheringDate(dto.getGatheringDate());
+        e.setReceptionDate(dto.getReceptionDate());
         e.setGatheringObservationId(dto.getGatheringObservationId());
         e.setMicroFomeId(dto.getMicroFomeId());
         e.setMicroMethodId(dto.getMicroMethodId());
@@ -60,6 +65,9 @@ public class SampleDTOFactory  extends BaseEntityOrDTOFactory<Sample ,SampleDTO>
         e.setPermissionId(dto.getPermissionId());
         e.setSampleAltitude(dto.getSampleAltitude());
         e.setSampleClassId(dto.getSampleClassId());
+        e.setPh(dto.getPh());
+        e.setTempeture(dto.getTempeture());
+        e.setSalinity(dto.getSalinity());
         e.setSiteId(dto.getSiteId());
         e.setTaxonId(dto.getTaxonId());
         e.setWitness(dto.getWitness());
@@ -71,6 +79,7 @@ public class SampleDTOFactory  extends BaseEntityOrDTOFactory<Sample ,SampleDTO>
         SampleDTO dto = new SampleDTO();
         dto.setDescription(entity.getDescription());
         dto.setGatheringDate(entity.getGatheringDate());
+        dto.setReceptionDate(entity.getReceptionDate());
         dto.setGatheringObservationId(entity.getGatheringObservationId());
         dto.setMicroFomeId(entity.getMicroFomeId());
         dto.setMicroMethodId(entity.getMicroMethodId());
@@ -79,6 +88,9 @@ public class SampleDTOFactory  extends BaseEntityOrDTOFactory<Sample ,SampleDTO>
         dto.setPermissionId(entity.getPermissionId());
         dto.setSampleAltitude(entity.getSampleAltitude());
         dto.setSampleClassId(entity.getSampleClassId());
+        dto.setPh(entity.getPh());
+        dto.setTempeture(entity.getTempeture());
+        dto.setSalinity(entity.getSalinity());
         dto.setSiteId(entity.getSiteId());
         dto.setTaxonId(entity.getTaxonId());
         dto.setWitness(entity.getWitness());
