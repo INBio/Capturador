@@ -94,6 +94,12 @@ public class Sample extends LogGenericEntity {
     @Column(name = "salinity")
     private Long salinity;
 
+    @Column(name = "sample_quantity")
+    private Long sampleQuantity;
+
+    @Column(name = "sample_quantity_measurement_unit_id")
+    private Long sampleQuantityMeasurementUnitId;
+
     @Column(name = "site_id")
     private Long siteId;
 
@@ -364,6 +370,34 @@ public class Sample extends LogGenericEntity {
      */
     public void setReceptionDate(Calendar receptionDate) {
         this.receptionDate = receptionDate;
+    }
+
+    /**
+     * @return the sampleQuantityMeasurementUnitId
+     */
+    public Long getSampleQuantityMeasurementUnitId() {
+        return sampleQuantityMeasurementUnitId;
+    }
+
+    /**
+     * @param sampleQuantityMeasurementUnitId the sampleQuantityMeasurementUnitId to set
+     */
+    public void setSampleQuantityMeasurementUnitId(Long sampleQuantityMeasurementUnitId) {
+        this.sampleQuantityMeasurementUnitId = sampleQuantityMeasurementUnitId;
+    }
+
+    /**
+     * @return the sampleQuantity
+     */
+    public Long getSampleQuantity() {
+        return sampleQuantity;
+    }
+
+    /**
+     * @param sampleQuantity the sampleQuantity to set
+     */
+    public void setSampleQuantity(Long sampleQuantity) {
+        this.sampleQuantity = sampleQuantity;
     }
 
 }

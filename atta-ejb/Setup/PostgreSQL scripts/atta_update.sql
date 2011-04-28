@@ -413,7 +413,13 @@ CREATE SEQUENCE atta.sample_state_seq
   CACHE 1;
 ALTER TABLE atta.sample_state_seq OWNER TO atta;
 
-
+CREATE SEQUENCE atta.sample_quantity_measurement_unit_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.sample_quantity_measurement_unit_seq OWNER TO atta;
 
 CREATE TABLE atta.sample_class
 (
@@ -545,6 +551,19 @@ CREATE TABLE atta.sample_state
 );
 ALTER TABLE atta.vegetation_type OWNER TO atta;
 
+CREATE TABLE atta.sample_quantity_measurement_unit
+(
+  sample_quantity_measurement_unit_id numeric NOT NULL DEFAULT nextval('atta.sample_quantity_measurement_unit_seq'::regclass),
+  "name" character varying(100) NOT NULL,
+  description character varying(500),
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "SAMPLE_QUANTITY_MEASUREMENT_UNIT_ID_PK" PRIMARY KEY (sample_quantity_measurement_unit_id)
+);
+ALTER TABLE atta.vegetation_type OWNER TO atta;
+
 CREATE TABLE atta.bioprospecting_project
 (
   bioprospecting_project_id numeric NOT NULL DEFAULT nextval('atta.bioprospecting_project_seq'::regclass),
@@ -578,6 +597,8 @@ CREATE TABLE atta.sample
   ph numeric,
   tempeture numeric,
   salinity numeric,
+  sample_quantity numeric,
+  sample_quantity_measurement_unit_id numeric,
   site_id numeric,
   gathering_observation_id numeric,
   created_by character varying(20) NOT NULL,
@@ -592,6 +613,10 @@ CREATE TABLE atta.sample
 
   CONSTRAINT taxon_id_fk FOREIGN KEY (taxon_id)
       REFERENCES atta.taxon (taxon_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT sample_quantity_measurement_unit_id_fk FOREIGN KEY (sample_quantity_measurement_unit_id)
+      REFERENCES atta.sample_quantity_measurement_unit (sample_quantity_measurement_unit_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
 
   CONSTRAINT permission_id_fk FOREIGN KEY (permission_id)
