@@ -661,7 +661,6 @@ CREATE TABLE atta.enviromental_data
   enviromental_data_id numeric NOT NULL DEFAULT nextval('atta.enviromental_data_seq'::regclass),
   sample_id numeric,
   elevation numeric,
-  diameter numeric,
   ph numeric,
   luminosity numeric,
   tempeture numeric,
