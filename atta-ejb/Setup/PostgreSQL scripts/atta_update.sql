@@ -673,7 +673,7 @@ CREATE TABLE atta.enviromental_data
   creation_date date NOT NULL,
   last_modification_by character varying(20) NOT NULL,
   last_modification_date date NOT NULL,
-  CONSTRAINT "ENVIROMENTAL_DATA_ID_PK" PRIMARY KEY (sample_id),
+  CONSTRAINT "ENVIROMENTAL_DATA_ID_PK" PRIMARY KEY (enviromental_data_id),
 
   CONSTRAINT sample_id_fk FOREIGN KEY (sample_id)
       REFERENCES atta.sample (sample_id) MATCH SIMPLE
@@ -746,3 +746,36 @@ INSERT INTO atta.list_table(
             last_modification_by, last_modification_date, "name", key_field_name)
     VALUES (181, '', 0, 'Ara', '2010-4-15',
             'Ara', '2010-4-15', 'vegetation_type', 'vegetation_type_id');
+
+--2011.04.29 Se agrego la tabla de huesped
+
+CREATE SEQUENCE atta.host_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+ALTER TABLE atta.host_seq OWNER TO atta;
+
+CREATE TABLE atta.host
+(
+  host_id numeric NOT NULL DEFAULT nextval('atta.host_seq'::regclass),
+  sample_id numeric,
+  health_comment character varying(5000),
+  taxon_id numeric,
+  created_by character varying(20) NOT NULL,
+  creation_date date NOT NULL,
+  last_modification_by character varying(20) NOT NULL,
+  last_modification_date date NOT NULL,
+  CONSTRAINT "HOST_ID_PK" PRIMARY KEY (host_id),
+
+  CONSTRAINT sample_id_fk FOREIGN KEY (sample_id)
+      REFERENCES atta.sample (sample_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+
+  CONSTRAINT taxon_id_fk FOREIGN KEY (taxon_id)
+      REFERENCES atta.taxon (taxon_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+
+);
+ALTER TABLE atta.host OWNER TO atta;
