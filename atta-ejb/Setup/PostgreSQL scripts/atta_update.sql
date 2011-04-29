@@ -749,17 +749,17 @@ INSERT INTO atta.list_table(
 
 --2011.04.29 Se agrego la tabla de huesped
 
-CREATE SEQUENCE atta.host_seq
+CREATE SEQUENCE atta.host_information_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE atta.host_seq OWNER TO atta;
+ALTER TABLE atta.host_information_seq OWNER TO atta;
 
-CREATE TABLE atta.host
+CREATE TABLE atta.host_information
 (
-  host_id numeric NOT NULL DEFAULT nextval('atta.host_seq'::regclass),
+  host_information_id numeric NOT NULL DEFAULT nextval('atta.host_information_seq'::regclass),
   sample_id numeric,
   health_comment character varying(5000),
   taxon_id numeric,
@@ -767,7 +767,7 @@ CREATE TABLE atta.host
   creation_date date NOT NULL,
   last_modification_by character varying(20) NOT NULL,
   last_modification_date date NOT NULL,
-  CONSTRAINT "HOST_ID_PK" PRIMARY KEY (host_id),
+  CONSTRAINT "HOST_INFORMATION_ID_PK" PRIMARY KEY (host_information_id),
 
   CONSTRAINT sample_id_fk FOREIGN KEY (sample_id)
       REFERENCES atta.sample (sample_id) MATCH SIMPLE
@@ -778,4 +778,4 @@ CREATE TABLE atta.host
       ON UPDATE NO ACTION ON DELETE NO ACTION
 
 );
-ALTER TABLE atta.host OWNER TO atta;
+ALTER TABLE atta.host_information OWNER TO atta;
