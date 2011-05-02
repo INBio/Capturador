@@ -44,7 +44,6 @@ public class EnviromentalData extends LogGenericEntity {
     @Column(name = "enviromental_data_id")
     private Long enviromentalDataId;
 
-    @Id
     @Basic(optional = false)
     @Column(name = "sample_id")
     private Long sampleId;

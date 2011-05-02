@@ -18,8 +18,19 @@
 
 package org.inbio.ara.facade.samplemanage.impl;
 
+import java.util.List;
+import javax.ejb.EJB;
+import org.inbio.ara.dto.samplemanage.SampleDTO;
 import org.inbio.ara.facade.samplemanage.SampleManageFacadeRemote;
 import javax.ejb.Stateless;
+import org.inbio.ara.dto.samplemanage.EnviromentalDataDTO;
+import org.inbio.ara.dto.samplemanage.EnviromentalDataDTOFactory;
+import org.inbio.ara.dto.samplemanage.HostInformationDTO;
+import org.inbio.ara.dto.samplemanage.HostInformationDTOFactory;
+import org.inbio.ara.dto.samplemanage.SampleDTOFactory;
+import org.inbio.ara.eao.samplemanage.EnviromentalDataEAOLocal;
+import org.inbio.ara.eao.samplemanage.HostInformationEAOLocal;
+import org.inbio.ara.eao.samplemanage.SampleEAOLocal;
 
 /**
  *
@@ -27,8 +38,35 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class SampleManageFacadeImpl implements SampleManageFacadeRemote {
+
+    @EJB
+    private SampleEAOLocal sampleEAOLocal;
+
+    @EJB
+    private EnviromentalDataEAOLocal enviromentalDataEAOLocal;
+
+    @EJB
+    private HostInformationEAOLocal hostInformationEAOLocal;
+
+
+    private SampleDTOFactory sampleDTOFactory;
+
+    private EnviromentalDataDTOFactory enviromentalDataDTOFactory;
+
+    private HostInformationDTOFactory hostInformationDTOFactory;
+
+    public void saveSample(SampleDTO sampleDTO) {
+
+        sampleEAOLocal.create(sampleDTOFactory.createPlainEntity(sampleDTO));
+        List<EnviromentalDataDTO> elist = sampleDTO.getEnviromentalDataDTOList();
+        for (EnviromentalDataDTO enviromentalDataDTO : elist)
+            enviromentalDataEAOLocal.create(enviromentalDataDTOFactory.createPlainEntity(enviromentalDataDTO));
+
+        List<HostInformationDTO> hlist = sampleDTO.getHostInformationDTOList();
+        for (HostInformationDTO hostInformationDTO : hlist)
+            hostInformationEAOLocal.create(hostInformationDTOFactory.createPlainEntity(hostInformationDTO));
+
+    }
     
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method" or "Web Service > Add Operation")
  
 }

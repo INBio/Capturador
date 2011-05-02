@@ -19,6 +19,7 @@
 package org.inbio.ara.facade.samplemanage;
 
 import javax.ejb.Remote;
+import org.inbio.ara.dto.samplemanage.SampleDTO;
 
 /**
  *
@@ -26,5 +27,7 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface SampleManageFacadeRemote {
+
+    public void saveSample(SampleDTO sampleDTO);
     
 }

@@ -20,6 +20,7 @@
 package org.inbio.ara.dto.samplemanage;
 
 import java.util.Calendar;
+import java.util.List;
 import org.inbio.ara.dto.GenericDTO;
 
 /**
@@ -85,6 +86,10 @@ public class SampleDTO extends GenericDTO{
     private String taxon;
     
     private Long taxonId;
+
+    private List<EnviromentalDataDTO> enviromentalDataDTOList;
+
+    private List<HostInformationDTO> hostInformationDTOList;
 
     /**
      * @return the sampleId
@@ -490,5 +495,33 @@ public class SampleDTO extends GenericDTO{
      */
     public void setSampleStatusId(Long sampleStatusId) {
         this.sampleStatusId = sampleStatusId;
+    }
+
+    /**
+     * @return the enviromentalDataDTOList
+     */
+    public List<EnviromentalDataDTO> getEnviromentalDataDTOList() {
+        return enviromentalDataDTOList;
+    }
+
+    /**
+     * @param enviromentalDataDTOList the enviromentalDataDTOList to set
+     */
+    public void setEnviromentalDataDTOList(List<EnviromentalDataDTO> enviromentalDataDTOList) {
+        this.enviromentalDataDTOList = enviromentalDataDTOList;
+    }
+
+    /**
+     * @return the hostInformationDTOList
+     */
+    public List<HostInformationDTO> getHostInformationDTOList() {
+        return hostInformationDTOList;
+    }
+
+    /**
+     * @param hostInformationDTOList the hostInformationDTOList to set
+     */
+    public void setHostInformationDTOList(List<HostInformationDTO> hostInformationDTOList) {
+        this.hostInformationDTOList = hostInformationDTOList;
     }
 }
