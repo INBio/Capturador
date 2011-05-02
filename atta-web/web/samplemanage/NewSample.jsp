@@ -29,8 +29,13 @@
                                     <h:commandButton id="saveSampleButton" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.save_sample}"/>
                                     
                                 </h:panelGrid>
-                                <h:panelGrid columns="2">
-                                    <webuijsf:textField label="Cantidad de muestras iguales: " columns="10" id="textFieldSampleQuantity" style="width: 220px;"/>
+                                <h:panelGrid columns="7">
+                                    <webuijsf:label id="labelCMI" style="width: 260px; height: 24px" text="#{resources.equal_number_of_samples}"/>
+                                    <webuijsf:textField  columns="10" id="textFieldSampleQuantity" style="width: 220px;"/>
+                                    <webuijsf:label id="labelInitialConsecutive" style="width: 260px; height: 24px" text="Consecutivo Inicial: "/>
+                                    <webuijsf:textField  columns="10" id="textFieldInitialConsecutive" style="width: 220px;"/>
+                                    <webuijsf:label id="labelFinalConsecutive" style="width: 260px; height: 24px" text="Consecutivo Final: "/>
+                                    <webuijsf:textField  columns="10" id="textFieldFinalConsecutive" style="width: 220px;"/>
                                     <h:commandButton id="clearForm" style="height: 24px; width: 175px" styleClass="My_Button" value="Limpiar Formulario"/>
                                 </h:panelGrid>
                                 <webuijsf:tabSet id="tabSet1" lite="true" selected="tabSite" styleClass="My_panel_blue">
@@ -88,7 +93,7 @@
                                             </h:panelGrid>
                                         </h:panelGrid>
                                     </webuijsf:tab>
-                                    <webuijsf:tab id="tabSampleData" text="Datos de la muestra">
+                                    <webuijsf:tab id="tabSampleData" text="#{resources.sample_date}">
                                         <h:panelGrid columns="2">
                                             <h:panelGrid columns="2">
                                                 <webuijsf:label id="labelSampleId" style="width: 260px; height: 24px" text="#{resources.collectornumber}"/>
@@ -112,76 +117,183 @@
                                                 <webuijsf:label id="labeGatheringDatel" style="width: 260px; height: 24px" text="#{resources.gathering_date}"/>
                                                 <webuijsf:calendar id="calendarGatheringDate" columns="17" dateFormatPattern="yyyy-MM-dd" />
 
+                                                <webuijsf:label id="labeReceptionDatel" style="width: 260px; height: 24px" text="#{resources.reception_date}"/>
+                                                <webuijsf:calendar id="calendarReceptionDate" columns="17" dateFormatPattern="yyyy-MM-dd" />
+
                                                 <webuijsf:label id="labelPermission" style="width: 260px; height: 24px" text="#{resources.sle_permission}"/>
                                                 <webuijsf:dropDown id="dropdownPermission" width="190px" items="#{samplemanage$NewSample.permissionData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.permissionId}"/>
+
+                                                <webuijsf:label id="labelSampleStatus" style="width: 260px; height: 24px" text="#{resources.sle_sample_status}"/>
+                                                <webuijsf:dropDown id="dropdownSampleStatus"  width="190px" items="#{samplemanage$NewSample.sampleStatusData.options}"/>
+
+                                                <webuijsf:label id="labelSampleQuantity" style="width: 260px; height: 24px" text="#{resources.quantity}"/>
+                                                <h:panelGrid columns="2">
+                                                    <webuijsf:textField id="textFieldSampleQuantity" columns="22" style="width: 220px;"/>
+                                                    <webuijsf:dropDown id="dropdownSampleQuantityUnit"  width="100px" items="#{samplemanage$NewSample.unitData.options}"/>
+                                                </h:panelGrid>
+
                                             </h:panelGrid>
                                             <h:panelGrid columns="2">
-                                                    <webuijsf:label id="labelMicroSourceType" style="width: 260px; height: 24px" text="#{resources.sle_micro_source_type}"/>
-                                                    <webuijsf:dropDown id="dropdownMicroSourceType" width="190px" items="#{samplemanage$NewSample.microSourceTypeData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microSourceTypeId}"/>
+                                                <webuijsf:label id="labelSamplePH" style="width: 260px; height: 24px" text="#{resources.ph}"/>
+                                                <webuijsf:textField id="textSampleFieldPH" columns="22" style="width: 220px;"/>
 
-                                                    <webuijsf:label id="labelMicroMethod" style="width: 260px; height: 24px" text="#{resources.sle_micro_method}"/>
-                                                    <webuijsf:dropDown id="dropdownMicroMethod" width="190px" items="#{samplemanage$NewSample.microMethodData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microMethodId}"/>
+                                                <webuijsf:label id="labeSamplelTempeture" style="width: 260px; height: 24px" text="#{resources.tempeture}"/>
+                                                <webuijsf:textField id="textFieldSampleTempeture" columns="22" style="width: 220px;"/>
+                                                
+                                                <webuijsf:label id="labelSampleSalinity" style="width: 260px; height: 24px" text="#{resources.salinity}"/>
+                                                <webuijsf:textField id="textFieldSampleSalinity" columns="22" style="width: 220px;"/>
 
-                                                    <webuijsf:label id="labelMicroFome" style="width: 260px; height: 24px" text="#{resources.sle_micro_fome}"/>
-                                                    <webuijsf:dropDown id="dropdownMicroFome" width="190px" items="#{samplemanage$NewSample.microFomeData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microFomeId}"/>
+                                                <webuijsf:label id="labelMicroSourceType" style="width: 260px; height: 24px" text="#{resources.sle_micro_source_type}"/>
+                                                <webuijsf:dropDown id="dropdownMicroSourceType" width="190px" items="#{samplemanage$NewSample.microSourceTypeData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microSourceTypeId}"/>
 
-                                                    <webuijsf:label id="labelMicroQuality" style="width: 260px; height: 24px" text="#{resources.sle_micro_quality}"/>
-                                                    <webuijsf:dropDown id="dropdownMicroQuality" width="190px" items="#{samplemanage$NewSample.microQualityData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microQualityId}"/>
+                                                <webuijsf:label id="labelMicroMethod" style="width: 260px; height: 24px" text="#{resources.sle_micro_method}"/>
+                                                <webuijsf:dropDown id="dropdownMicroMethod" width="190px" items="#{samplemanage$NewSample.microMethodData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microMethodId}"/>
 
-                                                    <webuijsf:label id="labelSampleAltitude" style="width: 260px; height: 24px" text="#{resources.sample_altitude}"/>
-                                                    <webuijsf:textField id="textFieldSampleAltitude" columns="22" style="width: 220px;" text="#{samplemanage$SampleManageSessionBean.sampleDTO.sampleAltitude}"/>
+                                                <webuijsf:label id="labelMicroFome" style="width: 260px; height: 24px" text="#{resources.sle_micro_fome}"/>
+                                                <webuijsf:dropDown id="dropdownMicroFome" width="190px" items="#{samplemanage$NewSample.microFomeData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microFomeId}"/>
+
+                                                <webuijsf:label id="labelMicroQuality" style="width: 260px; height: 24px" text="#{resources.sle_micro_quality}"/>
+                                                <webuijsf:dropDown id="dropdownMicroQuality" width="190px" items="#{samplemanage$NewSample.microQualityData.options}" selected="#{samplemanage$SampleManageSessionBean.sampleDTO.microQualityId}"/>
+
+                                                <webuijsf:label id="labelSampleAltitude" style="width: 260px; height: 24px" text="#{resources.sample_altitude}"/>
+                                                <webuijsf:textField id="textFieldSampleAltitude" columns="22" style="width: 220px;" text="#{samplemanage$SampleManageSessionBean.sampleDTO.sampleAltitude}"/>
                                             </h:panelGrid>
                                         </h:panelGrid>
 
 
                                     </webuijsf:tab>
 
-                                    <webuijsf:tab id="tabEnviromentalData" text="Datos ambientales">
-                                        <h:panelGrid columns="2">
+                                    <webuijsf:tab id="tabEnviromentalData" text="#{resources.enviromental_information}">
+                                        <h:panelGrid columns="1">
                                             <h:panelGrid columns="2">
-                                                <webuijsf:label id="labelElevation" style="width: 260px; height: 24px" text="#{resources.elevation}"/>
-                                                <webuijsf:textField id="textFieldElevation" columns="22" style="width: 220px;" />
+                                                <h:panelGrid columns="2">
+                                                    <webuijsf:label id="labelElevation" style="width: 260px; height: 24px" text="#{resources.elevation}"/>
+                                                    <webuijsf:textField id="textFieldElevation" columns="22" style="width: 220px;" />
 
+                                                    <webuijsf:label id="labelPH" style="width: 260px; height: 24px" text="#{resources.ph}"/>
+                                                    <webuijsf:textField id="textFieldPH" columns="22" style="width: 220px;"/>
+
+                                                    <webuijsf:label id="labelBrightness" style="width: 260px; height: 24px" text="#{resources.lightness}"/>
+                                                    <webuijsf:textField id="textFieldBrightness" columns="22" style="width: 220px;"/>
+
+                                                    <webuijsf:label id="labelTempeture" style="width: 260px; height: 24px" text="#{resources.tempeture}"/>
+                                                    <webuijsf:textField id="textFieldTempeture" columns="22" style="width: 220px;"/>
+
+                                                    <webuijsf:label id="labelMoisture" style="width: 260px; height: 24px" text="#{resources.moisture}"/>
+                                                    <webuijsf:textField id="textFieldMoisture" columns="22" style="width: 220px;"/>
+
+                                                </h:panelGrid>
+                                                <h:panelGrid columns="2">
+
+                                                    <webuijsf:label id="labelHabitat" style="width: 260px; height: 24px" text="#{resources.habitat}"/>
+                                                    <webuijsf:textField id="textFieldHabitat" columns="22" style="width: 220px;"/>
+
+                                                    <webuijsf:label id="labelVerticalStrata" style="width: 260px; height: 24px" text="#{resources.sle_vertical_strata}"/>
+                                                    <webuijsf:dropDown id="dropdownVerticalStrata"  width="190px" items="#{samplemanage$NewSample.verticalStrataData.options}"/>
+
+                                                    <webuijsf:label id="labelVegetationType" style="width: 260px; height: 24px" text="#{resources.sle_vegetation_type}"/>
+                                                    <webuijsf:dropDown id="dropdownVegetationType" width="190px" items="#{samplemanage$NewSample.vegetationTypeData.options}"/>
+
+                                                    <webuijsf:label id="labelSalinity" style="width: 260px; height: 24px" text="#{resources.salinity}"/>
+                                                    <webuijsf:textField id="textFieldSalinity" columns="22" style="width: 220px;"/>
+
+                                                </h:panelGrid>
+
+                                            </h:panelGrid>
+                                            <h:panelGrid columns="3">
+                                                <h:commandButton id="AddEnviromentalData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.add}"/>
+                                                <h:commandButton id="editEnviromentalData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.edit}"/>
+                                                <h:commandButton id="deleteEnviromentalData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.remove}"/>
+                                            </h:panelGrid>
+                                            <h:dataTable binding="#{samplemanage$NewSample.dataTableEnviromentalData}" cellspacing="0" columnClasses="list-columns"
+                                                headerClass="list-header" id="dataTableAuthors" rowClasses="list-row-even,list-row-odd"
+                                                rows="#{samplemanage$SampleManageSessionBean.enviromentalDataListSize}"
+                                                style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
+                                                value="#{samplemanage$SampleManageSessionBean.enviromentalDataList}" var="currentRow" width="540">
+                                                <h:column>
+                                                    <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow.selected}"/>
+                                                </h:column>
+
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{resources.habitat}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{currentRow.habitat}"/>
+                                                </h:column>
+
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{resources.lightness}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{currentRow.luminosity}"/>
+                                                </h:column>
+
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{resources.moisture}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{currentRow.moisture}"/>
+                                                </h:column>
+
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{resources.sle_vertical_strata}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{currentRow.verticalStrata}"/>
+                                                </h:column>
+                                                <h:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{resources.sle_vegetation_type}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{currentRow.vegetationType}"/>
+                                                </h:column>
+
+                                            </h:dataTable>
+                                        </h:panelGrid>
+                                    </webuijsf:tab>
+                                    <webuijsf:tab id="tabHost" text="#{resources.host}">
+                                        <h:panelGrid columns="1">
+                                            <h:panelGrid columns="2">
                                                 <webuijsf:label id="labelDiametro" style="width: 260px; height: 24px" text="#{resources.diameter}"/>
                                                 <webuijsf:textField id="textFieldDiametro" columns="22" style="width: 220px;"/>
 
-                                                <webuijsf:label id="labelHost" style="width: 260px; height: 24px" text="#{resources.host}"/>
-                                                <webuijsf:dropDown id="dropdownHost" width="190px" items="#{germplasm$NewSemental.breeds.options}"/>
-
-                                                <webuijsf:label id="labelPH" style="width: 260px; height: 24px" text="#{resources.ph}"/>
-                                                <webuijsf:textField id="textFieldPH" columns="22" style="width: 220px;"/>
-
-                                                <webuijsf:label id="labelBrightness" style="width: 260px; height: 24px" text="#{resources.lightness}"/>
-                                                <webuijsf:textField id="textFieldBrightness" columns="22" style="width: 220px;"/>
-
-                                                <webuijsf:label id="labelTempeture" style="width: 260px; height: 24px" text="#{resources.tempeture}"/>
-                                                <webuijsf:textField id="textFieldTempeture" columns="22" style="width: 220px;"/>
+                                                <webuijsf:label id="labelHostScientificName" style="width: 260px; height: 24px" text="#{resources.scientificname}"/>
+                                                <webuijsf:textField id="textFieldHostScientificName" columns="22" style="width: 220px;"/>
                                             </h:panelGrid>
-                                            <h:panelGrid columns="2">
-                                                <webuijsf:label id="labelMoisture" style="width: 260px; height: 24px" text="#{resources.moisture}"/>
-                                                <webuijsf:textField id="textFieldMoisture" columns="22" style="width: 220px;"/>
+                                            <h:panelGrid columns="1">
+                                                <h:panelGrid columns="3">
+                                                    <h:commandButton id="AddHostData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.add}"/>
+                                                    <h:commandButton id="editHostData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.edit}"/>
+                                                    <h:commandButton id="deleteHostData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.remove}"/>
+                                                </h:panelGrid>
+                                                <h:dataTable binding="#{samplemanage$NewSample.dataTableHostInformation}" cellspacing="0" columnClasses="list-columns"
+                                                    headerClass="list-header" id="dataTableAuthors" rowClasses="list-row-even,list-row-odd"
+                                                    rows="#{samplemanage$SampleManageSessionBean.hostInformationListSize}"
+                                                    style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px; "
+                                                    value="#{samplemanage$SampleManageSessionBean.hostInformationList}" var="currentRow" width="540">
+                                                    <h:column>
+                                                        <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow.selected}"/>
+                                                    </h:column>
 
-                                                <webuijsf:label id="labelForestType" style="width: 260px; height: 24px" text="#{resources.forest_type}"/>
-                                                <webuijsf:dropDown id="dropdownForestType"  width="190px" items="#{samplemanage$NewSample.forestTypeData.options}"/>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{resources.taxon}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{currentRow.taxon}"/>
+                                                    </h:column>
 
-                                                <webuijsf:label id="labelHabitat" style="width: 260px; height: 24px" text="#{resources.habitat}"/>
-                                                <webuijsf:textField id="textFieldHabitat" columns="22" style="width: 220px;"/>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{resources.health_comment}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{currentRow.healthComment}"/>
+                                                    </h:column>
 
-                                                <webuijsf:label id="labelVerticalStrata" style="width: 260px; height: 24px" text="#{resources.sle_vertical_strata}"/>
-                                                <webuijsf:dropDown id="dropdownVerticalStrata"  width="190px" items="#{samplemanage$NewSample.verticalStrataData.options}"/>
-
-                                                <webuijsf:label id="labelVegetationType" style="width: 260px; height: 24px" text="#{resources.sle_vegetation_type}"/>
-                                                <webuijsf:dropDown id="dropdownVegetationType" width="190px" items="#{samplemanage$NewSample.vegetationTypeData.options}"/>
-
-                                                <webuijsf:label id="labelSalinity" style="width: 260px; height: 24px" text="#{resources.salinity}"/>
-                                                <webuijsf:textField id="textFieldSalinity" columns="22" style="width: 220px;"/>
-
+                                                </h:dataTable>
                                             </h:panelGrid>
-
                                         </h:panelGrid>
-
                                     </webuijsf:tab>
-                                    <webuijsf:tab id="tabSpecimens" text="Especímenes Asociados">
+                                    <webuijsf:tab id="tabSpecimens" text="#{resources.related_specimen}">
                                         <h:panelGrid>
                                             <h:panelGrid columns="3">
                                                 <webuijsf:label id="labelFieldNumber" style="width: 260px; height: 24px" text="Numero de Campo"/>
@@ -198,7 +310,7 @@
                                         </h:panelGrid>
 
                                     </webuijsf:tab>
-                                    <webuijsf:tab id="tabImages" text="Imagenes">
+                                    <webuijsf:tab id="tabImages" text="#{resources.images}">
 
                                     </webuijsf:tab>
                                 </webuijsf:tabSet>

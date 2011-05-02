@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.faces.FacesException;
+import javax.faces.component.html.HtmlDataTable;
 import org.inbio.ara.admin.PersonSessionBean;
 import org.inbio.ara.germplasm.BreedSessionBean;
 import org.inbio.ara.AraSessionBean;
@@ -73,10 +74,13 @@ public class NewSample extends AbstractPageBean {
     private SingleSelectOptionsList microMethodData = new SingleSelectOptionsList();
     private SingleSelectOptionsList microFomeData = new SingleSelectOptionsList();
     private SingleSelectOptionsList microQualityData = new SingleSelectOptionsList();
-    private SingleSelectOptionsList forestTypeData = new SingleSelectOptionsList();
+    private SingleSelectOptionsList sampleStatusData = new SingleSelectOptionsList();
     private SingleSelectOptionsList verticalStrataData = new SingleSelectOptionsList();
     private SingleSelectOptionsList vegetationTypeData = new SingleSelectOptionsList();
+    private SingleSelectOptionsList unitData = new SingleSelectOptionsList();
 
+    private HtmlDataTable dataTableEnviromentalData = new HtmlDataTable();
+    private HtmlDataTable dataTableHostInformation = new HtmlDataTable();
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -162,15 +166,18 @@ public class NewSample extends AbstractPageBean {
         microQualityData.setOptions(
                 this.getSelectionListDropDownData(
                 SelectionListEntity.MICRO_QUALITY.getId()));
-        forestTypeData.setOptions(
+        getSampleStatusData().setOptions(
                 this.getSelectionListDropDownData(
-                SelectionListEntity.FOREST_TYPE.getId()));
+                SelectionListEntity.SAMPLE_STATUS.getId()));
         verticalStrataData.setOptions(
                 this.getSelectionListDropDownData(
                 SelectionListEntity.VERTICAL_STRATA.getId()));
         vegetationTypeData.setOptions(
                 this.getSelectionListDropDownData(
                 SelectionListEntity.VEGETATION_TYPE.getId()));
+        unitData.setOptions(
+                this.getSelectionListDropDownData(
+                SelectionListEntity.SAMPLE_QUANTITY_MEASUREMENT_UNIT.getId()));
 
         
     }
@@ -521,19 +528,7 @@ public class NewSample extends AbstractPageBean {
         this.microQualityData = microQualityData;
     }
 
-    /**
-     * @return the forestTypeData
-     */
-    public SingleSelectOptionsList getForestTypeData() {
-        return forestTypeData;
-    }
-
-    /**
-     * @param forestTypeData the forestTypeData to set
-     */
-    public void setForestTypeData(SingleSelectOptionsList forestTypeData) {
-        this.forestTypeData = forestTypeData;
-    }
+  
 
     /**
      * @return the verticalStrataData
@@ -561,6 +556,62 @@ public class NewSample extends AbstractPageBean {
      */
     public void setVegetationTypeData(SingleSelectOptionsList vegetationTypeData) {
         this.vegetationTypeData = vegetationTypeData;
+    }
+
+    /**
+     * @return the unitData
+     */
+    public SingleSelectOptionsList getUnitData() {
+        return unitData;
+    }
+
+    /**
+     * @param unitData the unitData to set
+     */
+    public void setUnitData(SingleSelectOptionsList unitData) {
+        this.unitData = unitData;
+    }
+
+    /**
+     * @return the sampleStatusData
+     */
+    public SingleSelectOptionsList getSampleStatusData() {
+        return sampleStatusData;
+    }
+
+    /**
+     * @param sampleStatusData the sampleStatusData to set
+     */
+    public void setSampleStatusData(SingleSelectOptionsList sampleStatusData) {
+        this.sampleStatusData = sampleStatusData;
+    }
+
+    /**
+     * @return the dataTableEnviromentalData
+     */
+    public HtmlDataTable getDataTableEnviromentalData() {
+        return dataTableEnviromentalData;
+    }
+
+    /**
+     * @param dataTableEnviromentalData the dataTableEnviromentalData to set
+     */
+    public void setDataTableEnviromentalData(HtmlDataTable dataTableEnviromentalData) {
+        this.dataTableEnviromentalData = dataTableEnviromentalData;
+    }
+
+    /**
+     * @return the dataTableHostInformation
+     */
+    public HtmlDataTable getDataTableHostInformation() {
+        return dataTableHostInformation;
+    }
+
+    /**
+     * @param dataTableHostInformation the dataTableHostInformation to set
+     */
+    public void setDataTableHostInformation(HtmlDataTable dataTableHostInformation) {
+        this.dataTableHostInformation = dataTableHostInformation;
     }
 
    

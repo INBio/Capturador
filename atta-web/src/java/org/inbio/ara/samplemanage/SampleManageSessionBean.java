@@ -22,9 +22,12 @@ package org.inbio.ara.samplemanage;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
+import org.inbio.ara.dto.samplemanage.EnviromentalDataDTO;
+import org.inbio.ara.dto.samplemanage.HostInformationDTO;
 import org.inbio.ara.dto.samplemanage.SampleDTO;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.samplemanage.SampleManageFacadeRemote;
@@ -65,6 +68,10 @@ public class SampleManageSessionBean extends AbstractSessionBean implements Seri
     private InventoryFacadeRemote inventoryFacadeRemote;
 
     private SampleDTO sampleDTO = new SampleDTO();
+
+    private List<EnviromentalDataDTO> enviromentalDataList = new ArrayList<EnviromentalDataDTO>();
+
+    private List<HostInformationDTO> hostInformationList = new ArrayList<HostInformationDTO>();
 
     /**
      * <p>Construct a new session data bean instance.</p>
@@ -150,6 +157,16 @@ public class SampleManageSessionBean extends AbstractSessionBean implements Seri
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public int getEnviromentalDataListSize()
+    {
+        return enviromentalDataList.size();
+    }
+
+    public int getHostInformationListSize()
+    {
+        return hostInformationList.size();
+    }
+
     /**
      * @return the sampleManageFacadeRemote
      */
@@ -190,6 +207,34 @@ public class SampleManageSessionBean extends AbstractSessionBean implements Seri
      */
     public void setSampleDTO(SampleDTO sampleDTO) {
         this.sampleDTO = sampleDTO;
+    }
+
+    /**
+     * @return the enviromentalDataList
+     */
+    public List<EnviromentalDataDTO> getEnviromentalDataList() {
+        return enviromentalDataList;
+    }
+
+    /**
+     * @param enviromentalDataList the enviromentalDataList to set
+     */
+    public void setEnviromentalDataList(List<EnviromentalDataDTO> enviromentalDataList) {
+        this.enviromentalDataList = enviromentalDataList;
+    }
+
+    /**
+     * @return the hostInformationList
+     */
+    public List<HostInformationDTO> getHostInformationList() {
+        return hostInformationList;
+    }
+
+    /**
+     * @param hostInformationList the hostInformationList to set
+     */
+    public void setHostInformationList(List<HostInformationDTO> hostInformationList) {
+        this.hostInformationList = hostInformationList;
     }
 
     
