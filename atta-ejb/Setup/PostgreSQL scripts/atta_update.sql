@@ -762,6 +762,7 @@ CREATE TABLE atta.host_information
   host_information_id numeric NOT NULL DEFAULT nextval('atta.host_information_seq'::regclass),
   sample_id numeric,
   health_comment character varying(5000),
+  diameter numeric,
   taxon_id numeric,
   created_by character varying(20) NOT NULL,
   creation_date date NOT NULL,
