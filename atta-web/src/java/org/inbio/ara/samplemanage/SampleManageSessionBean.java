@@ -21,7 +21,6 @@
 package org.inbio.ara.samplemanage;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -31,6 +30,7 @@ import org.inbio.ara.dto.samplemanage.HostInformationDTO;
 import org.inbio.ara.dto.samplemanage.SampleDTO;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.samplemanage.SampleManageFacadeRemote;
+import org.inbio.ara.util.PaginationControllerRemix;
 import org.inbio.ara.util.PaginationCoreInterface;
 
 /**
@@ -48,7 +48,7 @@ import org.inbio.ara.util.PaginationCoreInterface;
  * @author dasolano
  */
 
-public class SampleManageSessionBean extends AbstractSessionBean implements Serializable, PaginationCoreInterface{
+public class SampleManageSessionBean extends AbstractSessionBean implements PaginationCoreInterface{
     // <editor-fold defaultstate="collapsed" desc="Managed Component Definition">
 
     /**
@@ -68,10 +68,16 @@ public class SampleManageSessionBean extends AbstractSessionBean implements Seri
     private InventoryFacadeRemote inventoryFacadeRemote;
 
     private SampleDTO sampleDTO = new SampleDTO();
+    private HostInformationDTO hostInformationDTO = new HostInformationDTO();
+    private EnviromentalDataDTO enviromentalDataDTO = new EnviromentalDataDTO();
+
 
     private List<EnviromentalDataDTO> enviromentalDataList = new ArrayList<EnviromentalDataDTO>();
 
     private List<HostInformationDTO> hostInformationList = new ArrayList<HostInformationDTO>();
+
+    //Objeto que controla la paginacion de la informacion de samples
+    private PaginationControllerRemix pagination = null;
 
     /**
      * <p>Construct a new session data bean instance.</p>
@@ -220,7 +226,7 @@ public class SampleManageSessionBean extends AbstractSessionBean implements Seri
      * @param enviromentalDataList the enviromentalDataList to set
      */
     public void setEnviromentalDataList(List<EnviromentalDataDTO> enviromentalDataList) {
-        this.enviromentalDataList = enviromentalDataList;
+        this.setEnviromentalDataList(enviromentalDataList);
     }
 
     /**
@@ -234,8 +240,52 @@ public class SampleManageSessionBean extends AbstractSessionBean implements Seri
      * @param hostInformationList the hostInformationList to set
      */
     public void setHostInformationList(List<HostInformationDTO> hostInformationList) {
-        this.hostInformationList = hostInformationList;
+        this.setHostInformationList(hostInformationList);
     }
+
+    /**
+     * @return the pagination
+     */
+    public PaginationControllerRemix getPagination() {
+        return pagination;
+    }
+
+    /**
+     * @param pagination the pagination to set
+     */
+    public void setPagination(PaginationControllerRemix pagination) {
+        this.pagination = pagination;
+    }
+
+    /**
+     * @return the hostInformationDTO
+     */
+    public HostInformationDTO getHostInformationDTO() {
+        return hostInformationDTO;
+    }
+
+    /**
+     * @param hostInformationDTO the hostInformationDTO to set
+     */
+    public void setHostInformationDTO(HostInformationDTO hostInformationDTO) {
+        this.hostInformationDTO = hostInformationDTO;
+    }
+
+    /**
+     * @return the enviromentalDataDTO
+     */
+    public EnviromentalDataDTO getEnviromentalDataDTO() {
+        return enviromentalDataDTO;
+    }
+
+    /**
+     * @param enviromentalDataDTO the enviromentalDataDTO to set
+     */
+    public void setEnviromentalDataDTO(EnviromentalDataDTO enviromentalDataDTO) {
+        this.enviromentalDataDTO = enviromentalDataDTO;
+    }
+
+   
 
     
 }

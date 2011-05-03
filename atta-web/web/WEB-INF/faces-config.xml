@@ -1840,8 +1840,13 @@
     </navigation-rule>
 
      <!-- MODULO DE MODULO ETQ -->
-    
+    <managed-bean>
+        <managed-bean-name>samplemanage$ListSample</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.samplemanage.ListSample</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>
+
 
 
 

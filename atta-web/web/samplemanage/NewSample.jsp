@@ -29,9 +29,11 @@
                                     <h:commandButton id="saveSampleButton" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.save_sample}"/>
                                     
                                 </h:panelGrid>
-                                <h:panelGrid columns="7">
+                                <h:panelGrid columns="2">
                                     <webuijsf:label id="labelCMI" style="width: 260px; height: 24px" text="#{resources.equal_number_of_samples}"/>
                                     <webuijsf:textField  columns="10" id="textFieldSampleQuantity" style="width: 220px;"/>
+                                    <webuijsf:label id="labelCollector" style="width: 260px; height: 24px" text="#{resources.collector}"/>
+                                    <webuijsf:textField  columns="10" id="textFieldCollector"/>
                                     <webuijsf:label id="labelInitialConsecutive" style="width: 260px; height: 24px" text="Consecutivo Inicial: "/>
                                     <webuijsf:textField  columns="10" id="textFieldInitialConsecutive" style="width: 220px;"/>
                                     <webuijsf:label id="labelFinalConsecutive" style="width: 260px; height: 24px" text="Consecutivo Final: "/>
@@ -171,37 +173,37 @@
                                                     <webuijsf:textField id="textFieldElevation" columns="22" style="width: 220px;" />
 
                                                     <webuijsf:label id="labelPH" style="width: 260px; height: 24px" text="#{resources.ph}"/>
-                                                    <webuijsf:textField id="textFieldPH" columns="22" style="width: 220px;"/>
+                                                    <webuijsf:textField id="textFieldPH" text="#{samplemanage$SampleManageSessionBean.enviromentalDataDTO.ph}" columns="22" style="width: 220px;"/>
 
                                                     <webuijsf:label id="labelBrightness" style="width: 260px; height: 24px" text="#{resources.lightness}"/>
-                                                    <webuijsf:textField id="textFieldBrightness" columns="22" style="width: 220px;"/>
+                                                    <webuijsf:textField id="textFieldBrightness" text="#{samplemanage$SampleManageSessionBean.enviromentalDataDTO.luminosity}" columns="22" style="width: 220px;"/>
 
                                                     <webuijsf:label id="labelTempeture" style="width: 260px; height: 24px" text="#{resources.tempeture}"/>
-                                                    <webuijsf:textField id="textFieldTempeture" columns="22" style="width: 220px;"/>
+                                                    <webuijsf:textField id="textFieldTempeture" text="#{samplemanage$SampleManageSessionBean.enviromentalDataDTO.tempeture}" columns="22" style="width: 220px;"/>
 
                                                     <webuijsf:label id="labelMoisture" style="width: 260px; height: 24px" text="#{resources.moisture}"/>
-                                                    <webuijsf:textField id="textFieldMoisture" columns="22" style="width: 220px;"/>
+                                                    <webuijsf:textField id="textFieldMoisture" text="#{samplemanage$SampleManageSessionBean.enviromentalDataDTO.moisture}" columns="22" style="width: 220px;"/>
 
                                                 </h:panelGrid>
                                                 <h:panelGrid columns="2">
 
                                                     <webuijsf:label id="labelHabitat" style="width: 260px; height: 24px" text="#{resources.habitat}"/>
-                                                    <webuijsf:textField id="textFieldHabitat" columns="22" style="width: 220px;"/>
+                                                    <webuijsf:textField id="textFieldHabitat" text="#{samplemanage$SampleManageSessionBean.enviromentalDataDTO.habitat}" columns="22" style="width: 220px;"/>
 
                                                     <webuijsf:label id="labelVerticalStrata" style="width: 260px; height: 24px" text="#{resources.sle_vertical_strata}"/>
-                                                    <webuijsf:dropDown id="dropdownVerticalStrata"  width="190px" items="#{samplemanage$NewSample.verticalStrataData.options}"/>
+                                                    <webuijsf:dropDown id="dropdownVerticalStrata"  selected="#{samplemanage$SampleManageSessionBean.enviromentalDataDTO.vegetationTypeId}" width="190px" items="#{samplemanage$NewSample.verticalStrataData.options}"/>
 
                                                     <webuijsf:label id="labelVegetationType" style="width: 260px; height: 24px" text="#{resources.sle_vegetation_type}"/>
-                                                    <webuijsf:dropDown id="dropdownVegetationType" width="190px" items="#{samplemanage$NewSample.vegetationTypeData.options}"/>
+                                                    <webuijsf:dropDown id="dropdownVegetationType" selected="#{samplemanage$SampleManageSessionBean.enviromentalDataDTO.vegetationTypeId}" width="190px" items="#{samplemanage$NewSample.vegetationTypeData.options}"/>
 
                                                     <webuijsf:label id="labelSalinity" style="width: 260px; height: 24px" text="#{resources.salinity}"/>
-                                                    <webuijsf:textField id="textFieldSalinity" columns="22" style="width: 220px;"/>
+                                                    <webuijsf:textField id="textFieldSalinity" text="#{samplemanage$SampleManageSessionBean.enviromentalDataDTO.salinity}" columns="22" style="width: 220px;"/>
 
                                                 </h:panelGrid>
 
                                             </h:panelGrid>
                                             <h:panelGrid columns="3">
-                                                <h:commandButton id="AddEnviromentalData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.add}"/>
+                                                <h:commandButton id="AddEnviromentalData" action="#{samplemanage$NewSample.btnAddEnviromentalData_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.add}"/>
                                                 <h:commandButton id="editEnviromentalData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.edit}"/>
                                                 <h:commandButton id="deleteEnviromentalData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.remove}"/>
                                             </h:panelGrid>
@@ -255,14 +257,18 @@
                                         <h:panelGrid columns="1">
                                             <h:panelGrid columns="2">
                                                 <webuijsf:label id="labelDiametro" style="width: 260px; height: 24px" text="#{resources.diameter}"/>
-                                                <webuijsf:textField id="textFieldDiametro" columns="22" style="width: 220px;"/>
+                                                <webuijsf:textField id="textFieldDiametro" text="#{samplemanage$SampleManageSessionBean.hostInformationDTO.diameter}" columns="22" style="width: 220px;"/>
 
                                                 <webuijsf:label id="labelHostScientificName" style="width: 260px; height: 24px" text="#{resources.scientificname}"/>
-                                                <webuijsf:textField id="textFieldHostScientificName" columns="22" style="width: 220px;"/>
+                                                <webuijsf:textField id="textFieldHostScientificName" text="#{samplemanage$SampleManageSessionBean.hostInformationDTO.taxon}" columns="22" style="width: 220px;"/>
+
+                                                <webuijsf:label id="labelHealthComment" style="width: 260px; height: 24px" text="#{resources.health_comment}"/>
+                                                <webuijsf:textField id="textFieldHealthComment" text="#{samplemanage$SampleManageSessionBean.hostInformationDTO.healthComment}" columns="22" style="width: 220px;"/>
+
                                             </h:panelGrid>
                                             <h:panelGrid columns="1">
                                                 <h:panelGrid columns="3">
-                                                    <h:commandButton id="AddHostData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.add}"/>
+                                                    <h:commandButton id="AddHostData" action="#{samplemanage$NewSample.btnAddHostInformation_action}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.add}"/>
                                                     <h:commandButton id="editHostData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.edit}"/>
                                                     <h:commandButton id="deleteHostData" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.remove}"/>
                                                 </h:panelGrid>

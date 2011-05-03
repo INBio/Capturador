@@ -36,8 +36,11 @@ import org.inbio.ara.admin.ProfileSessionBean;
 import org.inbio.ara.admin.AdminGeographicLayersSessionBean;
 import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.SelectionListEntity;
+import org.inbio.ara.dto.samplemanage.EnviromentalDataDTO;
+import org.inbio.ara.dto.samplemanage.HostInformationDTO;
 import org.inbio.ara.taxonomy.TaxonAutoCompleteSessionBean;
 import org.inbio.ara.util.BundleHelper;
+import org.inbio.ara.util.MessageBean;
 
 /**
  * <p>Page bean that corresponds to a similarly named JSP page.  This
@@ -223,6 +226,30 @@ public class NewSample extends AbstractPageBean {
         }
         allOptionsInArray = new Option[allOptions.size()];
         return allOptions.toArray(allOptionsInArray);
+    }
+
+    public String btnAddHostInformation_action()
+    {
+
+
+        SampleManageSessionBean smsb = this.getSampleManageSessionBean();
+
+        smsb.getHostInformationList().add(smsb.getHostInformationDTO());
+
+        smsb.setHostInformationDTO(new HostInformationDTO());
+        return null;
+    }
+
+    public String btnAddEnviromentalData_action()
+    {
+
+
+        SampleManageSessionBean smsb = this.getSampleManageSessionBean();
+
+        smsb.getEnviromentalDataList().add(smsb.getEnviromentalDataDTO());
+
+        smsb.setEnviromentalDataDTO(new EnviromentalDataDTO());
+        return null;
     }
 
     /**
