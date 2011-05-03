@@ -39,6 +39,9 @@ public class EnviromentalDataDTO extends GenericDTO{
 
     private String vegetationType;
 
+    /* For Graphical Inteface purposes */
+    private boolean selected;
+    
     /**
      * @return the enviromentalDataId
      */
@@ -220,6 +223,20 @@ public class EnviromentalDataDTO extends GenericDTO{
      */
     public void setVegetationType(String vegetationType) {
         this.vegetationType = vegetationType;
+    }
+
+    /**
+     * @return the selected
+     */
+    public boolean isSelected() {
+        return selected;
+    }
+
+    /**
+     * @param selected the selected to set
+     */
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
     
 }

@@ -37,7 +37,8 @@ import org.inbio.ara.eao.samplemanage.SampleEAOLocal;
  * @author dasolano
  */
 @Stateless
-public class SampleManageFacadeImpl implements SampleManageFacadeRemote {
+public class SampleManageFacadeImpl implements SampleManageFacadeRemote
+{
 
     @EJB
     private SampleEAOLocal sampleEAOLocal;
@@ -66,6 +67,14 @@ public class SampleManageFacadeImpl implements SampleManageFacadeRemote {
         for (HostInformationDTO hostInformationDTO : hlist)
             hostInformationEAOLocal.create(hostInformationDTOFactory.createPlainEntity(hostInformationDTO));
 
+    }
+
+    public List<SampleDTO> getAllSamplePaginated(int firstResult, int maxResult) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Long countAllSample() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
  

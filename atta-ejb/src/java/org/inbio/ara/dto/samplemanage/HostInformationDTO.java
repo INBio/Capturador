@@ -19,9 +19,14 @@ public class HostInformationDTO extends GenericDTO{
 
     private Long sampleId;
 
+    private Long diameter;
+
     private Long taxonId;
 
     private String taxon;
+
+    /* For Graphical Inteface purposes */
+    private boolean selected;
 
     /**
      * @return the hostInformationId
@@ -91,5 +96,33 @@ public class HostInformationDTO extends GenericDTO{
      */
     public void setTaxon(String taxon) {
         this.taxon = taxon;
+    }
+
+    /**
+     * @return the diameter
+     */
+    public Long getDiameter() {
+        return diameter;
+    }
+
+    /**
+     * @param diameter the diameter to set
+     */
+    public void setDiameter(Long diameter) {
+        this.diameter = diameter;
+    }
+
+    /**
+     * @return the selected
+     */
+    public boolean isSelected() {
+        return selected;
+    }
+
+    /**
+     * @param selected the selected to set
+     */
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

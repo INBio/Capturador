@@ -91,6 +91,9 @@ public class SampleDTO extends GenericDTO{
 
     private List<HostInformationDTO> hostInformationDTOList;
 
+    /* For Graphical Inteface purposes */
+    private boolean selected;
+
     /**
      * @return the sampleId
      */
@@ -523,5 +526,19 @@ public class SampleDTO extends GenericDTO{
      */
     public void setHostInformationDTOList(List<HostInformationDTO> hostInformationDTOList) {
         this.hostInformationDTOList = hostInformationDTOList;
+    }
+
+    /**
+     * @return the selected
+     */
+    public boolean isSelected() {
+        return selected;
+    }
+
+    /**
+     * @param selected the selected to set
+     */
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

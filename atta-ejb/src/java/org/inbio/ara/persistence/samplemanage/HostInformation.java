@@ -37,6 +37,9 @@ public class HostInformation extends LogGenericEntity {
     @Column(name = "sample_id")
     private Long sampleId;
 
+    @Column(name = "diameter")
+    private Long diameter;
+
     @Column(name = "taxon_id")
     private Long taxonId;
 
@@ -112,6 +115,20 @@ public class HostInformation extends LogGenericEntity {
     @Override
     public String toString() {
         return "org.inbio.ara.persistence.samplemanage.Host[hostId=" + hostInformationId + "]";
+    }
+
+    /**
+     * @return the diameter
+     */
+    public Long getDiameter() {
+        return diameter;
+    }
+
+    /**
+     * @param diameter the diameter to set
+     */
+    public void setDiameter(Long diameter) {
+        this.diameter = diameter;
     }
 
 }

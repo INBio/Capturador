@@ -20,6 +20,7 @@ public class HostInformationDTOFactory extends BaseEntityOrDTOFactory<HostInform
 
         e.setHealthComment(dto.getHealthComment());
         e.setSampleId(dto.getSampleId());
+        e.setDiameter(dto.getDiameter());
         e.setTaxonId(dto.getTaxonId());
 
         return e;
@@ -29,6 +30,7 @@ public class HostInformationDTOFactory extends BaseEntityOrDTOFactory<HostInform
     public HostInformation updateEntityWithPlainValues(HostInformationDTO dto, HostInformation e) {
         e.setHealthComment(dto.getHealthComment());
         e.setSampleId(dto.getSampleId());
+        e.setDiameter(dto.getDiameter());
         e.setTaxonId(dto.getTaxonId());
 
         return e;
@@ -39,6 +41,7 @@ public class HostInformationDTOFactory extends BaseEntityOrDTOFactory<HostInform
 
         dto.setHealthComment(entity.getHealthComment());
         dto.setSampleId(entity.getSampleId());
+        dto.setDiameter(entity.getDiameter());
         dto.setTaxonId(entity.getTaxonId());
 
         return dto;

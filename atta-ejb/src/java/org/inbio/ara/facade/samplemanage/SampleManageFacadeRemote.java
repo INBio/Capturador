@@ -18,6 +18,7 @@
 
 package org.inbio.ara.facade.samplemanage;
 
+import java.util.List;
 import javax.ejb.Remote;
 import org.inbio.ara.dto.samplemanage.SampleDTO;
 
@@ -29,5 +30,8 @@ import org.inbio.ara.dto.samplemanage.SampleDTO;
 public interface SampleManageFacadeRemote {
 
     public void saveSample(SampleDTO sampleDTO);
-    
+
+    public List<SampleDTO> getAllSamplePaginated(int firstResult, int maxResult);
+
+    public Long countAllSample();
 }
