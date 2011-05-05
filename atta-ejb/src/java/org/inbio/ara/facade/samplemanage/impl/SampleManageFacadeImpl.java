@@ -31,6 +31,7 @@ import org.inbio.ara.dto.samplemanage.SampleDTOFactory;
 import org.inbio.ara.eao.samplemanage.EnviromentalDataEAOLocal;
 import org.inbio.ara.eao.samplemanage.HostInformationEAOLocal;
 import org.inbio.ara.eao.samplemanage.SampleEAOLocal;
+import org.inbio.ara.persistence.samplemanage.Sample;
 
 /**
  *
@@ -50,31 +51,44 @@ public class SampleManageFacadeImpl implements SampleManageFacadeRemote
     private HostInformationEAOLocal hostInformationEAOLocal;
 
 
-    private SampleDTOFactory sampleDTOFactory;
+    private SampleDTOFactory sampleDTOFactory = new SampleDTOFactory();
 
-    private EnviromentalDataDTOFactory enviromentalDataDTOFactory;
+    private EnviromentalDataDTOFactory enviromentalDataDTOFactory = new EnviromentalDataDTOFactory();
 
-    private HostInformationDTOFactory hostInformationDTOFactory;
+    private HostInformationDTOFactory hostInformationDTOFactory = new HostInformationDTOFactory();
 
     public void saveSample(SampleDTO sampleDTO) {
 
-        sampleEAOLocal.create(sampleDTOFactory.createPlainEntity(sampleDTO));
+        Sample s = sampleDTOFactory.createPlainEntity(sampleDTO);
+        sampleEAOLocal.create(s);
         List<EnviromentalDataDTO> elist = sampleDTO.getEnviromentalDataDTOList();
         for (EnviromentalDataDTO enviromentalDataDTO : elist)
+        {
+            enviromentalDataDTO.setSampleId(s.getSampleId());
+            enviromentalDataDTO.setUserName(sampleDTO.getUserName());
             enviromentalDataEAOLocal.create(enviromentalDataDTOFactory.createPlainEntity(enviromentalDataDTO));
+        }
 
         List<HostInformationDTO> hlist = sampleDTO.getHostInformationDTOList();
         for (HostInformationDTO hostInformationDTO : hlist)
+        {
+            hostInformationDTO.setSampleId(s.getSampleId());
+            hostInformationDTO.setUserName(sampleDTO.getUserName());
             hostInformationEAOLocal.create(hostInformationDTOFactory.createPlainEntity(hostInformationDTO));
+        }
 
     }
 
     public List<SampleDTO> getAllSamplePaginated(int firstResult, int maxResult) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String[] fields = {"witness"};
+        List<Sample> s = sampleEAOLocal.findAllPaginatedFilterAndOrderBy(Sample.class, firstResult, maxResult, fields, null);
+        return sampleDTOFactory.createDTOList(s
+            );
+        
     }
 
     public Long countAllSample() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return sampleEAOLocal.count(Sample.class);
     }
     
  
