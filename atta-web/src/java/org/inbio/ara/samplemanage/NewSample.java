@@ -38,6 +38,8 @@ import org.inbio.ara.dto.inventory.SelectionListDTO;
 import org.inbio.ara.dto.inventory.SelectionListEntity;
 import org.inbio.ara.dto.samplemanage.EnviromentalDataDTO;
 import org.inbio.ara.dto.samplemanage.HostInformationDTO;
+import org.inbio.ara.dto.samplemanage.SampleDTO;
+import org.inbio.ara.gis.SiteAutoCompleteSessionBean;
 import org.inbio.ara.taxonomy.TaxonAutoCompleteSessionBean;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
@@ -252,6 +254,28 @@ public class NewSample extends AbstractPageBean {
         return null;
     }
 
+    public String btnClear()
+    {
+        getSampleManageSessionBean().setSampleDTO(new SampleDTO());
+        return null;
+    }
+
+    public String btnSaveSample()
+    {
+        SampleManageSessionBean smsb = getSampleManageSessionBean();
+        smsb.getSampleDTO().setTaxonId(getTaxonAutoCompleteSessionBean().getIdSelected());
+        smsb.getSampleDTO().setSiteId(getSiteAutoCompleteSessionBean().getIdSelected());
+        smsb.getSampleDTO().setEnviromentalDataDTOList(smsb.getEnviromentalDataList());
+        smsb.getSampleDTO().setHostInformationDTOList(smsb.getHostInformationList());
+        smsb.getSampleDTO().setUserName(getAraSessionBean().getGlobalUserName());
+
+        smsb.getSampleManageFacadeRemote().saveSample(smsb.getSampleDTO());
+        
+        return null;
+    }
+
+
+
     /**
      * @return the myLocale
      */
@@ -266,6 +290,15 @@ public class NewSample extends AbstractPageBean {
      */
     protected TaxonAutoCompleteSessionBean getTaxonAutoCompleteSessionBean() {
         return (TaxonAutoCompleteSessionBean) getBean("taxonomy$TaxonAutoCompleteBean");
+    }
+
+    /**
+     * <p>Return a reference to the scoped data bean.</p>
+     *
+     * @return reference to the scoped data bean
+     */
+    protected SiteAutoCompleteSessionBean getSiteAutoCompleteSessionBean() {
+        return (SiteAutoCompleteSessionBean) getBean("gis$SiteAutoCompleteSessionBean");
     }
 
     /**

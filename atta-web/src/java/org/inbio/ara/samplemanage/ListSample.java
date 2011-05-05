@@ -124,6 +124,18 @@ public class ListSample extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+
+        //Preguntar si la bandera de busqueda avanzada esta prendida
+        if(getsamplemanage$SampleManageSessionBean().isAdvancedSearch()){
+            //this.getGridpAdvancedSearchAccession().setRendered(true);//Muestra el panel de busqueda avanzada
+        }
+        //Inicializar el dataprovider la primera vez (si la paginación es nula)
+        if (getsamplemanage$SampleManageSessionBean().getPagination()==null) {
+            getsamplemanage$SampleManageSessionBean().initDataProvider();
+        }
+        //Actualizar los datos del paginador
+        else
+            getsamplemanage$SampleManageSessionBean().getPagination().refreshList();
     }
 
     /**

@@ -49,7 +49,7 @@
                                                             style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.btnDelete}"/>
                                                     <h:commandButton action="#{samplemanage$ListSample.btn_new_partition_action}" id="btn_new_partition"
                                                         style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.new_partition_sample}"/>
-                                                    <h:commandButton action="#{samplemanage$ListSample.btn_deliver_action}" id="btn_new_partition"
+                                                    <h:commandButton action="#{samplemanage$ListSample.btn_deliver_action}" id="btn_deliver"
                                                                      style="margin: 2px;height: 22px" styleClass="My_Button_table" value="#{resources.deliver}"/>
                                                     <!-- Botones de paginacion -->
                                                     <h:commandButton action="#{samplemanage$SampleManageSessionBean.pagination.firstResults}" id="btnFirst"
@@ -84,7 +84,7 @@
                                                     <f:facet name="header">
                                                         <h:outputText value="#{resources.taxon_name}"/>
                                                     </f:facet>
-                                                    <h:outputText value="#{currentRow['taxonName']}"/>
+                                                    <h:outputText value="#{currentRow['taxon']}"/>
                                                 </h:column>
                                             </h:dataTable>
                                         </h:panelGrid>

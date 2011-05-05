@@ -79,6 +79,18 @@ public class SampleManageSessionBean extends AbstractSessionBean implements Pagi
     //Objeto que controla la paginacion de la informacion de samples
     private PaginationControllerRemix pagination = null;
 
+
+    //Bandera para saber si se activo el panel de busqueda avanzada
+    private boolean advancedSearch = false;
+    //Entero que indica la cantidad de elementos que el usuario desea mostrar en los resultados
+    private int quantity = 10; //Por defecto se mostraran 10 elementos
+    //Bandera para indicarle al paginador que trabaje en modo busqueda avanzada
+    private boolean queryMode = false;
+
+    //Bandera para indicarle al paginador que trabaje en modo busqueda simple
+    private boolean queryModeSimple = false;
+    //String que indica la consulta del usuario en la busqueda simple
+    private String consultaSimple = new String("");
     /**
      * <p>Construct a new session data bean instance.</p>
      */
@@ -159,8 +171,62 @@ public class SampleManageSessionBean extends AbstractSessionBean implements Pagi
     public void destroy() {
     }
 
+    /**
+     * Para evitar que retorne null al data provider del paginador
+     * @param l lista retornada para el paginador
+     * @return
+     */
+    public List myReturn(List l) {
+        if (l == null) {
+            return new ArrayList<SampleDTO>();
+        } else {
+            return l;
+        }
+    }
+
+    /**
+     * Inicializar el data provider de especimenes
+     */
+    public void initDataProvider() {
+        this.setPagination(new PaginationControllerRemix(this.getSampleManageFacadeRemote().countAllSample().intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
+    }
+
     public List getResults(int firstResult, int maxResults) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        List<SampleDTO> auxResult = new ArrayList<SampleDTO>();
+
+        List<SampleDTO> aListDTO;
+
+        if (isQueryMode()) { //En caso de que sea busqueda avanzada
+            //Set the collectionId into the DTO
+            try {
+                aListDTO = new ArrayList<SampleDTO>();
+                return aListDTO;
+
+
+            } catch (Exception e) {
+                return auxResult;
+            }
+        } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
+            try {
+                aListDTO = new ArrayList<SampleDTO>();
+                return aListDTO;
+
+            } catch (Exception e) {
+                return auxResult;
+            }
+        } else //Valores default
+        {
+            try {
+                getPagination().setTotalResults(getSampleManageFacadeRemote().countAllSample().intValue());
+                aListDTO =  myReturn(getSampleManageFacadeRemote().
+                        getAllSamplePaginated(firstResult, maxResults));
+                return aListDTO;
+            } catch (Exception e) {
+                return auxResult;
+            }
+        }
     }
 
     public int getEnviromentalDataListSize()
@@ -283,6 +349,78 @@ public class SampleManageSessionBean extends AbstractSessionBean implements Pagi
      */
     public void setEnviromentalDataDTO(EnviromentalDataDTO enviromentalDataDTO) {
         this.enviromentalDataDTO = enviromentalDataDTO;
+    }
+
+ 
+
+    /**
+     * @return the advancedSearch
+     */
+    public boolean isAdvancedSearch() {
+        return advancedSearch;
+    }
+
+    /**
+     * @param advancedSearch the advancedSearch to set
+     */
+    public void setAdvancedSearch(boolean advancedSearch) {
+        this.advancedSearch = advancedSearch;
+    }
+
+    /**
+     * @return the quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    /**
+     * @return the queryMode
+     */
+    public boolean isQueryMode() {
+        return queryMode;
+    }
+
+    /**
+     * @param queryMode the queryMode to set
+     */
+    public void setQueryMode(boolean queryMode) {
+        this.queryMode = queryMode;
+    }
+
+    /**
+     * @return the queryModeSimple
+     */
+    public boolean isQueryModeSimple() {
+        return queryModeSimple;
+    }
+
+    /**
+     * @param queryModeSimple the queryModeSimple to set
+     */
+    public void setQueryModeSimple(boolean queryModeSimple) {
+        this.queryModeSimple = queryModeSimple;
+    }
+
+    /**
+     * @return the consultaSimple
+     */
+    public String getConsultaSimple() {
+        return consultaSimple;
+    }
+
+    /**
+     * @param consultaSimple the consultaSimple to set
+     */
+    public void setConsultaSimple(String consultaSimple) {
+        this.consultaSimple = consultaSimple;
     }
 
    

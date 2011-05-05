@@ -26,7 +26,7 @@
                                 <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                     style="height: 50px; width: 840px" warnClass="warnMessage"/>
                                 <h:panelGrid columns="1" id="groupBotoneraSample" style="height: 24px" width="540">
-                                    <h:commandButton id="saveSampleButton" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.save_sample}"/>
+                                    <h:commandButton id="saveSampleButton" action="#{samplemanage$NewSample.btnSaveSample}" style="height: 24px; width: 175px" styleClass="My_Button" value="#{resources.save_sample}"/>
                                     
                                 </h:panelGrid>
                                 <h:panelGrid columns="2">
@@ -38,7 +38,7 @@
                                     <webuijsf:textField  columns="10" id="textFieldInitialConsecutive" style="width: 220px;"/>
                                     <webuijsf:label id="labelFinalConsecutive" style="width: 260px; height: 24px" text="Consecutivo Final: "/>
                                     <webuijsf:textField  columns="10" id="textFieldFinalConsecutive" style="width: 220px;"/>
-                                    <h:commandButton id="clearForm" style="height: 24px; width: 175px" styleClass="My_Button" value="Limpiar Formulario"/>
+                                    <h:commandButton id="clearForm" action="#{samplemanage$NewSample.btnClear}" style="height: 24px; width: 175px" styleClass="My_Button" value="Limpiar Formulario"/>
                                 </h:panelGrid>
                                 <webuijsf:tabSet id="tabSet1" lite="true" selected="tabSite" styleClass="My_panel_blue">
                                     <webuijsf:tab id="tabSite" text="#{resources.general_information}">
