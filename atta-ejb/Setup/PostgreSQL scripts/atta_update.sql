@@ -780,3 +780,13 @@ CREATE TABLE atta.host_information
 
 );
 ALTER TABLE atta.host_information OWNER TO atta;
+
+--2011.05.10 gsulca
+-- Adding taxon description stage
+INSERT INTO ATTA.TAXON_DESCRIPTION_STAGE (name, description, creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('No pubblicado', 'Registro de especie no publicado', '2011-05-11', 'admin', '2011-05-11', 'admin');
+
+INSERT INTO ATTA.TAXON_DESCRIPTION_STAGE (name, description, creation_date, created_by, last_modification_date, last_modification_by)
+    VALUES ('Pubblicado', 'Registro de especie publicado', '2011-05-11', 'admin', '2011-05-11', 'admin');
+
+
