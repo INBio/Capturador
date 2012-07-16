@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Document   : Header_Select
+    Created on : 16/11/2009, 03:21:36 PM
+    Author     : esmata
+-->
+
+<div style="-rave-layout: grid" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:webuijsf="http://www.sun.com/webui/webuijsf">
+
+	<f:subview id="Header">
+		<webuijsf:form id="headerForm">
+			<div id="banner-rep">
+				<div id="banner">
+					<div id="title">
+						<h1>
+							<webuijsf:staticText id="headerApplicationName" escape="false" text="#{resources.applicationName}" />
+						</h1>
+					</div>
+				</div>
+			</div>
+		</webuijsf:form>
+	</f:subview>
+</div>
