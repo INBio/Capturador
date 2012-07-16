@@ -1,0 +1,193 @@
+10
+
+dir
+1592
+svn://pulsatrix.inbio.ac.cr/atta2/trunk/atta-ejb/src/java/org/inbio/ara/persistence
+svn://pulsatrix.inbio.ac.cr/atta2
+
+
+
+2011-01-31T20:48:31.138927Z
+1590
+esmata
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3aa2e761-397d-4522-80f4-092673de1051
+
+label
+dir
+
+selectionlist
+dir
+
+gis
+dir
+
+transaction
+dir
+
+germplasm
+dir
+
+format
+dir
+
+institution
+dir
+
+identification
+dir
+
+GenericEntity.java
+file
+
+
+
+
+2011-02-01T20:48:24.000000Z
+2092d4696f39d1ea96f0c150b556de3f
+2011-01-31T20:48:31.138927Z
+1590
+esmata
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3847
+
+statistics
+dir
+
+collection
+dir
+
+species
+dir
+
+LogGenericEntity.java
+file
+
+
+
+
+2011-02-01T20:48:24.000000Z
+9f703590ec7cb6adc1ccdef2388b61b1
+2011-01-31T20:48:31.138927Z
+1590
+esmata
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3186
+
+SelectionListGenericEntity.java
+file
+
+
+
+
+2011-02-01T20:48:24.000000Z
+388e4d49b49c4765bee328dae5197bbc
+2011-01-31T20:48:31.138927Z
+1590
+esmata
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2292
+
+reports
+dir
+
+reference
+dir
+
+audiences
+dir
+
+specimen
+dir
+
+person
+dir
+
+security
+dir
+
+gathering
+dir
+
+indicator
+dir
+
+util
+dir
+
+taxonomy
+dir
+
