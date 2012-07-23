@@ -116,6 +116,22 @@
                             <goal>install-file</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>commons-dublincore</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <file>${basedir}/src/main/libs/commons-dublincore-1.0-SNAPSHOT.jar</file>
+                            <repositoryLayout>default</repositoryLayout>
+                            <groupId>org.inbio.commons</groupId>
+                            <artifactId>commons-dublincore</artifactId>
+                            <version>1.0-SNAPSHOT</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
