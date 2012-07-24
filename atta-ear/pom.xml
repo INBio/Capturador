@@ -29,7 +29,7 @@
                 <artifactId>maven-ear-plugin</artifactId>
                 <version>2.4.2</version>
                 <configuration>
-                    <version>6</version>
+                    <version>5</version>
                     <defaultJavaBundleDir>lib</defaultJavaBundleDir>
                 </configuration>
             </plugin>
