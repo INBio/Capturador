@@ -20,8 +20,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.5</source>
+                    <target>1.5</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -29,7 +29,7 @@
                 <artifactId>maven-ear-plugin</artifactId>
                 <version>2.4.2</version>
                 <configuration>
-                    <version>6</version>
+                    <version>5</version>
                     <defaultJavaBundleDir>lib</defaultJavaBundleDir>
                 </configuration>
             </plugin>
@@ -72,7 +72,4 @@
             <version>8.4-702.jdbc4</version>
         </dependency>
     </dependencies>
-    <properties>
-        <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
-    </properties>
 </project>

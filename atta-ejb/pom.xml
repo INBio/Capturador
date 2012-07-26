@@ -13,7 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
+       
     </properties>
 
     <dependencies>
@@ -117,7 +117,7 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>commons-dublincore</id>
+                        <id>commonsdublincore</id>
                         <phase>validate</phase>
                         <configuration>
                             <file>${basedir}/src/main/libs/commons-dublincore-1.0-SNAPSHOT.jar</file>
