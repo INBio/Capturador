@@ -89,6 +89,11 @@
             <artifactId>webui-jsf-dt</artifactId>
             <version>4.4.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>extras</groupId>
+            <artifactId>jsf-extensions</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -132,6 +137,7 @@
                             <goal>install-file</goal>
                         </goals>
                     </execution>
+
                     <execution>
                         <id>dataprovider</id>
                         <phase>validate</phase>
@@ -148,6 +154,7 @@
                             <goal>install-file</goal>
                         </goals>
                     </execution>
+
                     <execution>
                         <id>jsfcl</id>
                         <phase>validate</phase>
@@ -164,6 +171,7 @@
                             <goal>install-file</goal>
                         </goals>
                     </execution>
+
                     <execution>
                         <id>designtime</id>
                         <phase>validate</phase>
@@ -180,6 +188,7 @@
                             <goal>install-file</goal>
                         </goals>
                     </execution>
+
                     <execution>
                         <id>editors</id>
                         <phase>validate</phase>
@@ -196,6 +205,7 @@
                             <goal>install-file</goal>
                         </goals>
                     </execution>
+
                     <execution>
                         <id>error</id>
                         <phase>validate</phase>
@@ -212,6 +222,24 @@
                             <goal>install-file</goal>
                         </goals>
                     </execution>
+
+                    <execution>
+                        <id>jsf-extensions</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <file>${basedir}/src/main/libs/jsf-extensions-dynamic-faces-0.1.jar</file>
+                            <repositoryLayout>default</repositoryLayout>
+                            <groupId>extras</groupId>
+                            <artifactId>jsf-extensions</artifactId>
+                            <version>1</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+                    
                 </executions>
             </plugin>
         </plugins>
