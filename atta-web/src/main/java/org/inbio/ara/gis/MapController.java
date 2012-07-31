@@ -152,9 +152,12 @@ public class MapController extends AbstractPageBean {
         scriptString.append("lonlat1 = new OpenLayers.LonLat(" + minX + ", " + minY+ ");\n");
         scriptString.append("lonlat2 = new OpenLayers.LonLat(" + maxX + ", " + maxY+ ");\n");
         //scriptString.append("bounds = new OpenLayers.Bounds(" + minX + ", " + minY + ", " + maxX + ", " + maxY + ");\n");
-        scriptString.append("bounds = new OpenLayers.Bounds(lonlat1.transform(fromProjection,toProjection),lonlat2.transform(fromProjection,toProjection));\n");
-        //scriptString.append("map.zoomToExtent(bounds);\n");
-        scriptString.append("map.setCenter(lonlat2.transform(fromProjection,toProjection));\n");
+        scriptString.append("bounds = new OpenLayers.Bounds();\n");
+        scriptString.append("bounds.extend(lonlat1.transform(fromProjection,toProjection));\n");
+        scriptString.append("bounds.extend(lonlat2.transform(fromProjection,toProjection));\n");
+        scriptString.append("bounds.toBBOX();\n");
+        scriptString.append("map.zoomToExtent(bounds);\n");
+        //scriptString.append("map.setCenter(lonlat2.transform(fromProjection,toProjection));\n");
         scriptString.append("map.zoomTo(6);\n");
 
 
