@@ -67,9 +67,9 @@
                                     <webuijsf:tabSet id="tabSetSites" lite="true" selected="tabCoordinates" style="height: 350px; width: 840px" styleClass="My_tab_border">
                                         <webuijsf:tab  id="tabCoordinates" text="#{resources.coordinates}">
                                             <webuijsf:panelLayout id="lpCoordinates" style="height: 284px; position: relative; width: 100%; -rave-layout: grid">
-                                                <webuijsf:label id="lbProjection" visible = "false"
+                                                <webuijsf:label id="lbProjection" visible = "true"
                                                     style="font-size: 18px; font-style: normal; font-weight: bold; left: 20px; top: 12px; position: absolute" text="#{resources.projection}"/>
-                                                <webuijsf:dropDown  actionExpression="#{gis$NewSite.onChangeProjection_action}" visible="false" id="ddProjection" binding="#{gis$NewSite.ddProjection}" items="#{gis$NewSite.projectionData.options}"
+                                                <webuijsf:dropDown  actionExpression="#{gis$NewSite.onChangeProjection_action}" visible="true" id="ddProjection" binding="#{gis$NewSite.ddProjection}" items="#{gis$NewSite.projectionData.options}"
                                                     selected="#{gis$SiteSessionBean.selectedProjection}"
                                                     style="position: absolute; left: 125px; top: 12px; height: 24px" width="120px" submitForm="true" />
                                                 <h:panelGrid columns="2" id="groupProjections" style="height: 254px; width: 840px;top: 34px; position: absolute">

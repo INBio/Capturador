@@ -77,30 +77,40 @@ public class MapController extends AbstractPageBean {
 
         StringBuilder scriptString = new StringBuilder();
         scriptString.append("<script src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=AIzaSyCR8g_D1ykB4f3y74b-vMf05NxyOiP3c-U\" type=\"text/javascript\"></script>\n");
+        //scriptString.append("<script src=\"https://maps.googleapis.com/maps/api/js?sensor=false\" type=\"text/javascript\"></script>\n");
         //scriptString.append("<script src='http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=euzuro-openlayers'></script>\n");
-        scriptString.append("<script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>\n");
+        //scriptString.append("<script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>\n");
+        scriptString.append("<script src='http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0'></script>\n");
         //Script to Java Script SOAPClient
         scriptString.append("<script id=\"script2\" type=\"text/JavaScript\" src=\"../../SOAPClient.js\"></script>");
         scriptString.append("<script defer='defer' type='text/javascript'>\n");
 
         //Define global variables
-        scriptString.append("var map\n");
-        scriptString.append("var selectControl\n");
-        scriptString.append("var selectedFeature\n");
+        scriptString.append("var map;\n");
+        scriptString.append("var bingKey='AoLMy0VeiYxQs__rrYkPAtmuWjMgrnt52xTj_FvCiwDTTihBmPvhwH-I0hL5sCCd';\n");
+
+        scriptString.append("var selectControl;\n");
+        scriptString.append("var selectedFeature;\n");
+        scriptString.append("var fromProjection = new OpenLayers.Projection('EPSG:4326');\n");
+        scriptString.append("var toProjection = new OpenLayers.Projection('EPSG:900913');\n");
 
         scriptString.append("function init() {\n");
         scriptString.append("var attributes;\n");
+        scriptString.append("var lonlat1;\n");
+        scriptString.append("var lonlat2;\n");
 
         // Define map
-        scriptString.append("map = new OpenLayers.Map('map', {controls: [], numZoomLevels: 15});\n");
+        scriptString.append("map = new OpenLayers.Map('map', {controls: [], numZoomLevels: 15, projection: 'EPSG:900913'});\n");
 
         // Define map's layers
         //scriptString.append("openLayersWMSLayer = new OpenLayers.Layer.WMS('OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {layers:'basic'} );\n");
         //scriptString.append("yahooLayer         = new OpenLayers.Layer.Yahoo('Yahoo');\n");
-        scriptString.append("googleLayer        = new OpenLayers.Layer.Google('Google Hybrid', {type: G_HYBRID_MAP });\n");
+        scriptString.append("googleLayer        = new OpenLayers.Layer.Google('Google Hybrid', {type: G_HYBRID_MAP, 'sphericalMercator': true, numZoomLevels:15});\n");
         scriptString.append("vectorLayer        = new OpenLayers.Layer.Vector('Gatherings/Observations');\n");
-        scriptString.append("virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');\n");
-
+        //scriptString.append("virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');\n");
+        scriptString.append("virtualEarthLayer  = new OpenLayers.Layer.Bing({name:'Bing Map',key:bingKey,type:'AerialWithLabels','sphericalMercator': true, numZoomLevels:15});\n");
+        //scriptString.append("virtualEarthLayer  = new OpenLayers.Layer.Bing({name:'Bing Map',key:bingKey,type:'Road','sphericalMercator': true, numZoomLevels:15});\n");
+        
         // Add coordinates of collecting points
         for (SiteDTO tObject : getLocalities()) {
             Long siteId = tObject.getSiteId();                     
@@ -139,9 +149,14 @@ public class MapController extends AbstractPageBean {
         Double minY = getMinY(getLocalities());
         Double maxX = getMaxX(getLocalities());
         Double maxY = getMaxY(getLocalities());
+        scriptString.append("lonlat1 = new OpenLayers.LonLat(" + minX + ", " + minY+ ");\n");
+        scriptString.append("lonlat2 = new OpenLayers.LonLat(" + maxX + ", " + maxY+ ");\n");
+        //scriptString.append("bounds = new OpenLayers.Bounds(" + minX + ", " + minY + ", " + maxX + ", " + maxY + ");\n");
+        scriptString.append("bounds = new OpenLayers.Bounds(lonlat1.transform(fromProjection,toProjection),lonlat2.transform(fromProjection,toProjection));\n");
+        //scriptString.append("map.zoomToExtent(bounds);\n");
+        scriptString.append("map.setCenter(lonlat2.transform(fromProjection,toProjection));\n");
+        scriptString.append("map.zoomTo(6);\n");
 
-        scriptString.append("bounds = new OpenLayers.Bounds(" + minX + ", " + minY + ", " + maxX + ", " + maxY + ");\n");
-        scriptString.append("map.zoomToExtent(bounds);\n");
 
         //Create selected control
         scriptString.append("selectControl = new OpenLayers.Control.SelectFeature(vectorLayer,\n");
@@ -153,8 +168,9 @@ public class MapController extends AbstractPageBean {
         scriptString.append("map.addControl(new OpenLayers.Control.MousePosition());\n");
         scriptString.append("map.addControl(new OpenLayers.Control.OverviewMap());\n");
         scriptString.append("map.addControl(new OpenLayers.Control.Navigation());\n");
-        scriptString.append("map.addControl(new OpenLayers.Control.MouseToolbar());\n");
+        //scriptString.append("map.addControl(new OpenLayers.Control.MouseToolbar());\n");
         scriptString.append("map.addControl(new OpenLayers.Control.PanZoomBar());\n");
+        
         scriptString.append("map.addControl(selectControl);\n");
         scriptString.append("selectControl.activate();\n");
 
@@ -180,8 +196,11 @@ public class MapController extends AbstractPageBean {
         // Add Point
         scriptString.append("function addPoint(x, y, attribute) {\n");
         scriptString.append("var attrib = attribute;\n");
+        
+        scriptString.append("var point = new OpenLayers.Geometry.Point(x, y);\n");
         scriptString.append("var feature = new OpenLayers.Feature.Vector(\n");
-        scriptString.append("new OpenLayers.Geometry.Point(x, y), attrib);\n");
+        //scriptString.append("new OpenLayers.Geometry.Point(x, y), attrib);\n");
+        scriptString.append("point.transform(fromProjection,toProjection), attrib);\n");
         scriptString.append("vectorLayer.addFeatures(feature);\n");
         scriptString.append("}\n");
 

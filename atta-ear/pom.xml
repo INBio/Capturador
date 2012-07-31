@@ -72,4 +72,7 @@
             <version>8.4-702.jdbc4</version>
         </dependency>
     </dependencies>
+    <properties>
+        <netbeans.hint.deploy.server>J2EE</netbeans.hint.deploy.server>
+    </properties>
 </project>

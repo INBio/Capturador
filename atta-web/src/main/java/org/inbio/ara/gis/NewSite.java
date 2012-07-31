@@ -218,6 +218,9 @@ public class NewSite extends AbstractPageBean {
 
         //se agrega para que se actualice correctamente en caso de campos requeridos incompletos
         this.getDdProjection().setSelected(this.getSiteSessionBean().getSelectedProjection());
+        System.out.println("VALORES PARA = "+this.getSiteSessionBean().getSelectedProjection());
+        System.out.println("Longitude = "+this.getTxLongitude().getText());
+        System.out.println("Latitude = "+this.getTxLatitude().getText());
         //this.setProjections();
     }
 
