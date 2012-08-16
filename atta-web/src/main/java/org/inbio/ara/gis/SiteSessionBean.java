@@ -101,6 +101,7 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
     private Long selectedProvinceId = null;
     private Long selectedProjection = null;
 
+    private int selectedWgs84Format = 0;
     //Site DTO seleccionado por el usuario para editar
     private SiteDTO currentSiteDTO = new SiteDTO();
     //SiteDTO que sera convertido en entidad y sera persistido
@@ -689,5 +690,38 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
     public void setWgs84Projection(boolean wgs84Projection) {
         this.wgs84Projection = wgs84Projection;
     }
+    
+    public String[] getReprojection(float valueX, float valueY, Long projectionSRID, Long reprojectioSRID)
+    {       
+        String reprojection = this.getGisFacade().getReprojection(valueX, valueY, projectionSRID, reprojectioSRID);
+        if(reprojection == null)
+        {
+            return null;
+        }
+        else
+        {
+            System.out.println(reprojection);
+            reprojection = reprojection.substring(reprojection.indexOf("(")+1, reprojection.length()-1);
+            System.out.println(reprojection);
+            return reprojection.split(" ");
+        }
+    }
+
+    /**
+     * @return the selectedWgs84Format
+     */
+    public int getSelectedWgs84Format() {
+        return selectedWgs84Format;
+    }
+
+    /**
+     * @param selectedWgs84Format the selectedWgs84Format to set
+     */
+    public void setSelectedWgs84Format(int selectedWgs84Format) {
+        this.selectedWgs84Format = selectedWgs84Format;
+    }
+    
+    
+    
 
 }

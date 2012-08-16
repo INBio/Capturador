@@ -20,8 +20,11 @@ package org.inbio.ara.eao.gis.impl;
 
 import org.inbio.ara.eao.gis.*;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import org.inbio.ara.eao.BaseEAOImpl;
 import org.inbio.ara.persistence.gis.Projection;
+import org.postgis.*;
+import java.sql.*;
 
 /**
  *
@@ -31,7 +34,29 @@ import org.inbio.ara.persistence.gis.Projection;
 public class ProjectionEAOImpl extends BaseEAOImpl<Projection,Long>
         implements ProjectionEAOLocal {
     
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method" or "Web Service > Add Operation")
+    public String reprojection(float valueX, float valueY, Long projectionSRID, Long reprojectioSRID)
+    {
+        
+        String result = "";
+        
+        String selectString ="SELECT text(ST_AsEWKT(ST_Transform(ST_GeomFromEWKT(\'SRID="+projectionSRID+";POINT("+valueX+" "+ valueY+")\'), "+ reprojectioSRID+")))";
+        //Connection connPostgis;
+        try
+        {
+          
+            System.out.println(selectString);
+            
+            Query reprojectionQuery = em.createNativeQuery(selectString);
+            result = reprojectionQuery.getSingleResult().toString();            
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println("Error al crear la conexion;");
+            e.printStackTrace();            
+        }
+        return result;
+    }
+        
  
 }

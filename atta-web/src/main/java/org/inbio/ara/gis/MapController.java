@@ -76,7 +76,8 @@ public class MapController extends AbstractPageBean {
 
 
         StringBuilder scriptString = new StringBuilder();
-        scriptString.append("<script src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=AIzaSyCR8g_D1ykB4f3y74b-vMf05NxyOiP3c-U\" type=\"text/javascript\"></script>\n");
+        //scriptString.append("<script src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=AIzaSyCR8g_D1ykB4f3y74b-vMf05NxyOiP3c-U\" type=\"text/javascript\"></script>\n");
+        scriptString.append("<script src=\"http://maps.google.com/maps/api/js?v=3&amp;sensor=false\" type=\"text/javascript\"></script>\n");
         //scriptString.append("<script src=\"https://maps.googleapis.com/maps/api/js?sensor=false\" type=\"text/javascript\"></script>\n");
         //scriptString.append("<script src='http://api.maps.yahoo.com/ajaxymap?v=3.0&appid=euzuro-openlayers'></script>\n");
         //scriptString.append("<script src='http://dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.1'></script>\n");
@@ -105,7 +106,8 @@ public class MapController extends AbstractPageBean {
         // Define map's layers
         //scriptString.append("openLayersWMSLayer = new OpenLayers.Layer.WMS('OpenLayers WMS', 'http://labs.metacarta.com/wms/vmap0', {layers:'basic'} );\n");
         //scriptString.append("yahooLayer         = new OpenLayers.Layer.Yahoo('Yahoo');\n");
-        scriptString.append("googleLayer        = new OpenLayers.Layer.Google('Google Hybrid', {type: G_HYBRID_MAP, 'sphericalMercator': true, numZoomLevels:15});\n");
+        //scriptString.append("googleLayer        = new OpenLayers.Layer.Google('Google Hybrid', {type: G_HYBRID_MAP, 'sphericalMercator': true, numZoomLevels:15});\n");
+        scriptString.append("googleLayer        = new OpenLayers.Layer.Google('Google Hybrid', {type: google.maps.MapTypeId.HYBRID_MAP, 'sphericalMercator': true, numZoomLevels:15});\n");
         scriptString.append("vectorLayer        = new OpenLayers.Layer.Vector('Gatherings/Observations');\n");
         //scriptString.append("virtualEarthLayer  = new OpenLayers.Layer.VirtualEarth('Virtual Earth');\n");
         scriptString.append("virtualEarthLayer  = new OpenLayers.Layer.Bing({name:'Bing Map',key:bingKey,type:'AerialWithLabels','sphericalMercator': true, numZoomLevels:15});\n");

@@ -19,18 +19,17 @@
 package org.inbio.ara.gis;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
-import com.sun.webui.jsf.component.DropDown;
-import com.sun.webui.jsf.component.PanelLayout;
-import com.sun.webui.jsf.component.TextArea;
-import com.sun.webui.jsf.component.TextField;
+import com.sun.webui.jsf.component.*;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.component.html.HtmlSelectOneRadio;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.gis.FeatureTypeDTO;
 import org.inbio.ara.dto.gis.GeographicLayerDTO;
@@ -77,7 +76,7 @@ public class NewSite extends AbstractPageBean {
     private DropDown ddDetermination = new DropDown();
     private DropDown ddOrigProjection = new DropDown();
     private DropDown ddProjection = new DropDown();
-
+    private DropDown ddWgs84Format = new DropDown();
 
     private TextField txPresition = new TextField();
     private TextField txDatum = new TextField();
@@ -91,7 +90,13 @@ public class NewSite extends AbstractPageBean {
     private TextField txLatitudeSeconds = new TextField();
     private TextField txLongitude = new TextField();
     private TextField txLatitude = new TextField();
+    
+    private Label lbWgs84Format = new Label();
 
+    //private HtmlSelectOneRadio rbWgs84Format = new HtmlSelectOneRadio();
+    private RadioButtonGroup rbWgs84Format = new RadioButtonGroup();
+    
+    
     private PanelLayout panelWGS84Projection = new PanelLayout();
     private PanelLayout panelGeneralProjection = new PanelLayout();
 
@@ -102,6 +107,7 @@ public class NewSite extends AbstractPageBean {
 	private final String INVALID_LONGITUDE_RANGE = "invalid_longitude_range";
 	private final String NOT_APPLY = "not_apply";
 	private final String DUPLICATED_COORDINATES = "duplicated_coordinates";
+        private final String ERROR_NULL_COORDINATES = "error_null_coordinate";
 	private final String EMPTY_COORIDNATES = "empty_cooridnates";
 	private final String EMPTY_DESCRIPTION = "empty_description";
 	private final String EMPTY_METHOD = "empty_method";
@@ -128,6 +134,8 @@ public class NewSite extends AbstractPageBean {
     private SingleSelectOptionsList provincesData = new SingleSelectOptionsList();
     //En esta variable se almacenan los datos del drop dows projecciones
     private SingleSelectOptionsList projectionData = new SingleSelectOptionsList();
+    
+    private SingleSelectOptionsList wgs84FormatData = new SingleSelectOptionsList();
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -192,6 +200,7 @@ public class NewSite extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+        System.out.println("HIZO PRERENDER");
         this.baseProjectionData.setOptions(this.getProjectionsDropDownData());
         this.determinationMethodData.setOptions(this.getCalculationMethodDropDownData());
         this.originProjectionData.setOptions(this.getProjectionsDropDownData());
@@ -204,7 +213,12 @@ public class NewSite extends AbstractPageBean {
         this.setCountriesDropDownData();
         this.setProvincesDropDownData();
 
-
+        Option op1 = new Option(0,BundleHelper.getDefaultBundleValue
+                ("sexahecimal",this.getMyLocale()));
+        Option op2 = new Option(1,BundleHelper.getDefaultBundleValue
+                ("decimal",this.getMyLocale()));
+        Option options[] = {op1,op2};
+        this.wgs84FormatData.setOptions(options);
         
         if(this.getSiteSessionBean().getSelectedProjection() == null )
         {
@@ -489,12 +503,22 @@ public class NewSite extends AbstractPageBean {
         ssb.getCurrentSiteDTO().setPrecision(presition);
         ssb.getCurrentSiteDTO().setGeodeticDatum(datum);
         ssb.getCurrentSiteDTO().setFeatureTypeId(ssb.getSelectedType());
-        ssb.getCurrentSiteDTO().setBaseProjectionId
+       /* ssb.getCurrentSiteDTO().setBaseProjectionId
                 (ssb.getSelectedBaseProjection());
+                
+        */
+        // La proyección almacenada siempre será WGS84
+        ssb.getCurrentSiteDTO().setBaseProjectionId
+                (ProjectionEntity.WGS_84.getId());
+        
         ssb.getCurrentSiteDTO().setSiteCalculationMethodId
                 (ssb.getSelectedDeterminationMethod());
+        /*
         ssb.getCurrentSiteDTO().setOriginalProjectionId
                 (ssb.getSelectedOriginProjection());
+        */
+        ssb.getCurrentSiteDTO().setOriginalProjectionId
+                (ssb.getSelectedProjection());
         ssb.getCurrentSiteDTO().setName(BundleHelper.getDefaultBundleValue
                 (NOT_APPLY, this.getMyLocale()));
 
@@ -556,49 +580,105 @@ public class NewSite extends AbstractPageBean {
      * Boton para agregar coordenada
      */
     public String btnAddCoordinate_action() {
-
-        //En el caso de coordenadas WGS-84
-        if (canAddCoordinate()) {
-            Object lon_degrees = this.getTxLongitudeDegrees().getValue();
-            Object lon_minutes = this.getTxLongitudeMinutes().getValue();
-            Object lon_seconds = this.getTxLongitudeSeconds().getValue();
-            Object lat_degrees = this.getTxLatitudeDegrees().getValue();
-            Object lat_minutes = this.getTxLatitudeMinutes().getValue();
-            Object lat_seconds = this.getTxLatitudeSeconds().getValue();
-            if (validateLongitude()) {
+        Long projection = this.getSiteSessionBean().getSelectedProjection();
+        String original_X = null; 
+        String original_Y = null;
+        String lon_result = null;
+        String lat_result = null;
+        if (canAddCoordinate())
+        {         
+           if(projection.equals(ProjectionEntity.WGS_84.getId()) && this.getSiteSessionBean().getSelectedWgs84Format() == 0)
+           {
+               Object lon_degrees = this.getTxLongitudeDegrees().getValue();
+               Object lon_seconds = this.getTxLongitudeSeconds().getValue();
+               Object lon_minutes = this.getTxLongitudeMinutes().getValue();
+               Object lat_degrees = this.getTxLatitudeDegrees().getValue();
+               Object lat_minutes = this.getTxLatitudeMinutes().getValue();
+               Object lat_seconds = this.getTxLatitudeSeconds().getValue();
+               
+               if (validateLongitude()) {
                 if (validateLatitude()) {
                     //All data (degrees, minutes and seconds)
                     if(validateMandS(lon_minutes) && validateMandS(lon_seconds)
                             && validateMandS(lat_minutes) && validateMandS(lat_seconds)){
                         //Translate from sexagecimal to decimal notation
-                        String lon_result,lat_result;
                         lon_result = translateCoor(lon_degrees.toString(),
                                 lon_minutes.toString(),lon_seconds.toString());
                         lat_result = translateCoor(lat_degrees.toString(),
-                                lat_minutes.toString(),lat_seconds.toString());
-                        SiteCoordinateDTO coord = new SiteCoordinateDTO();
-                        coord.setLongitude(getDoubleValue(lon_result));
-                        coord.setLatitude(getDoubleValue(lat_result));
-                         if (!this.getSiteSessionBean().addElement(coord)) {
-                            MessageBean.setErrorMessageFromBundle(DUPLICATED_COORDINATES,
-                                    this.getMyLocale());
-                        this.txLongitudeDegrees.setValue("");
-                        this.txLongitudeMinutes.setValue("0");
-                        this.txLongitudeSeconds.setValue("0");
-                        this.txLatitudeDegrees.setValue("");
-                        this.txLatitudeMinutes.setValue("0");
-                        this.txLatitudeSeconds.setValue("0");
-                         }
-                        this.txLongitudeDegrees.setValue("");
-                        this.txLongitudeMinutes.setValue("0");
-                        this.txLongitudeSeconds.setValue("0");
-                        this.txLatitudeDegrees.setValue("");
-                        this.txLatitudeMinutes.setValue("0");
-                        this.txLatitudeSeconds.setValue("0");
+                                lat_minutes.toString(),lat_seconds.toString());  
+                       original_X = lon_result;
+                       original_Y= lat_result;
+               
+                   }
+                }
+               }
+           }
+           if(projection.equals(ProjectionEntity.WGS_84.getId()) && this.getSiteSessionBean().getSelectedWgs84Format() == 1)
+           {   if (this.txLongitude.getText() != null && validateLonLatGeneric(this.txLongitude.getText().toString())) { //envian mensaje de error en caso de que no cumplan con el estandar
+                if (this.txLatitude.getText() != null && validateLonLatGeneric(this.txLatitude.getText().toString())) {            
+                    lon_result = this.txLongitude.getText().toString();
+
+                    lat_result = this.txLatitude.getText().toString();
+                    original_X = "0";
+                    original_Y= "0";
+                }
+               }
+           }
+           else
+           {
+               System.out.println(this.txLongitude.getText());
+              if (this.txLongitude.getText() != null && validateLonLatGeneric(this.txLongitude.getText().toString())) { //envian mensaje de error en caso de que no cumplan con el estandar
+                if (this.txLatitude.getText() != null && validateLonLatGeneric(this.txLatitude.getText().toString())) {     
+                    float x = Float.parseFloat(this.txLongitude.getText().toString());
+                    float y = Float.parseFloat(this.txLatitude.getText().toString());
+                    String lonlat[] =this.getSiteSessionBean().getReprojection(x, y, this.getSiteSessionBean().getSelectedProjection(), ProjectionEntity.WGS_84.getId());
+                    if(lonlat!=null)
+                    {
+                        lon_result = lonlat[0];
+                        lat_result = lonlat[1];
+                       original_X = this.txLongitude.getText().toString();
+                       original_Y= this.txLatitude.getText().toString();
+                    }
+                    else
+                    {
+                        MessageBean.setErrorMessageFromBundle(DUPLICATED_COORDINATES,
+                            this.getMyLocale());                    
                     }
                 }
+               }
+           }
+           if(lon_result != null && lat_result != null)
+           {
+            SiteCoordinateDTO coord = new SiteCoordinateDTO();
+            coord.setLongitude(getDoubleValue(lon_result));
+            coord.setLatitude(getDoubleValue(lat_result));
+            coord.setOriginalX(original_X);
+            coord.setOriginalY(original_Y);
+                if (!this.getSiteSessionBean().addElement(coord)) {
+                MessageBean.setErrorMessageFromBundle(DUPLICATED_COORDINATES,
+                        this.getMyLocale());
+            this.txLongitudeDegrees.setValue("");
+            this.txLongitudeMinutes.setValue("0");
+            this.txLongitudeSeconds.setValue("0");
+            this.txLatitudeDegrees.setValue("");
+            this.txLatitudeMinutes.setValue("0");
+            this.txLatitudeSeconds.setValue("0");
+                }
+            this.txLongitudeDegrees.setValue("");
+            this.txLongitudeMinutes.setValue("0");
+            this.txLongitudeSeconds.setValue("0");
+            this.txLatitudeDegrees.setValue("");
+            this.txLatitudeMinutes.setValue("0");
+            this.txLatitudeSeconds.setValue("0");
             }
+           else
+           {
+               MessageBean.setErrorMessageFromBundle(ERROR_NULL_COORDINATES,
+                        this.getMyLocale());
+           }
+
         }
+        
         return null;
     }
 
@@ -643,6 +723,31 @@ public class NewSite extends AbstractPageBean {
         }
     }
 
+    
+     private boolean validateLonLatGeneric(String lonlat) {
+        Float tmp;
+        String coordinate =lonlat;
+        System.out.println(coordinate);
+        if (coordinate == null) {
+            MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
+                    this.getMyLocale());
+            return false;
+        }        
+        if (coordinate.length() <= 0) {
+            MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
+                    this.getMyLocale());
+            return false;
+        }
+        try {
+            tmp = Float.parseFloat(coordinate);  
+            return true;
+        } catch (NumberFormatException ex) {
+            MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
+                    this.getMyLocale());
+            return false;
+        }
+    }
+    
     private boolean validateLatitude() {
         Float tmp;
         String coordinate;
@@ -702,13 +807,18 @@ public class NewSite extends AbstractPageBean {
     //Method to translate from sexagecimal to decimal notation
     public String translateCoor(String degrees,String minutes,String seconds){
         Float d,m,s,result;
+        boolean positive = true;
         try{
             //Get float values
+            if(degrees.startsWith("-"))
+            {
+                positive = false;
+            }
             d = Float.parseFloat(degrees);
             m = Float.parseFloat(minutes);
             s = Float.parseFloat(seconds);
             result = Math.abs(d)+Math.abs((m*60)/3600)+Math.abs(s/3600);
-            if(d>=0)
+            if(d>=0 && positive)
                 return result.toString();
             else{
                 result = result * -1;
@@ -752,17 +862,42 @@ public class NewSite extends AbstractPageBean {
 
         if(this.getSiteSessionBean().getSelectedProjection().equals(ProjectionEntity.WGS_84.getId()))
         {
+            this.getDdWgs84Format().setVisible(true);
+            this.getLbWgs84Format().setVisible(true);
             this.getSiteSessionBean().setWgs84Projection(true);
             this.getPanelWGS84Projection().setVisible(true);
             this.getPanelGeneralProjection().setVisible(false);
         }
         else
         {
+            this.getDdWgs84Format().setVisible(false);
+            this.getLbWgs84Format().setVisible(false);
             this.getSiteSessionBean().setWgs84Projection(false);
             this.getPanelWGS84Projection().setVisible(false);
             this.getPanelGeneralProjection().setVisible(true);
         }
         System.out.println("Proyeccion seleccionada antes de salir de OnChangeProjection= "+this.getSiteSessionBean().getSelectedProjection());
+        return null;
+    }
+    
+    public String onChangeWGS84Format_action( ) {
+        System.out.println("Entro al cambio de formato");
+
+        if(this.getSiteSessionBean().getSelectedProjection().equals(ProjectionEntity.WGS_84.getId()) && 
+                this.getSiteSessionBean().getSelectedWgs84Format() == 0)
+        {
+            //this.getSiteSessionBean().setWgs84Projection(true);
+            this.getPanelWGS84Projection().setVisible(true);
+            this.getPanelGeneralProjection().setVisible(false);
+        }
+        else
+        {
+            //this.getSiteSessionBean().setWgs84Projection(false);
+            this.getPanelWGS84Projection().setVisible(false);
+            this.getPanelGeneralProjection().setVisible(true);
+        }
+        System.out.println("Proyeccion seleccionada antes de salir de OnChangeProjection= "+this.getSiteSessionBean().getSelectedProjection());
+        
         return null;
     }
     
@@ -1159,6 +1294,62 @@ public class NewSite extends AbstractPageBean {
         System.out.println("Entro a la accion ValueChange");
     }
 
-      
+    /**
+     * @return the rbWgs84Format
+     */
+    public RadioButtonGroup getRbWgs84Format() {
+        return rbWgs84Format;
+    }
+
+    /**
+     * @param rbWgs84Format the rbWgs84Format to set
+     */
+    public void setRbWgs84Format(RadioButtonGroup rbWgs84Format) {
+        this.rbWgs84Format = rbWgs84Format;
+    }
+
+    /**
+     * @return the wgs84FormatData
+     */
+    public SingleSelectOptionsList getWgs84FormatData() {
+        return wgs84FormatData;
+    }
+
+    /**
+     * @param wgs84FormatData the wgs84FormatData to set
+     */
+    public void setWgs84FormatData(SingleSelectOptionsList wgs84FormatData) {
+        this.wgs84FormatData = wgs84FormatData;
+    }
+
+    /**
+     * @return the ddWgs84Format
+     */
+    public DropDown getDdWgs84Format() {
+        return ddWgs84Format;
+    }
+
+    /**
+     * @param ddWgs84Format the ddWgs84Format to set
+     */
+    public void setDdWgs84Format(DropDown ddWgs84Format) {
+        this.ddWgs84Format = ddWgs84Format;
+    }
+
+    /**
+     * @return the lbWgs84Format
+     */
+    public Label getLbWgs84Format() {
+        return lbWgs84Format;
+    }
+
+    /**
+     * @param lbWgs84Format the lbWgs84Format to set
+     */
+    public void setLbWgs84Format(Label lbWgs84Format) {
+        this.lbWgs84Format = lbWgs84Format;
+    }
+
+   
 }
 

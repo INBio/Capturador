@@ -97,5 +97,7 @@ public interface GisFacadeRemote {
     public List<SiteDTO> getSiteByDescription(String siteDescription, int base, int offset);
 
     public String getSiteDescriptionById(Long siteId);
+
+    public String getReprojection(float valueX, float valueY, Long projectionSRID, Long reprojectioSRID);
     
 }

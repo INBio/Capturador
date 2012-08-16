@@ -28,5 +28,7 @@ import org.inbio.ara.persistence.gis.Projection;
  */
 @Local
 public interface ProjectionEAOLocal extends BaseLocalEAO<Projection,Long>{
+
+    public String reprojection(float valueX, float valueY, Long projectionSRID, Long reprojectioSRID);
     
 }

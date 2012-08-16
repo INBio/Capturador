@@ -65,6 +65,11 @@
             <artifactId>commons-dublincore</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.postgis</groupId>
+            <artifactId>postgis</artifactId>
+            <version>1.5.2</version>
+        </dependency>
 
     </dependencies>
     <repositories>
@@ -132,6 +137,24 @@
                             <goal>install-file</goal>
                         </goals>
                     </execution>
+                    
+                    <execution>
+                        <id>postgis1.5.2</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <file>${basedir}/src/main/libs/postgis-1.5.2.jar</file>
+                            <repositoryLayout>default</repositoryLayout>
+                            <groupId>org.postgis</groupId>
+                            <artifactId>postgis</artifactId>
+                            <version>1.5.2</version>
+                            <packaging>jar</packaging>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                    </execution>
+                    
                 </executions>
             </plugin>
         </plugins>

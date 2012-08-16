@@ -15,6 +15,7 @@ public enum ProjectionEntity {
     //El WGS_84 siempre debe existir en el entity, las demàs proyecciones pueden variar
     //dependiendo de la zona donde se trabaje.
     WGS_84(new Long(4326), "WGS 84"),
+    //DECIMALES(new Long(0), "Grados Decimales"),
     CRTM05(new Long(97134), "CRTM05"),
     LAMBERT_NORTE(new Long(97135), "Lambert Norte"),
     LAMBERT_SUR(new Long(97136), "Lambert Sur");

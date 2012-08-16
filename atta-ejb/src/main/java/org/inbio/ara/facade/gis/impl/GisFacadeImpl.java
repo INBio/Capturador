@@ -87,6 +87,8 @@ public class GisFacadeImpl implements GisFacadeRemote {
     private GeoreferencedSiteEAOLocal georeferencedSiteEAOImpl;
     @EJB
     private SiteCoordinateEAOLocal siteCoordinateEAOImpl;
+    
+    
 
     //DTO factories
     private SiteDTOFactory siteDTOFactory = new SiteDTOFactory();
@@ -607,5 +609,10 @@ public class GisFacadeImpl implements GisFacadeRemote {
     public String getSiteDescriptionById(Long siteId)
     {
         return siteEAOImpl.getSiteDescriptionById(siteId);
+    }
+    
+    public String getReprojection(float valueX, float valueY, Long projectionSRID, Long reprojectioSRID)
+    {
+        return projectionEAOImpl.reprojection(valueX, valueY, projectionSRID, reprojectioSRID);
     }
 }

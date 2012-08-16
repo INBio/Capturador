@@ -877,6 +877,21 @@ ALTER TABLE atta.taxon_country ADD CONSTRAINT pk_taxon_country_id PRIMARY KEY (t
 INSERT INTO atta.indicator ( name, description, indicator_ancestor_id, applies_to_parts, creation_date, created_by, last_modification_date, last_modification_by) VALUES ('Atributos taxonómicos', 'Raíz del árbol', null, 0 ,'2011-05-19', 'admin', '2011-05-19', 'admin');
 
 
+ALTER TABLE atta.site DROP CONSTRAINT base_projection_fk;
+
+ALTER TABLE atta.site ALTER COLUMN base_projection_id TYPE integer;
+
+ALTER TABLE atta.site ADD CONSTRAINT base_projection_fk FOREIGN KEY (base_projection_id)
+      REFERENCES spatial_ref_sys (srid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+ALTER TABLE atta.site DROP CONSTRAINT original_projection_fk;
+
+ALTER TABLE atta.site ALTER COLUMN original_projection_id TYPE integer;
+
+ALTER TABLE atta.site ADD CONSTRAINT original_projection_fk FOREIGN KEY (original_projection_id)
+      REFERENCES spatial_ref_sys (srid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 
 
