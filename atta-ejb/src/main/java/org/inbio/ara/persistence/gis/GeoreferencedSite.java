@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.inbio.ara.persistence.GenericEntity;
+import org.inbio.ara.persistence.LogGenericEntity;
 
 /**
  *
@@ -19,7 +20,7 @@ import org.inbio.ara.persistence.GenericEntity;
  */
 @Entity
 @Table(name = "georeferenced_site")
-public class GeoreferencedSite extends GenericEntity {
+public class GeoreferencedSite extends LogGenericEntity {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     private GeoreferencedSitePK georeferencedSitePK;

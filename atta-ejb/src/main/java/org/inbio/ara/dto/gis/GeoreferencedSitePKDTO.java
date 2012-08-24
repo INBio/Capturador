@@ -21,12 +21,13 @@
 package org.inbio.ara.dto.gis;
 
 import java.io.Serializable;
+import org.inbio.ara.dto.GenericDTO;
 
 /**
  *
  * @author esmata
  */
-public class GeoreferencedSitePKDTO implements Serializable{
+public class GeoreferencedSitePKDTO extends GenericDTO implements Serializable{
 
     public GeoreferencedSitePKDTO(){
     }

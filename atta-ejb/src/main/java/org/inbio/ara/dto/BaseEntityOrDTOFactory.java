@@ -52,13 +52,14 @@ public abstract class BaseEntityOrDTOFactory <Entity extends LogGenericEntity,
      * @return
      */
     public Entity createPlainEntity(DTO dto) {
+        System.out.println("Created by del dto = "+dto.getUserName());
         if(dto == null)
             return null;
 
         Entity e= getEntityWithPlainValues(dto);
         e.setLastModificationBy(dto.getUserName());
         e.setLastModificationDate(new GregorianCalendar());
-        System.out.println("Created by = "+e.getCreatedBy());
+        System.out.println("Created by al final del CreatePlainEntity= "+e.getCreatedBy());
         return e;
     }
 

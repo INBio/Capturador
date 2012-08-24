@@ -32,6 +32,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.inbio.ara.persistence.GenericEntity;
+import org.inbio.ara.persistence.LogGenericEntity;
 
 /**
  *
@@ -39,7 +40,7 @@ import org.inbio.ara.persistence.GenericEntity;
  */
 @Entity
 @Table(name = "site_coordinate")
-public class SiteCoordinate extends GenericEntity {
+public class SiteCoordinate extends LogGenericEntity {
 
     @Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="SiteCoordinate")
@@ -66,7 +67,12 @@ public class SiteCoordinate extends GenericEntity {
     @Column(name = "original_y")
     private String originalY;
 
+    @Column(name = "verbatim_longitude")
+    private String verbatimLongitude;
 
+    @Column(name = "verbatim_latitude")
+    private String verbatimLatitude;
+    
     @JoinColumn(name = "site_id", referencedColumnName = "site_id")
     @ManyToOne()
     private Site site;
@@ -179,6 +185,34 @@ public class SiteCoordinate extends GenericEntity {
     @Override
     public String toString() {
         return "org.inbio.ara.persistence.gis.SiteCoordinate[siteCoordinateId=" + siteCoordinateId + "]";
+    }
+
+    /**
+     * @return the verbatimLongitude
+     */
+    public String getVerbatimLongitude() {
+        return verbatimLongitude;
+    }
+
+    /**
+     * @param verbatimLongitude the verbatimLongitude to set
+     */
+    public void setVerbatimLongitude(String verbatimLongitude) {
+        this.verbatimLongitude = verbatimLongitude;
+    }
+
+    /**
+     * @return the verbatimLatitude
+     */
+    public String getVerbatimLatitude() {
+        return verbatimLatitude;
+    }
+
+    /**
+     * @param verbatimLatitude the verbatimLatitude to set
+     */
+    public void setVerbatimLatitude(String verbatimLatitude) {
+        this.verbatimLatitude = verbatimLatitude;
     }
 
 }

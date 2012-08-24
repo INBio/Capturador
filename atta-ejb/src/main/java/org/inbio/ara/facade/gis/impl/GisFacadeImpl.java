@@ -21,24 +21,12 @@
 package org.inbio.ara.facade.gis.impl;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.ejb.EJB;
 import org.inbio.ara.facade.gis.*;
 import javax.ejb.Stateless;
-import org.inbio.ara.dto.gis.FeatureTypeDTO;
-import org.inbio.ara.dto.gis.FeatureTypeDTOFactory;
-import org.inbio.ara.dto.gis.GeographicLayerDTO;
-import org.inbio.ara.dto.gis.GeographicLayerValueDTO;
-import org.inbio.ara.dto.gis.GeoreferencedSitePKDTO;
-import org.inbio.ara.dto.gis.ProjectionDTO;
-import org.inbio.ara.dto.gis.ProjectionDTOFactory;
-import org.inbio.ara.dto.gis.ProvinceDTO;
-import org.inbio.ara.dto.gis.ProvinceDTOFactory;
-import org.inbio.ara.dto.gis.SiteCalculationMethodDTO;
-import org.inbio.ara.dto.gis.SiteCalculationMethodDTOFactory;
-import org.inbio.ara.dto.gis.SiteCoordinateDTO;
-import org.inbio.ara.dto.gis.SiteDTO;
-import org.inbio.ara.dto.gis.SiteDTOFactory;
+import org.inbio.ara.dto.gis.*;
 import org.inbio.ara.dto.taxonomy.CountryDTO;
 import org.inbio.ara.dto.taxonomy.CountryDTOFactory;
 import org.inbio.ara.eao.gis.CountryEAOLocal;
@@ -92,6 +80,7 @@ public class GisFacadeImpl implements GisFacadeRemote {
 
     //DTO factories
     private SiteDTOFactory siteDTOFactory = new SiteDTOFactory();
+    private SiteCoordinateDTOFactory siteCoordinateDTOFactory = new SiteCoordinateDTOFactory();
     private FeatureTypeDTOFactory featureTypeDTOFactory =
             new FeatureTypeDTOFactory();
     private SiteCalculationMethodDTOFactory siteCalculationMethodDTOFactory =
@@ -366,11 +355,11 @@ public class GisFacadeImpl implements GisFacadeRemote {
      */
     public SiteDTO saveNewSite(SiteDTO sDTO, List<SiteCoordinateDTO> coorList,
             List<GeoreferencedSitePKDTO> georefSiteList) {
-
+        System.out.println("Entro a Save New Site");
         //Nueva entidad a persistir
-        Site site = new Site();
+        //Site site = new Site();
         //Asignar las propiedades de nuevo sition
-        site.setBaseProjectionId(sDTO.getBaseProjectionId());
+        /*site.setBaseProjectionId(sDTO.getBaseProjectionId());
         site.setDescription(sDTO.getDescription());
         site.setFeatureTypeId(sDTO.getFeatureTypeId());
         site.setGeodeticDatum(sDTO.getGeodeticDatum());
@@ -379,7 +368,11 @@ public class GisFacadeImpl implements GisFacadeRemote {
         site.setPrecision(sDTO.getPrecision());
         site.setSiteCalculationMethodId(sDTO.getSiteCalculationMethodId());
         site.setSiteCoordinates(new ArrayList<SiteCoordinate>());
-        site.setGeoreferencedSites(new ArrayList<GeoreferencedSite>());
+        site.setGeoreferencedSites(new ArrayList<GeoreferencedSite>());*/
+        
+        System.out.println("Antes del Factory = " + sDTO.getUserName());
+        Site site = siteDTOFactory.createPlainEntity(sDTO);
+        System.out.println("Despues del Factory = " +site.getCreatedBy());
         //Persistir la nueva entidad
         siteEAOImpl.create(site);
         //Actualizar el CurrentDTO con el id asignado
@@ -390,13 +383,21 @@ public class GisFacadeImpl implements GisFacadeRemote {
             if (coorList.size() > 0) {
                 for (int i = 0; i < coorList.size(); i++) {
                     SiteCoordinateDTO dto = coorList.get(i);
+                    //dto.setSiteId(result.getSiteId());
                     SiteCoordinate newCoor = new SiteCoordinate();
+                    /*
                     newCoor.setSiteId(site);
                     newCoor.setSequence(new Long(i + 1));
                     newCoor.setLatitude(dto.getLatitude());
                     newCoor.setLongitude(dto.getLongitude());
                     newCoor.setOriginalX(dto.getOriginalX());
                     newCoor.setOriginalY(dto.getOriginalY());
+                    newCoor.setVerbatimLongitude(dto.getVerbatimLongitude());
+                    newCoor.setVerbatimLatitude(dto.getVerbatimLatitude());                    
+                    */
+                    newCoor = siteCoordinateDTOFactory.createPlainEntity(dto);
+                    newCoor.setSiteId(site);
+                    newCoor.setSequence(new Long(i + 1));
                     siteCoordinateEAOImpl.create(newCoor);
                 }
             }
@@ -407,7 +408,7 @@ public class GisFacadeImpl implements GisFacadeRemote {
             for (GeoreferencedSitePKDTO gsPK : georefSiteList) {
                 saveOrUpdateGeoreferenceForSite(site.getSiteId(),
                         gsPK.getGeographicLayerId(),
-                        gsPK.getGeographicSiteId());
+                        gsPK.getGeographicSiteId(), gsPK.getUserName());
             }
         }
 
@@ -474,6 +475,8 @@ public class GisFacadeImpl implements GisFacadeRemote {
                     newCoor.setLongitude(dto.getLongitude());
                     newCoor.setOriginalX(dto.getOriginalX());
                     newCoor.setOriginalY(dto.getOriginalY());
+                    newCoor.setVerbatimLongitude(dto.getVerbatimLongitude());
+                    newCoor.setVerbatimLatitude(dto.getVerbatimLatitude());
                     siteCoordinateEAOImpl.create(newCoor);
                 }
             }
@@ -484,7 +487,7 @@ public class GisFacadeImpl implements GisFacadeRemote {
             for (GeoreferencedSitePKDTO gsPK : georefSiteList) {
                 saveOrUpdateGeoreferenceForSite(site.getSiteId(),
                         gsPK.getGeographicLayerId(),
-                        gsPK.getGeographicSiteId());
+                        gsPK.getGeographicSiteId(), gsPK.getUserName());
             }
         }
 
@@ -493,7 +496,7 @@ public class GisFacadeImpl implements GisFacadeRemote {
     }
 
     public void saveOrUpdateGeoreferenceForSite(Long siteId,
-            Long layerId, Long value) {
+            Long layerId, Long value, String user) {
         List<GeoreferencedSite> gsList = georeferencedSiteEAOImpl.
                 findAllBySiteAndLayer(siteId,layerId);
         GeoreferencedSite gs = null;
@@ -503,12 +506,22 @@ public class GisFacadeImpl implements GisFacadeRemote {
             //Nuevo GeoreferencedSite
             gsPK = new GeoreferencedSitePK(siteId, layerId, value);
             gs = new GeoreferencedSite(gsPK);
+            //aqui porque no usa DTOFacade
+            gs.setCreatedBy(user);
+            gs.setCreationDate(new GregorianCalendar());
+            gs.setLastModificationBy(user);
+            gs.setLastModificationDate(new GregorianCalendar());
 
         } else if (gsList.size() == 1){
             //Edit GeoreferencedSite
             gs = gsList.get(0);
             georeferencedSiteEAOImpl.delete(gs);
+            //aqui porque no usa DTOFacade - No estoy segura que vaya aqui
+            gs.setLastModificationBy(user);
+            gs.setLastModificationDate(new GregorianCalendar());
             gs.getGeoreferencedSitePK().setGeographicSiteId(value);
+            
+            
         }
          //Falta un caso en que haya mas de un georeferecedSite, pero por ahora no se implementara
 

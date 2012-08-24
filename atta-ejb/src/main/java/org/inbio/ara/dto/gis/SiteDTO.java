@@ -21,13 +21,14 @@ package org.inbio.ara.dto.gis;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import org.inbio.ara.dto.GenericDTO;
 import org.inbio.ara.persistence.gis.SiteCoordinate;
 
 /**
  *
  * @author esmata
  */
-public class SiteDTO implements Serializable{
+public class SiteDTO extends GenericDTO implements Serializable{
 
     private Long siteId;
     private String description;

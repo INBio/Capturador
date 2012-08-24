@@ -33,6 +33,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.inbio.ara.persistence.GenericEntity;
+import org.inbio.ara.persistence.LogGenericEntity;
 
 /**
  *
@@ -40,7 +41,7 @@ import org.inbio.ara.persistence.GenericEntity;
  */
 @Entity
 @Table(name = "site")
-public class Site extends GenericEntity {
+public class Site extends LogGenericEntity {
 
     @Id
 	@GeneratedValue(strategy=GenerationType.AUTO, generator="Site")
@@ -90,6 +91,23 @@ public class Site extends GenericEntity {
         this.siteId = siteId;
     }
 
+    
+    public Site(Long siteId, String description) {
+        this.siteId = siteId;
+        this.description = description;      
+    }
+    
+    public Site(Long siteId, String description, String createdBy, Calendar creationDate,
+            String lastModificationBy, Calendar lastModificationDate) {
+        this.siteId = siteId;
+        this.description = description; 
+        this.setCreatedBy(createdBy);
+        this.setCreationDate(creationDate);
+        this.setLastModificationBy(lastModificationBy);
+        this.setLastModificationDate(lastModificationDate);
+    }
+    
+    /*
     public Site(Long siteId, String description, String createdBy, 
             Calendar creationDate, String lastModificationBy,
             Calendar lastModificationDate) {
@@ -100,7 +118,7 @@ public class Site extends GenericEntity {
         this.setLastModificationBy(lastModificationBy);
         this.setLastModificationDate(lastModificationDate);
     }
-
+*/
     public Long getSiteId() {
         return siteId;
     }

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
+import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.gis.GeographicLayerDTO;
 import org.inbio.ara.dto.gis.GeoreferencedSitePKDTO;
 import org.inbio.ara.dto.gis.SiteCoordinateDTO;
@@ -206,6 +207,9 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
     public void destroy() {
     }
     
+     protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
+    }
 //*************** Operaciones del data provider de coordenadas *****************
 
     public boolean addElement(SiteCoordinateDTO object) {
@@ -240,9 +244,12 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
      * Guardar el nuevo sitio, sus coordenadas y division politica
      */
     public void saveNewSite(){
+        System.out.println("User = "+this.getCurrentSiteDTO().getUserName());
+        this.getCurrentSiteDTO().setUserName(this.getAraSessionBean().getGlobalUserName());
         SiteDTO newDTO = this.getGisFacade().saveNewSite(this.getCurrentSiteDTO(),
                 this.getCoordinateDataProvider(),
                 getGeoreferencedSitePKListForCreate());
+        
         this.setCurrentSiteDTO(newDTO);
     }
 
@@ -276,6 +283,7 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
             auxProvince.setSiteId(null);
             auxProvince.setGeographicLayerId(getGisFacade().PROVINCE_LAYER);
             auxProvince.setGeographicSiteId(selectedProvinceId);
+            auxProvince.setUserName(this.getAraSessionBean().getGlobalUserName());
             gsPKs.add(auxProvince);
         }
 
@@ -284,6 +292,7 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
             auxCountry.setSiteId(null);
             auxCountry.setGeographicLayerId(getGisFacade().COUNTRY_LAYER);
             auxCountry.setGeographicSiteId(selectedCountryId);
+            auxCountry.setUserName(this.getAraSessionBean().getGlobalUserName());
             gsPKs.add(auxCountry);
         }
         return gsPKs;

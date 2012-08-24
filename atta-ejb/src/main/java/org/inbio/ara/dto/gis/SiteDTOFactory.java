@@ -19,16 +19,22 @@
 
 package org.inbio.ara.dto.gis;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.inbio.ara.dto.BaseDTOFactory;
+import org.inbio.ara.dto.BaseEntityOrDTOFactory;
 import org.inbio.ara.persistence.gis.GeographicLayerEntity;
 import org.inbio.ara.persistence.gis.GeoreferencedSite;
 import org.inbio.ara.persistence.gis.Site;
+import org.inbio.ara.persistence.gis.SiteCoordinate;
 
 /**
  *
  * @author esmata
  */
-public class SiteDTOFactory extends BaseDTOFactory<Site, SiteDTO> {
+public class SiteDTOFactory extends BaseEntityOrDTOFactory<Site, SiteDTO> {
+    
+    
 
     public SiteDTO createDTO(Site entity) {
         if(entity==null){
@@ -59,6 +65,52 @@ public class SiteDTOFactory extends BaseDTOFactory<Site, SiteDTO> {
         }
         sdto.setSelected(false); //Inicialmente debe ir en false (no seleccionado)
         return sdto;
+    }
+
+    @Override
+    public Site getEntityWithPlainValues(SiteDTO dto) {
+        if(dto == null) return null;
+        System.out.println("Desde el Factory ="+dto.getUserName());
+        Site newSite = new Site();
+        newSite.setBaseProjectionId(dto.getBaseProjectionId());
+        newSite.setDescription(dto.getDescription());
+        newSite.setFeatureTypeId(dto.getFeatureTypeId());
+        newSite.setGeodeticDatum(dto.getGeodeticDatum());
+        newSite.setName(dto.getName());
+        newSite.setOriginalProjectionId(dto.getOriginalProjectionId());
+        newSite.setPrecision(dto.getPrecision());
+        newSite.setSiteCalculationMethodId(dto.getSiteCalculationMethodId());
+        newSite.setSiteId(  dto.getSiteId());     
+        
+        //Estos se persisten por aparte en el Facade
+        newSite.setSiteCoordinates(new ArrayList<SiteCoordinate>());      
+        
+        newSite.setGeoreferencedSites(new ArrayList<GeoreferencedSite>());
+        System.out.println("Desde el Factory, antes del return ="+newSite.getCreatedBy());
+        return newSite;
+        
+    }
+
+    @Override
+    public Site updateEntityWithPlainValues(SiteDTO dto, Site e) {
+        if(dto == null || e == null) return null;
+        e.setBaseProjectionId(dto.getBaseProjectionId());
+        e.setDescription(dto.getDescription());
+        e.setFeatureTypeId(dto.getFeatureTypeId());
+        e.setGeodeticDatum(dto.getGeodeticDatum());
+        e.setName(dto.getName());
+        e.setOriginalProjectionId(dto.getOriginalProjectionId());
+        e.setPrecision(dto.getPrecision());
+        e.setSiteCalculationMethodId(dto.getSiteCalculationMethodId());
+        e.setSiteId(dto.getSiteId());     
+        
+        //Estos se persisten por aparte en el Facade
+        e.setSiteCoordinates(new ArrayList<SiteCoordinate>());      
+        
+        e.setGeoreferencedSites(new ArrayList<GeoreferencedSite>());
+        
+        return e;
+        
     }
     
 }

@@ -78,7 +78,7 @@ public interface GisFacadeRemote {
             List<GeoreferencedSitePKDTO> georefSiteList);
 
     public void saveOrUpdateGeoreferenceForSite(Long siteId,
-            Long layerId, Long value);
+            Long layerId, Long value, String user);
 
     public SiteDTO updateSite(SiteDTO sDTO, List<SiteCoordinateDTO> coorList,
             List<GeoreferencedSitePKDTO> georefSiteList);

@@ -877,6 +877,119 @@ ALTER TABLE atta.taxon_country ADD CONSTRAINT pk_taxon_country_id PRIMARY KEY (t
 INSERT INTO atta.indicator ( name, description, indicator_ancestor_id, applies_to_parts, creation_date, created_by, last_modification_date, last_modification_by) VALUES ('Atributos taxonómicos', 'Raíz del árbol', null, 0 ,'2011-05-19', 'admin', '2011-05-19', 'admin');
 
 
+--2012.08.21
+
+--Procedimiento para actualizar la mayoria de las proyecciones originales
+-- Realizarlo antes de ejecutar los constraints
+
+drop function isProjection( longitude numeric, latitude numeric, x numeric, y numeric, srid numeric, error numeric);
+CREATE OR REPLACE FUNCTION isProjection( longitude numeric, latitude numeric, x numeric, y numeric, srid integer,error numeric)
+RETURNS boolean AS
+$BODY$
+DECLARE
+xCalculado numeric;
+yCalculado numeric;
+parameters text := 'SRID=4326;POINT('||longitude||' '||latitude||')';
+reprojection CURSOR IS
+   SELECT text(ST_AsEWKT(ST_Transform(ST_GeomFromEWKT(parameters), srid)));
+--Result string
+reprojResult text;
+result boolean := false;
+
+BEGIN
+	OPEN reprojection;
+	FETCH reprojection INTO reprojResult;	
+		reprojResult = split_part(reprojResult, '(',2);
+		reprojResult = split_part(reprojResult, ')',1);
+		xCalculado = split_part(reprojResult, ' ',1);
+		yCalculado = split_part(reprojResult, ' ',2);
+		RAISE NOTICE 'Absoluto: abs(xCalculado - x) = %', abs(xCalculado - x);
+		RAISE NOTICE 'Absoluto: abs(yCalculado - y) = %', abs(yCalculado - y);
+		IF abs(xCalculado - x) <= error AND abs(yCalculado - y) <= error
+		THEN
+			result = true;
+		END IF;
+	CLOSE reprojection;  
+	return result;
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE
+COST 100;
+
+
+drop function realProjection( longitude numeric, latitude numeric, x numeric, y numeric);
+CREATE OR REPLACE FUNCTION realProjection( longitude numeric, latitude numeric, x numeric, y numeric)
+RETURNS integer AS
+$BODY$
+DECLARE
+listProjections integer[] := '{97134, 97135, 97136}';
+errorEstimado numeric := 200;
+--Result string
+
+result integer := -1;
+
+BEGIN
+	for pos in 1..3 LOOP
+		IF isProjection( longitude, latitude, x, y, listProjections[pos] , errorEstimado) THEN
+			result = listProjections[pos];
+		END IF; 
+	END LOOP;
+	return result;
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE
+COST 100;
+
+
+
+drop function updatelProjection();
+CREATE OR REPLACE FUNCTION updateProjection()
+RETURNS integer AS
+$BODY$
+DECLARE
+coordinates CURSOR IS
+	SELECT site_id, site_coordinate_id,longitude, latitude, original_x, original_y from atta.site_coordinate;
+siteCordId numeric;
+siteId numeric;
+longi numeric;
+lat numeric;
+original_x numeric;
+original_y numeric;
+
+--Result string
+
+result integer := -1;
+
+BEGIN
+	OPEN coordinates;
+	FETCH coordinates INTO siteId, siteCordId,longi, lat, original_x, original_y;
+	WHILE FOUND LOOP
+		IF original_x <> 0.0 AND original_Y <> 0.0 THEN
+			result = realProjection( longi, lat, original_x, original_y);
+		ELSE
+			UPDATE atta.site SET original_projection_id = 4326 WHERE site_id = siteid;
+		END IF;
+		IF result <> -1 THEN
+			UPDATE atta.site SET original_projection_id = result WHERE site_id = siteid;
+		ELSE
+			RAISE NOTICE 'ERROR: Site_Coordinate_ID = %', siteCordId;
+		END IF;
+		FETCH coordinates INTO siteId, siteCordId,longi, lat, original_x, original_y;
+	END LOOP;		
+	CLOSE coordinates;  
+	return result;
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE
+COST 100;
+
+--Actualiza el código de las proyecciones originales
+SELECT updateProjection();
+
+-- Actualiza las proyecciones base a WGS84
+UPDATE atta.site SET base_projection_id = 4326;
+
+
 ALTER TABLE atta.site DROP CONSTRAINT base_projection_fk;
 
 ALTER TABLE atta.site ALTER COLUMN base_projection_id TYPE integer;
@@ -892,6 +1005,11 @@ ALTER TABLE atta.site ALTER COLUMN original_projection_id TYPE integer;
 ALTER TABLE atta.site ADD CONSTRAINT original_projection_fk FOREIGN KEY (original_projection_id)
       REFERENCES spatial_ref_sys (srid) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+
+ALTER TABLE atta.site_coordinate ADD COLUMN verbatim_longitude varchar(150);
+ALTER TABLE atta.site_coordinate ADD COLUMN verbatim_latitude varchar(150);
+
 
 
 

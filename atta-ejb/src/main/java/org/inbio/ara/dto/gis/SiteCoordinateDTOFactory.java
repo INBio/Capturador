@@ -18,7 +18,11 @@
 
 package org.inbio.ara.dto.gis;
 
+import javax.ejb.EJB;
 import org.inbio.ara.dto.BaseDTOFactory;
+import org.inbio.ara.dto.BaseEntityOrDTOFactory;
+import org.inbio.ara.eao.gis.SiteEAOLocal;
+import org.inbio.ara.persistence.gis.Site;
 import org.inbio.ara.persistence.gis.SiteCoordinate;
 
 /**
@@ -26,7 +30,10 @@ import org.inbio.ara.persistence.gis.SiteCoordinate;
  * @author esmata
  */
 public class SiteCoordinateDTOFactory 
-        extends BaseDTOFactory<SiteCoordinate, SiteCoordinateDTO>{
+        extends BaseEntityOrDTOFactory<SiteCoordinate, SiteCoordinateDTO>{
+    
+    @EJB
+    private SiteEAOLocal siteEAOImpl;
 
     public SiteCoordinateDTO createDTO(SiteCoordinate entity) {
         if(entity==null){
@@ -38,11 +45,50 @@ public class SiteCoordinateDTOFactory
             result.setLongitude(entity.getLongitude());
             result.setOriginalX(entity.getOriginalX());
             result.setOriginalY(entity.getOriginalY());
+            result.setVerbatimLongitude(entity.getVerbatimLongitude());
+            result.setVerbatimLatitude(entity.getVerbatimLatitude());
             result.setSequence(entity.getSequence());
             result.setSiteCoordinateId(entity.getSiteCoordinateId());
             result.setSiteId(entity.getSiteId().getSiteId());
             return result;
         }
+    }
+
+    @Override
+    public SiteCoordinate getEntityWithPlainValues(SiteCoordinateDTO dto) {
+        if(dto == null) return null;
+        SiteCoordinate newSiteCord = new SiteCoordinate();
+        newSiteCord.setLatitude(dto.getLatitude());
+        newSiteCord.setLongitude(dto.getLongitude());
+        newSiteCord.setOriginalX(dto.getOriginalX());
+        newSiteCord.setOriginalY(dto.getOriginalY());
+        newSiteCord.setSequence(dto.getSequence());
+        newSiteCord.setSiteCoordinateId(dto.getSiteCoordinateId());
+        //No estoy segura si es correcta la inyección del EJB
+        //newSiteCord.setSiteId(siteEAOImpl.findById(Site.class,dto.getSiteId()));
+        newSiteCord.setVerbatimLatitude(dto.getVerbatimLatitude());
+        newSiteCord.setVerbatimLongitude(dto.getVerbatimLongitude());
+        
+        return newSiteCord;
+    }
+
+    @Override
+    public SiteCoordinate updateEntityWithPlainValues(SiteCoordinateDTO dto, SiteCoordinate e) {
+        if(dto == null) return null;
+        
+        e.setLatitude(dto.getLatitude());
+        e.setLongitude(dto.getLongitude());
+        e.setOriginalX(dto.getOriginalX());
+        e.setOriginalY(dto.getOriginalY());
+        e.setSequence(dto.getSequence());
+        e.setSiteCoordinateId(dto.getSiteCoordinateId());
+        //No estoy segura si es correcta la inyección del EJB
+        e.setSiteId(siteEAOImpl.findById(Site.class,dto.getSiteId()));
+        e.setVerbatimLatitude(dto.getVerbatimLatitude());
+        e.setVerbatimLongitude(dto.getVerbatimLongitude());
+        
+        return e;
+        
     }
 
 }

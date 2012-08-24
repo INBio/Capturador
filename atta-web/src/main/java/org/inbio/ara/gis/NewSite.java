@@ -91,6 +91,9 @@ public class NewSite extends AbstractPageBean {
     private TextField txLongitude = new TextField();
     private TextField txLatitude = new TextField();
     
+    private TextField txVerbatimLongitude = new TextField();
+    private TextField txVerbatimLatitude = new TextField();
+    
     private Label lbWgs84Format = new Label();
 
     //private HtmlSelectOneRadio rbWgs84Format = new HtmlSelectOneRadio();
@@ -99,6 +102,7 @@ public class NewSite extends AbstractPageBean {
     
     private PanelLayout panelWGS84Projection = new PanelLayout();
     private PanelLayout panelGeneralProjection = new PanelLayout();
+    private PanelLayout panelVerbatimCoordinates = new PanelLayout();
 
     //Constantes
 	private final String INVALID_LATITUDE = "invalid_latitude";
@@ -227,11 +231,14 @@ public class NewSite extends AbstractPageBean {
             this.getPanelWGS84Projection().setVisible(true);
             this.getPanelGeneralProjection().setVisible(false);
             this.getSiteSessionBean().setWgs84Projection(true);
+            this.getSiteSessionBean().setSelectedWgs84Format(0);
+            
             
         }
 
         //se agrega para que se actualice correctamente en caso de campos requeridos incompletos
         this.getDdProjection().setSelected(this.getSiteSessionBean().getSelectedProjection());
+        this.getDdWgs84Format().setSelected(this.getSiteSessionBean().getSelectedWgs84Format());
         System.out.println("VALORES PARA = "+this.getSiteSessionBean().getSelectedProjection());
         System.out.println("Longitude = "+this.getTxLongitude().getText());
         System.out.println("Latitude = "+this.getTxLatitude().getText());
@@ -524,6 +531,7 @@ public class NewSite extends AbstractPageBean {
 
         //Mandar a persistir el nuevo sitio
         try{
+            ssb.getCurrentSiteDTO().setUserName(this.getAraSessionBean().getGlobalUserName());
             this.getSiteSessionBean().saveNewSite();
         }
         catch(Exception e){
@@ -654,22 +662,36 @@ public class NewSite extends AbstractPageBean {
             coord.setLatitude(getDoubleValue(lat_result));
             coord.setOriginalX(original_X);
             coord.setOriginalY(original_Y);
+            coord.setVerbatimLongitude(this.txVerbatimLongitude.getValue().toString());
+            coord.setVerbatimLatitude(this.txVerbatimLatitude.getValue().toString());
+            coord.setUserName(this.getAraSessionBean().getGlobalUserName());
+            this.ddProjection.setDisabled(true);
                 if (!this.getSiteSessionBean().addElement(coord)) {
                 MessageBean.setErrorMessageFromBundle(DUPLICATED_COORDINATES,
                         this.getMyLocale());
-            this.txLongitudeDegrees.setValue("");
+                        if(this.getSiteSessionBean().getCoordinateDataProvider().isEmpty())
+                        {
+                            this.ddProjection.setDisabled(false);
+                        }
+                    
+                /*
+            this.txLongitudeDegrees.setValue("0");
             this.txLongitudeMinutes.setValue("0");
             this.txLongitudeSeconds.setValue("0");
             this.txLatitudeDegrees.setValue("");
             this.txLatitudeMinutes.setValue("0");
-            this.txLatitudeSeconds.setValue("0");
+            this.txLatitudeSeconds.setValue("0");*/
                 }
-            this.txLongitudeDegrees.setValue("");
+            this.txLongitudeDegrees.setValue("0");
             this.txLongitudeMinutes.setValue("0");
             this.txLongitudeSeconds.setValue("0");
-            this.txLatitudeDegrees.setValue("");
+            this.txLatitudeDegrees.setValue("0");
             this.txLatitudeMinutes.setValue("0");
             this.txLatitudeSeconds.setValue("0");
+            this.txLongitude.setValue("0");
+            this.txLatitude.setValue("0");
+            this.txVerbatimLongitude.setValue("0");
+            this.txVerbatimLatitude.setValue("0");
             }
            else
            {
@@ -845,12 +867,17 @@ public class NewSite extends AbstractPageBean {
         int elements = this.getSiteSessionBean().getCoordinateDataProvider().size();
         //No se puede eliminar un elemento si no hay nada que borrar
         if(elements==0){
+            
             MessageBean.setErrorMessageFromBundle("error_delete_generic",
                     this.getMyLocale());
             return null;
         }
         else{
             this.getSiteSessionBean().getCoordinateDataProvider().remove(elements-1);
+            if(this.getSiteSessionBean().getCoordinateDataProvider().isEmpty())
+            {
+                this.ddProjection.setDisabled(false);
+            }
             return null;
         }
     }
@@ -1348,6 +1375,48 @@ public class NewSite extends AbstractPageBean {
      */
     public void setLbWgs84Format(Label lbWgs84Format) {
         this.lbWgs84Format = lbWgs84Format;
+    }
+
+    /**
+     * @return the panelVerbatimCoordinates
+     */
+    public PanelLayout getPanelVerbatimCoordinates() {
+        return panelVerbatimCoordinates;
+    }
+
+    /**
+     * @param panelVerbatimCoordinates the panelVerbatimCoordinates to set
+     */
+    public void setPanelVerbatimCoordinates(PanelLayout panelVerbatimCoordinates) {
+        this.panelVerbatimCoordinates = panelVerbatimCoordinates;
+    }
+
+    /**
+     * @return the txVerbatimLongitude
+     */
+    public TextField getTxVerbatimLongitude() {
+        return txVerbatimLongitude;
+    }
+
+    /**
+     * @param txVerbatimLongitude the txVerbatimLongitude to set
+     */
+    public void setTxVerbatimLongitude(TextField txVerbatimLongitude) {
+        this.txVerbatimLongitude = txVerbatimLongitude;
+    }
+
+    /**
+     * @return the txVerbatimLatitude
+     */
+    public TextField getTxVerbatimLatitude() {
+        return txVerbatimLatitude;
+    }
+
+    /**
+     * @param txVerbatimLatitude the txVerbatimLatitude to set
+     */
+    public void setTxVerbatimLatitude(TextField txVerbatimLatitude) {
+        this.txVerbatimLatitude = txVerbatimLatitude;
     }
 
    

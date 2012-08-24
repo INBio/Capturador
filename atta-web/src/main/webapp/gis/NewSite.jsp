@@ -18,8 +18,8 @@
                         <jsp:directive.include file="/Header.jspf"/>
                         <webuijsf:panelLayout id="contenido">
                             <webuijsf:form id="form1">
-                                <h:outputLabel id="lbTitle" style="height: 24px; left: 24px; position: relative; width: 850px" styleClass="Page_title" value="#{resources.titleLocationNew}"/>
-                                <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; position: relative" width="850">
+                                <h:outputLabel id="lbTitle" style="height: 24px; left: 24px; position: relative; width: 840px" styleClass="Page_title" value="#{resources.titleLocationNew}"/>
+                                <h:panelGrid columns="1" id="gridpMain" style="height: 24px; left: 24px; position: relative" width="840">
                                     <h:messages errorClass="errorMessage" fatalClass="fatalMessage" id="msglMessages" infoClass="infoMessage"
                                         style="height: 55px; width: 840px" warnClass="warnMessage"/>
                                     <!-- Botonera -->
@@ -28,90 +28,61 @@
                                             styleClass="My_Button" value="#{resources.btnSave}"/>
                                     </webuijsf:panelGroup>
                                     <!-- Panel de detalles del sitios -->
-                                    <webuijsf:panelLayout id="PanelDetails" style="height: 149px; position: relative; width: 840px; -rave-layout: grid" styleClass="My_subpanel_blue">
+                                    <webuijsf:panelLayout id="PanelDetails" style="height: 100px; position: relative; width: 840px; -rave-layout: grid" styleClass="My_subpanel_blue">
                                         <webuijsf:label id="lbDescription" requiredIndicator="true"
-                                            style="height: 24px; left: 24px; top: 14px; position: absolute; width: 164px" text="#{resources.description}"/>
-                                        <webuijsf:label for="ddType" id="lbType" style="height: 24px; left: 24px; top: 67px; position: absolute; width: 164px" text="#{resources.type}"/>
-                                        <!--
-                                        <webuijsf:label for="ddBaseProjection" id="lbBaseProy"
-                                            style="height: 24px; left: 24px; top: 91px; position: absolute; width: 164px" text="#{resources.base_proyection}"/>
-                                        -->
+                                            style="height: 24px; left: 24px; top: 14px; position: absolute; width: 164px" text="#{resources.description}"/>                                      
+                                        
                                         <webuijsf:label for="ddDetermination" id="lbDetermination"
-                                            style="height: 24px; left: 432px; top: 62px; position: absolute; width: 164px" text="#{resources.determination_method}"/>
+                                            style="height: 24px; left: 432px; top: 38px; position: absolute; width: 164px" text="#{resources.determination_method}"/>
+                                        <webuijsf:label for="ddType" id="lbType" style="height: 24px; left: 24px; top: 62px; position: absolute; width: 164px" text="#{resources.type}"/>
                                         <webuijsf:textArea binding="#{gis$NewSite.txaDescription}" columns="23" id="txaDescription" required="true"
                                             style="position: absolute; left: 192px; top: 14px; width: 168px; height: 24px" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"/>
                                         <webuijsf:dropDown binding="#{gis$NewSite.ddType}" id="ddType" items="#{gis$NewSite.typeData.options}" required="true"
                                             selected="#{gis$SiteSessionBean.selectedType}" 
-                                            style="position: absolute; left: 192px; top: 67px; height: 24px" width="192px"/>
-                                      <!--  
-                                        <webuijsf:dropDown binding="#{gis$NewSite.ddBaseProjection}" id="ddBaseProjection"
-                                            items="#{gis$NewSite.baseProjectionData.options}" required="true"
-                                            selected="#{gis$SiteSessionBean.selectedBaseProjection}"
-                                            style="position: absolute; left: 192px; top: 91px; height: 24px" width="192px"/>
-                                        -->
+                                            style="position: absolute; left: 192px; top: 62px; height: 24px" width="192px"/>
+                                      
                                         <webuijsf:dropDown binding="#{gis$NewSite.ddDetermination}" id="ddDetermination"
                                             items="#{gis$NewSite.determinationMethodData.options}" required="true"
                                             selected="#{gis$SiteSessionBean.selectedDeterminationMethod}"
-                                            style="height: 24px; left: 600px; top: 62px; position: absolute" width="192px"/>
+                                            style="height: 24px; left: 600px; top: 38px; position: absolute" width="192px"/>
                                         <!--Segunda Columna -->
                                         <webuijsf:label for="txPresition" id="lbPresition"
                                             style="height: 24px; left: 432px; top: 14px; position: absolute; width: 164px" text="#{resources.presition}"/>
                                         <webuijsf:label for="ddOrigProjection" id="lbProjection"
-                                            style="height: 24px; left: 432px; top: 38px; position: absolute; width: 164px" text="#{resources.orig_proyection}"/>
-                                        <!--
-                                        <webuijsf:label for="txDatum" id="lbDatum"
-                                            style="height: 24px; left: 432px; top: 62px; position: absolute; width: 164px" text="#{resources.datum}"/>
-                                        -->
+                                            style="height: 24px; left: 432px; top: 62px; position: absolute; width: 164px" text="#{resources.orig_proyection}"/>
+                                        
                                         <webuijsf:textField binding="#{gis$NewSite.txPresition}" columns="25" id="txPresition"
                                             style="height: 24px; left: 600px; top: 14px; position: absolute; width: 192px" validatorExpression="#{util$ValidatorBean.longNumberFormatValidator}"/>
-                                        <!--
-                                        <webuijsf:dropDown binding="#{gis$NewSite.ddOrigProjection}" id="ddOrigProjection"
-                                            items="#{gis$NewSite.originProjectionData.options}" required="true"
-                                            selected="#{gis$SiteSessionBean.selectedOriginProjection}"
-                                            style="height: 24px; left: 600px; top: 38px; position: absolute" width="192px"/>
-                                        -->
+                                        
                                         <webuijsf:dropDown  actionExpression="#{gis$NewSite.onChangeProjection_action}" visible="true" id="ddProjection" binding="#{gis$NewSite.ddProjection}" items="#{gis$NewSite.projectionData.options}"
-                                                    selected="#{gis$SiteSessionBean.selectedProjection}" required="true"
-                                                    style="height: 24px; left: 600px; top: 38px; position: absolute" width="192px" submitForm="true" />
-                                        <!--
-                                        <webuijsf:textField binding="#{gis$NewSite.txDatum}" columns="25" id="txDatum"
-                                            style="height: 24px; left: 600px; top: 62px; position: absolute; width: 192px" validatorExpression="#{util$ValidatorBean.longNumberFormatValidator}"/>
-                                        -->
+                                                            selected="#{gis$SiteSessionBean.selectedProjection}" required="true"
+                                                    style="height: 24px; left: 600px; top: 62px; position: absolute" width="192px" submitForm="true" />
+                                        
                                     </webuijsf:panelLayout>
                                     <!-- Tab set para las coordenadas y division politica -->
-                                    <webuijsf:tabSet id="tabSetSites" lite="true" selected="tabCoordinates" style="height: 350px; width: 840px" styleClass="My_tab_border">
+                                    <webuijsf:tabSet id="tabSetSites" lite="true" selected="tabCoordinates" style="height: 440px; width: 840px" styleClass="My_tab_border">
                                         <webuijsf:tab  id="tabCoordinates" text="#{resources.coordinates}">
-                                            <webuijsf:panelLayout id="lpCoordinates" style="height: 284px; position: relative; width: 100%; -rave-layout: grid">
-                                                <!--
-                                                <webuijsf:label id="lbProjection" visible = "true"
-                                                    style="font-size: 18px; font-style: normal; font-weight: bold; left: 20px; top: 12px; position: absolute" text="#{resources.projection}"/>
-                                                <webuijsf:dropDown  actionExpression="#{gis$NewSite.onChangeProjection_action}" visible="true" id="ddProjection" binding="#{gis$NewSite.ddProjection}" items="#{gis$NewSite.projectionData.options}"
-                                                    selected="#{gis$SiteSessionBean.selectedProjection}"
-                                                    style="position: absolute; left: 125px; top: 12px; height: 24px" width="120px" submitForm="true" />
-                                                -->
+                                            <webuijsf:panelLayout id="lpCoordinates" style="height: 440px; position: relative; width: 100%; -rave-layout: grid">
+                                               
                                                 <webuijsf:label binding="#{gis$NewSite.lbWgs84Format}" id="lbWgs84Format" visible = "true"
                                                     style="font-size: 18px; font-style: normal; font-weight: bold; left: 20px; top: 30px; position: absolute" text="#{resources.wgs84format}"/>
                                                 <webuijsf:dropDown  actionExpression="#{gis$NewSite.onChangeWGS84Format_action}" visible="true" id="ddWgs84Format" binding="#{gis$NewSite.ddWgs84Format}" items="#{gis$NewSite.wgs84FormatData.options}"
                                                                     selected="#{gis$SiteSessionBean.selectedWgs84Format}"
                                                     style="font-size: 14px; left: 125px; top: 30px; height: 24px; position: absolute" width="120px" submitForm="true" />
-                                              <!--
-                                                <webuijsf:radioButtonGroup binding="#{gis$NewSite.ddWgs84Format}" id="rbButtonWGS84" items="#{gis$NewSite.wgs84FormatData.options}"
-                                                                           selected="#{gis$SiteSessionBean.selectedWgs84Format}" style="font-size: 14px; left: 20px; top: 30px; height: 24px; position: absolute" 
-                                                                           onClick="document.forms['Header:headerForm'].submit()" valueChangeListenerExpression="#{gis$NewSite.onChangeWGS84Format_action}" immediate="true"/>
-                                               -->
-                                                <h:panelGrid columns="2" id="groupProjections" style="height: 254px; width: 840px;top: 60px; position: absolute">
-                                                    <webuijsf:panelLayout id="pProjection" style="height: 244px; position: relative; -rave-layout: grid">
+                                             
+                                                <h:panelGrid columns="2" id="groupProjections" style="height: 440px; width: 840px;top: 60px; position: absolute">
+                                                    <webuijsf:panelLayout id="pProjection" style="height: 440px; position: relative; -rave-layout: grid">
                                                         <!-- Panel generico -->
-                                                        <webuijsf:panelLayout binding="#{gis$NewSite.panelGeneralProjection}" id="pCoordinates" style="height: 263px; position: relative; -rave-layout: grid">
+                                                        <webuijsf:panelLayout binding="#{gis$NewSite.panelGeneralProjection}" id="pCoordinates" style="height: 110px; position: relative; -rave-layout: grid">
                                                             <webuijsf:label id="labelLongitude"
-                                                                style="font-size: 16px; font-style: normal; font-weight: bold; left: 24px; top: 48px; position: absolute" text="#{resources.longitude}"/>
-                                                            <webuijsf:textField binding="#{gis$NewSite.txLongitude}" id="txt_longitude" style="left: 120px; top: 48px; position: absolute; width: 120px"/>
+                                                                            style="font-size: 16px; font-style: normal; font-weight: bold; left: 24px; top: 24px; position: absolute" text="#{resources.site_logitude}"/>
+                                                            <webuijsf:textField binding="#{gis$NewSite.txLongitude}" id="txt_longitude" style="left: 120px; top: 24px; position: absolute; width: 120px"/>
                                                             <webuijsf:label id="labelLatitude"
-                                                                style="font-size: 16px; font-style: normal; font-weight: bold; left: 24px; top: 130px; position: absolute" text="#{resources.latitude}"/>
-                                                            <webuijsf:textField binding="#{gis$NewSite.txLatitude}" id="txt_latitude" style="left: 120px; top: 130px; position: absolute; width: 120px"/>
+                                                                            style="font-size: 16px; font-style: normal; font-weight: bold; left: 24px; top: 62px; position: absolute" text="#{resources.site_latitude}"/>
+                                                            <webuijsf:textField binding="#{gis$NewSite.txLatitude}" id="txt_latitude" style="left: 120px; top: 62px; position: absolute; width: 120px"/>
                                                         </webuijsf:panelLayout>
                                                         <!-- Panel coordenadas -->
-                                                        <webuijsf:panelLayout binding="#{gis$NewSite.panelWGS84Projection}" id="pCoordinatesProjection" style="height: 265px; position: relative;-rave-layout: grid">
+                                                        <webuijsf:panelLayout binding="#{gis$NewSite.panelWGS84Projection}" id="pCoordinatesProjection" style="height: 220px; position: relative;-rave-layout: grid">
                                                             <webuijsf:label id="label10"
                                                                 style="font-size: 16px; font-style: normal; font-weight: bold; left: 24px; top: 36px; position: absolute" text="#{resources.longitude}"/>
                                                             <webuijsf:label id="labeldegrees" requiredIndicator="true"
@@ -141,8 +112,20 @@
                                                             <webuijsf:textField binding="#{gis$NewSite.txLatitudeSeconds}" id="txt_latitude_seconds"
                                                                 style="position: absolute; left: 120px; top: 220px; width: 144px; height: 24px" text="0"/>
                                                         </webuijsf:panelLayout>
+                                                        <webuijsf:panelLayout binding="#{gis$NewSite.panelVerbatimCoordinates}" id="pVerbatimCoordinates" style="height: 265px; position: relative;-rave-layout: grid">
+                                                            <webuijsf:label id="lbVerbatimCoordinate"
+                                                                            style="font-size: 16px; font-style: normal; font-weight: bold; left: 24px; top: 36px; position: absolute" text="#{resources.site_verbatimCoordinates}"/>
+                                                            <webuijsf:label id="lbVerbatimLongitude"
+                                                                            style="height: 24px; left: 24px; top: 56px; position: absolute; width: 120px" text="#{resources.site_verbatimLongitude}"/>
+                                                            <webuijsf:label id="lbVerbatimLatitude"
+                                                                            style="height: 24px; left: 24px; top: 80px; position: absolute; width: 120px" text="#{resources.site_verbatimLatitude}"/>
+                                                            <webuijsf:textField binding="#{gis$NewSite.txVerbatimLongitude}" id="txt_longitude_degrees"
+                                                                style="position: absolute; left: 140px; top: 56px; width: 144px; height: 24px" text ="0" />
+                                                            <webuijsf:textField binding="#{gis$NewSite.txVerbatimLatitude}" id="txt_longitude_minutes"
+                                                                style="position: absolute; left: 140px; top: 80px; width: 144px; height: 24px" text ="0"/>
+                                                        </webuijsf:panelLayout>
                                                     </webuijsf:panelLayout>
-                                                    <webuijsf:panelLayout id="pCoordinatesTable" style="height: 263px; position: relative; -rave-layout: grid">
+                                                    <webuijsf:panelLayout id="pCoordinatesTable" style="height: 440px; position: relative; -rave-layout: grid">
                                                         <h:commandButton action="#{gis$NewSite.btnAddCoordinate_action}" id="btnAddCoordinate"
                                                             style="height: 24px; left: 12px; top: 24px; position: absolute; width: 130px" value="#{resources.add_new}"/>
                                                         <h:commandButton action="#{gis$NewSite.btnRemoveCoord_action}" id="btnRemoveCoord"
@@ -162,6 +145,18 @@
                                                                     <h:outputLabel styleClass="My_search_icon" value="#{resources.latitude}"/>
                                                                 </f:facet>
                                                                 <h:outputText value="#{currentRow.latitude}"/>
+                                                            </h:column>
+                                                            <h:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputLabel styleClass="My_search_icon" value="#{resources.site_verbatimLongitude}"/>
+                                                                </f:facet>
+                                                                <h:outputText value="#{currentRow.verbatimLongitude}"/>
+                                                            </h:column>
+                                                            <h:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputLabel styleClass="My_search_icon" value="#{resources.site_verbatimLatitude}"/>
+                                                                </f:facet>
+                                                                <h:outputText value="#{currentRow.verbatimLatitude}"/>
                                                             </h:column>
                                                         </h:dataTable>
                                                     </webuijsf:panelLayout>
