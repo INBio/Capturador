@@ -204,7 +204,7 @@ public class NewSite extends AbstractPageBean {
      */
     @Override
     public void prerender() {
-        System.out.println("HIZO PRERENDER");
+        //System.out.println("HIZO PRERENDER");
         this.baseProjectionData.setOptions(this.getProjectionsDropDownData());
         this.determinationMethodData.setOptions(this.getCalculationMethodDropDownData());
         this.originProjectionData.setOptions(this.getProjectionsDropDownData());
@@ -218,7 +218,7 @@ public class NewSite extends AbstractPageBean {
         this.setProvincesDropDownData();
 
         Option op1 = new Option(0,BundleHelper.getDefaultBundleValue
-                ("sexahecimal",this.getMyLocale()));
+                ("sexagesimal",this.getMyLocale()));
         Option op2 = new Option(1,BundleHelper.getDefaultBundleValue
                 ("decimal",this.getMyLocale()));
         Option options[] = {op1,op2};
@@ -239,10 +239,8 @@ public class NewSite extends AbstractPageBean {
         //se agrega para que se actualice correctamente en caso de campos requeridos incompletos
         this.getDdProjection().setSelected(this.getSiteSessionBean().getSelectedProjection());
         this.getDdWgs84Format().setSelected(this.getSiteSessionBean().getSelectedWgs84Format());
-        System.out.println("VALORES PARA = "+this.getSiteSessionBean().getSelectedProjection());
-        System.out.println("Longitude = "+this.getTxLongitude().getText());
-        System.out.println("Latitude = "+this.getTxLatitude().getText());
-        //this.setProjections();
+        
+        
     }
 
     /**
@@ -265,18 +263,12 @@ public class NewSite extends AbstractPageBean {
         ProjectionEntity[] all = ProjectionEntity.values();
         ArrayList<Option> allOptions = new ArrayList<Option>();
         Option[] allOptionsInArray;
-        Option option;
-        //Crear opcion titulo
-        /*
-        option = new Option(null," -- "+BundleHelper.getDefaultBundleValue
-                ("drop_down_default",getMyLocale())+" --");
-        allOptions.add(option);
-         */
+        Option option;       
+        
         //Crear todas las opciones del drop down
         for(ProjectionEntity myProjection : all){
             option = new Option(myProjection.getId(), myProjection.getName().trim());
-            allOptions.add(option);
-            //System.out.println(""+myProjection.getId()+" - "+ myProjection.getName().trim());
+            allOptions.add(option);            
         }
         //return the elements
         allOptionsInArray = new Option[allOptions.size()];
@@ -413,8 +405,7 @@ public class NewSite extends AbstractPageBean {
         this.provincesData.setOptions(allOptions.toArray(allOptionsInArray));
     }
 
-    public void onCountryChange(){
-        System.out.println("Cambia de pais");
+    public void onCountryChange(){        
         SiteSessionBean ssb = this.getSiteSessionBean();
         if (ssb.getSelectedCountryId().equals(INVALID_VALUE_ID)){
             updateProvincesDropDownData(null);
@@ -458,8 +449,7 @@ public class NewSite extends AbstractPageBean {
         if(ssb.getSelectedCountryId() == null){
             if(siteId != null){
                 CountryDTO country = ssb.getGisFacade().getCountryForSite(siteId);
-                if(country!=null){
-                    //System.out.println("Actual country: "+country.getValue());
+                if(country!=null){                    
                     ssb.setSelectedCountryId(country.getCountryId());
                 } else
                     ssb.setSelectedCountryId(INVALID_VALUE_ID);
@@ -471,8 +461,7 @@ public class NewSite extends AbstractPageBean {
         if(ssb.getSelectedProvinceId() == null ) {
             if(siteId != null){
                 ProvinceDTO province = ssb.getGisFacade().getProvinceForSite(siteId);
-                if(province!=null){
-                    //System.out.println("Actual province: "+province.getValue());
+                if(province!=null){                    
                     ssb.setSelectedProvinceId(province.getProvinceId());
                 } else
                     ssb.setSelectedProvinceId(INVALID_VALUE_ID);
@@ -587,16 +576,19 @@ public class NewSite extends AbstractPageBean {
     /**
      * Boton para agregar coordenada
      */
-    public String btnAddCoordinate_action() {
+    public String btnAddCoordinate_action() {        
         Long projection = this.getSiteSessionBean().getSelectedProjection();
         String original_X = null; 
         String original_Y = null;
         String lon_result = null;
         String lat_result = null;
+        
+        
         if (canAddCoordinate())
         {         
+        
            if(projection.equals(ProjectionEntity.WGS_84.getId()) && this.getSiteSessionBean().getSelectedWgs84Format() == 0)
-           {
+           {             
                Object lon_degrees = this.getTxLongitudeDegrees().getValue();
                Object lon_seconds = this.getTxLongitudeSeconds().getValue();
                Object lon_minutes = this.getTxLongitudeMinutes().getValue();
@@ -604,6 +596,7 @@ public class NewSite extends AbstractPageBean {
                Object lat_minutes = this.getTxLatitudeMinutes().getValue();
                Object lat_seconds = this.getTxLatitudeSeconds().getValue();
                
+                              
                if (validateLongitude()) {
                 if (validateLatitude()) {
                     //All data (degrees, minutes and seconds)
@@ -622,8 +615,10 @@ public class NewSite extends AbstractPageBean {
                }
            }
            if(projection.equals(ProjectionEntity.WGS_84.getId()) && this.getSiteSessionBean().getSelectedWgs84Format() == 1)
-           {   if (this.txLongitude.getText() != null && validateLonLatGeneric(this.txLongitude.getText().toString())) { //envian mensaje de error en caso de que no cumplan con el estandar
+           { 
+               if (this.txLongitude.getText() != null && validateLonLatGeneric(this.txLongitude.getText().toString())) { //envian mensaje de error en caso de que no cumplan con el estandar
                 if (this.txLatitude.getText() != null && validateLonLatGeneric(this.txLatitude.getText().toString())) {            
+                                                           
                     lon_result = this.txLongitude.getText().toString();
 
                     lat_result = this.txLatitude.getText().toString();
@@ -633,10 +628,10 @@ public class NewSite extends AbstractPageBean {
                }
            }
            else
-           {
-               System.out.println(this.txLongitude.getText());
+           {               
               if (this.txLongitude.getText() != null && validateLonLatGeneric(this.txLongitude.getText().toString())) { //envian mensaje de error en caso de que no cumplan con el estandar
                 if (this.txLatitude.getText() != null && validateLonLatGeneric(this.txLatitude.getText().toString())) {     
+            
                     float x = Float.parseFloat(this.txLongitude.getText().toString());
                     float y = Float.parseFloat(this.txLatitude.getText().toString());
                     String lonlat[] =this.getSiteSessionBean().getReprojection(x, y, this.getSiteSessionBean().getSelectedProjection(), ProjectionEntity.WGS_84.getId());
@@ -688,8 +683,8 @@ public class NewSite extends AbstractPageBean {
             this.txLatitudeDegrees.setValue("0");
             this.txLatitudeMinutes.setValue("0");
             this.txLatitudeSeconds.setValue("0");
-            this.txLongitude.setValue("0");
-            this.txLatitude.setValue("0");
+            this.txLongitude.setValue(null);
+            this.txLatitude.setValue(null);
             this.txVerbatimLongitude.setValue("0");
             this.txVerbatimLatitude.setValue("0");
             }
@@ -748,8 +743,7 @@ public class NewSite extends AbstractPageBean {
     
      private boolean validateLonLatGeneric(String lonlat) {
         Float tmp;
-        String coordinate =lonlat;
-        System.out.println(coordinate);
+        String coordinate =lonlat;        
         if (coordinate == null) {
             MessageBean.setErrorMessageFromBundle(INVALID_LONGITUDE,
                     this.getMyLocale());
@@ -883,9 +877,7 @@ public class NewSite extends AbstractPageBean {
     }
 
 
-    public String onChangeProjection_action() {
-
-        System.out.println("Proyeccion seleccionada = "+this.getSiteSessionBean().getSelectedProjection());
+    public String onChangeProjection_action() {        
 
         if(this.getSiteSessionBean().getSelectedProjection().equals(ProjectionEntity.WGS_84.getId()))
         {
@@ -903,13 +895,12 @@ public class NewSite extends AbstractPageBean {
             this.getPanelWGS84Projection().setVisible(false);
             this.getPanelGeneralProjection().setVisible(true);
         }
-        System.out.println("Proyeccion seleccionada antes de salir de OnChangeProjection= "+this.getSiteSessionBean().getSelectedProjection());
+        
         return null;
     }
     
     public String onChangeWGS84Format_action( ) {
-        System.out.println("Entro al cambio de formato");
-
+        
         if(this.getSiteSessionBean().getSelectedProjection().equals(ProjectionEntity.WGS_84.getId()) && 
                 this.getSiteSessionBean().getSelectedWgs84Format() == 0)
         {
@@ -923,7 +914,7 @@ public class NewSite extends AbstractPageBean {
             this.getPanelWGS84Projection().setVisible(false);
             this.getPanelGeneralProjection().setVisible(true);
         }
-        System.out.println("Proyeccion seleccionada antes de salir de OnChangeProjection= "+this.getSiteSessionBean().getSelectedProjection());
+        
         
         return null;
     }
@@ -1317,10 +1308,7 @@ public class NewSite extends AbstractPageBean {
         this.panelGeneralProjection = panelGeneralProjection;
     }
 
-    public void ddProjection_processValueChange(ValueChangeEvent event) {
-        System.out.println("Entro a la accion ValueChange");
-    }
-
+    
     /**
      * @return the rbWgs84Format
      */
