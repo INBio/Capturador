@@ -355,7 +355,7 @@ public class GisFacadeImpl implements GisFacadeRemote {
      */
     public SiteDTO saveNewSite(SiteDTO sDTO, List<SiteCoordinateDTO> coorList,
             List<GeoreferencedSitePKDTO> georefSiteList) {
-        System.out.println("Entro a Save New Site");
+        //System.out.println("Entro a Save New Site");
         //Nueva entidad a persistir
         //Site site = new Site();
         //Asignar las propiedades de nuevo sition
@@ -370,9 +370,9 @@ public class GisFacadeImpl implements GisFacadeRemote {
         site.setSiteCoordinates(new ArrayList<SiteCoordinate>());
         site.setGeoreferencedSites(new ArrayList<GeoreferencedSite>());*/
         
-        System.out.println("Antes del Factory = " + sDTO.getUserName());
+        //System.out.println("Antes del Factory = " + sDTO.getUserName());
         Site site = siteDTOFactory.createPlainEntity(sDTO);
-        System.out.println("Despues del Factory = " +site.getCreatedBy());
+        //System.out.println("Despues del Factory = " +site.getCreatedBy());
         //Persistir la nueva entidad
         siteEAOImpl.create(site);
         //Actualizar el CurrentDTO con el id asignado
@@ -444,7 +444,9 @@ public class GisFacadeImpl implements GisFacadeRemote {
 
         //Nueva entidad a persistir
         Site site = siteEAOImpl.findById(Site.class, sDTO.getSiteId());
+        
         //Asignar las propiedades de nuevo sition
+        /*
         site.setBaseProjectionId(sDTO.getBaseProjectionId());
         site.setDescription(sDTO.getDescription());
         site.setFeatureTypeId(sDTO.getFeatureTypeId());
@@ -454,7 +456,9 @@ public class GisFacadeImpl implements GisFacadeRemote {
         site.setPrecision(sDTO.getPrecision());
         site.setSiteCalculationMethodId(sDTO.getSiteCalculationMethodId());
         site.setSiteCoordinates(new ArrayList<SiteCoordinate>());
-        site.setGeoreferencedSites(new ArrayList<GeoreferencedSite>());
+        site.setGeoreferencedSites(new ArrayList<GeoreferencedSite>());         
+        */
+        site = siteDTOFactory.updatePlainEntity(sDTO, site);
         //Persistir la entidad
         siteEAOImpl.update(site);
         //Actualizar el CurrentDTO con el id asignado
@@ -469,14 +473,18 @@ public class GisFacadeImpl implements GisFacadeRemote {
                 for (int i = 0; i < coorList.size(); i++) {
                     SiteCoordinateDTO dto = coorList.get(i);
                     SiteCoordinate newCoor = new SiteCoordinate();
+                    newCoor = siteCoordinateDTOFactory.createPlainEntity(dto);
                     newCoor.setSiteId(site);
                     newCoor.setSequence(new Long(i + 1));
+                    /*
                     newCoor.setLatitude(dto.getLatitude());
                     newCoor.setLongitude(dto.getLongitude());
                     newCoor.setOriginalX(dto.getOriginalX());
                     newCoor.setOriginalY(dto.getOriginalY());
                     newCoor.setVerbatimLongitude(dto.getVerbatimLongitude());
                     newCoor.setVerbatimLatitude(dto.getVerbatimLatitude());
+                    */
+                    
                     siteCoordinateEAOImpl.create(newCoor);
                 }
             }

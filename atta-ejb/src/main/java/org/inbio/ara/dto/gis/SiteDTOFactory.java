@@ -34,6 +34,7 @@ import org.inbio.ara.persistence.gis.SiteCoordinate;
  */
 public class SiteDTOFactory extends BaseEntityOrDTOFactory<Site, SiteDTO> {
     
+    private SiteCoordinateDTOFactory siteCoordinateDTOFactory = new SiteCoordinateDTOFactory();
     
 
     public SiteDTO createDTO(Site entity) {
@@ -52,6 +53,8 @@ public class SiteDTOFactory extends BaseEntityOrDTOFactory<Site, SiteDTO> {
         sdto.setOriginalProjectionId(entity.getOriginalProjectionId());
         sdto.setSiteCalculationMethodId(entity.getSiteCalculationMethodId());
         sdto.setName(entity.getName());
+        
+        sdto.setCoordinatesListDTO(siteCoordinateDTOFactory.createDTOList(entity.getSiteCoordinates()));
 
         for(GeoreferencedSite gs : entity.getGeoreferencedSites()){
 
@@ -84,6 +87,7 @@ public class SiteDTOFactory extends BaseEntityOrDTOFactory<Site, SiteDTO> {
         
         //Estos se persisten por aparte en el Facade
         newSite.setSiteCoordinates(new ArrayList<SiteCoordinate>());      
+        
         
         newSite.setGeoreferencedSites(new ArrayList<GeoreferencedSite>());
         System.out.println("Desde el Factory, antes del return ="+newSite.getCreatedBy());

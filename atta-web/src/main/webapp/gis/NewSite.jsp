@@ -30,10 +30,9 @@
                                     <!-- Panel de detalles del sitios -->
                                     <webuijsf:panelLayout id="PanelDetails" style="height: 100px; position: relative; width: 840px; -rave-layout: grid" styleClass="My_subpanel_blue">
                                         <webuijsf:label id="lbDescription" requiredIndicator="true"
-                                            style="height: 24px; left: 24px; top: 14px; position: absolute; width: 164px" text="#{resources.description}"/>                                      
+                                                        style="height: 24px; left: 24px; top: 14px; position: absolute; width: 164px" text="#{resources.locality}"/>                                      
                                         
-                                        <webuijsf:label for="ddDetermination" id="lbDetermination"
-                                            style="height: 24px; left: 432px; top: 38px; position: absolute; width: 164px" text="#{resources.determination_method}"/>
+                                        
                                         <webuijsf:label for="ddType" id="lbType" style="height: 24px; left: 24px; top: 62px; position: absolute; width: 164px" text="#{resources.type}"/>
                                         <webuijsf:textArea binding="#{gis$NewSite.txaDescription}" columns="23" id="txaDescription" required="true"
                                             style="position: absolute; left: 192px; top: 14px; width: 168px; height: 24px" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"/>
@@ -41,18 +40,22 @@
                                             selected="#{gis$SiteSessionBean.selectedType}" 
                                             style="position: absolute; left: 192px; top: 62px; height: 24px" width="192px"/>
                                       
-                                        <webuijsf:dropDown binding="#{gis$NewSite.ddDetermination}" id="ddDetermination"
-                                            items="#{gis$NewSite.determinationMethodData.options}" required="true"
-                                            selected="#{gis$SiteSessionBean.selectedDeterminationMethod}"
-                                            style="height: 24px; left: 600px; top: 38px; position: absolute" width="192px"/>
+                                        
                                         <!--Segunda Columna -->
                                         <webuijsf:label for="txPresition" id="lbPresition"
                                             style="height: 24px; left: 432px; top: 14px; position: absolute; width: 164px" text="#{resources.presition}"/>
+                                        <webuijsf:label for="ddDetermination" id="lbDetermination"
+                                            style="height: 24px; left: 432px; top: 38px; position: absolute; width: 164px" text="#{resources.determination_method}"/>
                                         <webuijsf:label for="ddOrigProjection" id="lbProjection"
                                             style="height: 24px; left: 432px; top: 62px; position: absolute; width: 164px" text="#{resources.orig_proyection}"/>
                                         
                                         <webuijsf:textField binding="#{gis$NewSite.txPresition}" columns="25" id="txPresition"
                                             style="height: 24px; left: 600px; top: 14px; position: absolute; width: 192px" validatorExpression="#{util$ValidatorBean.longNumberFormatValidator}"/>
+                                        
+                                        <webuijsf:dropDown binding="#{gis$NewSite.ddDetermination}" id="ddDetermination"
+                                            items="#{gis$NewSite.determinationMethodData.options}" required="true"
+                                            selected="#{gis$SiteSessionBean.selectedDeterminationMethod}"
+                                            style="height: 24px; left: 600px; top: 38px; position: absolute" width="192px"/>
                                         
                                         <webuijsf:dropDown  actionExpression="#{gis$NewSite.onChangeProjection_action}" visible="true" id="ddProjection" binding="#{gis$NewSite.ddProjection}" items="#{gis$NewSite.projectionData.options}"
                                                             selected="#{gis$SiteSessionBean.selectedProjection}" required="true"

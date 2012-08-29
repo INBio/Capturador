@@ -30,6 +30,8 @@ import org.inbio.ara.persistence.gis.SiteCoordinate;
  */
 public class SiteDTO extends GenericDTO implements Serializable{
 
+    
+    
     private Long siteId;
     private String description;
     private Long precision;
@@ -46,6 +48,8 @@ public class SiteDTO extends GenericDTO implements Serializable{
     private String coordinates;
     @Deprecated
     private List<SiteCoordinate> coordinatesList;
+    
+    private List<SiteCoordinateDTO> coordinatesListDTO;
 
     private Long countryId;
     private String countryName;
@@ -229,7 +233,9 @@ public class SiteDTO extends GenericDTO implements Serializable{
     }
 
     public List<SiteCoordinateDTO> getCoordinateDTOList() {
+        /*
         List<SiteCoordinateDTO> result = new ArrayList<SiteCoordinateDTO>();
+        
         for(SiteCoordinate sc : coordinatesList){
             SiteCoordinateDTO aux = new SiteCoordinateDTO();
             aux.setLatitude(sc.getLatitude());
@@ -241,7 +247,11 @@ public class SiteDTO extends GenericDTO implements Serializable{
             aux.setSiteId(sc.getSiteId().getSiteId());
             result.add(aux);
         }
-        return result;
+        
+        
+        return result;        
+        */
+        return coordinatesListDTO;
     }
 
     /**
@@ -389,5 +399,19 @@ public class SiteDTO extends GenericDTO implements Serializable{
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the coordinatesListDTO
+     */
+    public List<SiteCoordinateDTO> getCoordinatesListDTO() {
+        return coordinatesListDTO;
+    }
+
+    /**
+     * @param coordinatesListDTO the coordinatesListDTO to set
+     */
+    public void setCoordinatesListDTO(List<SiteCoordinateDTO> coordinatesListDTO) {
+        this.coordinatesListDTO = coordinatesListDTO;
     }
 }

@@ -284,6 +284,7 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
             auxProvince.setGeographicLayerId(getGisFacade().PROVINCE_LAYER);
             auxProvince.setGeographicSiteId(selectedProvinceId);
             auxProvince.setUserName(this.getAraSessionBean().getGlobalUserName());
+            
             gsPKs.add(auxProvince);
         }
 

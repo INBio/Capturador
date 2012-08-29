@@ -1898,7 +1898,7 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
      public void updateTaxonCountry(TaxonCountryDTO taxonCountryDTO) {
 
 
-        TaxonCountry ta = taxonCountryEAOImpl. findTaxonCountryByTaxonCountryIds(taxonCountryDTO.getTaxonId(), taxonCountryDTO.getCountryId());
+        TaxonCountry ta = taxonCountryEAOImpl.findTaxonCountryByTaxonCountryIds(taxonCountryDTO.getTaxonId(), taxonCountryDTO.getCountryId());
         ta = this.taxonCountryDTOFactory.updatePlainEntity(taxonCountryDTO, ta);
         this.taxonCountryEAOImpl.update(ta);
     }
