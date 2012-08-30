@@ -55,6 +55,7 @@ public class SiteDTOFactory extends BaseEntityOrDTOFactory<Site, SiteDTO> {
         sdto.setName(entity.getName());
         
         sdto.setCoordinatesListDTO(siteCoordinateDTOFactory.createDTOList(entity.getSiteCoordinates()));
+        
 
         for(GeoreferencedSite gs : entity.getGeoreferencedSites()){
 
@@ -90,7 +91,7 @@ public class SiteDTOFactory extends BaseEntityOrDTOFactory<Site, SiteDTO> {
         
         
         newSite.setGeoreferencedSites(new ArrayList<GeoreferencedSite>());
-        System.out.println("Desde el Factory, antes del return ="+newSite.getCreatedBy());
+        
         return newSite;
         
     }

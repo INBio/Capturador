@@ -19,8 +19,10 @@
 
 package org.inbio.ara.eao.gis.impl;
 
+import java.util.List;
 import org.inbio.ara.eao.gis.*;
 import javax.ejb.Stateless;
+import javax.persistence.FlushModeType;
 import javax.persistence.Query;
 import org.inbio.ara.eao.BaseEAOImpl;
 import org.inbio.ara.persistence.gis.SiteCoordinate;
@@ -34,11 +36,15 @@ public class SiteCoordinateEAOImpl extends BaseEAOImpl<SiteCoordinate,Long>
         implements SiteCoordinateEAOLocal {
     
     public void deleteBySiteId(Long sId){
+                
         Query q = em.createQuery("delete from SiteCoordinate sc " +
                 "where sc.site.siteId = :sId");
         q.setParameter("sId", sId);
-        q.executeUpdate();
+        
+        q.executeUpdate();      
+        
         em.flush();
+        
     }
  
 }

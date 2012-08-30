@@ -50,6 +50,7 @@ public class SiteCoordinateDTOFactory
             result.setSequence(entity.getSequence());
             result.setSiteCoordinateId(entity.getSiteCoordinateId());
             result.setSiteId(entity.getSiteId().getSiteId());
+            result.setUserName(entity.getCreatedBy());
             return result;
         }
     }

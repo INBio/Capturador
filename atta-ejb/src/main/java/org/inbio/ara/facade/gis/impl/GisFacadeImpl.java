@@ -476,6 +476,8 @@ public class GisFacadeImpl implements GisFacadeRemote {
                     newCoor = siteCoordinateDTOFactory.createPlainEntity(dto);
                     newCoor.setSiteId(site);
                     newCoor.setSequence(new Long(i + 1));
+                    //para eliminar el id que fue asignado anteriormente
+                    newCoor.setSiteCoordinateId(null);
                     /*
                     newCoor.setLatitude(dto.getLatitude());
                     newCoor.setLongitude(dto.getLongitude());
@@ -485,6 +487,7 @@ public class GisFacadeImpl implements GisFacadeRemote {
                     newCoor.setVerbatimLatitude(dto.getVerbatimLatitude());
                     */
                     
+                    
                     siteCoordinateEAOImpl.create(newCoor);
                 }
             }
@@ -493,6 +496,7 @@ public class GisFacadeImpl implements GisFacadeRemote {
         //Persistir la division politica del sitio
         if (georefSiteList != null) {
             for (GeoreferencedSitePKDTO gsPK : georefSiteList) {
+                System.out.println(gsPK.getGeographicLayerId());
                 saveOrUpdateGeoreferenceForSite(site.getSiteId(),
                         gsPK.getGeographicLayerId(),
                         gsPK.getGeographicSiteId(), gsPK.getUserName());
@@ -510,7 +514,7 @@ public class GisFacadeImpl implements GisFacadeRemote {
         GeoreferencedSite gs = null;
         GeoreferencedSitePK gsPK;
 
-        if(gsList == null || gsList.size() == 0){
+        if(gsList == null || gsList.isEmpty()){
             //Nuevo GeoreferencedSite
             gsPK = new GeoreferencedSitePK(siteId, layerId, value);
             gs = new GeoreferencedSite(gsPK);
@@ -525,14 +529,17 @@ public class GisFacadeImpl implements GisFacadeRemote {
             gs = gsList.get(0);
             georeferencedSiteEAOImpl.delete(gs);
             //aqui porque no usa DTOFacade - No estoy segura que vaya aqui
+            /*
             gs.setLastModificationBy(user);
             gs.setLastModificationDate(new GregorianCalendar());
-            gs.getGeoreferencedSitePK().setGeographicSiteId(value);
-            
+            gs.getGeoreferencedSitePK().setGeographicSiteId(value);            
+            */         
             
         }
          //Falta un caso en que haya mas de un georeferecedSite, pero por ahora no se implementara
-
+        System.out.println("Capa = "+gs.getGeoreferencedSitePK().getGeographicLayerId());
+        System.out.println("Lugar = "+gs.getGeoreferencedSitePK().getGeographicSiteId());
+        
         georeferencedSiteEAOImpl.create(gs);
     }
 

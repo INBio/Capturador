@@ -1011,5 +1011,27 @@ ALTER TABLE atta.site_coordinate ADD COLUMN verbatim_longitude varchar(150);
 ALTER TABLE atta.site_coordinate ADD COLUMN verbatim_latitude varchar(150);
 
 
+--2012.08.29
 
+-- Se agregan las provincias a CR en la tabla PROVINCE
+-- Si el id de Costa Rica cambia, aquí debe cambiar el 1
+INSERT INTO atta.province (country_id,value, created_by, creation_date, last_modification_by, last_modification_date)
+    values(1,'San José','admin','2012-08-29','admin','2012-08-29');
+INSERT INTO atta.province (country_id,value, created_by, creation_date, last_modification_by, last_modification_date)
+    values(1,'Cartago','admin','2012-08-29','admin','2012-08-29');
+INSERT INTO atta.province (country_id,value, created_by, creation_date, last_modification_by, last_modification_date)
+    values(1,'Heredia','admin','2012-08-29','admin','2012-08-29');
+INSERT INTO atta.province (country_id,value, created_by, creation_date, last_modification_by, last_modification_date)
+    values(1,'Guanacaste','admin','2012-08-29','admin','2012-08-29');
+INSERT INTO atta.province (country_id,value, created_by, creation_date, last_modification_by, last_modification_date)
+    values(1,'Alajuela','admin','2012-08-29','admin','2012-08-29');
+INSERT INTO atta.province (country_id,value, created_by, creation_date, last_modification_by, last_modification_date)
+    values(1,'Puntarenas','admin','2012-08-29','admin','2012-08-29');
+INSERT INTO atta.province (country_id,value, created_by, creation_date, last_modification_by, last_modification_date)
+    values(1,'Limón','admin','2012-08-29','admin','2012-08-29');
 
+-- insertar las "capas"an la tabla GEOGRAPHIC_LAYER
+INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, created_by, creation_date, last_modification_by, last_modification_date)
+    values(1,'País','País','admin','2012-08-29','admin','2012-08-29');
+INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, created_by, creation_date, last_modification_by, last_modification_date)
+    values(2,'Provincia','Provincia', 'admin','2012-08-29','admin','2012-08-29');

@@ -231,8 +231,7 @@ public class NewSite extends AbstractPageBean {
             this.getPanelWGS84Projection().setVisible(true);
             this.getPanelGeneralProjection().setVisible(false);
             this.getSiteSessionBean().setWgs84Projection(true);
-            this.getSiteSessionBean().setSelectedWgs84Format(0);
-            
+            this.getSiteSessionBean().setSelectedWgs84Format(0);            
             
         }
 
