@@ -38,6 +38,7 @@ import org.inbio.ara.persistence.gis.FeatureTypeEnum;
 import org.inbio.ara.persistence.gis.ProjectionEntity;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
+import sun.nio.cs.HistoricallyNamedCharset;
 
 /**
  * <p>Page bean that corresponds to a similarly named JSP page.  This
@@ -225,11 +226,14 @@ public class EditSite extends AbstractPageBean {
             //Para actualizar panel
             onChangeProjection_action();
             
+            this.setActualPoliticValuesToDropDowns
+                (this.getSiteSessionBean().getCurrentSiteDTO().getSiteId());
+            
         }
 
         
         //verificar si existen coordenadas
-        System.out.println("Hay coordenadas = "+this.getSiteSessionBean().getCoordinateDataProvider().isEmpty());
+        
         if(!this.getSiteSessionBean().getCoordinateDataProvider().isEmpty())
         {
             this.ddProjection.setDisabled(true);
@@ -238,11 +242,10 @@ public class EditSite extends AbstractPageBean {
         {
                 this.ddProjection.setDisabled(false);
         }
-        
-        this.setActualPoliticValuesToDropDowns
-                (this.getSiteSessionBean().getCurrentSiteDTO().getSiteId());
+                
         this.setCountriesDropDownData();
         this.setProvincesDropDownData();
+        
     }
 
     /**
@@ -801,8 +804,7 @@ public class EditSite extends AbstractPageBean {
          System.out.println(this.getSiteSessionBean().getSelectedProjection());
         if(this.getSiteSessionBean().getSelectedProjection().equals(ProjectionEntity.WGS_84.getId()))
         {
-            System.out.println("Habilitar format");
-            
+                        
             this.getDdWgs84Format().setVisible(true);
             this.getLbWgs84Format().setVisible(true);
             this.getSiteSessionBean().setWgs84Projection(true);
@@ -811,7 +813,7 @@ public class EditSite extends AbstractPageBean {
         }
         else
         {
-            System.out.println("Deshabilitar format");
+            
             this.getDdWgs84Format().setVisible(false);
             this.getLbWgs84Format().setVisible(false);
             this.getSiteSessionBean().setWgs84Projection(false);
@@ -863,6 +865,7 @@ public class EditSite extends AbstractPageBean {
 
         //Mandar a persistir el nuevo sitio
         try{
+            
             this.getSiteSessionBean().updateNewSite();
         }
         catch(Exception e){

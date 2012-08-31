@@ -277,7 +277,8 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
      */
     public List<GeoreferencedSitePKDTO> getGeoreferencedSitePKListForCreate(){
         List<GeoreferencedSitePKDTO> gsPKs = new ArrayList<GeoreferencedSitePKDTO>();
-
+        
+        
         if (!getSelectedProvinceId().equals(INVALID_VALUE_ID)){
             GeoreferencedSitePKDTO auxProvince = new GeoreferencedSitePKDTO();
             auxProvince.setSiteId(null);
