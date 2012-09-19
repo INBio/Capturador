@@ -33,6 +33,7 @@ import javax.faces.component.html.HtmlSelectOneRadio;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.gis.FeatureTypeDTO;
 import org.inbio.ara.dto.gis.GeographicLayerDTO;
+import org.inbio.ara.dto.gis.GeoreferencedDTO;
 import org.inbio.ara.dto.gis.ProjectionDTO;
 import org.inbio.ara.dto.gis.ProvinceDTO;
 import org.inbio.ara.dto.gis.SiteCalculationMethodDTO;
@@ -84,6 +85,8 @@ public class NewSite extends AbstractPageBean {
     private TextField txLatitudeDegrees = new TextField();
     //Binding de la tabla de coordenadas
     private HtmlDataTable dataTableCoordinates = new HtmlDataTable();
+    private HtmlDataTable dataTableGeoreferencedSites = new HtmlDataTable();
+    
     private TextField txLongitudeMinutes = new TextField();
     private TextField txLongitudeSeconds = new TextField();
     private TextField txLatitudeMinutes = new TextField();
@@ -699,13 +702,16 @@ public class NewSite extends AbstractPageBean {
     }
 
     private boolean canAddCoordinate() {
+                
         if (this.getSiteSessionBean().getSelectedType().equals(1L)) {
+            //size() == 1 => que existe una coordenada almacenada sin contar la que se quiere ingresar
             if (this.getSiteSessionBean().getCoordinateDataProvider().size() == 1) {
                 MessageBean.setErrorMessageFromBundle(ONLY_ONE_COORDINATE_ALLOWED,
                         this.getMyLocale());
                 return false;
             }
         }
+        
         return true;
     }
 
@@ -894,6 +900,25 @@ public class NewSite extends AbstractPageBean {
             this.getPanelWGS84Projection().setVisible(false);
             this.getPanelGeneralProjection().setVisible(true);
         }
+        
+        return null;
+    }
+    
+     public String onChangeTab_action() {        
+
+        this.getSiteSessionBean().setGeoreferencedSites(new ArrayList<GeoreferencedDTO>());
+        if(!this.getSiteSessionBean().getCoordinateDataProvider().isEmpty() && validateCoordinates())
+        {
+            try
+            {
+                this.getSiteSessionBean().getGeoreferencedSitesByCoordinates();
+            }
+            catch(Exception e)
+            {
+                MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+                return null;    
+            }
+        }       
         
         return null;
     }
@@ -1405,6 +1430,22 @@ public class NewSite extends AbstractPageBean {
     public void setTxVerbatimLatitude(TextField txVerbatimLatitude) {
         this.txVerbatimLatitude = txVerbatimLatitude;
     }
+
+    /**
+     * @return the dataTableGeoreferencedSites
+     */
+    public HtmlDataTable getDataTableGeoreferencedSites() {
+        return dataTableGeoreferencedSites;
+    }
+
+    /**
+     * @param dataTableGeoreferencedSites the dataTableGeoreferencedSites to set
+     */
+    public void setDataTableGeoreferencedSites(HtmlDataTable dataTableGeoreferencedSites) {
+        this.dataTableGeoreferencedSites = dataTableGeoreferencedSites;
+    }
+
+  
 
    
 }

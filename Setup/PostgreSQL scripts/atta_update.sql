@@ -1012,7 +1012,7 @@ ALTER TABLE atta.site_coordinate ADD COLUMN verbatim_latitude varchar(150);
 
 
 --2012.08.29
-
+--gsulca
 -- Se agregan las provincias a CR en la tabla PROVINCE
 -- Si el id de Costa Rica cambia, aquí debe cambiar el 1
 INSERT INTO atta.province (country_id,value, created_by, creation_date, last_modification_by, last_modification_date)
@@ -1031,7 +1031,25 @@ INSERT INTO atta.province (country_id,value, created_by, creation_date, last_mod
     values(1,'Limón','admin','2012-08-29','admin','2012-08-29');
 
 -- insertar las "capas"an la tabla GEOGRAPHIC_LAYER
-INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, created_by, creation_date, last_modification_by, last_modification_date)
-    values(1,'País','País','admin','2012-08-29','admin','2012-08-29');
-INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, created_by, creation_date, last_modification_by, last_modification_date)
-    values(2,'Provincia','Provincia', 'admin','2012-08-29','admin','2012-08-29');
+--INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, created_by, creation_date, last_modification_by, last_modification_date)
+--    values(1,'País','País','admin','2012-08-29','admin','2012-08-29');
+--INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, created_by, creation_date, last_modification_by, last_modification_date)
+--    values(2,'Provincia','Provincia', 'admin','2012-08-29','admin','2012-08-29');
+
+----2012.09.12
+-- gsulca
+
+CREATE INDEX idx_gadm_thegeom ON gadm USING GIST (the_geom GIST_GEOMETRY_OPS);
+CREATE INDEX idx_protected_planet_thegeom ON protected_planet USING GIST (the_geom GIST_GEOMETRY_OPS);
+
+INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, key_field, main_value_field, table_name, created_by, creation_date, last_modification_by, last_modification_date)
+    values(1,'País','País', 'gid','name_0','gadm','admin','2012-08-29','admin','2012-08-29');
+
+INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, key_field, main_value_field, table_name, created_by, creation_date, last_modification_by, last_modification_date)
+    values(2,'Provincia','Provincia', 'gid','name_1','gadm','admin','2012-08-29','admin','2012-08-29');
+
+INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, key_field, main_value_field, table_name, created_by, creation_date, last_modification_by, last_modification_date)
+    values(3,'Canton','Canton','gid', 'name_2','gadm','admin','2012-08-29','admin','2012-08-29');
+
+INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, key_field, main_value_field, table_name, created_by, creation_date, last_modification_by, last_modification_date)
+    values(4,'Áreas Protegidas','Áreas Protegidas', 'gid','name','protected_planet','admin','2012-08-29','admin','2012-08-29');

@@ -99,5 +99,7 @@ public interface GisFacadeRemote {
     public String getSiteDescriptionById(Long siteId);
 
     public String getReprojection(float valueX, float valueY, Long projectionSRID, Long reprojectioSRID);
+
+    public java.util.List<org.inbio.ara.dto.gis.GeoreferencedDTO> getGeoreferencedSitesByCoordinates(java.util.List<org.inbio.ara.dto.gis.SiteCoordinateDTO> coordinates, java.lang.Long type);
     
 }

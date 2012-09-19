@@ -40,4 +40,6 @@ public interface GeoreferencedSiteEAOLocal
 
     public void deleteBySiteId(Long sId);
     
+    public java.util.List<java.lang.String> findGeoreferencedSitesByCoordinate(java.lang.String tableName, java.lang.String mainKey, java.util.List<org.inbio.ara.dto.gis.SiteCoordinateDTO> coordinates, java.lang.Long type);
+    
 }

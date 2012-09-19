@@ -178,6 +178,28 @@
                                                     style="left: 168px; top: 120px; position: absolute; width: 120px" width="192px"/>
                                             </webuijsf:panelLayout>
                                         </webuijsf:tab>
+                                        <webuijsf:tab id="tabGeoreferenceSites" text="#{resources.georeferencing}" actionExpression="#{gis$NewSite.onChangeTab_action}">
+                                            <webuijsf:panelLayout id="lpPGeoreferenceSites" style="height: 263px; position: relative; width: 100%; -rave-layout: grid">
+                                                <webuijsf:label id="label_GeoreferencedSites" requiredIndicator="true" style="left: 24px; top: 72px; position: absolute" text="#{resources.country}"/>
+                                                <h:dataTable binding="#{gis$NewSite.dataTableGeoreferencedSites}" cellspacing="0" columnClasses="list-columns"
+                                                    headerClass="list-header" id="dataTableGeoreferencedSites" rowClasses="list-row-even,list-row-odd"
+                                                    rows="10" style="border: 1px solid gray; left: 12px; top: 72px; position: absolute; width: 383px"
+                                                    value="#{gis$SiteSessionBean.georeferencedSites}" var="currentRow" width="600">
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputLabel styleClass="My_search_icon" value="#{resources.geographical_layer}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{currentRow.layerName}"/>
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputLabel styleClass="My_search_icon" value="#{resources.georeferenced_site}"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{currentRow.value}"/>
+                                                    </h:column>                                                            
+                                                </h:dataTable>
+                                            </webuijsf:panelLayout>
+                                        </webuijsf:tab> 
                                     </webuijsf:tabSet>
                                 </h:panelGrid>
                             </webuijsf:form>

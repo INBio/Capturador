@@ -24,10 +24,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
 import org.inbio.ara.AraSessionBean;
-import org.inbio.ara.dto.gis.GeographicLayerDTO;
-import org.inbio.ara.dto.gis.GeoreferencedSitePKDTO;
-import org.inbio.ara.dto.gis.SiteCoordinateDTO;
-import org.inbio.ara.dto.gis.SiteDTO;
+import org.inbio.ara.dto.gis.*;
 import org.inbio.ara.dto.inventory.GatheringObservationDTO;
 import org.inbio.ara.facade.gis.GisFacadeRemote;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
@@ -125,6 +122,8 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
     private boolean firstTime = true;
 
     private boolean wgs84Projection = true;
+    
+    private List<GeoreferencedDTO> georeferencedSites = new ArrayList<GeoreferencedDTO>();
 
     /**
      * <p>Construct a new session data bean instance.</p>
@@ -244,7 +243,7 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
      * Guardar el nuevo sitio, sus coordenadas y division politica
      */
     public void saveNewSite(){
-        System.out.println("User = "+this.getCurrentSiteDTO().getUserName());
+        
         this.getCurrentSiteDTO().setUserName(this.getAraSessionBean().getGlobalUserName());
         SiteDTO newDTO = this.getGisFacade().saveNewSite(this.getCurrentSiteDTO(),
                 this.getCoordinateDataProvider(),
@@ -711,9 +710,9 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
         }
         else
         {
-            System.out.println(reprojection);
+            
             reprojection = reprojection.substring(reprojection.indexOf("(")+1, reprojection.length()-1);
-            System.out.println(reprojection);
+            
             return reprojection.split(" ");
         }
     }
@@ -733,6 +732,24 @@ public class SiteSessionBean extends AbstractSessionBean implements PaginationCo
     }
     
     
-    
+    public void getGeoreferencedSitesByCoordinates()
+    {
+        
+        this.setGeoreferencedSites(this.gisFacade.getGeoreferencedSitesByCoordinates(this.getCoordinateDataProvider(), this.getSelectedType()));
+    }
+
+    /**
+     * @return the georeferencedSites
+     */
+    public List<GeoreferencedDTO> getGeoreferencedSites() {
+        return georeferencedSites;
+    }
+
+    /**
+     * @param georeferencedSites the georeferencedSites to set
+     */
+    public void setGeoreferencedSites(List<GeoreferencedDTO> georeferencedSites) {
+        this.georeferencedSites = georeferencedSites;
+    }
 
 }

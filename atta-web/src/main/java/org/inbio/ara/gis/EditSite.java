@@ -27,12 +27,7 @@ import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlDataTable;
 import org.inbio.ara.AraSessionBean;
-import org.inbio.ara.dto.gis.FeatureTypeDTO;
-import org.inbio.ara.dto.gis.GeographicLayerDTO;
-import org.inbio.ara.dto.gis.ProjectionDTO;
-import org.inbio.ara.dto.gis.ProvinceDTO;
-import org.inbio.ara.dto.gis.SiteCalculationMethodDTO;
-import org.inbio.ara.dto.gis.SiteCoordinateDTO;
+import org.inbio.ara.dto.gis.*;
 import org.inbio.ara.dto.taxonomy.CountryDTO;
 import org.inbio.ara.persistence.gis.FeatureTypeEnum;
 import org.inbio.ara.persistence.gis.ProjectionEntity;
@@ -79,7 +74,10 @@ public class EditSite extends AbstractPageBean {
 
     private TextField txLongitudeDegrees = new TextField();
     private TextField txLatitudeDegrees = new TextField();
+    
     private HtmlDataTable dataTableCoordinates = new HtmlDataTable();
+    private HtmlDataTable dataTableGeoreferencedSites = new HtmlDataTable();
+    
     private TextField txLongitudeMinutes = new TextField();
     private TextField txLongitudeSeconds = new TextField();
     private TextField txLatitudeMinutes = new TextField();
@@ -824,6 +822,25 @@ public class EditSite extends AbstractPageBean {
         return null;
     }
     
+     public String onChangeTab_action() {        
+
+        this.getSiteSessionBean().setSelectedType(this.getSiteSessionBean().getCurrentSiteDTO().getFeatureTypeId());
+        this.getSiteSessionBean().setGeoreferencedSites(new ArrayList<GeoreferencedDTO>());
+        if(!this.getSiteSessionBean().getCoordinateDataProvider().isEmpty() && validateCoordinates())
+        {
+            try
+            {
+                this.getSiteSessionBean().getGeoreferencedSitesByCoordinates();
+            }
+            catch(Exception e)
+            {
+                MessageBean.setErrorMessageFromBundle("error", this.getMyLocale());
+                return null;    
+            }
+        }       
+        
+        return null;
+    }
     
     
     /**
@@ -1398,6 +1415,20 @@ public class EditSite extends AbstractPageBean {
      */
     public void setTxVerbatimLatitude(TextField txVerbatimLatitude) {
         this.txVerbatimLatitude = txVerbatimLatitude;
+    }
+
+    /**
+     * @return the dataTableGeoreferencedSites
+     */
+    public HtmlDataTable getDataTableGeoreferencedSites() {
+        return dataTableGeoreferencedSites;
+    }
+
+    /**
+     * @param dataTableGeoreferencedSites the dataTableGeoreferencedSites to set
+     */
+    public void setDataTableGeoreferencedSites(HtmlDataTable dataTableGeoreferencedSites) {
+        this.dataTableGeoreferencedSites = dataTableGeoreferencedSites;
     }
     
 }

@@ -644,4 +644,29 @@ public class GisFacadeImpl implements GisFacadeRemote {
     {
         return projectionEAOImpl.reprojection(valueX, valueY, projectionSRID, reprojectioSRID);
     }
+    
+    public List<GeoreferencedDTO> getGeoreferencedSitesByCoordinates(List<SiteCoordinateDTO> coordinates, Long type)
+    {
+        List<GeoreferencedDTO> result = new ArrayList<GeoreferencedDTO>();
+        List<GeographicLayer> layers = geographicLayerEAOImpl.findAllAndOrderBy(GeographicLayer.class, null);
+        List<String> sitesName;
+        for(GeographicLayer layer: layers)
+        {
+            //manda al EAO
+            sitesName = georeferencedSiteEAOImpl.findGeoreferencedSitesByCoordinate(layer.getTableName(), layer.getMainValueField(), coordinates, type);   
+            if(!sitesName.isEmpty())
+            {
+                for(String siteName:sitesName)
+                {
+                    GeoreferencedDTO georeferenced = new GeoreferencedDTO();
+                    georeferenced.setLayerName(layer.getName());
+                    georeferenced.setValue(siteName);
+                    result.add(georeferenced);
+                }
+            }
+        }
+        
+        
+        return result;
+    }
 }

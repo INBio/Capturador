@@ -20,13 +20,17 @@
 
 package org.inbio.ara.eao.gis.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ara.eao.gis.GeoreferencedSiteEAOLocal;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import org.inbio.ara.dto.gis.SiteCoordinateDTO;
 import org.inbio.ara.eao.BaseEAOImpl;
+import org.inbio.ara.persistence.gis.FeatureTypeEnum;
 import org.inbio.ara.persistence.gis.GeoreferencedSite;
 import org.inbio.ara.persistence.gis.GeoreferencedSitePK;
+import org.inbio.ara.persistence.gis.SiteCoordinate;
 
 /**
  *
@@ -72,4 +76,64 @@ public class GeoreferencedSiteEAOImpl
         em.flush();
     }
  
+    
+    public List<String> findGeoreferencedSitesByCoordinate(String tableName, String mainKey,List<SiteCoordinateDTO> coordinates, Long type)
+    {
+                
+        List<String> result = new ArrayList<String>();
+        
+        String georeferencedString = "";
+        String coordinatesString ="";
+        
+        //String georeferencedPoint ="select "+mainKey+" from "+tableName+"  where ST_Intersects(the_geom, ST_GEOMFROMEWKT('SRID=4326;POINT("+coordinatesString+")'));";
+        //String georeferencedLine ="select "+mainKey+" from "+tableName+"  where ST_Intersects(gadm.the_geom, ST_GEOMFROMEWKT('SRID=4326;LINESTRING("+coordinatesString+")'));";
+        //String georeferencedPolygon ="select "+mainKey+" from "+tableName+"  where ST_Intersects(the_geom, ST_GEOMFROMEWKT('SRID=4326;POLYGON(("+coordinatesString+"))'));";
+        //Connection connPostgis;
+        
+        if(type.equals(FeatureTypeEnum.POINT.getId()))
+        {
+            
+            coordinatesString = coordinates.get(0).getLongitude()+" "+coordinates.get(0).getLatitude();
+            
+            georeferencedString = "select distinct("+mainKey+") from "+tableName+"  where ST_Intersects(the_geom, ST_GEOMFROMEWKT('SRID=4326;POINT("+coordinatesString+")'));";;
+        }
+        
+        if(type.equals(FeatureTypeEnum.LINE.getId()))
+        {
+            for(SiteCoordinateDTO siteCoordinate: coordinates)
+            {
+                coordinatesString += siteCoordinate.getLongitude()+" "+siteCoordinate.getLatitude()+",";
+                
+            }
+            coordinatesString = coordinatesString.substring(0, coordinatesString.length()-1);
+            georeferencedString = "select distinct("+mainKey+") from "+tableName+"  where ST_Intersects(the_geom, ST_GEOMFROMEWKT('SRID=4326;LINESTRING("+coordinatesString+")'));";
+        }
+        
+        if(type.equals(FeatureTypeEnum.POLYGON.getId()))
+        {
+            for(SiteCoordinateDTO siteCoordinate: coordinates)
+            {
+                coordinatesString += siteCoordinate.getLongitude()+" "+siteCoordinate.getLatitude()+",";
+                
+            }
+            coordinatesString += coordinates.get(0).getLongitude()+" "+coordinates.get(0).getLatitude();
+            georeferencedString = "select distinct("+mainKey+") from "+tableName+"  where ST_Intersects(the_geom, ST_GEOMFROMEWKT('SRID=4326;POLYGON(("+coordinatesString+"))'));";
+        }
+        
+        try
+        { 
+            Query reprojectionQuery = em.createNativeQuery(georeferencedString);
+            
+            result = reprojectionQuery.getResultList();            
+            
+        }
+        catch(Exception e)
+        {
+            System.out.println(georeferencedString);
+            System.out.println("Error al realizar la consulta;");
+            e.printStackTrace();            
+        }
+        return result;
+    }
+    
 }
