@@ -20,5 +20,7 @@ public interface CollectorObserverEAOLocal extends BaseLocalEAO<CollectorObserve
 
     public void deleteByGathering(java.lang.Long gId);
 
+    public java.util.List<java.lang.Long> getGatheringByCollector(java.lang.Long collectorId);
+
 
 }

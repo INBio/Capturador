@@ -31,17 +31,12 @@ import org.inbio.ara.facade.search.*;
 import javax.ejb.Stateless;
 import org.inbio.ara.dto.gis.SiteDTO;
 import org.inbio.ara.dto.gis.SiteDTOFactory;
-import org.inbio.ara.dto.inventory.GatheringObservationDTO;
-import org.inbio.ara.dto.inventory.GatheringObservationDTOFactory;
-import org.inbio.ara.dto.inventory.IdentificationDTO;
-import org.inbio.ara.dto.inventory.IdentificationDTOFactory;
-import org.inbio.ara.dto.inventory.IdentifierDTO;
-import org.inbio.ara.dto.inventory.SpecimenDTO;
-import org.inbio.ara.dto.inventory.SpecimenDTOFactory;
+import org.inbio.ara.dto.inventory.*;
 import org.inbio.ara.dto.transaction.TransactedSpecimenDTO;
 import org.inbio.ara.dto.transaction.TransactionDTO;
 import org.inbio.ara.dto.transaction.TransactionDTOFactory;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
+import org.inbio.ara.eao.gathering.CollectorObserverEAOLocal;
 import org.inbio.ara.eao.gathering.GatheringObservationDetailEAOLocal;
 import org.inbio.ara.eao.gathering.GatheringObservationEAOLocal;
 import org.inbio.ara.eao.gis.GeoreferencedSiteEAOLocal;
@@ -61,6 +56,7 @@ import org.inbio.ara.persistence.gis.Site;
 import org.inbio.ara.persistence.person.Person;
 import org.inbio.ara.persistence.specimen.Specimen;
 import org.inbio.ara.persistence.identification.Identification;
+import org.inbio.ara.persistence.person.ProfileEntity;
 import org.inbio.ara.persistence.transaction.Transaction;
 import org.inbio.ara.util.QueryNode;
 
@@ -100,6 +96,9 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
 
     @EJB
     private TransactionEAOLocal transactionEAOImpl;
+    
+    @EJB
+    private CollectorObserverEAOLocal collectorObserverEAOImpl;
 
     //DTO factories
     private SiteDTOFactory siteDTOFactory =
@@ -607,6 +606,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         Calendar initialDate   = inputDTO.getInitialDateTime();
         Calendar finalDate     = inputDTO.getFinalDateTime();
         Long collectionId      = inputDTO.getCollectionId();
+        List<PersonDTO> collectors = inputDTO.getColectorsList();
 
         if(gathObsId != null) {
             gathObsIds.add(gathObsId);
@@ -619,7 +619,17 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                 gathObsIds.addAll(newGathObsIds);
                 firstFilter = false;
             } else {
-                gathObsIds.retainAll(newGathObsIds);
+                gathObsIds.retainAll(newGathObsIds);//realiza una intersección
+            }
+        }
+        if(collectors != null && !collectors.isEmpty()) {
+            List<Long> newGathObsIds =
+                    findGathObsByCollectors(collectors);
+            if(firstFilter) {
+                gathObsIds.addAll(newGathObsIds);
+                firstFilter = false;
+            } else {
+                gathObsIds.retainAll(newGathObsIds);//realiza una intersección
             }
         }
         if(collectionId != null) {
@@ -797,6 +807,13 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             List<Long> listByResponsibleName =
                     findGathObsByResponsibleName(inputString);
             finalGathObsIds.addAll(listByResponsibleName);
+            /*************** BUSQUEDA POR COLLECTOR NAME ********************/
+            List<PersonDTO> collectorsDTO = 
+                inventoryFacadeImpl.getPersonByFilterProfile
+                ( ProfileEntity.RECOLECTOR.getId(),
+                inputString);
+            List<Long> listByCollectorName = findGathObsByCollectors(collectorsDTO);
+            finalGathObsIds.addAll(listByCollectorName);
         }
         for (Long inputLong : numbers) {
             /******************** BUSQUEDA POR GATH/OBS ID ********************/
@@ -827,6 +844,18 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                     findByResponsibleId(person.getPersonId());
             finalGathObsIds.addAll(gathObsByResponsible);
         }
+        return finalGathObsIds;
+    }
+    
+    
+     private List<Long> findGathObsByCollectors(List<PersonDTO> collectors) {
+        List<Long> finalGathObsIds = new ArrayList();
+        for (PersonDTO person : collectors) {
+            List<Long> gathObsByCollector = collectorObserverEAOImpl.getGatheringByCollector(person.getPersonKey());
+                    
+            finalGathObsIds.addAll(gathObsByCollector);
+        }
+        
         return finalGathObsIds;
     }
 
@@ -2116,4 +2145,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     }
 
     // </editor-fold>
+
+   
 }

@@ -28,6 +28,15 @@ public class CollectorObserverEAOImpl extends BaseEAOImpl<CollectorObserver,Long
 		q.setParameter("GathId", GathId );
         return q.getResultList();
     }
+    
+     /**
+     * Obtener un listado observaciones por colector
+     */
+    public List<Long> getGatheringByCollector(Long collectorId){
+        Query q = em.createQuery("Select co.collectorObserverPK.gatheringObservationId from CollectorObserver co where co.collectorObserverPK.collectorPersonId = :collectorId");
+		q.setParameter("collectorId", collectorId );
+        return q.getResultList();
+    }
 
     //Delete Collectors by GatheringID
     public void deleteByGathering(Long gId) {

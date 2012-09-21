@@ -74,7 +74,7 @@ public class GatheringObservationDTOFactory extends BaseEntityOrDTOFactory<Gathe
 
          /* Lista de colectores */
          List<PersonDTO> colectorDTOList = gDTO.getColectorsList();
-         List<CollectorObserver> newList = new ArrayList();
+         List<CollectorObserver> newList = new ArrayList();         
          Long secuence = new Long(1);
          for(PersonDTO pDTO : colectorDTOList){
              CollectorObserverPK pk = new CollectorObserverPK(gDTO.getGatheringObservationId(), pDTO.getPersonKey());
@@ -190,13 +190,18 @@ public class GatheringObservationDTOFactory extends BaseEntityOrDTOFactory<Gathe
          /* Lista de colectores */
          List<CollectorObserver> colectores = g.getCollectorObserverList();
          List<PersonDTO> newColectores = new ArrayList();
+         String collectorsString = "";
          for(CollectorObserver aux : colectores){
              Person persona = aux.getPerson();
              PersonDTO newPersona = new PersonDTO();
              newPersona.setPersonKey(persona.getPersonId());
              newPersona.setNaturalLongName(persona.getNaturalLongName());
              newColectores.add(newPersona);
+             collectorsString += newPersona.getNaturalLongName()+"; ";
          }
+         if(collectorsString.length()>1)
+             collectorsString = collectorsString.substring(0,collectorsString.length()-2);
+         gDTO.setCollectorsString(collectorsString);
          gDTO.setColectorsList(newColectores);
 
          /* Lista de proyectos */
@@ -252,7 +257,7 @@ public class GatheringObservationDTOFactory extends BaseEntityOrDTOFactory<Gathe
          gEntity.setSiteDescription(gDTO.getSiteDescription());
          gEntity.setCollectionId(gDTO.getCollectionId());
 
-         System.out.println("desde dtoFactory "+gDTO.getUserName());
+         //System.out.println("desde dtoFactory "+gDTO.getUserName());
          
          return gEntity;
     }

@@ -59,10 +59,12 @@ public class GatheringObservationDTO extends GenericDTO implements Serializable 
     private Double minimumDepth;
     private String surroundingDescription;
     private String siteDescription; //Description from the gathering table
+    private String collectorsString;
     private Long collectionId;
     private List<PersonDTO> colectorsList; /* Colectors list */
     private List<ProjectDTO> projectsList; /* Projects list */
     private List<CollectionDTO> collectionsList; /* Collection list */
+    
 
     /* For Graphical Inteface purposes */
     private boolean selected;
@@ -487,5 +489,19 @@ public class GatheringObservationDTO extends GenericDTO implements Serializable 
      */
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    /**
+     * @return the collectorsString
+     */
+    public String getCollectorsString() {
+        return collectorsString;
+    }
+
+    /**
+     * @param collectorsString the collectorsString to set
+     */
+    public void setCollectorsString(String collectorsString) {
+        this.collectorsString = collectorsString;
     }
 }

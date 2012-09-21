@@ -833,6 +833,10 @@ public class GatheringSessionBean extends AbstractSessionBean implements Seriali
     }
 
 
+    public List<PersonDTO> getPersonByFilterProfile(Long profileId, String filter)
+    {
+        return this.getInventoryFacade().getPersonByFilterProfile(profileId, filter);
+    }
 
     public String getSiteDescriptionById(Long siteId)
     {

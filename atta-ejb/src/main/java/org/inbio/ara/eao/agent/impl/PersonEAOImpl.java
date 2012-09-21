@@ -38,10 +38,15 @@ public class PersonEAOImpl extends BaseEAOImpl<Person,Long> implements PersonEAO
      */
     public List<Person> findByName(String name) {
         String lowerName = name.toLowerCase();
+        /*
         Query q = em.createQuery("from Person as p where lower(p.firstName) " +
                 "like '%" + lowerName +"%' " +
                 "or lower(p.lastName) like '%" + lowerName + "%'" +
-                "or lower(p.secondLastName) like '%" + lowerName + "%'");
+                "or lower(p.secondLastName) like '%" + lowerName + "%'");                
+                */
+          Query q = em.createQuery("from Person as p where ((case when p.firstName is null then '' else LOWER(p.firstName) end) "+
+            " ||' '|| (case when p.lastName is null then '' else LOWER(p.lastName) end) "+
+            " ||' '|| (case when p.secondLastName is null then '' else LOWER(p.secondLastName) end)) like '%" + lowerName + "%'");
         return q.getResultList();
     }
 
@@ -56,15 +61,26 @@ public class PersonEAOImpl extends BaseEAOImpl<Person,Long> implements PersonEAO
 
     public List<Person> findPersonByProfile(Long profileId, String personFilter) {
 
-        System.out.println("profileId = "+profileId+" , personFilter = "+personFilter);
+        
+        /*
         Query q = em.createQuery("Select p from Person as p, IN(p.profiles) prof " +
             " where prof.profileId = :profileId " +
             " AND (LOWER(p.firstName) LIKE :personFilter "+
             " OR LOWER(p.lastName) LIKE :personFilter "+
             " OR LOWER(p.secondLastName) LIKE :personFilter) "+
             " order by p.firstName, p.lastName, p.secondLastName");
+            
+            */
+        Query q = em.createQuery("Select p from Person as p, IN(p.profiles) prof " +
+            " where prof.profileId = :profileId " +
+            " AND ((case when p.firstName is null then '' else LOWER(p.firstName) end) "+
+            " ||' '|| (case when p.lastName is null then '' else LOWER(p.lastName) end) "+
+            " ||' '|| (case when p.secondLastName is null then '' else LOWER(p.secondLastName) end)) LIKE :personFilter) "+
+            " order by p.firstName, p.lastName, p.secondLastName");
+            
             q.setParameter("personFilter", "%"+personFilter.toLowerCase()+"%");
             q.setParameter("profileId", profileId );
+            
         return q.getResultList();
     }
 

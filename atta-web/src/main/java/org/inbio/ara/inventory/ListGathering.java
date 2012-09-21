@@ -40,6 +40,7 @@ import javax.faces.context.FacesContext;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.gis.GeographicLayerDTO;
 import org.inbio.ara.dto.inventory.GatheringObservationDTO;
+import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.persistence.gathering.CollectionProtocolValuesEntity;
 import org.inbio.ara.persistence.gathering.ProtocolAtributeEntity;
 import org.inbio.ara.persistence.person.ProfileEntity;
@@ -79,6 +80,7 @@ public class ListGathering extends AbstractPageBean {
     private HtmlPanelGrid gridpAdvancedSearch = new HtmlPanelGrid();
     private TextField txGatheringId = new TextField();
     private TextField txResponsible = new TextField();
+    private TextField txCollector = new TextField();
     private TextField txLocality = new TextField();
     private TextField txLatitudeShort = new TextField();
     private TextField txLongitudeShort = new TextField();
@@ -280,6 +282,13 @@ public class ListGathering extends AbstractPageBean {
         //Crear el DTO para la consulta
         GatheringObservationDTO consulta = new GatheringObservationDTO();
         consulta.setResponsibleName((String)this.getTxResponsible().getText());
+        
+        List<PersonDTO> collectorsDTO = 
+                this.getinventory$GatheringSessionBean().getPersonByFilterProfile
+                ( ProfileEntity.RECOLECTOR.getId(),
+                (String)this.getTxCollector().getText());
+        consulta.setColectorsList(collectorsDTO);
+        
         consulta.setLocalityDescription((String)this.getTxLocality().getText());
         consulta.setGatheringObservationId(gatheringId);
         //----------------------------------------------------------------------
@@ -859,6 +868,20 @@ public class ListGathering extends AbstractPageBean {
      */
     public void setDataTableGathering(HtmlDataTable dataTableGathering) {
         this.dataTableGathering = dataTableGathering;
+    }
+
+    /**
+     * @return the txCollector
+     */
+    public TextField getTxCollector() {
+        return txCollector;
+    }
+
+    /**
+     * @param txCollector the txCollector to set
+     */
+    public void setTxCollector(TextField txCollector) {
+        this.txCollector = txCollector;
     }
 }
 

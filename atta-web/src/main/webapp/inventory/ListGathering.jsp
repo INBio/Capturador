@@ -36,25 +36,37 @@
                                 <h:panelGrid binding="#{inventory$ListGathering.gridpAdvancedSearch}" columns="1" id="gridpAdvancedSearch" rendered="false"
                                     style="height: 5px" styleClass="My_panel_blue" width="680">
                                     <h:panelGrid columns="4" id="gridpAdvancedSearch1" width="670">
+                                        <!-- Initial Date -->
                                         <webuijsf:label for="initialDateCalendar" text="#{resources.initial_date}"/>
                                         <webuijsf:calendar binding="#{inventory$ListGathering.initial_date}" columns="15" dateFormatPattern="yyyy-MM-dd" id="initialDateCalendar"/>
+                                        <!-- Final Date -->
                                         <webuijsf:label for="finalDateCalendar" text="#{resources.final_date}"/>
                                         <webuijsf:calendar binding="#{inventory$ListGathering.final_date}" columns="15" dateFormatPattern="yyyy-MM-dd" id="finalDateCalendar"/>
+                                        <!-- Gathering -->
                                         <webuijsf:label for="txGatheringId" id="lbGatheringId" text="#{resources.gathering_observation_id}"/>
                                         <webuijsf:textField binding="#{inventory$ListGathering.txGatheringId}" id="txGatheringId" validatorExpression="#{util$ValidatorBean.longNumberFormatValidator}"/>
+                                        <!-- Responsible -->
                                         <webuijsf:label for="txResponsible" id="lbResponsible" text="#{resources.person_in_charge}"/>
                                         <webuijsf:textField binding="#{inventory$ListGathering.txResponsible}" id="txResponsible" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"/>
+                                        <!-- Country -->
                                         <webuijsf:label for="ddCountry" id="lbCountry" text="#{resources.country}"/>
                                         <webuijsf:dropDown actionExpression="#{inventory$ListGathering.setProvinces}"
                                             binding="#{inventory$ListGathering.ddCountry}" id="ddCountry" items="#{inventory$ListGathering.countryData.options}"
                                             selected="#{inventory$GatheringSessionBean.selectedCountry}" submitForm="true" width="154px"/>
+                                        <!-- Collector -->
+                                        <webuijsf:label for="txCollector" id="lbCollector" text="#{resources.collector}"/>
+                                        <webuijsf:textField binding="#{inventory$ListGathering.txCollector}" id="txCollector" 
+                                                            validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"/>
+                                        <!-- Province/State -->
                                         <webuijsf:label for="ddProvince" id="lbProvince" text="#{resources.state}"/>
                                         <webuijsf:dropDown binding="#{inventory$ListGathering.ddProvince}" id="ddProvince"
                                             items="#{inventory$ListGathering.provincesData.options}"
                                             selected="#{inventory$GatheringSessionBean.selectedProvince}" width="154px"/>
+                                        <!-- Locality -->
                                         <webuijsf:label for="txLocality" id="lblocality" text="#{resources.locality}"/>
                                         <webuijsf:textField binding="#{inventory$ListGathering.txLocality}" id="txLocality" validatorExpression="#{util$ValidatorBean.validateInputStringGeneric}"/>
                                     </h:panelGrid>
+                                        <!-- Coordinates -->
                                     <h:panelGrid cellspacing="1" columns="2" id="panelpCoordinates" width="670">
                                         <h:panelGrid columns="7" id="gridpanelCoor" styleClass="My_subpanel_blue" width="500">
                                             <webuijsf:label for="txLatitudeShort" id="lbLatitudeShort" text="#{resources.latitude}"/>
@@ -144,6 +156,12 @@
                                                 <h:outputText value="#{resources.person_in_charge}"/>
                                             </f:facet>
                                             <h:outputText value="#{currentRow['responsibleName']}"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{resources.collectors}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{currentRow['collectorsString']}"/>
                                         </h:column>
                                         <h:column>
                                             <f:facet name="header">

@@ -1405,7 +1405,9 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
 
     public List<PersonDTO> getPersonByFilterProfile(Long profileId, String filter)
     {
-        List<PersonDTO> personDTOs = personDTOFactory.createDTOList(personEAOImpl.findPersonByProfile(profileId, filter));
+        List<PersonDTO> personDTOs = new ArrayList<PersonDTO>();
+        if(filter != null && !(filter.trim().equals("")))
+            personDTOs = personDTOFactory.createDTOList(personEAOImpl.findPersonByProfile(profileId, filter));
         return personDTOs;
     }
 
