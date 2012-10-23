@@ -253,7 +253,7 @@ public class NewPerson extends AbstractPageBean {
         this.getTxaAddress().setText(null);
 
         //Notificar al usuario
-        MessageBean.setSuccessMessageFromBundle("create_person_succces", this.getMyLocale());
+        MessageBean.setSuccessMessageFromBundle("create_project_success", this.getMyLocale());
 
         return null;
     }

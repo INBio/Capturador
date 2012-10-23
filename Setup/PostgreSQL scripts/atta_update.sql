@@ -1053,3 +1053,18 @@ INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, key_fi
 
 INSERT INTO atta.geographic_layer (geographic_layer_id, name,description, key_field, main_value_field, table_name, created_by, creation_date, last_modification_by, last_modification_date)
     values(4,'Áreas Protegidas','Áreas Protegidas', 'gid','name','protected_planet','admin','2012-08-29','admin','2012-08-29');
+
+---- 2012-10-22
+-- gsulca
+
+-- Inicia en 3 porque se tienen valores por la migración
+  CREATE SEQUENCE atta.project_seq
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 3
+  CACHE 1;
+ALTER TABLE atta.project_seq OWNER TO atta;
+
+ALTER TABLE atta.project ALTER COLUMN project_id
+SET DEFAULT nextval('atta.project_seq'::regclass);

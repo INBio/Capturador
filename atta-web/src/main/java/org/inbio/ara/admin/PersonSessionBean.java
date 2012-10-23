@@ -293,8 +293,10 @@ public class PersonSessionBean extends AbstractSessionBean implements Pagination
      * Inicializar el data provider
      */
     public void initDataProvider() {
+        
         this.setPagination(new PaginationControllerRemix(this.getAdminFacade().countPerson().intValue(), getQuantity(), this));
         this.getPagination().firstResults();
+        
     }
 
     /**

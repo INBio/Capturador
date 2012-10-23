@@ -22,6 +22,21 @@
 
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS QUE RESUELVEN LAS LLAMADAS A LOS BEANS DE SESIÓN, APLICACIÓN O SOLICITUD -->
     <managed-bean>
+        <managed-bean-name>admin$ListProject</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.admin.ListProject</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>admin$NewProject</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.admin.NewProject</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>admin$EditProject</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.admin.EditProject</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
         <managed-bean-name>admin$ListCollection</managed-bean-name>
         <managed-bean-class>org.inbio.ara.admin.ListCollection</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
@@ -742,6 +757,13 @@
         <managed-bean-class>org.inbio.ara.gis.SiteAutoCompleteSessionBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    
+    
+    <managed-bean>
+        <managed-bean-name>admin$ProjectSessionBean</managed-bean-name>
+        <managed-bean-class>org.inbio.ara.admin.ProjectSessionBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 
 <!-- FIN MODULO DE MANEJO DE MUESTRAS-->
 <!-- DE AQUÍ EN ADELANTE ESTÁN LAS REGLAS DE NAVEGACION ENTRE LOS DIFERENTES JSP'S -->
@@ -853,6 +875,22 @@
         <navigation-case>
             <from-outcome>adminGeographicalLayers</from-outcome>
             <to-view-id>/admin/AdminGeographicalLayers.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <!-- Admin Project -->
+        <navigation-case>
+            <from-outcome>listProject</from-outcome>
+            <to-view-id>/admin/ListProject.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+         <navigation-case>
+            <from-outcome>newProject</from-outcome>
+            <to-view-id>/admin/NewProject.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+         <navigation-case>
+            <from-outcome>editProject</from-outcome>
+            <to-view-id>/admin/EditProject.jsp</to-view-id>
             <redirect/>
         </navigation-case>
         <!-- Reportes Snapshots -->
@@ -1235,6 +1273,39 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+
+<navigation-rule>
+        <from-view-id>/admin/ListProject.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>new</from-outcome>
+            <to-view-id>/admin/NewProject.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>edit</from-outcome>
+            <to-view-id>/admin/EditProject.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/admin/NewProject.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/admin/ListProject.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/admin/EditProject.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>back</from-outcome>
+            <to-view-id>/admin/ListProject.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
 
 		<!-- Taxonomy navigation rules -->
     <navigation-rule>

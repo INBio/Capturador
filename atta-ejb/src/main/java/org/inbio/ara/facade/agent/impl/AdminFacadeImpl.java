@@ -35,12 +35,7 @@ import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.dto.agent.InstitutionDTOFactory;
 import org.inbio.ara.dto.agent.ProfileDTO;
 import org.inbio.ara.dto.agent.ProfileDTOFactory;
-import org.inbio.ara.dto.inventory.PersonDTO;
-import org.inbio.ara.dto.inventory.PersonDTOFactory;
-import org.inbio.ara.dto.inventory.SelectionListDTOFactory;
-import org.inbio.ara.dto.inventory.SelectionListEntity;
-import org.inbio.ara.dto.inventory.TaxonDTO;
-import org.inbio.ara.dto.inventory.TaxonDTOFactory;
+import org.inbio.ara.dto.inventory.*;
 import org.inbio.ara.eao.agent.AudienceEAOLocal;
 import org.inbio.ara.eao.agent.InstitutionEAOLocal;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
@@ -48,6 +43,7 @@ import org.inbio.ara.eao.agent.PersonInstitutionEAOLocal;
 import org.inbio.ara.eao.agent.PersonProfileEAOLocal;
 import org.inbio.ara.eao.agent.ProfileEAOLocal;
 import org.inbio.ara.eao.collection.CollectionEAOLocal;
+import org.inbio.ara.eao.gathering.ProjectEAOLocal;
 import org.inbio.ara.eao.selectionlist.SelectionListValueCollectionEAOLocal;
 import org.inbio.ara.eao.selectionlist.SelectionListValueLocalEAO;
 import org.inbio.ara.eao.specimen.SpecimenEAOLocal;
@@ -55,6 +51,7 @@ import org.inbio.ara.eao.taxonomy.TaxonEAOLocal;
 import org.inbio.ara.persistence.SelectionListGenericEntity;
 import org.inbio.ara.persistence.audiences.Audience;
 import org.inbio.ara.persistence.collection.Collection;
+import org.inbio.ara.persistence.gathering.Project;
 import org.inbio.ara.persistence.institution.Institution;
 import org.inbio.ara.persistence.person.Person;
 import org.inbio.ara.persistence.person.PersonInstitution;
@@ -94,6 +91,8 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
     private PersonInstitutionEAOLocal personInstitutionEAOImpl;
     @EJB
     private PersonProfileEAOLocal personProfileEAOImpl;
+    @EJB
+    private ProjectEAOLocal projectEAOImpl;
     
     CollectionDTOFactory collectionDTOFactory = new CollectionDTOFactory();
     TaxonDTOFactory taxonDTPFactory = new TaxonDTOFactory();
@@ -104,6 +103,7 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
     
     private ProfileDTOFactory profileDTOFactoty = new ProfileDTOFactory();
     private PersonDTOFactory personDTOFactory = new PersonDTOFactory();
+    private ProjectDTOFactory projectDTOFactory = new ProjectDTOFactory();
     /**
      * Metodo para obtener la lista de taxones con la que puede trabajar un
      * determinado usuario
@@ -603,7 +603,110 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
         return list;
     }
 
+     /**
+     * Retrive all project paginated
+     * @return
+     */
+    public List<ProjectDTO> getAllProjectPaginated(int firstResult, int maxResults) {
+        String[] orderByFields = {"description"};
+        return projectDTOFactory.createDTOList(
+                projectEAOImpl.
+                findAllPaginatedFilterAndOrderBy(
+                Project.class, firstResult, maxResults, orderByFields,null));
+    }
+    
+    public Long countProject() {
+        return this.projectEAOImpl.count(Project.class);
+    }
+    
+    
+    /**
+     * Quantity of projects by 
+     * @param query
+     * @return
+     */
+    public Long countProjectSimpleSearch(String query) {
+        Integer quantity = new Integer(unstructeredProjectQuery(splitQuery(query)).size());
+        return quantity.longValue();
+    }
+    
+    private Set<Long> unstructeredProjectQuery(String[] parts)
+    {
+        Set<Long> list = new HashSet();
+        List<Long> ids = null;
 
+
+
+        for (int i = 0; i < parts.length; i++)
+        {
+            //try to cast it
+            try
+            {
+                //find by first name
+                ids = projectEAOImpl.findByDescription(parts[i]);                
+                if(ids != null && !ids.isEmpty())
+                {
+                    
+                    list.addAll(ids);
+                    
+                }
+                //find by last name
+                ids = projectEAOImpl.findByProjectManager(parts[i]);                
+                if(ids != null && !ids.isEmpty())
+                {
+                    
+                    list.addAll(ids);
+                }
+                //find by country
+                ids = projectEAOImpl.findByInitialDate(parts[i]);                
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+                //find by email
+                ids = projectEAOImpl.findByFinalDate(parts[i]);                
+                if(ids != null && !ids.isEmpty())
+                    list.addAll(ids);
+
+            }
+            catch(Exception e){}
+        }
+        return list;
+    }
+
+ /**
+     * Search persons by first and last name, country and email
+     * @param query
+     * @param firstResult
+     * @param maxResult
+     * @return
+     */
+    public List<ProjectDTO> getProjectSimpleSearch(String query, int firstResult, int maxResult) {
+        Set<Long> projectIds = unstructeredProjectQuery(splitQuery(query));        
+        List<Project> projectList = getEntities(projectIds, Project.class, firstResult, maxResult);        
+        return projectDTOFactory.createDTOList(projectList);
+    }
+
+    
+        /**
+     * Metodo para persistir una nueva persona a partir de un personDTO
+     * @param pDTO
+     * @return
+     */
+    public ProjectDTO saveProject(ProjectDTO pDTO) {
+        Project entity = this.projectDTOFactory.createPlainEntity(pDTO);
+        this.projectEAOImpl.create(entity);
+        //Lo un DTO ahora con el Id asignado por la BD
+        return this.projectDTOFactory.createDTO(entity);
+    }
+    
+    
+    public void updateProject(ProjectDTO pDTO) {
+        Project entity = this.projectEAOImpl.findById(Project.class, pDTO.
+                getProjectId());
+        entity = this.projectDTOFactory.updatePlainEntity(pDTO, entity);
+        this.projectEAOImpl.update(entity);
+    }
+    
     /**
      * Get the entities for a list of Longs
      * @param ids
@@ -627,12 +730,18 @@ public class AdminFacadeImpl implements AdminFacadeRemote {
                 {
                     baseCounter++;
                 }
+                //AGREGAR PARA CADA CLASE DE ACUERDO A LAS BUSQUEDAS
                 else if(entitiesCounter < offset)
                 {
                     if(t == Person.class)
                     {
                         entitiesList.add(personEAOImpl.
                             findById(Person.class, (Long)id));
+                    }
+                    if(t == Project.class)
+                    {                        
+                        entitiesList.add(projectEAOImpl.
+                            findById(Project.class, new Long(id.toString())));
                     }
                     entitiesCounter++;
                 }

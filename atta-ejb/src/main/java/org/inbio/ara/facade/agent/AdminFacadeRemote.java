@@ -110,4 +110,17 @@ public interface AdminFacadeRemote {
     public List<PersonDTO> getPersonSimpleSearch(String query, int firstResult, int maxResult);
             
     public Long countPersonSimpleSearch(String query);
+
+    public java.lang.Long countProject();
+
+    public java.util.List<org.inbio.ara.dto.inventory.ProjectDTO> getAllProjectPaginated(int firstResult, int maxResults);
+
+    public java.lang.Long countProjectSimpleSearch(java.lang.String query);
+
+    public java.util.List<org.inbio.ara.dto.inventory.ProjectDTO> getProjectSimpleSearch(java.lang.String query, int firstResult, int maxResult);
+
+    public org.inbio.ara.dto.inventory.ProjectDTO saveProject(org.inbio.ara.dto.inventory.ProjectDTO pDTO);
+
+    public void updateProject(org.inbio.ara.dto.inventory.ProjectDTO pDTO);
+    
 }

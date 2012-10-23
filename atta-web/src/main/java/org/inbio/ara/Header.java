@@ -324,4 +324,9 @@ public class Header extends AbstractFragmentBean {
         this.getSessionManager().setCurrentModuleId(new Long(30));
         return "labels";
     }
+    
+    public String menuModuleProjects_action() {
+        this.getSessionManager().setCurrentModuleId(new Long(32));
+        return "listProject";
+    }
 }

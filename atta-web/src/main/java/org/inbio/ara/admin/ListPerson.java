@@ -140,14 +140,18 @@ public class ListPerson extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+        
         PersonSessionBean psb = this.getPersonSessionBean();
+        
         //Inicializar el dataprovider la primera vez (si la paginación es nula)
         if (psb.getPagination()==null) {
             psb.initDataProvider();
+        
         }
         //Actualizar los datos del paginador
         else
             psb.getPagination().refreshList();
+        
     }
 
     /**
@@ -260,6 +264,7 @@ public class ListPerson extends AbstractPageBean {
     public String btnSimpleSearch_action()
     {
         String userInput = "";
+        System.out.println(" Paginacion al inicio "+this.getPersonSessionBean().getPagination());
         if(this.getTxSimpleSearch().getValue()!= null)
             userInput = this.getTxSimpleSearch().getValue().toString();
         userInput = userInput.trim();
@@ -274,6 +279,7 @@ public class ListPerson extends AbstractPageBean {
             this.getPersonSessionBean().setQueryModeSimple(true);
         }
         //Set the first result of the query
+        System.out.println(" Paginacion al final "+this.getPersonSessionBean().getPagination());
         this.getPersonSessionBean().getPagination().firstResults();
         return null;
     }

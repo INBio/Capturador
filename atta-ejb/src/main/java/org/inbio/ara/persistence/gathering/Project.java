@@ -21,16 +21,12 @@
 package org.inbio.ara.persistence.gathering;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import org.inbio.ara.persistence.GenericEntity;
+import org.inbio.ara.persistence.LogGenericEntity;
 
 /**
  *
@@ -39,9 +35,11 @@ import org.inbio.ara.persistence.GenericEntity;
 @Entity
 @Table(name = "project")
 
-public class Project extends GenericEntity implements Serializable {
+public class Project extends LogGenericEntity {
     private static final long serialVersionUID = 1L;
     @Id
+        @GeneratedValue(strategy=GenerationType.AUTO, generator="Project")
+	@SequenceGenerator(name="Project", sequenceName="project_seq")
     @Basic(optional = false)
     @Column(name = "project_id")
     private Long projectId;
@@ -56,12 +54,14 @@ public class Project extends GenericEntity implements Serializable {
 
     @Column(name = "initial_date")
     @Temporal(TemporalType.DATE)
-    private Date initialDate;
+    private Calendar initialDate;
 
     @Column(name = "final_date")
     @Temporal(TemporalType.DATE)
-    private Date finalDate;
+    private Calendar finalDate;
 
+    
+    
     public Project() {
     }
 
@@ -77,6 +77,8 @@ public class Project extends GenericEntity implements Serializable {
         this.setCreationDate(creationDate);
         this.setLastModificationBy(lastModificationBy);
         this.setLastModificationDate(lastModificationDate);
+        
+
     }
 
     public Long getProjectId() {
@@ -95,20 +97,27 @@ public class Project extends GenericEntity implements Serializable {
         this.projectManagerName = projectManagerName;
     }
 
-    public Date getInitialDate() {
+    public Calendar getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(Date initialDate) {
+    public void setInitialDate(Calendar initialDate) {
         this.initialDate = initialDate;
+        
     }
 
-    public Date getFinalDate() {
+    public Calendar getFinalDate() {
         return finalDate;
     }
 
-    public void setFinalDate(Date finalDate) {
+    public void setFinalDate(Calendar finalDate) {
         this.finalDate = finalDate;
+        
+    }
+    
+    public String getStringInitialDate()
+    {
+        return initialDate.toString();
     }
 
     @Override
@@ -149,4 +158,18 @@ public class Project extends GenericEntity implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    /**
+     * @param stringInitialDate the stringInitialDate to set
+     */
+    public String getDateToString(Calendar date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        String result = null;
+        if (date != null) {
+         result = sdf.format(date.getTime());
+        }
+        return result;
+    }
+
+  
 }
