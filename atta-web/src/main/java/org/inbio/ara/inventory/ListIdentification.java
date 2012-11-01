@@ -173,33 +173,22 @@ public class ListIdentification extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+        System.out.println("*********** HIZO PRERENDER ***********");
         IdentificationSessionBean isb = this.getIdentificationSessionBean();
         //Load required data
         long inicioT = System.currentTimeMillis();
         this.setStatusData();
-        //long finalT = System.currentTimeMillis();
-        //System.out.println("Tiempo de setStatusData = "+(finalT-inicioT));
-        //finalT=inicioT;
+        
         this.setTypeData();
-        //finalT = System.currentTimeMillis();
-        //System.out.println("Tiempo de setTypeData = "+(finalT-inicioT));
-        //finalT=inicioT;
+        
         this.setTaxonomicLevelData();
-        //finalT = System.currentTimeMillis();
-        //System.out.println("Tiempo de setTaxonomicLevelData = "+(finalT-inicioT));
-        //finalT=inicioT;
+        
         this.loadValidatorData();
-        //finalT = System.currentTimeMillis();
-        //System.out.println("Tiempo de loadValidatorData = "+(finalT-inicioT));
-        //finalT=inicioT;
+        
         this.loadAddRemoveData(false);
-        //finalT = System.currentTimeMillis();
-        //System.out.println("Tiempo de loadAddRemoveData = "+(finalT-inicioT));
-        //finalT=inicioT;
+        
         this.getDeleteConfirmationText().setValue(BundleHelper.getDefaultBundleValue("delete_confirmation", this.getMyLocale()));
-        //finalT = System.currentTimeMillis();
-        //System.out.println("Tiempo de getDeleteConfirmationText = "+(finalT-inicioT));
-        //finalT=inicioT;
+        
         //------------------------------ Control de GUI -------------------------------
         if (isb.isAdvancedSearch()) {
             //Muestra el panel de busqueda avanzada
@@ -209,25 +198,23 @@ public class ListIdentification extends AbstractPageBean {
             //Muestra el panel de reidentificacion
             this.gridpReIdentify.setRendered(true);
         }
-        //finalT = System.currentTimeMillis();
-        //System.out.println("Tiempo de despues de if (isb.isAdvancedSearch()) = "+(finalT-inicioT));
-        //finalT=inicioT;
+        
         //-------------------------- Control de Paginador ------------------------------
         //Inicializar el dataprovider la primera vez (si la paginación es nula)
         //long inicioT = System.currentTimeMillis();
         long finalT;
         if (isb.getPagination()==null) {
-            System.out.println("Entro donde la paginacion es nula");
+        //    System.out.println("Entro donde la paginacion es nula");
             isb.initDataProvider();
         }
         //Actualizar los datos del paginador
         else
         {
-            System.out.println("Entro donde la paginacion NO es nula");
+          //  System.out.println("Entro donde la paginacion NO es nula");
             isb.getPagination().refreshList();
         }
-        finalT = System.currentTimeMillis();
-        System.out.println("Tiempo al finalizar el prerender = "+(finalT-inicioT));
+        //finalT = System.currentTimeMillis();
+        //System.out.println("Tiempo al finalizar el prerender = "+(finalT-inicioT));
         //finalT=inicioT;
     }
 

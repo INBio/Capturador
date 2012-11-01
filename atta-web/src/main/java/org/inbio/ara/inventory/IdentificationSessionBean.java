@@ -193,7 +193,8 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
         //finalT = System.currentTimeMillis();
         //System.out.println("Tiempo de despues de inventoryFacade.countIdentifications().intValue() = "+(finalT-inicioT));
         //finalT=inicioT;
-        this.setPagination(new PaginationControllerRemix(inventoryFacade.countIdentifications(getAraSessionBean().getGlobalCollectionId()).intValue(), getQuantity(), this));
+        //this.setPagination(new PaginationControllerRemix(inventoryFacade.countIdentifications(getAraSessionBean().getGlobalCollectionId()).intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(countAllIdentification().intValue(), getQuantity(), this));
         finalT = System.currentTimeMillis();
         System.out.println("Tiempo de despues de this.setPagination) = "+(finalT-inicioT));
         finalT=inicioT;
@@ -394,13 +395,13 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
 
         Long collectionId = getAraSessionBean().getGlobalCollectionId();
 
-        System.out.println("collectionId = "+collectionId);
+        //System.out.println("collectionId = "+collectionId);
 
             List<IdentificationDTO> auxResult =
                     new ArrayList<IdentificationDTO>();
 
             if (isQueryMode()) { //En caso de que sea busqueda avanzada
-                System.out.println("*** ENTRA A BUSQUEDA AVANZADA ***");
+                //System.out.println("*** ENTRA A BUSQUEDA AVANZADA ***");
                 //Set the collectionId into the DTO
                 //It is a mandatory filter
                 IdentificationDTO idto = queryIdentificationDTO;
@@ -408,50 +409,50 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
                 try {
                     getPagination().setTotalResults(getSearchFacade().countIdentificationByCriteria(idto).intValue());
 
-                    finalT= System.currentTimeMillis();
-                    System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
+                    //finalT= System.currentTimeMillis();
+                    //System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
 
                     return myReturn(searchFacade.searchIdentificationByCriteria(idto,
                             firstResult, maxResults));
                 } catch (Exception e) {
 
-                    finalT= System.currentTimeMillis();
-                    System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
+                    //finalT= System.currentTimeMillis();
+                    //System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
 
                     return auxResult;
                 }
             } else if (isQueryModeSimple()) { //En caso de que sea busqueda simple
-                System.out.println("*** ENTRA A BUSQUEDA SIMPLE ***");
+                //System.out.println("*** ENTRA A BUSQUEDA SIMPLE ***");
                 try {
                     getPagination().setTotalResults(getSearchFacade().countIdentificationByCriteria(consultaSimple).intValue());
 
-                    finalT= System.currentTimeMillis();
-                    System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
-                    inicioT = finalT;
+                    //finalT= System.currentTimeMillis();
+                    //System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
+                    //inicioT = finalT;
 
                     return myReturn(searchFacade.searchIdentificationByCriteria(consultaSimple,
                             collectionId, firstResult, maxResults));
                 } catch (Exception e) {
 
-                    finalT= System.currentTimeMillis();
-                    System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
+                    //finalT= System.currentTimeMillis();
+                    //System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
 
                     return auxResult;
                 }
             } else { //Valores default
                 try {
-                    System.out.println("*** ENTRA A VALORES DEFAULT ***");
-                    getPagination().setTotalResults(countAllIdentification().intValue());
-
-                    finalT= System.currentTimeMillis();
-                    System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
+                    //System.out.println("*** ENTRA A VALORES DEFAULT ***");
+                   
+                    getPagination().setTotalResults(inventoryFacade.countIdentifications(getAraSessionBean().getGlobalCollectionId()).intValue());
+                   // finalT= System.currentTimeMillis();
+                    //System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
 
                     return myReturn(inventoryFacade.getAllIdentificationPaginated(firstResult,
                             maxResults, collectionId));
                 } catch (Exception e) {
 
-                    finalT= System.currentTimeMillis();
-                    System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
+                    //finalT= System.currentTimeMillis();
+                    //System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
 
                     return auxResult;
                 }

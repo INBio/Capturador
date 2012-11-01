@@ -361,12 +361,19 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         Long typeId = inputDTO.getTypeId();
         Long collectionId = inputDTO.getCollectionId();
 
+               
+        
+        
+            
         if(catalogNumber != null && !catalogNumber.trim().isEmpty()) {
+            
             Long specimenId =specimenEAOImpl.findByCatalogNumber(catalogNumber);
             identificationIds.add(specimenId);
             firstFilter = false;
+            
         }
         if(taxonName != null && !taxonName.trim().isEmpty()) {
+            
             HashSet<Long> tmpSet = new HashSet();
             List<Long> taxonIds = taxonEAOImpl.findByTaxonName(taxonName);
             for (Long taxonId : taxonIds) {
@@ -374,14 +381,17 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                         identificationEAOImpl.findSpecimenByTaxonId(taxonId);
                 tmpSet.addAll(specimenList);
             }
+            
             if(firstFilter) {
                 identificationIds.addAll(tmpSet);
                 firstFilter = false;
             } else {
                 identificationIds.retainAll(tmpSet);
             }
+            
         }
         if(identifiers != null) {
+            
             HashSet<Long> tmpSet = new HashSet();
             for (IdentifierDTO identifierDTO : identifiers) {
                 List<Person> personId = personEAOImpl.
@@ -392,37 +402,49 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                     tmpSet.addAll(specimensByIdentifier);
                 }
             }
+            
             if(firstFilter) {
                 identificationIds.addAll(tmpSet);
                 firstFilter = false;
             } else {
                 identificationIds.retainAll(tmpSet);
             }
+            
         }
         if(statusId != null) {
+            
             List<Long> specimenList =
-                    identificationEAOImpl.findSpecimenByStatusId(statusId);
+                    identificationEAOImpl.findSpecimenByStatusId(statusId, collectionId);
+            
             if(firstFilter) {
                 identificationIds.addAll(specimenList);
                 firstFilter = false;
             } else {
                 identificationIds.retainAll(specimenList);
             }
+                        
         }
         if(typeId != null) {
+            
             List<Long> specimenList =
-                    identificationEAOImpl.findSpecimenByTypeId(typeId);
+                    identificationEAOImpl.findSpecimenByTypeId(typeId, collectionId);
+            
             if(firstFilter) {
                 identificationIds.addAll(specimenList);
                 firstFilter = false;
             } else {
                 identificationIds.retainAll(specimenList);
             }
+                                 
+            
         }
 
         //Not visible to the user. This parameter is set in the
         //IdentificationSessionBean
+        //Si todos se filtran por colección este paso se podría eliminar
+        //OPTIMIZAR después
         if(collectionId != null) {
+            
             List<Long> specimenList =
                     specimenEAOImpl.findByCollectionId(collectionId);
             if(firstFilter) {
@@ -431,7 +453,9 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             } else {
                 identificationIds.retainAll(specimenList);
             }
+            
         }
+        
         return identificationIds;
     }
 

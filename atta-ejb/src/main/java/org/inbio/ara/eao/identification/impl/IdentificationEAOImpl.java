@@ -105,23 +105,26 @@ public class IdentificationEAOImpl
         return q.getResultList();
     }
 
-    public List<Long> findSpecimenByStatusId(Long statusId) {
+    public List<Long> findSpecimenByStatusId(Long statusId, Long collectionId) {
         StringBuffer query = new StringBuffer();
         query.append("select i.identificationPK.specimenId from Identification"+
-                " as i where i.identificationStatus.identificationStatusId = :statusId order by " +
+                " as i where i.identificationStatus.identificationStatusId = :statusId  and i.specimen.collectionId = :collectionId order by " +
                 "i.identificationPK.specimenId");
         Query q = em.createQuery(query.toString());
         q.setParameter("statusId", statusId);
+        //System.out.println("coleccion en la busqueda = "+collectionId);
+        q.setParameter("collectionId", collectionId);
         return q.getResultList();
     }
 
-    public List<Long> findSpecimenByTypeId(Long typeId) {
+    public List<Long> findSpecimenByTypeId(Long typeId, Long collectionId) {
         StringBuffer query = new StringBuffer();
         query.append("select i.identificationPK.specimenId from Identification"+
-                " as i where i.identificationType.identificationTypeId = :typeId order by " +
+                " as i where i.identificationType.identificationTypeId = :typeId and i.specimen.collectionId = :collectionId order by " +
                 "i.identificationPK.specimenId");
         Query q = em.createQuery(query.toString());
         q.setParameter("typeId", typeId);
+        q.setParameter("collectionId", collectionId);
         return q.getResultList();
     }
 

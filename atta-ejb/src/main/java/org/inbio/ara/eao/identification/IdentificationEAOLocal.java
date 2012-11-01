@@ -40,9 +40,9 @@ public interface IdentificationEAOLocal
 
     public List<Identification> findBySpecimenId(Long specimenId);
 
-    public List<java.lang.Long> findSpecimenByStatusId(Long statusId);
+    public List<java.lang.Long> findSpecimenByStatusId(Long statusId, Long collectionId);
 
-    public List<java.lang.Long> findSpecimenByTypeId(Long typeId);
+    public List<java.lang.Long> findSpecimenByTypeId(Long typeId, Long collectionId);
 	
     public Long count(Long collectionId);
     public List<Long> findSpecimenByTaxonName(String taxonName);
