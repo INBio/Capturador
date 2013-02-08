@@ -286,5 +286,20 @@ public class TaxonEAOImpl extends BaseEAOImpl<Taxon,Long> implements TaxonEAOLoc
                 q.setParameter("collectionId", collectionId);
                 return (Taxon)q.getSingleResult();
     }
+    
+      public List<Taxon> findByTaxononimcalRange(Long taxonomicalRangeId, Long rangeCollId, Long taxonCollId) {
+        //System.out.println("TaxonomicalRangeId = "+taxonomicalRangeId);
+           String columnName = TaxonomicalRangeEntity.getById(rangeCollId).getColumn();
+        StringBuffer query = new StringBuffer();
+        query.append("from Taxon as t where t.taxonomicalRangeId = :taxonomicalRangeId" +
+                " AND t."+columnName+" = :taxonCollId"+
+                " order by t.defaultName");
+        Query q = em.createQuery(query.toString());
+		q.setParameter("taxonomicalRangeId", taxonomicalRangeId);
+                q.setParameter("taxonCollId", taxonCollId);
+        return q.getResultList();
+    }
+    
+    
 
 }

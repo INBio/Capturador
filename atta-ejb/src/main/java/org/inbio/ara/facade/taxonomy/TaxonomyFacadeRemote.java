@@ -126,6 +126,8 @@ public interface TaxonomyFacadeRemote {
 
     public List<RegionDTO> getAllRegions();
 
+    public List<TaxonDTO> getAllTaxonByRange(Long rangeId,Long collectionId, Long collRangeId, Long taxonCollId );
+    
     public List<TaxonDTO> getAllTaxonByRange(Long rangeId);
 
     public List<TaxonDTO> getTaxonChildren(Long taxonId);

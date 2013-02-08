@@ -132,6 +132,8 @@ public class ListGatheringDetail extends AbstractPageBean {
         if (getinventory$GatheringDetailSessionBean().getPagination()==null) {
             getinventory$GatheringDetailSessionBean().initDataProvider();
         }
+         else
+            getinventory$GatheringDetailSessionBean().getPagination().refreshList();
     }
 
     /**

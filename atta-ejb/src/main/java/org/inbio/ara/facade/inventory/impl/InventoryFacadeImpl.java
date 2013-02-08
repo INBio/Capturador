@@ -123,6 +123,7 @@ import org.inbio.ara.persistence.specimen.SpecimenLifeForm;
 import org.inbio.ara.persistence.taxonomy.Taxon;
 import org.inbio.ara.persistence.taxonomy.TaxonCategory;
 import org.inbio.ara.persistence.taxonomy.TaxonomicalRange;
+import org.inbio.ara.persistence.taxonomy.TaxonomicalRangeEntity;
 
 /**
  *
@@ -218,6 +219,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     private InstitutionDTOFactory institutionDTOFactory =
             new InstitutionDTOFactory();
     private ProfileDTOFactory profileDTOFactoty = new ProfileDTOFactory();
+    
 
     /**
      * Retorna un listado de especimenes
@@ -390,12 +392,14 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         return resultGatheringObservationDTOList;
     }
 
-    public Long countSpecimens() {
-        return specimenEAOImpl.count(Specimen.class);
+    public Long countSpecimens(Long collectionId) {
+        //return specimenEAOImpl.count(Specimen.class);
+        return specimenEAOImpl.count(collectionId);
     }
 
-    public Long countGatheringDetail() {
-        return gatheringDetailEAOImpl.count(GatheringObservationDetail.class);
+    public Long countGatheringDetail(Long gathObsId) {
+        //return gatheringDetailEAOImpl.count(GatheringObservationDetail.class);
+        return gatheringDetailEAOImpl.countByGathObsId(gathObsId);
     }
 
     /**
@@ -894,11 +898,23 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         return taxonDTOFactory.createDTOList(taxonEAOImpl.findAll(Taxon.class));
     }
 
+    
+    public List<TaxonDTO> getTaxonCollections() {
+        return taxonDTOFactory.createDTOList(collectionEAOImpl.findTaxonOfCollections());
+    }
     public SpecimenDTO getSpecimenById(Long specimenId) {
         Specimen s = specimenEAOImpl.findById(Specimen.class, specimenId);
         if (s == null)
             return null;
         return updateCountryAndProvinceName(specimenDTOFactory.createDTO(s));
+    }
+    
+    public SpecimenDTO getSpecimenByCatalogueNumber(String catalogueNumber) {
+        Specimen s = specimenEAOImpl.findSpecimenByCatalogNumber(catalogueNumber);
+        if (s == null)
+            return null;
+        return specimenDTOFactory.createDTO(s);
+        
     }
 
     public List<IdentificationStatusDTO> getAllIdentificationStatus() {
@@ -920,9 +936,21 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     }
 
     public List<TaxonDTO>
-            getAllTaxonByTaxononimcalRange(Long taxonomicalRangeId) {
-        return taxonDTOFactory.createDTOList(taxonEAOImpl.
-                findByTaxononimcalRange(taxonomicalRangeId));
+            getAllTaxonByTaxononimcalRange(Long taxonomicalRangeId, Long collectionId, Long collRangeId, Long taxonCollId ) {
+        
+        List<TaxonDTO> results = null;
+        
+        if(taxonomicalRangeId <= collRangeId || taxonomicalRangeId.equals(TaxonomicalRangeEntity.DOMAIN.getId()))
+        {
+            results = taxonDTOFactory.createDTOList(taxonEAOImpl.
+                    findByTaxononimcalRange(taxonomicalRangeId));
+        }
+        else
+        {
+            results = taxonDTOFactory.createDTOList(taxonEAOImpl.
+                    findByTaxononimcalRange(taxonomicalRangeId,collRangeId, taxonCollId));
+        }
+        return results;
     }
 
     public Long countIdentifications(Long collectionId) {

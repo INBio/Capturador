@@ -26,4 +26,6 @@ public interface CollectionEAOLocal extends BaseLocalEAO<Collection,Long>{
        
     public Long getSpeciesCountUnderTaxonId(Long taxonId);
 
+    public java.util.List<org.inbio.ara.persistence.taxonomy.Taxon> findTaxonOfCollections();
+
 }

@@ -80,5 +80,7 @@ public interface TaxonEAOLocal extends BaseLocalEAO<Taxon,Long> {
     public List<Taxon> findTaxonSynonymsByName(String taxonName, Long kingdomId, Long categoryId , int base, int offset);
 
     public Taxon findTaxonByCollection(Long collectionId);
+    
+    public List<Taxon> findByTaxononimcalRange(Long taxonomicalRangeId, Long rangeCollId,Long taxonCollId);
 
 }

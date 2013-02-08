@@ -299,6 +299,12 @@
                                             </h:column>
                                             <h:column>
                                                 <f:facet name="header">
+                                                    <h:commandLink id="gatheringObservation" styleClass="My_search_icon" value="#{resources.gathering}"/>
+                                                </f:facet>
+                                                <h:outputText value="#{currentRow['gatheringObservationId']}"/>
+                                            </h:column>
+                                            <h:column>
+                                                <f:facet name="header">
                                                     <h:outputText value="#{resources.taxon_name}"/>
                                                 </f:facet>
                                                 <h:outputText value="#{currentRow['taxonString']}"/>

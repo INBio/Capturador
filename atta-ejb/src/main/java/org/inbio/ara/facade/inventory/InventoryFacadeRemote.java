@@ -38,7 +38,7 @@ public interface InventoryFacadeRemote {
     public List<SpecimenDTO> getAllSpecimenPaginated(int first,
             int totalResults, Long collectionId);
 
-    public Long countSpecimens();
+    public Long countSpecimens(Long collectionId);
 
     /**
      * @param selectionListEntityId look for the Id of a element of the ENUM SelectionListEntity
@@ -109,7 +109,7 @@ public interface InventoryFacadeRemote {
 
     public List<PersonDTO> getAllIdentifiers();
 
-    public List<TaxonDTO> getAllTaxonByTaxononimcalRange(Long taxonomicalRange);
+    public List<TaxonDTO> getAllTaxonByTaxononimcalRange(Long taxonomicalRangeId, Long collectionId, Long collRangeId, Long taxonCollId);
 
     public void reIdentify(List<IdentificationDTO> selectedIdentifications);
 
@@ -139,7 +139,7 @@ public interface InventoryFacadeRemote {
 
     public org.inbio.ara.dto.inventory.GatheringObservationDTO saveGathering(org.inbio.ara.dto.inventory.GatheringObservationDTO gDTO);
 
-    public java.lang.Long countGatheringDetail();
+    public java.lang.Long countGatheringDetail(Long gathObsId);
 
     public java.util.List<org.inbio.ara.dto.inventory.GatheringObservationDetailDTO> getDetailPaginatedByGathering(int first, int totalResults, java.lang.Long gathId);
 
@@ -196,6 +196,10 @@ public interface InventoryFacadeRemote {
     public List<PersonDTO> getPersonByFilterProfile(Long profileId, String filter);
 
     public String getPersonById(Long personId);
+
+    public org.inbio.ara.dto.inventory.SpecimenDTO getSpecimenByCatalogueNumber(String catalogueNumber);
+
+    public java.util.List<org.inbio.ara.dto.inventory.TaxonDTO> getTaxonCollections();
     
 }
 

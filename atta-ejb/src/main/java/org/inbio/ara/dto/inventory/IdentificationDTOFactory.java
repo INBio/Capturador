@@ -82,6 +82,7 @@ public class IdentificationDTOFactory extends BaseDTOFactory<Identification, Ide
 
 		if (i.getSpecimen() != null) {
 			iDTO.setCatalogNumber(i.getSpecimen().getCatalogNumber());
+                        iDTO.setGatheringObservationId(i.getSpecimen().getGatheringObservation().getGatheringObservationId());
 		}
 
 		if (i.getIdentificationStatus() != null) {
@@ -140,6 +141,7 @@ public class IdentificationDTOFactory extends BaseDTOFactory<Identification, Ide
 
 		if (i.getSpecimen() != null) {
 			iDTO.setCatalogNumber(i.getSpecimen().getCatalogNumber());
+                        iDTO.setGatheringObservationId(i.getSpecimen().getGatheringObservation().getGatheringObservationId());
 		}
 
 		if (i.getIdentificationStatus() != null) {

@@ -11,6 +11,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import org.inbio.ara.eao.BaseEAOImpl;
 import org.inbio.ara.persistence.collection.Collection;
+import org.inbio.ara.persistence.taxonomy.Taxon;
 
 /**
  *
@@ -115,4 +116,22 @@ public class CollectionEAOImpl extends BaseEAOImpl<Collection, Long> implements 
         Query q = em.createQuery("from Collection c where c.name = '" + collectionName + "'");
         return q.getResultList();
     }
+    
+    
+    public List<Taxon> findTaxonOfCollections() {
+        
+        Query q = em.createQuery(
+                "select t" +
+                " from Taxon as t " +
+                " inner join t.collection c " +
+                " where t.collectionId is not null " +
+                " and t.collection.collectionId = c.collectionId");
+
+        //q.setParameter("collectionId", collectionId);
+
+
+        return q.getResultList();
+    }
+    
+    
 }

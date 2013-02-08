@@ -85,6 +85,8 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
     private boolean queryMode = false;
     //Bandera para indicarle al paginador que trabaje en modo busqueda simple
     private boolean queryModeSimple = false;
+    
+    private boolean resetReidentification = false;
     //Specimen DTO seleccionado por el usuario para editar
     private IdentificationDTO currentIdentificationDTO = new IdentificationDTO();
     //SpecimenDTO que sera convertido en entidad y sera persistido
@@ -101,6 +103,7 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
     private Option[] specimenBarcodeList = new Option[0];
     private String specimenBarcode = new String("");
 
+    private List<IdentificationDTO> selectedIdentifications = null;
     /**
      * <p>Construct a new session data bean instance.</p>
      */
@@ -348,7 +351,8 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
     }
 
     public List<TaxonDTO> getAllTaxonByTaxonomicalRange(Long taxonomicalRangeId) {
-        return this.inventoryFacade.getAllTaxonByTaxononimcalRange(taxonomicalRangeId);
+        return this.inventoryFacade.getAllTaxonByTaxononimcalRange(taxonomicalRangeId, this.getAraSessionBean().getGlobalCollectionId(),
+                this.getAraSessionBean().getGlobalTaxonRangeCollection(), this.getAraSessionBean().getGlobalTaxonCollectionId());
     }
 
     public void reidentify(List<IdentificationDTO> selectedIdentifications) {
@@ -498,5 +502,33 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
 
     public void setSpecimenBarcode(String specimenBarcode) {
         this.specimenBarcode = specimenBarcode;
+    }
+
+    /**
+     * @return the selectedIdentifications
+     */
+    public List<IdentificationDTO> getSelectedIdentifications() {
+        return selectedIdentifications;
+    }
+
+    /**
+     * @param selectedIdentifications the selectedIdentifications to set
+     */
+    public void setSelectedIdentifications(List<IdentificationDTO> selectedIdentifications) {
+        this.selectedIdentifications = selectedIdentifications;
+    }
+
+    /**
+     * @return the resetReidentification
+     */
+    public boolean isResetReidentification() {
+        return resetReidentification;
+    }
+
+    /**
+     * @param resetReidentification the resetReidentification to set
+     */
+    public void setResetReidentification(boolean resetReidentification) {
+        this.resetReidentification = resetReidentification;
     }
 }

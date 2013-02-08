@@ -1068,3 +1068,15 @@ ALTER TABLE atta.project_seq OWNER TO atta;
 
 ALTER TABLE atta.project ALTER COLUMN project_id
 SET DEFAULT nextval('atta.project_seq'::regclass);
+
+---- 2012-11-01
+-- gsulca
+
+UPDATE atta.collection_protocol SET value='false' WHERE value = 'no';
+UPDATE atta.collection_protocol SET value='true' WHERE value = 'si';
+
+---- 2013-01-16
+-- gsulca
+-- Aplica soloo para Atta Interno
+UPDATE atta.identification_status SET name='Valida' WHERE name = 'V';
+UPDATE atta.identification_status SET name='Temporal' WHERE name = 'T';

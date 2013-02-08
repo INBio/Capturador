@@ -945,7 +945,7 @@ public class ListLabels extends AbstractPageBean {
             this.getlabel$LabelSessionBean().setQueryModeSimple(false);
             this.getlabel$LabelSessionBean().setQueryMode(false);
             //Finalmente se setea el data provider del paginador con los datos por default
-            this.getlabel$LabelSessionBean().getPagination().setTotalResults(this.getlabel$LabelSessionBean().getInventoryFacade().countSpecimens().intValue());
+            this.getlabel$LabelSessionBean().getPagination().setTotalResults(this.getlabel$LabelSessionBean().getInventoryFacade().countSpecimens(this.getAraSessionBean().getGlobalCollectionId()).intValue());
         }
         else
          {

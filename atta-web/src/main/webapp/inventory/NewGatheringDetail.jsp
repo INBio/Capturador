@@ -28,7 +28,7 @@
                                     </h:panelGrid>
                                     <webuijsf:panelLayout id="layoutpMorphoDescription" style="height: 236px; position: relative; width: 510px; -rave-layout: grid" styleClass="My_panel_blue">
                                         <webuijsf:label for="ddResponsible" id="lbResponsible" requiredIndicator="true"
-                                            style="height: 24px; left: 72px; top: 48px; position: absolute; width: 164px" text="#{resources.person_in_charge}"/>
+                                                        style="height: 24px; left: 72px; top: 48px; position: absolute; width: 164px" text="#{resources.collector}"/>
                                         <webuijsf:dropDown id="ddResponsible" items="#{inventory$NewGatheringDetail.collectorsData.options}" required="true"
                                             selected="#{inventory$GatheringDetailSessionBean.selectedCollector}"
                                             style="left: 240px; top: 48px; position: absolute; width: 190px" width="192px"/>

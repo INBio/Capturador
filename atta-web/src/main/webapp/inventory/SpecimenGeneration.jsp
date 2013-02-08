@@ -114,7 +114,7 @@
                                             style="height: 24px; left: 624px; top: 72px; position: absolute" width="165px"/>
                                         <webuijsf:label binding="#{inventory$SpecimenGeneration.lbDateObservation}" for="calDateObservation" id="lbDateObservation"
                                             rendered="false" style="height: 24px; left: 456px; top: 144px; position: absolute; width: 168px" text="#{resources.date_observation}"/>
-                                        <webuijsf:calendar binding="#{inventory$SpecimenGeneration.calDateObservation}" columns="19" dateFormatPattern="yyyy-MM-dd"
+                                        <webuijsf:calendar binding="#{inventory$SpecimenGeneration.calDateObservation}" columns="19" dateFormatPattern="yyyy-MM-dd" 
                                             id="calDateObservation" rendered="false" style="height: 24px; left: 614px; top: 144px; position: absolute; width: 154px"/>
                                         <webuijsf:label binding="#{inventory$SpecimenGeneration.lbTimeObservation}" for="txWhole" id="lbTimeObservation"
                                             rendered="false" style="height: 24px; left: 456px; top: 168px; position: absolute; width: 168px" text="#{resources.time_observation}"/>

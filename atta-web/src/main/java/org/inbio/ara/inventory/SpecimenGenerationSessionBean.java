@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
+import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.inventory.IdentificationDTO;
 import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.SpecimenDTO;
@@ -163,6 +164,10 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     @Override
     public void destroy() {
     }
+    
+    protected AraSessionBean getAraSessionBean() {
+        return (AraSessionBean) getBean("AraSessionBean");
+    }
 
     /**
      * @return the specimenDTO
@@ -207,7 +212,9 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     }
 
     public List<TaxonDTO> getAllTaxonByTaxonomicalRange(Long taxonomicalRangeId) {
-        return this.inventoryFacade.getAllTaxonByTaxononimcalRange(taxonomicalRangeId);
+        return this.inventoryFacade.getAllTaxonByTaxononimcalRange(taxonomicalRangeId,
+          this.getAraSessionBean().getGlobalCollectionId(), this.getAraSessionBean().getGlobalTaxonRangeCollection(),
+          this.getAraSessionBean().getGlobalTaxonCollectionId());
     }
 
     public List<PersonDTO> getIdentifiersList() {

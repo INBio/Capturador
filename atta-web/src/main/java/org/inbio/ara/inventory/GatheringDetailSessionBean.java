@@ -181,7 +181,9 @@ public class GatheringDetailSessionBean extends AbstractSessionBean implements P
      * Inicializar el data provider de detalles de recoleccion
      */
     public void initDataProvider() {
-        setPagination(new PaginationControllerRemix(getInventoryFacade().countGatheringDetail().intValue(), getQuantity(), this));
+        Long gathObsId = this.getCurrentGathering().getGatheringObservationId();
+        setPagination(new PaginationControllerRemix(getInventoryFacade().countGatheringDetail(gathObsId).intValue(), getQuantity(), this));
+        this.getPagination().firstResults();
     }
 
     
@@ -271,6 +273,8 @@ public class GatheringDetailSessionBean extends AbstractSessionBean implements P
     }
 
     public List getResults(int firstResult, int maxResults) {
+        Long gathObsId = this.getCurrentGathering().getGatheringObservationId();
+        getPagination().setTotalResults(getInventoryFacade().countGatheringDetail(gathObsId).intValue());
         return inventoryFacade.getDetailPaginatedByGathering(firstResult, maxResults,currentGathering.getGatheringObservationId());
     }
 

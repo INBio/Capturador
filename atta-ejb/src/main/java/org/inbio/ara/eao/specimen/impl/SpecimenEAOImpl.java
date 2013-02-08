@@ -114,6 +114,18 @@ public class SpecimenEAOImpl extends BaseEAOImpl<Specimen,Long>
             return null;
         }
     }
+    
+    
+     public Specimen findSpecimenByCatalogNumber(String catalogNumber) {
+        String query = "select sp from Specimen as sp where " +
+                "sp.catalogNumber = '"+catalogNumber+"'";
+        try {
+            Query q = em.createQuery(query);
+            return (Specimen) q.getSingleResult();
+        } catch (Exception e){
+            return null;
+        }
+    }
 
     public List<Long> findByCatalogNumber(String catalogNumberFirst, String catalogNumberEnd) {
         String query = "select sp.specimenId from Specimen as sp where " +
@@ -175,6 +187,17 @@ public class SpecimenEAOImpl extends BaseEAOImpl<Specimen,Long>
         return q.getResultList();
     }
 
+    public Long count(Long collectionId)
+    {
+        Query q = em.createQuery("select count(sp) from Specimen as sp "+
+            "where sp.collectionId = " +
+            ":collectionId");
+        
+        q.setParameter("collectionId", collectionId);      
+        
+
+        return (Long)q.getSingleResult();
+    }
     /**
      *
      * @return the specimen with the greater Id

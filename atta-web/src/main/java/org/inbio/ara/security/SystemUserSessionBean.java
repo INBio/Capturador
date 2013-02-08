@@ -221,7 +221,8 @@ public class SystemUserSessionBean extends AbstractSessionBean implements Pagina
      * Obtener los datos para el add remove de taxones
      */
     public List<TaxonDTO> getTaxonsData(){
-        return this.inventoryFacade.getAllTaxon();
+        //return this.inventoryFacade.getAllTaxon();
+        return this.inventoryFacade.getTaxonCollections();
     }
 
     /**

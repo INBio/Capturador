@@ -164,6 +164,8 @@ public class NewGatheringDetail extends AbstractPageBean {
      */
     public Option[] SetColectorsDropDownData(){
         List<PersonDTO> instDTOList = this.getinventory$GatheringDetailSessionBean().getCollectors();
+        System.out.println("NEW GATHERING DETAIL ");
+        System.out.println("colectores = "+instDTOList.size());
         ArrayList<Option> allOptions = new ArrayList<Option>();
         Option[] allOptionsInArray;
         Option option;

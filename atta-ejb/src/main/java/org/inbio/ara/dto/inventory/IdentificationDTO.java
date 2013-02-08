@@ -34,6 +34,7 @@ public class IdentificationDTO implements Serializable {
     private boolean selected = false;
     private boolean multitaxon = false;
     private Long specimenKey;
+    private Long gatheringObservationId;
     private Calendar initialTimeStamp;
     private String catalogNumber; /*Para ser mostrado en el list*/
 
@@ -312,5 +313,19 @@ public class IdentificationDTO implements Serializable {
      */
     public void setMultitaxon(boolean multitaxon) {
         this.multitaxon = multitaxon;
+    }
+
+    /**
+     * @return the gatheringObservationId
+     */
+    public Long getGatheringObservationId() {
+        return gatheringObservationId;
+    }
+
+    /**
+     * @param gatheringObservationId the gatheringObservationId to set
+     */
+    public void setGatheringObservationId(Long gatheringObservationId) {
+        this.gatheringObservationId = gatheringObservationId;
     }
 }

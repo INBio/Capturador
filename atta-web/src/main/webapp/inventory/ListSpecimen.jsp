@@ -118,11 +118,19 @@
                                                 </f:facet>
                                                 <h:outputText value="#{currentRow['institutionCode']}"/>
                                             </h:column>
+                                            <!--
                                             <h:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="#{resources.collection}"/>
                                                 </f:facet>
                                                 <h:outputText value="#{currentRow['collectionName']}"/>
+                                            </h:column>
+                                            -->
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="#{resources.gathering_observation_id}"/>
+                                                </f:facet>
+                                                <h:outputText value="#{currentRow['gatheringObsevationId']}"/>
                                             </h:column>
                                             <h:column>
                                                 <f:facet name="header">

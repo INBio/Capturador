@@ -94,6 +94,12 @@ public class GatheringObservationDetailEAOImpl extends BaseEAOImpl<GatheringObse
     }
 
    
-
+     public Long countByGathObsId(Long gathObsId) {
+        String query = "select count(gd.gatheringObservationDetailId) from GatheringObservationDetail as gd where " +
+                "gd.gatheringObservationId = :gathObsId";
+        Query q = em.createQuery(query);
+        q.setParameter("gathObsId", gathObsId);
+        return (Long)q.getSingleResult();
+    }
  
 }

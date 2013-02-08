@@ -276,6 +276,17 @@ public class SpecimenGeneration extends AbstractPageBean {
         }
         else
             this.tabLifeForm.setRendered(false);
+        
+        java.util.Calendar cal = java.util.Calendar.getInstance(); 
+        cal.set(java.util.Calendar.YEAR, 1700); 
+        cal.set(java.util.Calendar.MONTH, 1); //June
+        cal.set(java.util.Calendar.DAY_OF_MONTH, 1); 
+        cal.set(java.util.Calendar.HOUR_OF_DAY, 0); 
+        cal.set(java.util.Calendar.MINUTE, 0); 
+        
+        calDateObservation.setMinDate(cal.getTime());
+        System.out.println("Min date = "+calDateObservation.getMinDate());
+        
     }
 
     /**

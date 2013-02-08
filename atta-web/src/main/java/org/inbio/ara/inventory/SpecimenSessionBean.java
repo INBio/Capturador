@@ -186,7 +186,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        this.setPagination(new PaginationControllerRemix(getInventoryFacade().countSpecimens().intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(getInventoryFacade().countSpecimens(this.getAraSessionBean().getGlobalCollectionId()).intValue(), getQuantity(), this));
         this.getPagination().firstResults();
     }    
 
@@ -534,7 +534,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
             }
             else { //Valores default
                 try{
-                    getPagination().setTotalResults(getInventoryFacade().countSpecimens().intValue());
+                    getPagination().setTotalResults(getInventoryFacade().countSpecimens(this.getAraSessionBean().getGlobalCollectionId()).intValue());
                     return myReturn(inventoryFacade.getAllSpecimenPaginated
                             (firstResult, maxResults, collectionId));
                 }
