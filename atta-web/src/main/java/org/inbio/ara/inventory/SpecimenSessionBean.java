@@ -534,9 +534,12 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
             }
             else { //Valores default
                 try{
+                    
                     getPagination().setTotalResults(getInventoryFacade().countSpecimens(this.getAraSessionBean().getGlobalCollectionId()).intValue());
+                    
                     return myReturn(inventoryFacade.getAllSpecimenPaginated
                             (firstResult, maxResults, collectionId));
+                    
                 }
                 catch(Exception e){return auxResult;}
             }

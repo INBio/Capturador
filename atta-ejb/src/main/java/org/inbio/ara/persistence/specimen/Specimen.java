@@ -39,6 +39,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.inbio.ara.persistence.GenericEntity;
+import org.inbio.ara.persistence.LogGenericEntity;
 import org.inbio.ara.persistence.collection.Collection;
 import org.inbio.ara.persistence.gathering.ExtractionType;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
@@ -54,9 +55,9 @@ import org.inbio.ara.persistence.label.OriginalLabel;
  */
 @Entity
 @Table(name = "specimen")
-public class Specimen extends GenericEntity {
+public class Specimen extends LogGenericEntity {
 
-    private static long serialVersionUID = 1L;
+    //private static long serialVersionUID = 1L;
     @Id
     //@GeneratedValue(strategy=GenerationType.AUTO)//Added
     @GeneratedValue(strategy=GenerationType.AUTO, generator="specimen")

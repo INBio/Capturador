@@ -21,12 +21,19 @@
 package org.inbio.ara.dto.inventory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import javax.ejb.EJB;
 import org.inbio.ara.dto.BaseDTOFactory;
+import org.inbio.ara.dto.BaseEntityOrDTOFactory;
+import org.inbio.ara.dto.gis.SiteCoordinateDTOFactory;
+import org.inbio.ara.eao.gathering.GatheringObservationEAOLocal;
 import org.inbio.ara.persistence.collection.Collection;
 import org.inbio.ara.persistence.gathering.ExtractionType;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
 import org.inbio.ara.persistence.gathering.GatheringObservationMethod;
+import org.inbio.ara.persistence.gathering.Project;
 import org.inbio.ara.persistence.gis.GeographicLayerEntity;
 import org.inbio.ara.persistence.gis.GeoreferencedSite;
 import org.inbio.ara.persistence.gis.Site;
@@ -47,8 +54,11 @@ import org.inbio.ara.persistence.specimen.Substrate;
  *
  * @author jgutierrez
  */
-public class SpecimenDTOFactory extends BaseDTOFactory<Specimen,SpecimenDTO> {
+public class SpecimenDTOFactory extends BaseEntityOrDTOFactory<Specimen,SpecimenDTO> {
 
+    
+    //@EJB
+    //private GatheringObservationEAOLocal gatheringObservationEAOImpl;
     /**
      * 
      * @param s
@@ -70,6 +80,8 @@ public class SpecimenDTOFactory extends BaseDTOFactory<Specimen,SpecimenDTO> {
          PreservationMedium preservationMedium = s.getPreservationMedium();
 //         Taxon taxon = s.getTaxon();
          Substrate substrate = s.getSubstrate();
+         
+         Date dateTime = s.getDateTime();
          
          Label  label = s.getLabel();
          OriginalLabel originalLabel= s.getOriginalLabel();
@@ -184,22 +196,116 @@ public class SpecimenDTOFactory extends BaseDTOFactory<Specimen,SpecimenDTO> {
              sDTO.setSubstrateName(substrate.getName());
          }
 
+         if(dateTime!=null){
+             sDTO.setDateTime(dateTime);             
+         }
+         
          sDTO.setGatheringObservationDetailId(s.getGatheringObservationDetailId());
 
          List<LifeStageSexDTO> lssDTOList = new ArrayList<LifeStageSexDTO>();
          SelectionListDTO lifeStageDTO;
          SelectionListDTO sexDTO;
-         for(SpecimenLifeStageSex slss : s.getSpecimenLifeStageSexList()){
-             if(slss.getLifeStage()!=null && slss.getSex()!=null){
-                 lifeStageDTO = new SelectionListDTO(slss.getLifeStage().getSelectionListEntity().getId(), slss.getLifeStage().getId(), slss.getLifeStage().getName(),slss.getLifeStage().getDescription());
-                 sexDTO = new SelectionListDTO(slss.getSex().getSelectionListEntity().getId(), slss.getSex().getId(), slss.getSex().getName(), slss.getSex().getDescription());
-                 lssDTOList.add(new LifeStageSexDTO(lifeStageDTO, sexDTO, slss.getQuantity()));
-             }
+         System.out.println("Specimen utilizado = " + s);
+         System.out.println("Resultado de buscar estadios = " + s.getSpecimenLifeStageSexList());
+         Set<SpecimenLifeStageSex> tmpList = s.getSpecimenLifeStageSexList();
+         if(tmpList != null)
+         {
+            for(SpecimenLifeStageSex slss : tmpList){
+                System.out.println("-- Entro al ciclo");
+                if(slss.getLifeStage()!=null && slss.getSex()!=null){
+                    lifeStageDTO = new SelectionListDTO(slss.getLifeStage().getSelectionListEntity().getId(), slss.getLifeStage().getId(), slss.getLifeStage().getName(),slss.getLifeStage().getDescription());
+                    sexDTO = new SelectionListDTO(slss.getSex().getSelectionListEntity().getId(), slss.getSex().getId(), slss.getSex().getName(), slss.getSex().getDescription());
+                    lssDTOList.add(new LifeStageSexDTO(lifeStageDTO, sexDTO, slss.getQuantity()));
+                }
+            }
          }
+        
+         
+         
          sDTO.setLifeStageSexList(lssDTOList);
-
+         System.out.println("Factory, Institution = "+sDTO.getInstitutionCode());
+         System.out.println("Factory, Institution = "+institution);
          
          return sDTO;
+    }
+
+    @Override
+    public Specimen getEntityWithPlainValues(SpecimenDTO dto) {
+        System.out.println("--- SPECIMEN FACTORY DTO: GET ENTITY WITH PLAIN VALUES---");
+        if(dto==null){
+            return null;
+        }
+        Specimen s = new Specimen();
+        
+        s.setSpecimenId(dto.getSpecimenKey());
+        s.setInstitutionId(dto.getInstitutionId());
+        s.setCatalogNumber(dto.getCatalogNumber());
+        
+        System.out.println("gathering observation = "+ dto.getGatheringObsevationId());
+        //System.out.println("gathering observation impl = "+ gatheringObservationEAOImpl);
+        //GatheringObservation gathObs = gatheringObservationEAOImpl.findById( GatheringObservation.class, dto.getGatheringObsevationId());
+        //se persiste afuera
+        s.setGatheringObservation(new GatheringObservation());
+        s.setInstitution(new Institution());
+        
+        s.setSpecimenCategoryId(dto.getCategoryId());
+        s.setSpecimenTypeId(dto.getTypeId());
+        s.setStorageTypeId(dto.getStorageTypeId());
+        s.setSubstrateId(dto.getSubstrateId());
+        s.setOriginId(dto.getOriginId());
+        s.setPreservationMediumId(dto.getPreservationMediumId());
+        s.setNumberWhole(dto.getNumberWhole());
+        s.setNumberFragments(dto.getNumberFragments());
+        s.setExtractionTypeId(dto.getExtractionTypeId());
+        s.setCollectionId(dto.getCollectionId());
+        s.setGatheringObservationMethodId(dto.getGatheringMethodId());
+        s.setCertaintyLevel(dto.getCertaintyLevel());
+        s.setDateTime(dto.getDateTime());
+        s.setGatheringObservationDetailId(dto.getGatheringObservationDetailId());
+        s.setLabelId(dto.getLabelId());
+        s.setOriginalLabelId(dto.getOriginalLabelId());
+        
+        
+        
+        return s;
+    }
+
+    @Override
+    public Specimen updateEntityWithPlainValues(SpecimenDTO dto, Specimen s) {
+          if(dto==null||s==null){
+            return null;
+        }
+        else
+        {         
+        
+        s.setSpecimenId(dto.getSpecimenKey());
+        s.setInstitutionId(dto.getInstitutionId());
+        s.setCatalogNumber(dto.getCatalogNumber());
+        
+        //s.setGatheringObservation( gatheringObservationEAOImpl.findById( GatheringObservation.class, dto.getGatheringMethodId()) );
+        
+        //definir que se hace con las entidades de Gatherin Observation e Institution
+        //deberian persistirse en el facade
+        
+        s.setSpecimenCategoryId(dto.getCategoryId());
+        s.setSpecimenTypeId(dto.getTypeId());
+        s.setStorageTypeId(dto.getStorageTypeId());
+        s.setSubstrateId(dto.getSubstrateId());
+        s.setOriginId(dto.getOriginId());
+        s.setPreservationMediumId(dto.getPreservationMediumId());
+        s.setNumberWhole(dto.getNumberWhole());
+        s.setNumberFragments(dto.getNumberFragments());
+        s.setExtractionTypeId(dto.getExtractionTypeId());
+        s.setCollectionId(dto.getCollectionId());
+        s.setGatheringObservationMethodId(dto.getGatheringMethodId());
+        s.setCertaintyLevel(dto.getCertaintyLevel());
+        s.setDateTime(dto.getDateTime());
+        s.setGatheringObservationDetailId(dto.getGatheringObservationDetailId());
+        s.setLabelId(dto.getLabelId());
+        s.setOriginalLabelId(dto.getOriginalLabelId());
+                        
+        return s;
+        }
     }
 
 

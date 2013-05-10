@@ -118,6 +118,7 @@ import org.inbio.ara.persistence.identification.IdentificationType;
 import org.inbio.ara.persistence.identification.Identifier;
 import org.inbio.ara.persistence.identification.IdentifierHistory;
 import org.inbio.ara.persistence.identification.IdentifierPK;
+import org.inbio.ara.persistence.institution.Institution;
 import org.inbio.ara.persistence.specimen.SpecimenCategoryEntity;
 import org.inbio.ara.persistence.specimen.SpecimenLifeForm;
 import org.inbio.ara.persistence.taxonomy.Taxon;
@@ -248,12 +249,24 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     public List<SpecimenDTO> getAllSpecimenPaginated(int first,
             int totalResults, Long collectionId) {
         String[] orderByFields = {"specimenId"};
+        
+        long timeI = System.currentTimeMillis();
+        long finalT = 0;
+        
         List<Specimen> sList = specimenEAOImpl.findAllPaginatedFilterAndOrderBy(Specimen.class,
                 first, totalResults, orderByFields, collectionId);
+        System.out.println("==========>  El date time del primer Specimen = "+sList.get(0).getDateTime());
+        finalT = System.currentTimeMillis();
+        //System.out.println("Duracion en findAllPaginatedFilterAndOrderBy = "+(finalT-timeI));        
+        
         if (sList == null)
             return null;
         List<SpecimenDTO> updated = updateCountryAndProvinceName(
                 specimenDTOFactory.createDTOList(sList));
+        System.out.println("==========>  El date time del primer SpecimenDTO = "+updated.get(0).getDateTime());
+        finalT = System.currentTimeMillis();
+        //System.out.println("Duracion en updateCountryAndProvinceName = "+(finalT-timeI));        
+        
         return updateScientificName(updated);
     }
 
@@ -698,6 +711,10 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         }
 
         //set Values
+        //Cambiar aqui por las operaciones nuevas del DTOFactory
+        s = specimenDTOFactory.updateEntityWithPlainValues(sDTO, s);
+        
+        /*
         s.setLabelId( sDTO.getLabelId());
         s.setOriginalLabelId( sDTO.getOriginalLabelId());
         
@@ -711,6 +728,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         s.setPreservationMediumId(sDTO.getPreservationMediumId());
         s.setStorageTypeId(sDTO.getStorageTypeId());
         s.setNumberFragments(sDTO.getNumberFragments());
+        * 
+        */
 
         Set<SpecimenLifeStageSex> slssSet = new HashSet<SpecimenLifeStageSex>();
         SpecimenLifeStageSexPK slssPK;
@@ -1164,6 +1183,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         //Yes
         for (String cn : catalogNumbersAvailable) {
             Specimen specimen = createSpecimen(sDTO);
+            System.out.println("El usuario para el catalogue number "+sDTO.getCatalogNumber()+" es "+sDTO.getUserName());
             specimen.setCatalogNumber(cn);
             //Do I have Gath Obs Detail?
             if (matchCollectionProtocol(sDTO.getCollectionId(),
@@ -1173,6 +1193,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 specimen.setGatheringObservationDetailId(sDTO.
                         getGatheringObservationDetailId());
             }
+            //CREATE SPECIMEN
             specimenEAOImpl.create(specimen);
             //Identification?
             //Yes
@@ -1200,14 +1221,14 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         return 0; //0 means everything is ok
     }
 
-    private void createLifeForm(List<Long> lifeFormIds, Long specimenId) {
+    public void createLifeForm(List<Long> lifeFormIds, Long specimenId) {
         for (Long formId : lifeFormIds) {
             SpecimenLifeForm slf = new SpecimenLifeForm(specimenId, formId);
             specimenLifeFormEAOImpl.create(slf);
         }
     }
 
-    private void createLifeStageSex(List<LifeStageSexDTO> lssDTOList,
+    public void createLifeStageSex(List<LifeStageSexDTO> lssDTOList,
             Long specimenId) {
         for (LifeStageSexDTO lssDTO : lssDTOList) {
             SpecimenLifeStageSex slss = new SpecimenLifeStageSex();
@@ -1302,8 +1323,14 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     }
 
     private Specimen createSpecimen(SpecimenDTO sDTO) {
+        
+        
         Specimen specimen = new Specimen();
 
+        
+        System.out.println("-- INVENTORY FACADE: CREATE SPECIMEN--");
+        specimen = specimenDTOFactory.createPlainEntity(sDTO);
+        /*
         specimen.setSpecimenCategoryId(sDTO.getCategoryId());
         specimen.setSpecimenTypeId(sDTO.getTypeId());
         specimen.setGatheringObservationMethodId(sDTO.getGatheringMethodId());
@@ -1314,14 +1341,24 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         specimen.setPreservationMediumId(sDTO.getPreservationMediumId());
         specimen.setStorageTypeId(sDTO.getStorageTypeId());
         specimen.setNumberFragments(sDTO.getNumberFragments());
-        specimen.setCollectionId(sDTO.getCollectionId());
+        specimen.setCollectionId(sDTO.getCollectionId());*/
 
+        specimen = specimenDTOFactory.createPlainEntity(sDTO);
+        
         if (sDTO.getGatheringObsevationId() != null) {
             specimen.setGatheringObservation(gatheringObservationEAOImpl.
                     findById(GatheringObservation.class,
                             sDTO.getGatheringObsevationId()));
         }
-        specimen.setInstitutionId(sDTO.getInstitutionId());
+         if (sDTO.getInstitutionId() != null) {
+            specimen.setInstitution(institutionEAOImpl.
+                    findById(Institution.class,
+                            sDTO.getInstitutionId()));
+        }
+        //specimen.setInstitutionId(sDTO.getInstitutionId());
+        
+        System.out.println("-- user : "+sDTO.getUserName());
+        System.out.println("-- user : "+specimen.getCreatedBy());
         return specimen;
     }
 
@@ -1332,7 +1369,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
      * @return String Array with the requested catalog numbers or null if any of
      * them is not available
      */
-    private String[] catalogNumberChecker(String catalogNumber, int quantity) {
+    public String[] catalogNumberChecker(String catalogNumber, int quantity) {
         String[] catalogNumbers = new String[quantity];
         int i = 0;
 
@@ -1411,7 +1448,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         return collectionDTOFactory.createDTOList(cList);
     }
 
-    private void validateSpecimenDTO(SpecimenDTO sDTO)
+    public void validateSpecimenDTO(SpecimenDTO sDTO)
     throws IllegalArgumentException {
         if(sDTO.getInstitutionId() == null) {
             throw new IllegalArgumentException("Null institution");
@@ -1451,5 +1488,83 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         return result;
 
     }
+    
+    public String getLastCatalogNumber(SpecimenDTO sDTO)
+    {
+        String lastCatalogNumber = null;
+        if (sDTO.getCatalogNumber() == null ||
+                    sDTO.getCatalogNumber().isEmpty()) {
+                Specimen lastSpecimen = specimenEAOImpl.getLastSpecimen();
+                if (lastSpecimen != null) {
+                    lastCatalogNumber = increment(lastSpecimen.getSpecimenId().toString().
+                            toCharArray());
+                } else {
+                    lastCatalogNumber = "0";
+                }
+            }
+        return lastCatalogNumber;
+    }
+    
+    public List<SpecimenDTO> specimenGeneration(String[] catalogNumbersAvailable, 
+            SpecimenDTO sDTO, IdentificationDTO iDTO,
+            List<LifeStageSexDTO> lssDTOList, List<Long> lifeForms)
+    {
+        System.out.println("-- INVENTORY Facade: SPECIMEN GENERATION --");
+        List<SpecimenDTO> result = new ArrayList<SpecimenDTO> ();
+        for (String cn : catalogNumbersAvailable) {
+                System.out.println("Creando el catalogue number = " + cn);
+                Specimen specimen = createSpecimen(sDTO);
+                //Specimen specimen = specimenDTOFactory.createPlainEntity(sDTO);
+                System.out.println("Creado el specimenDTO = " + cn);
+                specimen.setCatalogNumber(cn);
+                //Do I have Gath Obs Detail?
+                if (matchCollectionProtocol(sDTO.getCollectionId(),
+                        ProtocolAtributeEntity.USE_GATHERING_DETAIL.getId(),
+                        CollectionProtocolValuesEntity.TRUE_VALUE.getValue())) {
+                    //Yes
+                    specimen.setGatheringObservationDetailId(sDTO.
+                            getGatheringObservationDetailId());
+                }
+                System.out.println(" -- user : "+specimen.getCreatedBy());
+                //CREATE SPECIMEN
+                specimenEAOImpl.create(specimen);                
+                //result.add(specimen.getCatalogNumber());
+                //BORAR
+                System.out.println("Nuevo tamaño de List<String> CatalogNumber = "+result.size());
+                //Identification?
+                //Yes
+                if (iDTO != null) {
+                    iDTO.setSpecimenKey(specimen.getSpecimenId());
+                    createIdentification(iDTO);
+                    if(sDTO.getCategoryId() != SpecimenCategoryEntity.
+                            AGRUPADO_MULTITAXON.getId() &&
+                            iDTO.getTaxa().size() > 1) {
+                        //Multiple taxa selected = retornar 4
+                        return null;
+                    }
+                }
+                //Do I have a life stage sex?
+                //Yes
+                if (lssDTOList != null) {
+                    createLifeStageSex(lssDTOList, specimen.getSpecimenId());
+                }
+                //Do I have a life form?
+                //Yes
+                if (lifeForms != null) {
+                    createLifeForm(lifeForms, specimen.getSpecimenId());
+                }
+                //aqui se puede consultar el nuevo SpecimenDTO por catalogueNumber
+                System.out.println("-- (catalogNumber) = " + cn);
+                Specimen tmp = specimenEAOImpl.findSpecimenByCatalogNumber(cn);
+                System.out.println("SpecimenLifeStageSexList = "+tmp.getSpecimenLifeStageSexList());
+                System.out.println("SpecimenLifeStageSexList = "+tmp.getInstitution());
+                result.add(specimenDTOFactory.createDTO(tmp));
+            }
+        return result;
+    }
+    
+    
+    
+    
 
 }

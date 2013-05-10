@@ -158,6 +158,7 @@ public class ListSpecimen extends AbstractPageBean {
      */
     @Override
     public void prerender() {
+        System.out.println("-- HIZO PRERENDER --");
         SpecimenSessionBean ssb = getinventory$SpecimenSessionBean();
         //------------------------------ Control de GUI -------------------------------
         //Preguntar si la bandera de busqueda avanzada esta prendida
@@ -174,7 +175,17 @@ public class ListSpecimen extends AbstractPageBean {
         }
         //Actualizar los datos del paginador
         else
-            ssb.getPagination().refreshList();
+        {
+            System.out.println("Inicio el refresh");
+            if(ssb.getPagination().isReloadVariables())
+            {
+                ssb.getPagination().refreshList();
+            }
+            
+                
+                        
+            System.out.println("Finalizo el refresh");
+        }
     }
 
     /**
@@ -213,12 +224,14 @@ public class ListSpecimen extends AbstractPageBean {
      * @return
      */
     public String btn_edit_action() {
+        System.out.println("--- LIST SPECIMEN: BTN EDIT ACTION ---");
         this.getinventory$SpecimenSessionBean().setAdvancedSearch(false); //Ojo: esto es para que cuando el usuario presione volver, el boton de busqueda avanzada funcione correctamente
-        int n = this.getDataTableSpecimens().getRowCount();
+        int n = this.getDataTableSpecimens().getRowCount();        
         ArrayList<SpecimenDTO> selectedSpecimens = new ArrayList();
         for (int i = 0; i < n; i++) { //Obtener elementos seleccionados
             this.getDataTableSpecimens().setRowIndex(i);
             SpecimenDTO thisSpecimen = (SpecimenDTO) this.getDataTableSpecimens().getRowData();
+            System.out.println("dateTime = "+thisSpecimen.getDateTime());
             if (thisSpecimen.isSelected()) {
                 selectedSpecimens.add(thisSpecimen);
             }

@@ -33,6 +33,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import javax.faces.FacesException;
+import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.agent.InstitutionDTO;
@@ -156,6 +157,11 @@ public class SpecimenGeneration extends AbstractPageBean {
     //Binding para almacenar el valor de los drop downs de sexos y estadios
     private Long valueSex = null;
     private Long valueStage = null;
+    
+    //Result table
+    private HtmlDataTable dataTableSpecimens = new HtmlDataTable();
+    
+    private boolean showSpecimens = false;
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -1649,7 +1655,9 @@ public class SpecimenGeneration extends AbstractPageBean {
 
         //Llamada para generar especimenes
         try {
+            
             int gen = sgsb.generateSpecimens();
+            
             /*  0 means everything is ok
              *  1 means Null specimenDTO
              *  2 means Not quantity specified
@@ -1660,29 +1668,35 @@ public class SpecimenGeneration extends AbstractPageBean {
                 case 0:                    
                     //Limpiar pantalla de generación
                     this.cleanGenerationPage();
+                    this.setShowSpecimens(true);
                     //Succes message
                     MessageBean.setSuccessMessageFromBundle
                     ("specimen_generation_success", this.getMyLocale());
                     break;
                 case 1:
-                    MessageBean.setErrorMessageFromBundle
+                    MessageBean.setErrorMessageFromBundle                            
                     ("generation_error", this.getMyLocale());
+                    this.setShowSpecimens(false);
                     break;
                 case 2:
                     MessageBean.setErrorMessageFromBundle
                     ("generation_quantity_error", this.getMyLocale());
+                    this.setShowSpecimens(false);
                     break;
                 case 3:
                     MessageBean.setErrorMessageFromBundle
-                    ("generation_catalog_error", this.getMyLocale());
+                    ("generation_catalog_error", this.getMyLocale());                    
+                    this.setShowSpecimens(false);
                     break;
                 default:
                     MessageBean.setErrorMessageFromBundle
                     ("generation_multiple_taxa_error", this.getMyLocale());
+                    this.setShowSpecimens(false);
                     break;
             }
         } catch (Exception e) {
             MessageBean.setErrorMessageFromBundle("generation_error", this.getMyLocale());
+            this.setShowSpecimens(false);
         }
 
         return null;
@@ -1725,6 +1739,34 @@ public class SpecimenGeneration extends AbstractPageBean {
      */
     public void setCalIdentificationDate(Calendar calIdentificationDate) {
         this.calIdentificationDate = calIdentificationDate;
+    }
+
+    /**
+     * @return the dataTableSpecimens
+     */
+    public HtmlDataTable getDataTableSpecimens() {
+        return dataTableSpecimens;
+    }
+
+    /**
+     * @param dataTableSpecimens the dataTableSpecimens to set
+     */
+    public void setDataTableSpecimens(HtmlDataTable dataTableSpecimens) {
+        this.dataTableSpecimens = dataTableSpecimens;
+    }
+
+    /**
+     * @return the showSpecimens
+     */
+    public boolean isShowSpecimens() {
+        return showSpecimens;
+    }
+
+    /**
+     * @param showSpecimens the showSpecimens to set
+     */
+    public void setShowSpecimens(boolean showSpecimens) {
+        this.showSpecimens = showSpecimens;
     }
 }
 

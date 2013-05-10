@@ -331,7 +331,13 @@ public class EditSpecimen extends AbstractPageBean {
      */
     public String btnSaveEdit_action() {
 
+        
+        System.out.println("--- EDIT SPECIMEN: BTN SAVE EDIT ---");
+        System.out.println("DATEtIME : "+ this.getinventory$SpecimenSessionBean().getCurrentSpecimenDTO());
         if(this.getinventory$SpecimenSessionBean().isSpecimenValid()){
+            
+            
+            
             //Persistir
             this.getinventory$SpecimenSessionBean().getInventoryFacade().saveSpecimen(
                     this.getinventory$SpecimenSessionBean().getCurrentSpecimenDTO());
@@ -348,6 +354,9 @@ public class EditSpecimen extends AbstractPageBean {
             //Mostrar mensaje de que no se puede persistir el currentSpecimenDTO
             MessageBean.setErrorMessageFromBundle("error_saving_specimen", this.getMyLocale());
         }
+        
+        this.getinventory$SpecimenSessionBean().getPagination().setReloadVariables(true);
+        
         return null;
         //Agregado por Paula Corrales
         /*this.getlabel$LabelSessionBean().setCurrentSpecimenDTO(this.getinventory$SpecimenSessionBean().getCurrentSpecimenDTO());

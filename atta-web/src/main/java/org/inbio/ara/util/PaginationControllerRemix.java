@@ -60,6 +60,8 @@ public class PaginationControllerRemix {
     //Propiedades de visibilidad de los botones
     private boolean isVisiblePrevious;
     private boolean isVisibleNext;
+    
+    private boolean reloadVariables = false;
 
     /**
      * Class constructor
@@ -94,6 +96,7 @@ public class PaginationControllerRemix {
     public void refreshList(){
                 setButtonsVisibility();
         this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
+        setReloadVariables(false);
     }
 
     public void nextResults() {
@@ -102,6 +105,7 @@ public class PaginationControllerRemix {
         //System.out.println("Total Results: " + getTotalResults());
         setButtonsVisibility();
         this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
+        setReloadVariables(false);
     }
 
     public void firstResults() {
@@ -109,6 +113,7 @@ public class PaginationControllerRemix {
         //System.out.println("Actual Page: " + getActualPage());
         setButtonsVisibility();
         this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
+        setReloadVariables(false);
     }
 
     public void previousResults() {
@@ -117,22 +122,44 @@ public class PaginationControllerRemix {
             //System.out.println("Actual Page: " + getActualPage());
             setButtonsVisibility();
             this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
+            setReloadVariables(false);
         }
     }
 
     public void lastResults() {
+        long timeI = System.currentTimeMillis();
+        long finalT = 0;
+        
         int lastRecords = getTotalResults()%resultsPerPage;
+        finalT = System.currentTimeMillis();
+        System.out.println("Duracion 1 = "+(finalT-timeI));
+        timeI = finalT;
         if (lastRecords != 0) { 
             actualPage = getTotalResults() - (getTotalResults()%resultsPerPage);
+            finalT = System.currentTimeMillis();
+            System.out.println("Duracion 2 = "+(finalT-timeI));
+            timeI = finalT;
         } else {
             actualPage = getTotalResults() - resultsPerPage;
+            finalT = System.currentTimeMillis();
+            System.out.println("Duracion 3 = "+(finalT-timeI));
+            timeI = finalT;
         }
         if (getActualPage() + resultsPerPage < getTotalResults()) {
             actualPage = getActualPage() + resultsPerPage;
+            finalT = System.currentTimeMillis();
+            System.out.println("Duracion 4 = "+(finalT-timeI));
+            timeI = finalT;
         }
         //System.out.println("Actual Page: " + getActualPage());
         setButtonsVisibility();
         this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
+        finalT = System.currentTimeMillis();
+        System.out.println("Duracion 5 = "+(finalT-timeI));
+        System.out.println("actualPage = "+getActualPage());
+        timeI = finalT;
+        
+        setReloadVariables(false);
     }
 
     private void setButtonsVisibility() {
@@ -225,5 +252,19 @@ public class PaginationControllerRemix {
      */
     public int getTotalResults() {
         return totalResults;
+    }
+
+    /**
+     * @return the reloadVariables
+     */
+    public boolean isReloadVariables() {
+        return reloadVariables;
+    }
+
+    /**
+     * @param reloadVariables the reloadVariables to set
+     */
+    public void setReloadVariables(boolean reloadVariables) {
+        this.reloadVariables = reloadVariables;
     }
 }
