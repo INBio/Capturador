@@ -390,6 +390,10 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     public int generateSpecimens() {
         /*return inventoryFacade.specimenGenerator(specimenDTO, identificationDTO,
                 lifeFormList, getSpecimenQuantity().intValue());*/
+        //identificationDTO.setUserName(this.getAraSessionBean().getGlobalUserName());
+        System.out.println("SPECIMEN GENERATION SESSION BEAN: GENERATE SPECIMENS");
+        System.out.println("Idto.USER = "+identificationDTO.getUserName());
+        
         return specimenGenerator(specimenDTO, identificationDTO,
                 lifeFormList, getSpecimenQuantity().intValue());
     }
@@ -421,6 +425,7 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
         sDTO.setCatalogNumber(inventoryFacade.getLastCatalogNumber(sDTO));
         
         sDTO.setUserName(this.getAraSessionBean().getGlobalUserName());
+        iDTO.setUserName(this.getAraSessionBean().getGlobalUserName());
         //Yes, I have or you assigned one to me
         //Are all of them available?
         catalogNumbersAvailable = inventoryFacade.catalogNumberChecker(sDTO.getCatalogNumber(),

@@ -199,11 +199,11 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
         //this.setPagination(new PaginationControllerRemix(inventoryFacade.countIdentifications(getAraSessionBean().getGlobalCollectionId()).intValue(), getQuantity(), this));
         this.setPagination(new PaginationControllerRemix(countAllIdentification().intValue(), getQuantity(), this));
         finalT = System.currentTimeMillis();
-        System.out.println("Tiempo de despues de this.setPagination) = "+(finalT-inicioT));
+        //System.out.println("Tiempo de despues de this.setPagination) = "+(finalT-inicioT));
         finalT=inicioT;
         this.getPagination().firstResults();
         finalT = System.currentTimeMillis();
-        System.out.println("Tiempo de despues de getPagination().firstResults()) = "+(finalT-inicioT));
+        //System.out.println("Tiempo de despues de getPagination().firstResults()) = "+(finalT-inicioT));
         finalT=inicioT;
     }
 
@@ -391,9 +391,7 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
 
     public List getResults(int firstResult, int maxResults) {
 
-        System.out.println("Ingresa al getResults de IndicationSessionBean");
-        System.out.println("firstResult = "+ firstResult +", maxResults = "+ maxResults);
-
+        
         long inicioT = System.currentTimeMillis();
         long finalT;
 

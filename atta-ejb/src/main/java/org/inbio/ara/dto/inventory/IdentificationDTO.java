@@ -23,13 +23,14 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import org.inbio.ara.dto.GenericDTO;
 
 /**
  * The fields will the comment "read only" will be ignored on persistence tasks
  *
  * @author asanabria
  */
-public class IdentificationDTO implements Serializable {
+public class IdentificationDTO extends GenericDTO implements Serializable {
 
     private boolean selected = false;
     private boolean multitaxon = false;

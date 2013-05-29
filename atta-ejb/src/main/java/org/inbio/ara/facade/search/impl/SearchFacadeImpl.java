@@ -334,13 +334,32 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     public List<IdentificationDTO>
             searchIdentificationByCriteria(IdentificationDTO inputDTO,
             int base, int offset) {
+        //System.out.println("--- SEARCH FACADE IMP: search identification by criteria ---");
         
-        List<Identification> identificationsList = new ArrayList();
+        List<Identification> identificationsList = new ArrayList<Identification>();
         Set<Long> identificationIds = getIdentificationIds(inputDTO);
 
-        identificationsList = getEntities(identificationIds,
+        identificationsList = (List<Identification>)getEntities(identificationIds,
                 Identification.class, base, offset);
+        //System.out.println("identification list = "+identificationsList.getClass());
+        List<IdentificationDTO> listResult = new ArrayList<IdentificationDTO>();
+        //System.out.println("Tamaño de la lista = "+identificationsList.size());
+        //System.out.println("Elemento 0 = "+identificationsList.get(0));
+        
+        //List<Identification> ltmp = identificationsList.get(0);
+        //System.out.println("identification tmp = "+ iTmp.getClass());
+        /*
+        for(Identification ident: identificationsList)
+        {
+            listResult.add(identificationDTOFactory.createDTO(ident));
+        }
+        * 
+        */
+        //IdentificationDTO tmpPrueba = identificationDTOFactory.createDTO(identificationsList.get(0));
+        //System.out.println("Primer elemento DTO = "+tmpPrueba);
+        //System.out.println("Primer elemento = "+identificationsList.get(0));
         return identificationDTOFactory.createDTOList(identificationsList);
+        //return listResult;
     }
 
     /**
@@ -1657,6 +1676,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     }
 
     private List getEntities(Set<Long> ids, Class t, int base, int offset) {
+        System.out.println("--- SEARCH FACADE: Get Entities ---");
         List entitiesList = new ArrayList();
 		Object[] sortedIdentificationIds = ids.toArray();
         java.util.Arrays.sort(sortedIdentificationIds);
@@ -1668,8 +1688,21 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                     baseCounter++;
                 } else if(entitiesCounter < offset) {
                     if(t == Identification.class) {
-                        entitiesList.add(identificationEAOImpl.
-                            findBySpecimenId((Long)id));
+                        /*
+                         * * El compilador no entiende las listas de listas, y al obtener el primer elemento y tratar
+                         * de almacenarlo en un List<Identification> da error, pero compila si el primer elemento se
+                         * almacena en un Identification Entity, pero en tiempo de ejecución se cae porque no puede
+                         * hacer el cast de un ArrayList a Identification.
+                         * 
+                         * Se modifico a addAll para eliminar el error de la perdida de la estructura de datos,
+                         * ahora no se almacenan listas de Identification, sino los Identification se agregan
+                         * en una sola lista. Cuando se realice la modificación para manejar multitaxon hay
+                         * que evaluar como resolver el problema de la estructura de listas de listas.                       
+                         * 
+                         */
+                        entitiesList.addAll(identificationEAOImpl.
+                            findBySpecimenId((Long)id));                        
+                        
                     } else if(t == Specimen.class) {
                         entitiesList.add(specimenEAOImpl.findById(t, (Long)id));
                     } else if(t == GatheringObservation.class) {

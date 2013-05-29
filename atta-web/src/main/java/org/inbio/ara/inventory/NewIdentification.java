@@ -231,8 +231,7 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
         int pos = 0;
         for(IdentificationDTO idDTO : identificationsSelected)
         {
-             System.out.println(idDTO.getCatalogNumber());
-             //identificationIds[pos] = new Long(idDTO.getCatalogNumber());
+             
              Option opt = new Option(new Long(optList.length), idDTO.getCatalogNumber());
              newList.add(opt);
              
@@ -402,7 +401,7 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
         // Make AddRemove components empty.
         if (reset) {
 
-            System.out.println("Resetar el identifierList y el taxonList de isb");
+            
             //isb.getArIdentifierList().setAvailableOptions(new Option[0]);
             //isb.getArIdentifierList().setSelectedOptions(new Long[0]);
             
@@ -522,14 +521,14 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
 
         int arrayLength = -1;
 
-        //En caso de que no se seleccione ningun elemento
+        //En caso de que no se seleccione ningun "Status"
         if ( (selectedStatus == null || selectedStatus == -1) && isb.getSpecimenBarcodeList().length < 1) {
             MessageBean.setErrorMessageFromBundle("not_status_selected",
                                                   this.getMyLocale());
             return null;
         }
 
-        //En caso de que no se seleccione ningun elemento
+        //En caso de que no se seleccione ningun "Taxon"
         if (selectedTaxons == null || selectedTaxons.length == 0) {
             MessageBean.setErrorMessageFromBundle("not_taxon_selected",
                                                   this.getMyLocale());
@@ -565,6 +564,8 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
             }
 
             iDTO.setIdentifiers(new ArrayList<IdentifierDTO>());
+            
+            iDTO.setUserName(this.getAraSessionBean().getGlobalUserName());
 
             // Agrega identificadores
             if (selectedIdentifiers != null) {
@@ -572,6 +573,7 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
                 // Agrega taxones
                 for (int t = 0; t < arrayLength; t++) {
                     newIdentifier = new IdentifierDTO(selectedIdentifiers[t]);
+                    
                     iDTO.getIdentifiers().add(newIdentifier);
                 }
             }
@@ -612,8 +614,7 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
  * @return List<IdentificationDTO>
  */
     public List<IdentificationDTO> processBarcodeListIdenfications(){
-
-        System.out.println("Entro a procesar las lista de identificacion");
+       
         IdentificationDTO aIdentification = null;
         SpecimenDTO specimenTmp = null;
 
@@ -623,16 +624,18 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
             new ArrayList<IdentificationDTO>();
 
         for(Option op : isb.getSpecimenBarcodeList()){
-
+            
             aIdentification =
                 (IdentificationDTO) isb.getInventoryFacade()
                     .getIdentificationByCatalogNumber(op.getLabel());
+            
             //poner codigo de si es nulo buscar por specimenId
             if(aIdentification == null)//Si es nulo buscarlo en los especimenes
             {
-                //System.out.println("Entro a crear una identificación de acuerdo a un especimen no identificado");
+                
+                
                 specimenTmp = isb.getInventoryFacade().getSpecimenByCatalogueNumber(op.getLabel());
-                //System.out.println("El specimen es "+specimenTmp);
+                
                 aIdentification = new IdentificationDTO();
                 aIdentification.setCatalogNumber(op.getLabel());
                 aIdentification.setCollectionId(specimenTmp.getCollectionId());
@@ -640,13 +643,15 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
             }
             
             if(aIdentification == null){ // si sigue siendo nulo entonces no existe
-                //System.out.println("No existe identificación ni especimen");
+                
                 MessageBean.
                         setErrorMessageFromBundle( "identification_does_not_exists"
                         ,this.getMyLocale()
                         , op.getLabel());
                 continue;
             }
+            
+            
 
             selectedIdentifications.add(aIdentification);
         }

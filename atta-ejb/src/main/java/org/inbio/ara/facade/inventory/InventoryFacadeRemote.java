@@ -207,6 +207,8 @@ public interface InventoryFacadeRemote {
     public void createLifeStageSex(java.util.List<org.inbio.ara.dto.inventory.LifeStageSexDTO> lssDTOList, java.lang.Long specimenId);
 
     public void createLifeForm(java.util.List<java.lang.Long> lifeFormIds, java.lang.Long specimenId);
+
+    public org.inbio.ara.persistence.person.Person findPersonById(java.lang.Long personId);
     
 }
 

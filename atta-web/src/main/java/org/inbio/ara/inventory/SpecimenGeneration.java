@@ -1614,6 +1614,8 @@ public class SpecimenGeneration extends AbstractPageBean {
 		}
 
         sgsb.getIdentificationDTO().setTaxa(taxonsDto);
+        sgsb.getIdentificationDTO().setUserName(this.getAraSessionBean().getGlobalUserName());
+        
         //Identifiers
         Long[] identifiersOp = sgsb.getArIdentifierList().getSelectedOptions();
         List<IdentifierDTO> identifiersDTO = new ArrayList<IdentifierDTO>();
@@ -1623,6 +1625,7 @@ public class SpecimenGeneration extends AbstractPageBean {
 			for(int i = 0; i < arrayLength; i++){
 				IdentifierDTO iAux = new IdentifierDTO();
 				iAux.setIdentifierKey(identifiersOp[i]);
+                                iAux.setUserName(this.getAraSessionBean().getGlobalUserName());
 				identifiersDTO.add(iAux);
 			}
 		}		

@@ -22,12 +22,13 @@ package org.inbio.ara.dto.inventory;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import org.inbio.ara.dto.GenericDTO;
 
 /**
  *
  * @author asanabria
  */
-public class IdentifierDTO  implements Serializable {
+public class IdentifierDTO extends GenericDTO implements Serializable {
 
 	private Long identifierKey;
 	private String identifierName;

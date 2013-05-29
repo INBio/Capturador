@@ -30,34 +30,7 @@ import org.inbio.ara.dto.agent.CollectionDTO;
 import org.inbio.ara.dto.agent.CollectionDTOFactory;
 import org.inbio.ara.dto.agent.InstitutionDTOFactory;
 import org.inbio.ara.dto.agent.ProfileDTOFactory;
-import org.inbio.ara.dto.inventory.GatheringObservationDTO;
-import org.inbio.ara.dto.inventory.GatheringObservationDTOFactory;
-import org.inbio.ara.dto.inventory.GatheringObservationDetailDTO;
-import org.inbio.ara.dto.inventory.GatheringObservationDetailDTOFactory;
-import org.inbio.ara.dto.inventory.IdentificationDTO;
-import org.inbio.ara.dto.inventory.IdentificationDTOFactory;
-import org.inbio.ara.dto.inventory.IdentificationHistoryDTOFactory;
-import org.inbio.ara.dto.inventory.IdentificationStatusDTO;
-import org.inbio.ara.dto.inventory.IdentificationStatusDTOFactory;
-import org.inbio.ara.dto.inventory.IdentificationTypeDTO;
-import org.inbio.ara.dto.inventory.IdentificationTypeDTOFactory;
-import org.inbio.ara.dto.inventory.IdentifierDTO;
-import org.inbio.ara.dto.inventory.IdentifierHistoryDTOFactory;
-import org.inbio.ara.dto.inventory.LifeStageSexDTO;
-import org.inbio.ara.dto.inventory.PersonDTO;
-import org.inbio.ara.dto.inventory.PersonDTOFactory;
-import org.inbio.ara.dto.inventory.ProjectDTO;
-import org.inbio.ara.dto.inventory.ProjectDTOFactory;
-import org.inbio.ara.dto.inventory.SelectionListDTO;
-import org.inbio.ara.dto.inventory.SelectionListDTOFactory;
-import org.inbio.ara.dto.inventory.SpecimenDTO;
-import org.inbio.ara.dto.inventory.SpecimenDTOFactory;
-import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
-import org.inbio.ara.dto.inventory.TaxonCategoryDTOFactory;
-import org.inbio.ara.dto.inventory.TaxonDTO;
-import org.inbio.ara.dto.inventory.TaxonDTOFactory;
-import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
-import org.inbio.ara.dto.inventory.TaxonomicalRangeDTOFactory;
+import org.inbio.ara.dto.inventory.*;
 import org.inbio.ara.eao.agent.InstitutionEAOLocal;
 import org.inbio.ara.eao.agent.PersonEAOLocal;
 import org.inbio.ara.eao.agent.PersonInstitutionEAOLocal;
@@ -201,6 +174,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
             new SelectionListDTOFactory();
     private IdentificationDTOFactory identificationDTOFactory =
             new IdentificationDTOFactory();
+     private IdentifierDTOFactory identifierDTOFactory =
+            new IdentifierDTOFactory();
     private IdentificationTypeDTOFactory identificationTypeDTOFactory =
             new IdentificationTypeDTOFactory();
     private IdentificationStatusDTOFactory identificationStatusDTOFactory =
@@ -255,7 +230,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         
         List<Specimen> sList = specimenEAOImpl.findAllPaginatedFilterAndOrderBy(Specimen.class,
                 first, totalResults, orderByFields, collectionId);
-        System.out.println("==========>  El date time del primer Specimen = "+sList.get(0).getDateTime());
+        
         finalT = System.currentTimeMillis();
         //System.out.println("Duracion en findAllPaginatedFilterAndOrderBy = "+(finalT-timeI));        
         
@@ -263,7 +238,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
             return null;
         List<SpecimenDTO> updated = updateCountryAndProvinceName(
                 specimenDTOFactory.createDTOList(sList));
-        System.out.println("==========>  El date time del primer SpecimenDTO = "+updated.get(0).getDateTime());
+        
         finalT = System.currentTimeMillis();
         //System.out.println("Duracion en updateCountryAndProvinceName = "+(finalT-timeI));        
         
@@ -977,6 +952,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     }
 
     public void reIdentify(List<IdentificationDTO> selectedIdentifications) {
+        
         // si no se seleccionaron identificaciones
         if (selectedIdentifications == null ||
                 selectedIdentifications.isEmpty()) {
@@ -991,6 +967,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
              * los identificadores a identifier_history (dentro de estos tambien
              * se guardan implicitamente los taxones)
              */
+            
             this.archiveIdentification(current);
 
             // Crea la nueva Identificacion
@@ -1065,7 +1042,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
             identificationSet = sp.getIdentificationList();
             if (identificationSet.size() > 0) {
                 //Lo convierte a DTO.
-                identDTO = identificationDTOFactory.createDTO(
+                identDTO = identificationDTOFactory.createIdentificationsDTO(
                         new ArrayList<Identification>(identificationSet));
                 identificationDTOList.add(identDTO);
             }
@@ -1183,7 +1160,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         //Yes
         for (String cn : catalogNumbersAvailable) {
             Specimen specimen = createSpecimen(sDTO);
-            System.out.println("El usuario para el catalogue number "+sDTO.getCatalogNumber()+" es "+sDTO.getUserName());
+            
             specimen.setCatalogNumber(cn);
             //Do I have Gath Obs Detail?
             if (matchCollectionProtocol(sDTO.getCollectionId(),
@@ -1246,6 +1223,9 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
     }
 
     private void createIdentification(IdentificationDTO iDTO) {
+        
+        
+        
         List<TaxonDTO> taxonList = iDTO.getTaxa();
         Long sequence = 1L;
         Long personKey = 0L;
@@ -1255,12 +1235,18 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
 
         for (TaxonDTO taxonDTO : taxonList) {
             Identification identification = new Identification();
+            
             IdentificationPK identificationPK =
                     new IdentificationPK(iDTO.getSpecimenKey(), sequence,
                     new GregorianCalendar());
-
+            
+            
             //DataEntryError
-            identification.setDataEntryError(iDTO.getDataEntryError());
+            //identification.setDataEntryError(iDTO.getDataEntryError());
+            //al llamar el getEntity carga el setDataEntryError y los valores genericos para el historial (created_by,...)
+            identification = identificationDTOFactory.createPlainEntity(iDTO);
+            
+            
             //Specimen
             identification.setSpecimen(specimenEAOImpl.findById(Specimen.class,
                     iDTO.getSpecimenKey()));
@@ -1277,10 +1263,12 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 }
 
             }
+            
             if (iDTO.getTypeId() != null) {
                 aType = identificationTypeEAOImpl.
                         findById(IdentificationType.class, iDTO.getTypeId());
 
+                
                 identification.setIdentificationType(aType);
 
             }
@@ -1297,6 +1285,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
             //IdentificationDate
             identification.setIdentificationDate(iDTO.getIdentificationDate());
 
+            
+            
             identificationEAOImpl.create(identification);
 
             //Set identifiers
@@ -1304,16 +1294,25 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
             if (identifiers != null) {
                 Long identifierSequence = 1L;
                 for (IdentifierDTO identifierDTO : identifiers) {
+                    
+                    identifierDTO.setUserName(iDTO.getUserName());
+                    
                     IdentifierPK pk = new IdentifierPK();
+                    
                     pk.setSpecimenId(iDTO.getSpecimenKey());
+                    
                     pk.setIdentificationSequence(sequence);
                     pk.setInitialTimestamp(new GregorianCalendar());
+                    
                     pk.setIdentifierPerson(personEAOImpl.findById(Person.class,
                             identifierDTO.getIdentifierKey()));
 
-                    Identifier identifier = new Identifier(pk);
+                    Identifier identifier = new Identifier();
+                    identifier = identifierDTOFactory.createPlainEntity(identifierDTO);
+                    identifier.setIdentifierPK(pk);
                     identifier.setIdentifierSequence(identifierSequence);
 
+                    
                     identifierEAOImpl.create(identifier);
                     identifierSequence++;
                 }
@@ -1328,7 +1327,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         Specimen specimen = new Specimen();
 
         
-        System.out.println("-- INVENTORY FACADE: CREATE SPECIMEN--");
+        //System.out.println("-- INVENTORY FACADE: CREATE SPECIMEN--");
         specimen = specimenDTOFactory.createPlainEntity(sDTO);
         /*
         specimen.setSpecimenCategoryId(sDTO.getCategoryId());
@@ -1357,8 +1356,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         }
         //specimen.setInstitutionId(sDTO.getInstitutionId());
         
-        System.out.println("-- user : "+sDTO.getUserName());
-        System.out.println("-- user : "+specimen.getCreatedBy());
+        //System.out.println("-- user : "+sDTO.getUserName());
+        //System.out.println("-- user : "+specimen.getCreatedBy());
         return specimen;
     }
 
@@ -1457,13 +1456,16 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
 
     public IdentificationDTO getIdentificationByCatalogNumber(String catalogNumber){
 
+        
         // get the identifications
         List<Identification> identList =
                 identificationEAOImpl.findByCatalogNumber(catalogNumber);
 
+        
         IdentificationDTOFactory idtof = new IdentificationDTOFactory();
 
-        IdentificationDTO result = idtof.createDTO(identList);
+        IdentificationDTO result = idtof.createIdentificationsDTO(identList);
+        
 
         return result;
     }
@@ -1509,13 +1511,13 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
             SpecimenDTO sDTO, IdentificationDTO iDTO,
             List<LifeStageSexDTO> lssDTOList, List<Long> lifeForms)
     {
-        System.out.println("-- INVENTORY Facade: SPECIMEN GENERATION --");
+        
         List<SpecimenDTO> result = new ArrayList<SpecimenDTO> ();
         for (String cn : catalogNumbersAvailable) {
-                System.out.println("Creando el catalogue number = " + cn);
+                //System.out.println("Creando el catalogue number = " + cn);
                 Specimen specimen = createSpecimen(sDTO);
                 //Specimen specimen = specimenDTOFactory.createPlainEntity(sDTO);
-                System.out.println("Creado el specimenDTO = " + cn);
+                //System.out.println("Creado el specimenDTO = " + cn);
                 specimen.setCatalogNumber(cn);
                 //Do I have Gath Obs Detail?
                 if (matchCollectionProtocol(sDTO.getCollectionId(),
@@ -1525,15 +1527,16 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                     specimen.setGatheringObservationDetailId(sDTO.
                             getGatheringObservationDetailId());
                 }
-                System.out.println(" -- user : "+specimen.getCreatedBy());
+                //System.out.println(" -- user : "+specimen.getCreatedBy());
                 //CREATE SPECIMEN
                 specimenEAOImpl.create(specimen);                
                 //result.add(specimen.getCatalogNumber());
                 //BORAR
-                System.out.println("Nuevo tamaño de List<String> CatalogNumber = "+result.size());
+                //System.out.println("Nuevo tamaño de List<String> CatalogNumber = "+result.size());
                 //Identification?
                 //Yes
                 if (iDTO != null) {
+                    
                     iDTO.setSpecimenKey(specimen.getSpecimenId());
                     createIdentification(iDTO);
                     if(sDTO.getCategoryId() != SpecimenCategoryEntity.
@@ -1554,16 +1557,19 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                     createLifeForm(lifeForms, specimen.getSpecimenId());
                 }
                 //aqui se puede consultar el nuevo SpecimenDTO por catalogueNumber
-                System.out.println("-- (catalogNumber) = " + cn);
+                
                 Specimen tmp = specimenEAOImpl.findSpecimenByCatalogNumber(cn);
-                System.out.println("SpecimenLifeStageSexList = "+tmp.getSpecimenLifeStageSexList());
-                System.out.println("SpecimenLifeStageSexList = "+tmp.getInstitution());
+                
                 result.add(specimenDTOFactory.createDTO(tmp));
             }
         return result;
     }
     
     
+    public Person findPersonById(Long personId)
+    {
+        return (Person) personEAOImpl.findById(Person.class, personId);
+    }
     
     
 

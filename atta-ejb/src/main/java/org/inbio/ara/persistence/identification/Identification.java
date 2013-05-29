@@ -39,6 +39,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import org.inbio.ara.persistence.GenericEntity;
+import org.inbio.ara.persistence.LogGenericEntity;
 import org.inbio.ara.persistence.person.Person;
 import org.inbio.ara.persistence.specimen.Specimen;
 
@@ -48,7 +49,7 @@ import org.inbio.ara.persistence.specimen.Specimen;
  */
 @Entity
 @Table(name = "identification")
-public class Identification extends GenericEntity {
+public class Identification extends LogGenericEntity {
 
     @EmbeddedId
     protected IdentificationPK identificationPK;

@@ -205,13 +205,13 @@ public class SpecimenDTOFactory extends BaseEntityOrDTOFactory<Specimen,Specimen
          List<LifeStageSexDTO> lssDTOList = new ArrayList<LifeStageSexDTO>();
          SelectionListDTO lifeStageDTO;
          SelectionListDTO sexDTO;
-         System.out.println("Specimen utilizado = " + s);
-         System.out.println("Resultado de buscar estadios = " + s.getSpecimenLifeStageSexList());
+         //System.out.println("Specimen utilizado = " + s);
+         //System.out.println("Resultado de buscar estadios = " + s.getSpecimenLifeStageSexList());
          Set<SpecimenLifeStageSex> tmpList = s.getSpecimenLifeStageSexList();
          if(tmpList != null)
          {
             for(SpecimenLifeStageSex slss : tmpList){
-                System.out.println("-- Entro al ciclo");
+           //     System.out.println("-- Entro al ciclo");
                 if(slss.getLifeStage()!=null && slss.getSex()!=null){
                     lifeStageDTO = new SelectionListDTO(slss.getLifeStage().getSelectionListEntity().getId(), slss.getLifeStage().getId(), slss.getLifeStage().getName(),slss.getLifeStage().getDescription());
                     sexDTO = new SelectionListDTO(slss.getSex().getSelectionListEntity().getId(), slss.getSex().getId(), slss.getSex().getName(), slss.getSex().getDescription());
@@ -223,15 +223,15 @@ public class SpecimenDTOFactory extends BaseEntityOrDTOFactory<Specimen,Specimen
          
          
          sDTO.setLifeStageSexList(lssDTOList);
-         System.out.println("Factory, Institution = "+sDTO.getInstitutionCode());
-         System.out.println("Factory, Institution = "+institution);
+         //System.out.println("Factory, Institution = "+sDTO.getInstitutionCode());
+         //System.out.println("Factory, Institution = "+institution);
          
          return sDTO;
     }
 
     @Override
     public Specimen getEntityWithPlainValues(SpecimenDTO dto) {
-        System.out.println("--- SPECIMEN FACTORY DTO: GET ENTITY WITH PLAIN VALUES---");
+        //System.out.println("--- SPECIMEN FACTORY DTO: GET ENTITY WITH PLAIN VALUES---");
         if(dto==null){
             return null;
         }
@@ -241,7 +241,7 @@ public class SpecimenDTOFactory extends BaseEntityOrDTOFactory<Specimen,Specimen
         s.setInstitutionId(dto.getInstitutionId());
         s.setCatalogNumber(dto.getCatalogNumber());
         
-        System.out.println("gathering observation = "+ dto.getGatheringObsevationId());
+        //System.out.println("gathering observation = "+ dto.getGatheringObsevationId());
         //System.out.println("gathering observation impl = "+ gatheringObservationEAOImpl);
         //GatheringObservation gathObs = gatheringObservationEAOImpl.findById( GatheringObservation.class, dto.getGatheringObsevationId());
         //se persiste afuera
