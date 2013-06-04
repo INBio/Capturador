@@ -231,6 +231,8 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         List<Specimen> sList = specimenEAOImpl.findAllPaginatedFilterAndOrderBy(Specimen.class,
                 first, totalResults, orderByFields, collectionId);
         
+        
+        
         finalT = System.currentTimeMillis();
         //System.out.println("Duracion en findAllPaginatedFilterAndOrderBy = "+(finalT-timeI));        
         
@@ -241,7 +243,7 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
         
         finalT = System.currentTimeMillis();
         //System.out.println("Duracion en updateCountryAndProvinceName = "+(finalT-timeI));        
-        
+        //actualiza los nombres cientificos
         return updateScientificName(updated);
     }
 
@@ -1559,10 +1561,16 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 //aqui se puede consultar el nuevo SpecimenDTO por catalogueNumber
                 
                 Specimen tmp = specimenEAOImpl.findSpecimenByCatalogNumber(cn);
-                
-                result.add(specimenDTOFactory.createDTO(tmp));
+                SpecimenDTO tmpDTO =specimenDTOFactory.createDTO(tmp);
+                //completando la información de la identificcación                
+                //tmpDTO.setTaxonName(sDTO.getTaxonName());
+                //for(TaxonDTO taxonDTO: iDTO.getT)
+                System.out.println("TaxonId = "+sDTO.getTaxonId());
+                System.out.println("TaxonName = "+sDTO.getTaxonName());
+                System.out.println("TaxonString = "+iDTO.getTaxonString());
+                result.add(tmpDTO);
             }
-        return result;
+        return updateScientificName(result);
     }
     
     

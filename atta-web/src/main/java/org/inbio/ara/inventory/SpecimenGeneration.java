@@ -1672,6 +1672,7 @@ public class SpecimenGeneration extends AbstractPageBean {
                     //Limpiar pantalla de generación
                     this.cleanGenerationPage();
                     this.setShowSpecimens(true);
+                    
                     //Succes message
                     MessageBean.setSuccessMessageFromBundle
                     ("specimen_generation_success", this.getMyLocale());
