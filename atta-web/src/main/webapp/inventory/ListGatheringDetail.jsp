@@ -72,7 +72,7 @@
                                             </h:column>
                                             <h:column>
                                                 <f:facet name="header">
-                                                    <h:outputText value="#{resources.gathering_number}"/>
+                                                    <h:outputText value="#{resources.record_number}"/>
                                                 </f:facet>
                                                 <h:outputText value="#{currentRow['gatheringObservationDetailNumber']}"/>
                                             </h:column>

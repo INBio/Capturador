@@ -1562,12 +1562,6 @@ public class InventoryFacadeImpl implements InventoryFacadeRemote {
                 
                 Specimen tmp = specimenEAOImpl.findSpecimenByCatalogNumber(cn);
                 SpecimenDTO tmpDTO =specimenDTOFactory.createDTO(tmp);
-                //completando la información de la identificcación                
-                //tmpDTO.setTaxonName(sDTO.getTaxonName());
-                //for(TaxonDTO taxonDTO: iDTO.getT)
-                System.out.println("TaxonId = "+sDTO.getTaxonId());
-                System.out.println("TaxonName = "+sDTO.getTaxonName());
-                System.out.println("TaxonString = "+iDTO.getTaxonString());
                 result.add(tmpDTO);
             }
         return updateScientificName(result);

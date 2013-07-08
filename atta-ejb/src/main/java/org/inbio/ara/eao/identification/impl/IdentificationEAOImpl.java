@@ -179,6 +179,40 @@ public class IdentificationEAOImpl
 
         return q.getResultList();
     }
+     
+     
+      public List<Long> findByGathObsDetailId(Long gathObsDetailId, Long collection_id) {
+        
+          String query = "select sp.specimenId from Specimen as sp where " +
+                "sp.gatheringObservationDetailId = :gathObsDetailId "+ 
+                "and sp.collectionId = :collectionId "+
+                "and sp.identificationList is not empty";
+        
+          
+     
+          
+        Query q = em.createQuery(query);
+        
+        q.setParameter("gathObsDetailId", gathObsDetailId);
+        q.setParameter("collectionId", collection_id);
+        
+        return q.getResultList();
+    }
+      
+    
+      public List<Long> findByGathObsDetailId(Long gathObsDetailId) {
+        
+          String query = "select sp.specimenId from Specimen as sp where " +
+                "sp.gatheringObservationDetailId = :gathObsDetailId "+                 
+                "and sp.identificationList is not empty";
+      
+        Query q = em.createQuery(query);
+        
+        q.setParameter("gathObsDetailId", gathObsDetailId);        
+        
+        return q.getResultList();
+    }
+    
 
 
 

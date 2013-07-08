@@ -1080,3 +1080,9 @@ UPDATE atta.collection_protocol SET value='true' WHERE value = 'si';
 -- Aplica soloo para Atta Interno
 UPDATE atta.identification_status SET name='Valida' WHERE name = 'V';
 UPDATE atta.identification_status SET name='Temporal' WHERE name = 'T';
+
+---- 2013-05-05
+CREATE INDEX idx_gatheringobsdet_gatobsid
+  ON atta.gathering_observation_detail
+  USING btree
+  (gathering_observation_id );

@@ -34,6 +34,7 @@ import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.search.SearchFacadeRemote;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Set;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.PaginationControllerRemix;
@@ -216,6 +217,19 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
         return (AraSessionBean) getBean("AraSessionBean");
     }
 
+     /**
+     * La idea de este metodo es poder preguntar si determinado protocolo esta activado o no
+     * para una determinada colleccion
+     * @param collectionId
+     * @param protocolAtributeId
+     * @param value corresponde a alguno de los valores posibles para saber si el protocolo esta
+     * "activado" o "desactivado"
+     * @return
+     */
+    public boolean matchCollectionProtocol(Long collectionId, Long protocolAtributeId, String value) {
+        return this.inventoryFacade.matchCollectionProtocol(collectionId, protocolAtributeId, value);
+    }
+    
     public InventoryFacadeRemote getInventoryFacade() {
         return inventoryFacade;
     }
@@ -409,13 +423,19 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
                 IdentificationDTO idto = queryIdentificationDTO;
                 idto.setCollectionId(collectionId);
                 try {
-                    getPagination().setTotalResults(getSearchFacade().countIdentificationByCriteria(idto).intValue());
+                    
+                    Set<Long> identificationResults = getSearchFacade().getIdentificationIds(idto);
+                    
+                    //Integer count = ;
+                    //i.longValue();
+                    getPagination().setTotalResults(identificationResults.size());
+                    //getPagination().setTotalResults(getSearchFacade().countIdentificationByCriteria(idto).intValue());
 
                     //finalT= System.currentTimeMillis();
                     //System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
 
                     return myReturn(searchFacade.searchIdentificationByCriteria(idto,
-                            firstResult, maxResults));
+                            firstResult, maxResults, identificationResults));
                 } catch (Exception e) {
 
                     //finalT= System.currentTimeMillis();

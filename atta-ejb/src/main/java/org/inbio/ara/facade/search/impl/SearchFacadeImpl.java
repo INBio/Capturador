@@ -333,14 +333,18 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      */
     public List<IdentificationDTO>
             searchIdentificationByCriteria(IdentificationDTO inputDTO,
-            int base, int offset) {
+            int base, int offset, Set<Long> identIds) {
         //System.out.println("--- SEARCH FACADE IMP: search identification by criteria ---");
         
         List<Identification> identificationsList = new ArrayList<Identification>();
-        Set<Long> identificationIds = getIdentificationIds(inputDTO);
+        
+        //pasar por parametro
+       //Set<Long> identificationIds = getIdentificationIds(inputDTO);
 
-        identificationsList = (List<Identification>)getEntities(identificationIds,
-                Identification.class, base, offset);
+        //identificationsList = (List<Identification>)getEntities(identificationIds,
+          //    Identification.class, base, offset);
+        identificationsList = (List<Identification>)getEntities(identIds,
+             Identification.class, base, offset);
         //System.out.println("identification list = "+identificationsList.getClass());
         List<IdentificationDTO> listResult = new ArrayList<IdentificationDTO>();
         //System.out.println("Tamaño de la lista = "+identificationsList.size());
@@ -368,7 +372,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      * @param inputDTO Built in the advanced search
      * @return Set of identification Ids.
      */
-    private Set<Long> getIdentificationIds(IdentificationDTO inputDTO) {
+    public Set<Long> getIdentificationIds(IdentificationDTO inputDTO) {
         Set<Long> identificationIds = new HashSet();
 
         boolean firstFilter = true; //helps with the intersection of data
@@ -379,10 +383,11 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         Long statusId = inputDTO.getStatusId();
         Long typeId = inputDTO.getTypeId();
         Long collectionId = inputDTO.getCollectionId();
-
+        String gathObsDetailNumber = inputDTO.getGathObsDetailNumber();
+        String gathObsCollector = inputDTO.getCollectorNameGathObsDetail();
                
         
-        
+        System.out.println("SEARCH FACADE: getIdentification");
             
         if(catalogNumber != null && !catalogNumber.trim().isEmpty()) {
             
@@ -391,6 +396,30 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             firstFilter = false;
             
         }
+        
+        //para filtrar por Número de registro (Número de colecta)
+        if(gathObsDetailNumber != null) {
+            
+            HashSet<Long> tmpSet = new HashSet();
+            List<Long> gathObsDetails = gatheringObservationDetailEAOImpl.findByGathObsDetailNumber(gathObsDetailNumber);
+            
+            List<Long> specimenIds = new ArrayList<Long>();
+            
+            for(Long gathObsDetailId : gathObsDetails)
+            {
+               specimenIds.addAll(identificationEAOImpl.findByGathObsDetailId(gathObsDetailId, collectionId));
+            }
+            
+            tmpSet.addAll(specimenIds);
+              if(firstFilter) {
+                identificationIds.addAll(tmpSet);
+                firstFilter = false;
+            } else {
+                identificationIds.retainAll(tmpSet);
+            }
+            
+        }
+        
         if(taxonName != null && !taxonName.trim().isEmpty()) {
             
             HashSet<Long> tmpSet = new HashSet();
@@ -430,6 +459,37 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             }
             
         }
+        
+        if(gathObsCollector != null)
+        {
+             HashSet<Long> tmpSet = new HashSet();
+             
+             List<Person> personId = personEAOImpl.
+                        findByName(gathObsCollector);
+             System.out.println("person = "+personId.size());
+                for (Person person : personId) {
+                    List<Long> gathObsDetailIds = gatheringObservationDetailEAOImpl.findByResponsibleId(person.getPersonId());
+                    System.out.println("gathObsDetail = "+ gathObsDetailIds.size());
+                    
+                    
+                    List<Long> specimenIds = new ArrayList<Long>();
+                    for(Long gathObsDetailId : gathObsDetailIds)
+                    {
+                        System.out.println("gathObsDetailId = "+ gathObsDetailId);
+                        specimenIds.addAll(identificationEAOImpl.findByGathObsDetailId(gathObsDetailId, collectionId));
+                    }
+                    System.out.println("specimens = "+specimenIds.size());
+                    tmpSet.addAll(specimenIds);                
+                }
+                
+               if(firstFilter) {
+                    identificationIds.addAll(tmpSet);
+                    firstFilter = false;
+                } else {
+                    identificationIds.retainAll(tmpSet);
+                }
+        }
+        
         if(statusId != null) {
             
             List<Long> specimenList =
@@ -558,6 +618,17 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                         findSpecimensByIdentifierId(person.getPersonId());
                 finalSpecimenIds.addAll(specimensByIdentifier);
             }
+            
+            /*************** BUSQUEDA POR GATHERING OBSERVATION NUMBER **************/            
+            List<Long> gathObsDetails = gatheringObservationDetailEAOImpl.findByGathObsDetailNumber(inputString);
+            
+            List<Long> specimenByGathObsDetail = new ArrayList<Long>();
+            
+            for(Long gathObsDetailId : gathObsDetails)
+            {
+               specimenByGathObsDetail.addAll(identificationEAOImpl.findByGathObsDetailId(gathObsDetailId));
+            }
+            finalSpecimenIds.addAll(specimenByGathObsDetail);
 
         }
         //Me parece innecesario este for, ya esa busqueda la hace arriba

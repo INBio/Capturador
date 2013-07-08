@@ -31,5 +31,7 @@ public interface GatheringObservationDetailEAOLocal extends BaseLocalEAO<Gatheri
     public List<Long> findByGathObsDetailId(Long gathObsId);
 
     public java.lang.Long countByGathObsId(java.lang.Long gathObsId);
+
+    public java.util.List<java.lang.Long> findByGathObsDetailNumber(java.lang.String gathObsDetailNumber);
     
 }

@@ -20,10 +20,7 @@
 
 package org.inbio.ara.facade.search;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import javax.ejb.Remote;
 import org.inbio.ara.dto.gis.SiteDTO;
 import org.inbio.ara.dto.inventory.GatheringObservationDTO;
@@ -110,7 +107,7 @@ public interface SearchFacadeRemote {
      *********************** ===IDENTIFICATION=== ******************************
      **************************************************************************/
     public List<IdentificationDTO> searchIdentificationByCriteria(
-            IdentificationDTO inputDTO, int base, int offset);
+            IdentificationDTO inputDTO, int base, int offset, Set<Long> identIds);
     /**
      *
      * @param query String unstructured query
@@ -190,4 +187,8 @@ public interface SearchFacadeRemote {
             TransactedSpecimenDTO inputTransactedSpecimenDTO);
 
     public Long countTransactionsByCriteria(String query, Long collectionId);
+
+    public java.util.Set<java.lang.Long> getIdentificationIds(org.inbio.ara.dto.inventory.IdentificationDTO inputDTO);
+
+    
 }

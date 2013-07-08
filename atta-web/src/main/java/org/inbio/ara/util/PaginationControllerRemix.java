@@ -94,6 +94,7 @@ public class PaginationControllerRemix {
     }
 
     public void refreshList(){
+        //System.out.println("Refrescando la lista");
                 setButtonsVisibility();
         this.dataProvider.setList(paginationCore.getResults(getActualPage(),resultsPerPage));
         setReloadVariables(false);

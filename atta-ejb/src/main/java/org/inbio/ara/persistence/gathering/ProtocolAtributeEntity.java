@@ -25,8 +25,8 @@ package org.inbio.ara.persistence.gathering;
  * @author esmata
  */
 public enum ProtocolAtributeEntity {
-    USE_GATHERING_DETAIL(new Long(1)),
-    USE_LIFE_FORM(new Long(5));
+    USE_GATHERING_DETAIL(new Long(2)),
+    USE_LIFE_FORM(new Long(1));
 
     private Long id;
 

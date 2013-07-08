@@ -37,7 +37,7 @@
                                             selected="#{inventory$GatheringDetailSessionBean.currentDetail.gatheringObservationDetailPersonId}"
                                             style="left: 240px; top: 48px; position: absolute; width: 190px" width="192px"/>
                                         <webuijsf:label for="txGatheringNumber" id="lbGatheringNumber" requiredIndicator="true"
-                                            style="height: 24px; left: 72px; top: 24px; position: absolute; width: 164px" text="#{resources.gathering_number}"/>
+                                                        style="height: 24px; left: 72px; top: 24px; position: absolute; width: 164px" text="#{resources.record_number}"/>
                                         <webuijsf:textField binding="#{inventory$EditGatheringDetail.txGathNumber}" columns="26" id="txGatheringNumber"
                                             required="true" style="left: 240px; top: 24px; position: absolute"/>
                                         <webuijsf:label id="lbmorphodes" style="height: 24px; left: 72px; top: 115px; position: absolute; width: 164px" text="#{resources.morphological_description}"/>

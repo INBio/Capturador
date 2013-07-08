@@ -51,6 +51,11 @@ public class IdentificationDTO extends GenericDTO implements Serializable {
     private Calendar identificationDate;
     private List<IdentifierDTO> identifiers;
     private List<TaxonDTO> taxa;
+    
+    private String gathObsDetailNumber;
+    private Long collectorGathObsDetail;
+    private String collectorNameGathObsDetail;
+    
     /**
      * OJO: este atributo debera ser "seteado" en el facade correspondiente
      * con un string formado por los diferentes identificadores que se
@@ -329,4 +334,48 @@ public class IdentificationDTO extends GenericDTO implements Serializable {
     public void setGatheringObservationId(Long gatheringObservationId) {
         this.gatheringObservationId = gatheringObservationId;
     }
+
+    /**
+     * @return the gathObsDetailNumber
+     */
+    public String getGathObsDetailNumber() {
+        return gathObsDetailNumber;
+    }
+
+    /**
+     * @param gathObsDetailNumber the gathObsDetailNumber to set
+     */
+    public void setGathObsDetailNumber(String gathObsDetailNumber) {
+        this.gathObsDetailNumber = gathObsDetailNumber;
+    }
+
+    /**
+     * @return the collectorGathObsDetail
+     */
+    public Long getCollectorGathObsDetail() {
+        return collectorGathObsDetail;
+    }
+
+    /**
+     * @param collectorGathObsDetail the collectorGathObsDetail to set
+     */
+    public void setCollectorGathObsDetail(Long collectorGathObsDetail) {
+        this.collectorGathObsDetail = collectorGathObsDetail;
+    }
+
+    /**
+     * @return the collectorNameGathObsDetail
+     */
+    public String getCollectorNameGathObsDetail() {
+        return collectorNameGathObsDetail;
+    }
+
+    /**
+     * @param collectorNameGathObsDetail the collectorNameGathObsDetail to set
+     */
+    public void setCollectorNameGathObsDetail(String collectorNameGathObsDetail) {
+        this.collectorNameGathObsDetail = collectorNameGathObsDetail;
+    }
+
+   
 }

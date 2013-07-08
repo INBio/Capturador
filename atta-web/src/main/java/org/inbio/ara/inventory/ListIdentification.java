@@ -21,6 +21,7 @@ import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.DropDown;
 import com.sun.webui.jsf.component.Table;
 import com.sun.webui.jsf.component.TextField;
+import com.sun.webui.jsf.component.Label;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.OptionTitle;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
@@ -31,8 +32,10 @@ import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlColumn;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlPanelGrid;
+
 import javax.faces.context.FacesContext;
 import javax.faces.component.html.HtmlInputHidden;
 import org.inbio.ara.AraSessionBean;
@@ -44,6 +47,8 @@ import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.label.LabelSessionBean;
+import org.inbio.ara.persistence.gathering.CollectionProtocolValuesEntity;
+import org.inbio.ara.persistence.gathering.ProtocolAtributeEntity;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
@@ -85,6 +90,10 @@ public class ListIdentification extends AbstractPageBean {
     private HtmlCommandButton btnAdvSeach = new HtmlCommandButton();
     private HtmlCommandButton btnReIdentify = new HtmlCommandButton();
     private TextField txCatalogNumber = new TextField();
+    
+    private TextField txGathObsDetail = new TextField();
+    private TextField txGathObsDetCollector = new TextField();
+    
     private TextField txTaxonName = new TextField();
     private TextField txIdentifierName = new TextField();
     // DropDown
@@ -112,6 +121,15 @@ public class ListIdentification extends AbstractPageBean {
 
 
     private HtmlInputHidden deleteConfirmationText = new HtmlInputHidden();
+    private HtmlColumn gathObsDetailColumn = new HtmlColumn();
+    private HtmlColumn collectorGathObsDetailColumn = new HtmlColumn();
+    private HtmlColumn catgNumberColumnFirst = new HtmlColumn();
+    private HtmlColumn catgNumberColumnLast = new HtmlColumn();
+    
+    private Label lbGathObsDetail = new Label();
+    private Label lbGathObsDetCollector = new Label();
+    private  boolean proceedSearch = false;
+    
     /**
      * <p>Construct a new Page bean instance.</p>
      */
@@ -191,6 +209,7 @@ public class ListIdentification extends AbstractPageBean {
         
         //------------------------------ Control de GUI -------------------------------
         if (isb.isAdvancedSearch()) {
+            
             //Muestra el panel de busqueda avanzada
             this.gridpAdvancedSearch.setRendered(true);
         } //Verifica si esta re-identificando y muestra el panel
@@ -198,20 +217,36 @@ public class ListIdentification extends AbstractPageBean {
             //Muestra el panel de reidentificacion
             this.gridpReIdentify.setRendered(true);
         }
+        Long currentColl = this.getAraSessionBean().getGlobalCollectionId();
+        boolean useDetail = this.getIdentificationSessionBean().matchCollectionProtocol(currentColl,
+                    ProtocolAtributeEntity.USE_GATHERING_DETAIL.getId(),
+                    CollectionProtocolValuesEntity.TRUE_VALUE.getValue());
+        this.gathObsDetailColumn.setRendered(useDetail);
+        this.txGathObsDetail.setRendered(useDetail);
+        this.lbGathObsDetail.setRendered(useDetail);
+        this.txGathObsDetCollector.setRendered(useDetail);
+        this.lbGathObsDetCollector.setRendered(useDetail);
+        this.catgNumberColumnFirst.setRendered(!useDetail);
+        this.catgNumberColumnLast.setRendered(useDetail);
+        this.collectorGathObsDetailColumn.setRendered(useDetail);
         
         //-------------------------- Control de Paginador ------------------------------
         //Inicializar el dataprovider la primera vez (si la paginación es nula)
         //long inicioT = System.currentTimeMillis();
         long finalT;
         if (isb.getPagination()==null) {
-        //    System.out.println("Entro donde la paginacion es nula");
+            System.out.println("Entro donde la paginacion es nula");
             isb.initDataProvider();
         }
         //Actualizar los datos del paginador
         else
         {
-          //  System.out.println("Entro donde la paginacion NO es nula");
-            isb.getPagination().refreshList();
+            System.out.println("Entro donde la paginacion NO es nula");
+            if(!isProceedSearch())
+            {
+                isb.getPagination().refreshList();
+                this.proceedSearch = false;
+            }
         }
         //finalT = System.currentTimeMillis();
         //System.out.println("Tiempo al finalizar el prerender = "+(finalT-inicioT));
@@ -428,15 +463,29 @@ public class ListIdentification extends AbstractPageBean {
         String indentifiersString = "";
         IdentificationDTO consulta = new IdentificationDTO();
         List<IdentifierDTO> identifierList = new ArrayList();
+        
 
         IdentificationSessionBean isb = this.getIdentificationSessionBean();
 
         // retrieve the necesary values from the interface bindings.
         String catalogNumber = (String) txCatalogNumber.getValue();
         String taxonName = (String) txTaxonName.getValue();
+        String gathObsDetail = (String)txGathObsDetail.getValue();
+        String gathObsDetCollector = (String)txGathObsDetCollector.getValue();
 
+        this.proceedSearch = true;
+        
         if (catalogNumber != null && !catalogNumber.isEmpty()) {
             consulta.setCatalogNumber(catalogNumber);
+        }
+        
+        if (gathObsDetail != null && !gathObsDetail.isEmpty()) {
+            consulta.setGathObsDetailNumber(gathObsDetail);
+        }
+        
+         if (gathObsDetCollector != null && !gathObsDetCollector.isEmpty()) {
+            consulta.setCollectorNameGathObsDetail(gathObsDetCollector);
+             
         }
 
         if (taxonName != null && !taxonName.isEmpty()) {
@@ -730,5 +779,133 @@ public class ListIdentification extends AbstractPageBean {
     
 
    // </editor-fold>
+
+    /**
+     * @return the txGathObsDetail
+     */
+    public TextField getTxGathObsDetail() {
+        return txGathObsDetail;
+    }
+
+    /**
+     * @param txGathObsDetail the txGathObsDetail to set
+     */
+    public void setTxGathObsDetail(TextField txGathObsDetail) {
+        this.txGathObsDetail = txGathObsDetail;
+    }
+
+    /**
+     * @return the proceedSearch
+     */
+    public boolean isProceedSearch() {
+        return proceedSearch;
+    }
+
+    /**
+     * @param proceedSearch the proceedSearch to set
+     */
+    public void setProceedSearch(boolean proceedSearch) {
+        this.proceedSearch = proceedSearch;
+    }
+
+    /**
+     * @return the gathObsDetailColumn
+     */
+    public HtmlColumn getGathObsDetailColumn() {
+        return gathObsDetailColumn;
+    }
+
+    /**
+     * @param gathObsDetailColumn the gathObsDetailColumn to set
+     */
+    public void setGathObsDetailColumn(HtmlColumn gathObsDetailColumn) {
+        this.gathObsDetailColumn = gathObsDetailColumn;
+    }
+
+    /**
+     * @return the lbGathObsDetail
+     */
+    public Label getLbGathObsDetail() {
+        return lbGathObsDetail;
+    }
+
+    /**
+     * @param lbGathObsDetail the lbGathObsDetail to set
+     */
+    public void setLbGathObsDetail(Label lbGathObsDetail) {
+        this.lbGathObsDetail = lbGathObsDetail;
+    }
+
+    /**
+     * @return the catgNumberColumnFirst
+     */
+    public HtmlColumn getCatgNumberColumnFirst() {
+        return catgNumberColumnFirst;
+    }
+
+    /**
+     * @param catgNumberColumnFirst the catgNumberColumnFirst to set
+     */
+    public void setCatgNumberColumnFirst(HtmlColumn catgNumberColumnFirst) {
+        this.catgNumberColumnFirst = catgNumberColumnFirst;
+    }
+
+    /**
+     * @return the catgNumberColumnLast
+     */
+    public HtmlColumn getCatgNumberColumnLast() {
+        return catgNumberColumnLast;
+    }
+
+    /**
+     * @param catgNumberColumnLast the catgNumberColumnLast to set
+     */
+    public void setCatgNumberColumnLast(HtmlColumn catgNumberColumnLast) {
+        this.catgNumberColumnLast = catgNumberColumnLast;
+    }
+
+    /**
+     * @return the collectorGathObsDetailColumn
+     */
+    public HtmlColumn getCollectorGathObsDetailColumn() {
+        return collectorGathObsDetailColumn;
+    }
+
+    /**
+     * @param collectorGathObsDetailColumn the collectorGathObsDetailColumn to set
+     */
+    public void setCollectorGathObsDetailColumn(HtmlColumn collectorGathObsDetailColumn) {
+        this.collectorGathObsDetailColumn = collectorGathObsDetailColumn;
+    }
+
+    /**
+     * @return the lbGathObsDetCollector
+     */
+    public Label getLbGathObsDetCollector() {
+        return lbGathObsDetCollector;
+    }
+
+    /**
+     * @param lbGathObsDetCollector the lbGathObsDetCollector to set
+     */
+    public void setLbGathObsDetCollector(Label lbGathObsDetCollector) {
+        this.lbGathObsDetCollector = lbGathObsDetCollector;
+    }
+
+    /**
+     * @return the txGathObsDetCollector
+     */
+    public TextField getTxGathObsDetCollector() {
+        return txGathObsDetCollector;
+    }
+
+    /**
+     * @param txGathObsDetCollector the txGathObsDetCollector to set
+     */
+    public void setTxGathObsDetCollector(TextField txGathObsDetCollector) {
+        this.txGathObsDetCollector = txGathObsDetCollector;
+    }
+
+ 
 }
 
