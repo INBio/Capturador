@@ -137,7 +137,10 @@ public class SpecimenDTO extends GenericDTO implements Serializable{
     /*persited ignoring the valueName of the SelectionListDTO's*/
     private List<LifeStageSexDTO> lifeStageSexList;
 
-
+    private String gathObsDetailNumber;
+    private Long collectorGathObsDetail;
+    private String collectorNameGathObsDetail;
+    
     /** For Quering purposes **/
     private Integer radio;
     private Double latitude;
@@ -790,6 +793,48 @@ public class SpecimenDTO extends GenericDTO implements Serializable{
      */
     public void setOriginalLabelId(Long originalLabelId) {
         this.originalLabelId = originalLabelId;
+    }
+
+    /**
+     * @return the gathObsDetailNumber
+     */
+    public String getGathObsDetailNumber() {
+        return gathObsDetailNumber;
+    }
+
+    /**
+     * @param gathObsDetailNumber the gathObsDetailNumber to set
+     */
+    public void setGathObsDetailNumber(String gathObsDetailNumber) {
+        this.gathObsDetailNumber = gathObsDetailNumber;
+    }
+
+    /**
+     * @return the collectorGathObsDetail
+     */
+    public Long getCollectorGathObsDetail() {
+        return collectorGathObsDetail;
+    }
+
+    /**
+     * @param collectorGathObsDetail the collectorGathObsDetail to set
+     */
+    public void setCollectorGathObsDetail(Long collectorGathObsDetail) {
+        this.collectorGathObsDetail = collectorGathObsDetail;
+    }
+
+    /**
+     * @return the collectorNameGathObsDetail
+     */
+    public String getCollectorNameGathObsDetail() {
+        return collectorNameGathObsDetail;
+    }
+
+    /**
+     * @param collectorNameGathObsDetail the collectorNameGathObsDetail to set
+     */
+    public void setCollectorNameGathObsDetail(String collectorNameGathObsDetail) {
+        this.collectorNameGathObsDetail = collectorNameGathObsDetail;
     }
 }
 

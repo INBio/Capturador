@@ -64,4 +64,6 @@ public interface IdentificationEAOLocal
 
     public java.util.List<java.lang.Long> findByGathObsDetailId(java.lang.Long gathObsDetailId);
 
+    public java.util.List<java.lang.Long> findSpecimenByTaxonId(java.lang.Long taxonId, java.lang.Long collectionId);
+
 }

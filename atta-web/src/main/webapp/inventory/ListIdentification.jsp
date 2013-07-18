@@ -96,14 +96,15 @@
                                     <h:panelGrid binding="#{inventory$ListIdentification.gridpAdvancedSearch}" columns="1" id="gridpAdvancedSearch" rendered="false"
                                         style="height: 5px" styleClass="My_panel_blue" width="840">
                                         <h:panelGrid columns="4" id="gridpAdvancedSearchForm" style="height: 24px" width="745">
-                                            <webuijsf:label for="txCatalogNumber" id="lbCatalogNumber" text="#{resources.catalognumber}"/>
-                                            <webuijsf:textField binding="#{inventory$ListIdentification.txCatalogNumber}" id="txCatalogNumber"/>
-                                            
+                                                                                       
                                             <webuijsf:label for="txGathObsDetail" id="lbGathObsDetail" binding="#{inventory$ListIdentification.lbGathObsDetail}" text="#{resources.record_number}"/>
                                             <webuijsf:textField binding="#{inventory$ListIdentification.txGathObsDetail}" id="txGathObsDetail"/>
                                             
                                             <webuijsf:label for="txGathObsDetCollector" id="lbGathObsDetCollector" binding="#{inventory$ListIdentification.lbGathObsDetCollector}" text="#{resources.collector}"/>
                                             <webuijsf:textField binding="#{inventory$ListIdentification.txGathObsDetCollector}" id="txGathObsDetCollector"/>
+                                            
+                                            <webuijsf:label for="txCatalogNumber" id="lbCatalogNumber" text="#{resources.catalognumber}"/>
+                                            <webuijsf:textField binding="#{inventory$ListIdentification.txCatalogNumber}" id="txCatalogNumber"/>
                                             
                                             <webuijsf:label for="txTaxonName" id="lbTaxonName" text="#{resources.taxon_name}"/>
                                             <webuijsf:textField binding="#{inventory$ListIdentification.txTaxonName}" id="txTaxonName"/>

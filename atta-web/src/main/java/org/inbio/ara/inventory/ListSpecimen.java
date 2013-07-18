@@ -20,6 +20,7 @@ package org.inbio.ara.inventory;
 
 import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.DropDown;
+import com.sun.webui.jsf.component.Label;
 import com.sun.webui.jsf.component.Table;
 import com.sun.webui.jsf.component.TextField;
 import java.util.ArrayList;
@@ -35,9 +36,12 @@ import org.inbio.ara.dto.agent.InstitutionDTO;
 import org.inbio.ara.util.BundleHelper;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
+import javax.faces.component.html.*;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.gis.GeographicLayerDTO;
 import org.inbio.ara.dto.inventory.SpecimenDTO;
+import org.inbio.ara.persistence.gathering.CollectionProtocolValuesEntity;
+import org.inbio.ara.persistence.gathering.ProtocolAtributeEntity;
 import org.inbio.ara.util.MessageBean;
 
 /**
@@ -74,6 +78,10 @@ public class ListSpecimen extends AbstractPageBean {
     private HtmlInputText txSearch = new HtmlInputText();
     private HtmlCommandButton btnSeach = new HtmlCommandButton();
     private HtmlCommandButton btnAdvSeach = new HtmlCommandButton();
+    
+  
+    
+    
     private TextField txCatalogNumber = new TextField();
     private DropDown ddInstitutionCode = new DropDown();
     private TextField txTaxonName = new TextField();
@@ -94,6 +102,16 @@ public class ListSpecimen extends AbstractPageBean {
     private SingleSelectOptionsList countriesData = new SingleSelectOptionsList();
     //En esta variable se setearan los datos del drop down de provincias
     private SingleSelectOptionsList provincesData = new SingleSelectOptionsList();
+    
+    private HtmlColumn gathObsDetailColumn = new HtmlColumn();
+    private HtmlColumn collectorGathObsDetailColumn = new HtmlColumn();
+    private HtmlColumn catgNumberColumnFirst = new HtmlColumn();
+    private HtmlColumn catgNumberColumnLast = new HtmlColumn();
+    private TextField txGathObsDetail = new TextField();
+    private TextField txGathObsDetCollector = new TextField();
+    
+    private Label lbGathObsDetail = new Label();
+    private Label lbGathObsDetCollector = new Label();
 
     /**
      * <p>Construct a new Page bean instance.</p>
@@ -168,6 +186,19 @@ public class ListSpecimen extends AbstractPageBean {
             this.SetCountryDropDownData(); //Cargar valores del DD de paises
             this.SetProvincesDropDownData();//Cargar valores del DD de proviencias            
         }
+        
+        Long currentColl = this.getAraSessionBean().getGlobalCollectionId();
+        boolean useDetail = ssb.matchCollectionProtocol(currentColl,
+                    ProtocolAtributeEntity.USE_GATHERING_DETAIL.getId(),
+                    CollectionProtocolValuesEntity.TRUE_VALUE.getValue());
+        this.gathObsDetailColumn.setRendered(useDetail);
+        this.txGathObsDetail.setRendered(useDetail);
+        this.lbGathObsDetail.setRendered(useDetail);
+        this.txGathObsDetCollector.setRendered(useDetail);
+        this.lbGathObsDetCollector.setRendered(useDetail);
+        this.catgNumberColumnFirst.setRendered(!useDetail);
+        this.catgNumberColumnLast.setRendered(useDetail);
+        this.collectorGathObsDetailColumn.setRendered(useDetail);
         //-------------------------- Control de Paginador ------------------------------
         //Inicializar el dataprovider la primera vez (si la paginación es nula)
         if (ssb.getPagination()==null) {
@@ -218,6 +249,7 @@ public class ListSpecimen extends AbstractPageBean {
         return (AraSessionBean) getBean("AraSessionBean");
     }
 
+    
 
     /**
      * Action del boton de editar espécimen
@@ -270,8 +302,22 @@ public class ListSpecimen extends AbstractPageBean {
         String taxon = (String) this.getTxTaxonName().getText();
         String locality = (String) this.getTxLocality().getText();
         String responsible = (String) this.getTxResponsible().getText();
+        String gathObsDetail = (String)txGathObsDetail.getValue();
+        String gathObsDetCollector = (String)txGathObsDetCollector.getValue();
+        
         if(catalog!=null)
             consulta.setCatalogNumber(catalog);
+        
+        if (gathObsDetail != null && !gathObsDetail.isEmpty()) {
+            consulta.setGathObsDetailNumber(gathObsDetail);
+        }
+        
+        if (gathObsDetCollector != null && !gathObsDetCollector.isEmpty()) {
+            consulta.setCollectorNameGathObsDetail(gathObsDetCollector);
+             
+        }
+        
+        
         if(taxon!=null)
             consulta.setTaxonName(taxon);
         if(locality!=null)
@@ -750,5 +796,117 @@ public class ListSpecimen extends AbstractPageBean {
      */
     public void setTxRadio(TextField txRadio) {
         this.txRadio = txRadio;
+    }
+
+    /**
+     * @return the catgNumberColumnFirst
+     */
+    public HtmlColumn getCatgNumberColumnFirst() {
+        return catgNumberColumnFirst;
+    }
+
+    /**
+     * @param catgNumberColumnFirst the catgNumberColumnFirst to set
+     */
+    public void setCatgNumberColumnFirst(HtmlColumn catgNumberColumnFirst) {
+        this.catgNumberColumnFirst = catgNumberColumnFirst;
+    }
+
+    /**
+     * @return the catgNumberColumnLast
+     */
+    public HtmlColumn getCatgNumberColumnLast() {
+        return catgNumberColumnLast;
+    }
+
+    /**
+     * @param catgNumberColumnLast the catgNumberColumnLast to set
+     */
+    public void setCatgNumberColumnLast(HtmlColumn catgNumberColumnLast) {
+        this.catgNumberColumnLast = catgNumberColumnLast;
+    }
+
+    /**
+     * @return the txGathObsDetail
+     */
+    public TextField getTxGathObsDetail() {
+        return txGathObsDetail;
+    }
+
+    /**
+     * @param txGathObsDetail the txGathObsDetail to set
+     */
+    public void setTxGathObsDetail(TextField txGathObsDetail) {
+        this.txGathObsDetail = txGathObsDetail;
+    }
+
+    /**
+     * @return the txGathObsDetCollector
+     */
+    public TextField getTxGathObsDetCollector() {
+        return txGathObsDetCollector;
+    }
+
+    /**
+     * @param txGathObsDetCollector the txGathObsDetCollector to set
+     */
+    public void setTxGathObsDetCollector(TextField txGathObsDetCollector) {
+        this.txGathObsDetCollector = txGathObsDetCollector;
+    }
+
+    /**
+     * @return the lbGathObsDetail
+     */
+    public Label getLbGathObsDetail() {
+        return lbGathObsDetail;
+    }
+
+    /**
+     * @param lbGathObsDetail the lbGathObsDetail to set
+     */
+    public void setLbGathObsDetail(Label lbGathObsDetail) {
+        this.lbGathObsDetail = lbGathObsDetail;
+    }
+
+    /**
+     * @return the lbGathObsDetCollector
+     */
+    public Label getLbGathObsDetCollector() {
+        return lbGathObsDetCollector;
+    }
+
+    /**
+     * @param lbGathObsDetCollector the lbGathObsDetCollector to set
+     */
+    public void setLbGathObsDetCollector(Label lbGathObsDetCollector) {
+        this.lbGathObsDetCollector = lbGathObsDetCollector;
+    }
+
+    /**
+     * @return the gathObsDetailColumn
+     */
+    public HtmlColumn getGathObsDetailColumn() {
+        return gathObsDetailColumn;
+    }
+
+    /**
+     * @param gathObsDetailColumn the gathObsDetailColumn to set
+     */
+    public void setGathObsDetailColumn(HtmlColumn gathObsDetailColumn) {
+        this.gathObsDetailColumn = gathObsDetailColumn;
+    }
+
+    /**
+     * @return the collectorGathObsDetailColumn
+     */
+    public HtmlColumn getCollectorGathObsDetailColumn() {
+        return collectorGathObsDetailColumn;
+    }
+
+    /**
+     * @param collectorGathObsDetailColumn the collectorGathObsDetailColumn to set
+     */
+    public void setCollectorGathObsDetailColumn(HtmlColumn collectorGathObsDetailColumn) {
+        this.collectorGathObsDetailColumn = collectorGathObsDetailColumn;
     }
 }

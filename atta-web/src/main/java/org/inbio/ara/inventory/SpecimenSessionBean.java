@@ -525,7 +525,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
             }
             else if(isQueryModeSimple()){ //En caso de que sea busqueda simple
                 try{
-                    getPagination().setTotalResults(getSearchFacade().countSpecimensByCriteria(getConsultaSimple()).intValue());
+                    getPagination().setTotalResults(getSearchFacade().countSpecimensByCriteria(getConsultaSimple(), collectionId).intValue());
                     return myReturn(searchFacade.searchSpecimenByCriteria
                             (getConsultaSimple(), collectionId, firstResult,
                             maxResults));
@@ -543,6 +543,20 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
                 }
                 catch(Exception e){return auxResult;}
             }
+    }
+   
+   
+      /**
+     * La idea de este metodo es poder preguntar si determinado protocolo esta activado o no
+     * para una determinada colleccion
+     * @param collectionId
+     * @param protocolAtributeId
+     * @param value corresponde a alguno de los valores posibles para saber si el protocolo esta
+     * "activado" o "desactivado"
+     * @return
+     */
+    public boolean matchCollectionProtocol(Long collectionId, Long protocolAtributeId, String value) {
+        return this.inventoryFacade.matchCollectionProtocol(collectionId, protocolAtributeId, value);
     }
     
     

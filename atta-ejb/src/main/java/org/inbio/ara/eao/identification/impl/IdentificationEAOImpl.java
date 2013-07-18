@@ -46,6 +46,17 @@ public class IdentificationEAOImpl
         q.setParameter("taxonId", taxonId);
         return q.getResultList();
     }
+    
+     public List<Long> findSpecimenByTaxonId(Long taxonId, Long collectionId) {
+        StringBuffer query = new StringBuffer();
+        query.append("select i.identificationPK.specimenId from Identification"+
+                " as i where i.taxon.taxonId = :taxonId"+
+                " and i.specimen.collectionId = :collectionId");
+        Query q = em.createQuery(query.toString());
+        q.setParameter("taxonId", taxonId);
+        q.setParameter("collectionId", collectionId);
+        return q.getResultList();
+    }
 
     public List<Long> findSpecimenByTaxonName(String taxonName) {
         StringBuffer query = new StringBuffer();

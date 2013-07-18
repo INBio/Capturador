@@ -84,6 +84,8 @@ public class GatheringObservationDetailEAOImpl extends BaseEAOImpl<GatheringObse
         return q.getResultList();
     }
 
+    
+    
     public List<Long> findByResponsibleId(Long personId, Long initialGathObserDetail) {
         Query q = em.createQuery("select go.gatheringObservationDetailId from " +
                 "GatheringObservationDetail as go"
@@ -110,6 +112,17 @@ public class GatheringObservationDetailEAOImpl extends BaseEAOImpl<GatheringObse
         
         q.setParameter("gathObsDetailNumber", gathObsDetailNumber);
         
+        return q.getResultList();
+    }
+       
+     public List<Long> findByGathObsDetailNumber(String gathObsDetailNumber, Long collectionId) {
+        String query = "select gd.gatheringObservationDetailId from GatheringObservationDetail as gd where " +
+                "gd.gatheringObservationDetailNumber = :gathObsDetailNumber "+
+                " and gd.collectionId = :collectionId";
+        Query q = em.createQuery(query);
+        
+        q.setParameter("gathObsDetailNumber", gathObsDetailNumber);
+        q.setParameter("collectionId", collectionId);
         return q.getResultList();
     }
  

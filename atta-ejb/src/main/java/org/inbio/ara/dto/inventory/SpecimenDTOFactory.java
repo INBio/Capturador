@@ -30,10 +30,7 @@ import org.inbio.ara.dto.BaseEntityOrDTOFactory;
 import org.inbio.ara.dto.gis.SiteCoordinateDTOFactory;
 import org.inbio.ara.eao.gathering.GatheringObservationEAOLocal;
 import org.inbio.ara.persistence.collection.Collection;
-import org.inbio.ara.persistence.gathering.ExtractionType;
-import org.inbio.ara.persistence.gathering.GatheringObservation;
-import org.inbio.ara.persistence.gathering.GatheringObservationMethod;
-import org.inbio.ara.persistence.gathering.Project;
+import org.inbio.ara.persistence.gathering.*;
 import org.inbio.ara.persistence.gis.GeographicLayerEntity;
 import org.inbio.ara.persistence.gis.GeoreferencedSite;
 import org.inbio.ara.persistence.gis.Site;
@@ -78,6 +75,7 @@ public class SpecimenDTOFactory extends BaseEntityOrDTOFactory<Specimen,Specimen
          SpecimenCategory specimenCategory = s.getSpecimenCategory();
          SpecimenType specimenType = s.getSpecimenType();
          PreservationMedium preservationMedium = s.getPreservationMedium();
+         GatheringObservationDetail gatheringObservationDetail = s.getGatheringObservationDetail();
 //         Taxon taxon = s.getTaxon();
          Substrate substrate = s.getSubstrate();
          
@@ -122,6 +120,12 @@ public class SpecimenDTOFactory extends BaseEntityOrDTOFactory<Specimen,Specimen
             sDTO.setCollectionId(collection.getCollectionId());
          }
 
+           if (gatheringObservationDetail != null) {
+                        //GatheringObservationDetail tmpGathObsDetail = tmpSpecimen.getGatheringObservationDetail();
+			sDTO.setGathObsDetailNumber(gatheringObservationDetail.getGatheringObservationDetailNumber());
+			sDTO.setCollectorGathObsDetail(gatheringObservationDetail.getGatheringObservationDetailPerson().getPersonId());
+                        sDTO.setCollectorNameGathObsDetail(gatheringObservationDetail.getGatheringObservationDetailPerson().getNaturalLongName());
+		}
 //         if(taxon!=null){
 //             sDTO.setTaxonId(taxon.getTaxonId());
 //             sDTO.setTaxonName(taxon.getDefaultName());
