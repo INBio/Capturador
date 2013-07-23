@@ -35,6 +35,7 @@
                          * Función que revisa si la tecla oprimida fue ENTER (KeyCode = 13)
                          */
                         function isEnter(e) {
+                        
                             var key = e.keyCode;
                             if (key == 13) {
                                 var text = new String(document.getElementById(tfBarcode).value);

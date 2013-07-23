@@ -1086,3 +1086,10 @@ CREATE INDEX idx_gatheringobsdet_gatobsid
   ON atta.gathering_observation_detail
   USING btree
   (gathering_observation_id );
+
+---- 2013-07-19
+INSERT INTO atta.protocol_attribute (protocol_attribute_id, name,description, created_by, creation_date, last_modification_by, last_modification_date)
+    values(13,'Número de catálogo alfanumérico','Indica si el número de catálogo está compuesta por letras y números o solo por letras', 'admin','2013-07-18','admin','2013-07-18');
+
+
+INSERT INTO atta.collection_protocol SELECT collection_id, 13, 'false', 'admin', '2013-07-18', 'admin', '2013-07-18' FROM atta.collection_protocol GROUP BY collection_id;

@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlDataTable;
@@ -39,6 +41,9 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.inventory.*;
 import org.inbio.ara.label.LabelSessionBean;
+import org.inbio.ara.persistence.gathering.CollectionProtocolValuesEntity;
+import org.inbio.ara.persistence.gathering.ProtocolAtributeEntity;
+import org.inbio.ara.persistence.identification.PatternEntity;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
@@ -704,8 +709,32 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
             newList.add(op);
 
         String barcode = isb.getSpecimenBarcode();
+        Long currentColl = this.getAraSessionBean().getGlobalCollectionId();
+        boolean useAlphanumericCatalogNumber = this.getIdentificationSessionBean().matchCollectionProtocol(currentColl,
+                    ProtocolAtributeEntity.USE_ALPHANUMERIC_CATALOG_NUMBER.getId(),
+                    CollectionProtocolValuesEntity.TRUE_VALUE.getValue());
+        //probando el barcode
+        String catalogueNumber = "";
+        
+            if(!useAlphanumericCatalogNumber && !isStringParseNumber(barcode))
+            {
+                
+                Pattern p = Pattern.compile(PatternEntity.ALPHANUMERIC.getPattern());
+            
+                Matcher m = p.matcher(barcode);
+            
+                if (m.find()) {
+                    catalogueNumber = m.group(1);
 
-        Option opt = new Option(new Long(optList.length), barcode);
+                }
+            
+        }
+        else
+        {
+            catalogueNumber = barcode;
+        }
+        
+        Option opt = new Option(new Long(optList.length), catalogueNumber);
         newList.add(opt);
 
         isb.setSpecimenBarcodeList(newList.toArray(new Option[newList.size()]));
@@ -713,6 +742,17 @@ private static long ROOT_TAXONOMICAL_RANGE_ID = 1L;
         
         return null;
     }
+     
+   
+     private boolean isStringParseNumber(String str) {
+        try {
+            //Long.parseLong(str);
+            Float.parseFloat(str);
+            return true;
+        } catch (Exception e){}
+        return false;
+    }
+     
 
     /**
      * Delete from the SpecimenBarcodeList  the selected items.
