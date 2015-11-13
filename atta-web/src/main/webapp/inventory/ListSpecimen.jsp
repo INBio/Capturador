@@ -36,17 +36,8 @@
                                     <h:panelGrid binding="#{inventory$ListSpecimen.gridpAdvancedSearch}" columns="1" id="gridpAdvancedSearch" rendered="false"
                                         style="height: 5px" styleClass="My_panel_blue" width="745">
                                         <h:panelGrid columns="4" id="gridpAdvancedSearch1" style="height: 24px" width="745">
-                                            
-                                            
-                                            <webuijsf:label for="txGathObsDetail" id="lbGathObsDetail" binding="#{inventory$ListSpecimen.lbGathObsDetail}" text="#{resources.record_number}"/>
-                                            <webuijsf:textField binding="#{inventory$ListSpecimen.txGathObsDetail}" id="txGathObsDetail"/>
-                                            
-                                            <webuijsf:label for="txGathObsDetCollector" id="lbGathObsDetCollector" binding="#{inventory$ListSpecimen.lbGathObsDetCollector}" text="#{resources.collector}"/>
-                                            <webuijsf:textField binding="#{inventory$ListSpecimen.txGathObsDetCollector}" id="txGathObsDetCollector"/>
-                                            
                                             <webuijsf:label for="txCatalog" id="lbCatalog" text="#{resources.catalognumber}"/>
                                             <webuijsf:textField binding="#{inventory$ListSpecimen.txCatalogNumber}" id="txCatalog" validatorExpression="#{util$ValidatorBean.validateInputCatalog}"/>
-                                            
                                             <webuijsf:label for="ddInstitution" id="lbInstitution" text="#{resources.institution}"/>
                                             <webuijsf:dropDown binding="#{inventory$ListSpecimen.ddInstitutionCode}" id="ddInstitution"
                                                 items="#{inventory$ListSpecimen.institutionsData.options}"
@@ -115,45 +106,23 @@
                                             <h:column>
                                                 <h:selectBooleanCheckbox id="checkbox1" value="#{currentRow['selected']}"/>
                                             </h:column>
-                                            <h:column binding="#{inventory$ListSpecimen.catgNumberColumnFirst}">
+                                            <h:column>
                                                 <f:facet name="header">
                                                     <h:commandLink id="menuSubsystemInventory" styleClass="My_search_icon" value="#{resources.catalognumber}"/>
                                                 </f:facet>
                                                 <h:outputText value="#{currentRow['catalogNumber']}"/>
                                             </h:column>
-                                            
-                                            <h:column binding="#{inventory$ListSpecimen.gathObsDetailColumn}">
-                                                <f:facet name="header">
-                                                    <h:commandLink id="gatheringObsDetail" styleClass="My_search_icon" value="#{resources.record_number}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['gathObsDetailNumber']}"/>
-                                            </h:column>
-                                            <h:column binding="#{inventory$ListSpecimen.collectorGathObsDetailColumn}">
-                                                <f:facet name="header">
-                                                    <h:commandLink id="collectorGathObsDetail" styleClass="My_search_icon" value="#{resources.collector}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['collectorNameGathObsDetail']}"/>
-                                            </h:column>
-                                            
                                             <h:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="#{resources.institution}"/>
                                                 </f:facet>
                                                 <h:outputText value="#{currentRow['institutionCode']}"/>
                                             </h:column>
-                                            <!--
                                             <h:column>
                                                 <f:facet name="header">
                                                     <h:outputText value="#{resources.collection}"/>
                                                 </f:facet>
                                                 <h:outputText value="#{currentRow['collectionName']}"/>
-                                            </h:column>
-                                            -->
-                                            <h:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{resources.gathering_observation_id}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['gatheringObsevationId']}"/>
                                             </h:column>
                                             <h:column>
                                                 <f:facet name="header">
@@ -190,13 +159,6 @@
                                                     <h:outputText value="#{resources.person_in_charge}"/>
                                                 </f:facet>
                                                 <h:outputText value="#{currentRow['responsibleName']}"/>
-                                            </h:column>
-                                            
-                                            <h:column binding="#{inventory$ListSpecimen.catgNumberColumnLast}">
-                                                <f:facet name="header">
-                                                    <h:commandLink id="catalogNumberLast" styleClass="My_search_icon" value="#{resources.catalognumber}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['catalogNumber']}"/>
                                             </h:column>
                                         </h:dataTable>
                                     </h:panelGrid>

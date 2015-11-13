@@ -285,7 +285,7 @@ implements Serializable,PaginationCoreInterface {
         //pagination control  ->specimen
        if(this.isBanderaInit())
         {
-            this.setPagination(new PaginationControllerRemix(this.getInventoryFacade().countSpecimens(this.getAraSessionBean().getGlobalCollectionId()).intValue(),this.getQuantity(), this));
+            this.setPagination(new PaginationControllerRemix(this.getInventoryFacade().countSpecimens().intValue(),this.getQuantity(), this));
         }
 
         //pagination control  ->label

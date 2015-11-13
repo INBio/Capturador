@@ -20,12 +20,7 @@ package org.inbio.ara;
 
 import com.sun.rave.web.ui.appbase.AbstractSessionBean;
 import java.util.Locale;
-import javax.ejb.EJB;
 import javax.faces.FacesException;
-import org.inbio.ara.dto.inventory.TaxonDTO;
-import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
-import org.inbio.ara.facade.taxonomy.TaxonomyFacadeRemote;
-import org.inbio.ara.persistence.taxonomy.Taxon;
 
 /**
  * <p>Session scope data bean for your application.  Create properties
@@ -54,18 +49,13 @@ public class AraSessionBean extends AbstractSessionBean {
     }
     // </editor-fold>
 
-     @EJB
-    private TaxonomyFacadeRemote taxonomyFacade;
-    
     private String globalUserName = new String();
     private Long globalCollectionId = new Long(-1);
-    private Long globalTaxonCollectionId = new Long(-1);
-    private Long globalTaxonRangeCollection = new Long(-1);
     private Long globalNomenclaturalGroupId = new Long(-1);
-    private Long globalUserNameId = new Long(-1);    
-    private Locale currentLocale = new Locale("ES");
-    private String globalDataBaseSchema = new String("atta");
-    private String globalDataSource = new String("jdbc/_Atta");
+    private Long globalUserNameId = new Long(-1);
+    private Locale currentLocale = new Locale("EN");
+    private String globalDataBaseSchema = new String("ara");
+    private String globalDataSource = new String("jdbc/_Ara");
     /**
      * <p>Construct a new session data bean instance.</p>
      */
@@ -172,9 +162,6 @@ public class AraSessionBean extends AbstractSessionBean {
      */
     public void setGlobalCollectionId(Long globalCollectionId) {
         this.globalCollectionId = globalCollectionId;
-        TaxonDTO taxonCollection = taxonomyFacade.getTaxonByCollection(globalCollectionId);
-        this.globalTaxonCollectionId = taxonCollection.getTaxonKey();
-        this.globalTaxonRangeCollection = taxonCollection.getTaxonomicalRangeId();
     }
 
     /**
@@ -245,34 +232,6 @@ public class AraSessionBean extends AbstractSessionBean {
      */
     public void setGlobalDataSource(String globalDataSource) {
         this.globalDataSource = globalDataSource;
-    }
-
-    /**
-     * @return the globalTaxonCollectionId
-     */
-    public Long getGlobalTaxonCollectionId() {
-        return globalTaxonCollectionId;
-    }
-
-    /**
-     * @param globalTaxonCollectionId the globalTaxonCollectionId to set
-     */
-    public void setGlobalTaxonCollectionId(Long globalTaxonCollectionId) {
-        this.globalTaxonCollectionId = globalTaxonCollectionId;
-    }
-
-    /**
-     * @return the globalTaxonRangeCollection
-     */
-    public Long getGlobalTaxonRangeCollection() {
-        return globalTaxonRangeCollection;
-    }
-
-    /**
-     * @param globalTaxonRangeCollection the globalTaxonRangeCollection to set
-     */
-    public void setGlobalTaxonRangeCollection(Long globalTaxonRangeCollection) {
-        this.globalTaxonRangeCollection = globalTaxonRangeCollection;
     }
     
 }

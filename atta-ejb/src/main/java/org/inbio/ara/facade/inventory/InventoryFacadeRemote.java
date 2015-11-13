@@ -9,7 +9,14 @@ import org.inbio.ara.dto.inventory.SpecimenDTO;
 import java.util.List;
 import javax.ejb.Remote;
 import org.inbio.ara.dto.agent.CollectionDTO;
-import org.inbio.ara.dto.inventory.*;
+import org.inbio.ara.dto.inventory.GatheringObservationDTO;
+import org.inbio.ara.dto.inventory.IdentificationDTO;
+import org.inbio.ara.dto.inventory.IdentificationStatusDTO;
+import org.inbio.ara.dto.inventory.IdentificationTypeDTO;
+import org.inbio.ara.dto.inventory.PersonDTO;
+import org.inbio.ara.dto.inventory.SelectionListDTO;
+import org.inbio.ara.dto.inventory.TaxonDTO;
+import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 
 /**
  *
@@ -31,7 +38,7 @@ public interface InventoryFacadeRemote {
     public List<SpecimenDTO> getAllSpecimenPaginated(int first,
             int totalResults, Long collectionId);
 
-    public Long countSpecimens(Long collectionId);
+    public Long countSpecimens();
 
     /**
      * @param selectionListEntityId look for the Id of a element of the ENUM SelectionListEntity
@@ -102,7 +109,7 @@ public interface InventoryFacadeRemote {
 
     public List<PersonDTO> getAllIdentifiers();
 
-    public List<TaxonDTO> getAllTaxonByTaxononimcalRange(Long taxonomicalRangeId, Long collectionId, Long collRangeId, Long taxonCollId);
+    public List<TaxonDTO> getAllTaxonByTaxononimcalRange(Long taxonomicalRange);
 
     public void reIdentify(List<IdentificationDTO> selectedIdentifications);
 
@@ -189,26 +196,6 @@ public interface InventoryFacadeRemote {
     public List<PersonDTO> getPersonByFilterProfile(Long profileId, String filter);
 
     public String getPersonById(Long personId);
-
-    public org.inbio.ara.dto.inventory.SpecimenDTO getSpecimenByCatalogueNumber(String catalogueNumber);
-
-    public java.util.List<org.inbio.ara.dto.inventory.TaxonDTO> getTaxonCollections();
-    
-    public void validateSpecimenDTO(SpecimenDTO sDTO);
-    
-    public String getLastCatalogNumber(SpecimenDTO sDTO);
-    
-    public String[] catalogNumberChecker(String catalogNumber, int quantity);
-    
-    public List<SpecimenDTO> specimenGeneration(String[] catalogNumbersAvailable, 
-            SpecimenDTO sDTO, IdentificationDTO iDTO,
-            List<LifeStageSexDTO> lssDTOList, List<Long> lifeForms);
-
-    public void createLifeStageSex(java.util.List<org.inbio.ara.dto.inventory.LifeStageSexDTO> lssDTOList, java.lang.Long specimenId);
-
-    public void createLifeForm(java.util.List<java.lang.Long> lifeFormIds, java.lang.Long specimenId);
-
-    public org.inbio.ara.persistence.person.Person findPersonById(java.lang.Long personId);
     
 }
 

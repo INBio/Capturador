@@ -333,17 +333,14 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      */
     public List<IdentificationDTO>
             searchIdentificationByCriteria(IdentificationDTO inputDTO,
-            int base, int offset, Set<Long> identIds) {
-        //System.out.println("--- SEARCH FACADE IMP: search identification by criteria ---");
+            int base, int offset) {
         
-        List<Identification> identificationsList = new ArrayList<Identification>();
-        
-        
-        identificationsList = (List<Identification>)getEntities(identIds,
-             Identification.class, base, offset);
-        
+        List<Identification> identificationsList = new ArrayList();
+        Set<Long> identificationIds = getIdentificationIds(inputDTO);
+
+        identificationsList = getEntities(identificationIds,
+                Identification.class, base, offset);
         return identificationDTOFactory.createDTOList(identificationsList);
-        
     }
 
     /**
@@ -352,7 +349,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      * @param inputDTO Built in the advanced search
      * @return Set of identification Ids.
      */
-    public Set<Long> getIdentificationIds(IdentificationDTO inputDTO) {
+    private Set<Long> getIdentificationIds(IdentificationDTO inputDTO) {
         Set<Long> identificationIds = new HashSet();
 
         boolean firstFilter = true; //helps with the intersection of data
@@ -363,11 +360,10 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         Long statusId = inputDTO.getStatusId();
         Long typeId = inputDTO.getTypeId();
         Long collectionId = inputDTO.getCollectionId();
-        String gathObsDetailNumber = inputDTO.getGathObsDetailNumber();
-        String gathObsCollector = inputDTO.getCollectorNameGathObsDetail();
+
                
         
-        System.out.println("SEARCH FACADE: getIdentification");
+        
             
         if(catalogNumber != null && !catalogNumber.trim().isEmpty()) {
             
@@ -376,30 +372,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             firstFilter = false;
             
         }
-        
-        //para filtrar por Número de registro (Número de colecta)
-        if(gathObsDetailNumber != null) {
-            
-            HashSet<Long> tmpSet = new HashSet();
-            List<Long> gathObsDetails = gatheringObservationDetailEAOImpl.findByGathObsDetailNumber(gathObsDetailNumber);
-            
-            List<Long> specimenIds = new ArrayList<Long>();
-            
-            for(Long gathObsDetailId : gathObsDetails)
-            {
-               specimenIds.addAll(identificationEAOImpl.findByGathObsDetailId(gathObsDetailId, collectionId));
-            }
-            
-            tmpSet.addAll(specimenIds);
-              if(firstFilter) {
-                identificationIds.addAll(tmpSet);
-                firstFilter = false;
-            } else {
-                identificationIds.retainAll(tmpSet);
-            }
-            
-        }
-        
         if(taxonName != null && !taxonName.trim().isEmpty()) {
             
             HashSet<Long> tmpSet = new HashSet();
@@ -439,37 +411,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             }
             
         }
-        
-        if(gathObsCollector != null)
-        {
-             HashSet<Long> tmpSet = new HashSet();
-             
-             List<Person> personId = personEAOImpl.
-                        findByName(gathObsCollector);
-             
-                for (Person person : personId) {
-                    List<Long> gathObsDetailIds = gatheringObservationDetailEAOImpl.findByResponsibleId(person.getPersonId());
-             
-                    
-                    
-                    List<Long> specimenIds = new ArrayList<Long>();
-                    for(Long gathObsDetailId : gathObsDetailIds)
-                    {
-             
-                        specimenIds.addAll(identificationEAOImpl.findByGathObsDetailId(gathObsDetailId, collectionId));
-                    }
-                    
-                    tmpSet.addAll(specimenIds);                
-                }
-                
-               if(firstFilter) {
-                    identificationIds.addAll(tmpSet);
-                    firstFilter = false;
-                } else {
-                    identificationIds.retainAll(tmpSet);
-                }
-        }
-        
         if(statusId != null) {
             
             List<Long> specimenList =
@@ -552,11 +493,11 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         HashSet<Long> specimenIds = (HashSet<Long>)
                 unstructuredIdentificationQuery(parts);
 
-        
+        System.out.println("cantidad de specimenIds antes de la interseccion = "+specimenIds.size());
         //Set intersection -> filter by collection
         specimenIds.retainAll(specimenEAOImpl.
                 findByCollectionId(collectionId));
-
+        System.out.println("cantidad de specimenIds despues de la interseccion = "+specimenIds.size());
         //Retrieve entities
         identificationsList = getEntities(specimenIds,
                 Identification.class, base, offset);
@@ -598,33 +539,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                         findSpecimensByIdentifierId(person.getPersonId());
                 finalSpecimenIds.addAll(specimensByIdentifier);
             }
-            
-            /*************** BUSQUEDA POR GATHERING OBSERVATION NUMBER **************/            
-            List<Long> gathObsDetails = gatheringObservationDetailEAOImpl.findByGathObsDetailNumber(inputString);
-            
-            List<Long> specimenByGathObsDetail = new ArrayList<Long>();
-            
-            for(Long gathObsDetailId : gathObsDetails)
-            {
-               specimenByGathObsDetail.addAll(identificationEAOImpl.findByGathObsDetailId(gathObsDetailId));
-            }
-            finalSpecimenIds.addAll(specimenByGathObsDetail);
-            
-            /******** BUSQUEDA POR GATHERING OBSERVATION COLLECTOR *******/
-            
-            List<Person> personCollectorIds = personEAOImpl.findByName(inputString);
-            
-                for (Person person : personCollectorIds) {
-                    List<Long> gathObsDetailIds = gatheringObservationDetailEAOImpl.findByResponsibleId(person.getPersonId());
-            
-                    
-                    for(Long gathObsDetailId : gathObsDetailIds)
-                    {                        
-                        finalSpecimenIds.addAll(identificationEAOImpl.findByGathObsDetailId(gathObsDetailId));            
-                    }
-                    
-                }   
-                
 
         }
         //Me parece innecesario este for, ya esa busqueda la hace arriba
@@ -945,35 +859,13 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         }
         return finalGathObsList;
     }
-    
-        private List<Long> findGathObsBySiteDescription(String desc, Long collectionId) {
-        ArrayList<Long> finalGathObsList = new ArrayList();
-        List<Long> siteList = siteEAOImpl.findByDescription(desc);
-        for (Long siteId : siteList) {
-            List<Long> gathObsBySite =
-                    gatheringObservationEAOImpl.findBySiteId(siteId, collectionId);
-            finalGathObsList.addAll(gathObsBySite);
-        }
-        return finalGathObsList;
-    }
-    
-      private List<Long> findGathObsByResponsibleName(String name) {
+
+    private List<Long> findGathObsByResponsibleName(String name) {
         List<Long> finalGathObsIds = new ArrayList();
         List<Person> personId = personEAOImpl.findByName(name);
         for (Person person : personId) {
             List<Long> gathObsByResponsible = gatheringObservationEAOImpl.
                     findByResponsibleId(person.getPersonId());
-            finalGathObsIds.addAll(gathObsByResponsible);
-        }
-        return finalGathObsIds;
-    }
-
-    private List<Long> findGathObsByResponsibleName(String name, Long collectionId) {
-        List<Long> finalGathObsIds = new ArrayList();
-        List<Person> personId = personEAOImpl.findByName(name);
-        for (Person person : personId) {
-            List<Long> gathObsByResponsible = gatheringObservationEAOImpl.
-                    findByResponsibleId(person.getPersonId(), collectionId);
             finalGathObsIds.addAll(gathObsByResponsible);
         }
         return finalGathObsIds;
@@ -1009,7 +901,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         ArrayList<Long> finalGathObsList = new ArrayList();
         List<Long> siteIds = georeferencedSiteEAOImpl.
                 findSiteByGeoLayerId(geoLayerType, geoLayerId);
-        
+        System.out.println("-+-"+siteIds.toString());
         for (Long siteId : siteIds) {
             List<Long> gathObsBySite =
                     gatheringObservationEAOImpl.findBySiteId(siteId);
@@ -1031,8 +923,9 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             return factory.createDTOList(specimenList);
 
         HashSet<Long> specimenIds = (HashSet<Long>)
-                unstructuredSpecimenQuery(parts, collectionId);
-        
+                unstructuredSpecimenQuery(parts);
+        //Set intersection -> filter by collection
+        specimenIds.retainAll(specimenEAOImpl.findByCollectionId(collectionId));
         //Retrieve entities
         specimenList = getEntities(specimenIds, Specimen.class, base, offset);
 
@@ -1058,7 +951,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
             return factory.createDTOList(specimenList);
         
         HashSet<Long> specimenIds = (HashSet<Long>) 
-                unstructuredSpecimenQuery(parts, null);
+                unstructuredSpecimenQuery(parts);
 
         specimenList = getEntities(specimenIds, Specimen.class, base, offset);
 
@@ -1102,39 +995,12 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         Double longitude       = inputDTO.getLongitude();
         Integer radius         = inputDTO.getRadio();
         String responsibleName = inputDTO.getResponsibleName();
-        //Long collectionId = inputDTO.getCollectionId();
-        String gathObsDetailNumber = inputDTO.getGathObsDetailNumber();
-        String gathObsCollector = inputDTO.getCollectorNameGathObsDetail();
 
         if (catalogNumber != null && !catalogNumber.trim().isEmpty()) {
             List<Long> specimenByCN = findSpecimenByCatalogNumber(catalogNumber);
             specimenIds.addAll(specimenByCN);
             firstFilter = false;
         }
-        
-        //para filtrar por Número de registro (Número de colecta)
-        if(gathObsDetailNumber != null) {
-            
-            HashSet<Long> tmpSet = new HashSet();
-            List<Long> gathObsDetails = gatheringObservationDetailEAOImpl.findByGathObsDetailNumber(gathObsDetailNumber);
-            
-            List<Long> specimenByGathObsDetIds = new ArrayList<Long>();
-            
-            for(Long gathObsDetailId : gathObsDetails)
-            {
-               specimenByGathObsDetIds.addAll(specimenEAOImpl.findByGathObsDetailId(gathObsDetailId, collectionId));
-            }
-            
-            tmpSet.addAll(specimenByGathObsDetIds);
-              if(firstFilter) {
-                specimenIds.addAll(tmpSet);
-                firstFilter = false;
-            } else {
-                specimenIds.retainAll(tmpSet);
-            }
-            
-        }
-        
         if(institutionId != null) {
             List<Long> specimenByInstitution =
                     specimenEAOImpl.findByInstitutionId(institutionId);
@@ -1206,38 +1072,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                 specimenIds.retainAll(specimenByCoords);
             }
         }
-        
-        if(gathObsCollector != null)
-        {
-             HashSet<Long> tmpSet = new HashSet();
-             
-             List<Person> personId = personEAOImpl.
-                        findByName(gathObsCollector);
-             
-                for (Person person : personId) {
-                    List<Long> gathObsDetailIds = gatheringObservationDetailEAOImpl.findByResponsibleId(person.getPersonId());
-             
-                   
-                   
-                    List<Long> specimentmpIds = new ArrayList<Long>();
-                    for(Long gathObsDetailId : gathObsDetailIds)
-                    {
-             
-                        specimentmpIds.addAll(specimenEAOImpl.findByGathObsDetailId(gathObsDetailId, collectionId));
-                    }
-                    
-                    tmpSet.addAll(specimentmpIds);                
-                }
-                
-               if(firstFilter) {
-                    specimenIds.addAll(tmpSet);
-                    firstFilter = false;
-                } else {
-                    specimenIds.retainAll(tmpSet);
-                }
-        }
-        
-        
         if(responsibleName != null && !responsibleName.trim().isEmpty()) {
             List<Long> specimenByResponsible =
                     findSpecimenByResponsibleName(responsibleName);
@@ -1262,7 +1096,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         String[] parts = this.splitQuery(query);
         if(parts == null)
             return 0L;
-        HashSet specimenIds = (HashSet) unstructuredSpecimenQuery(parts, null);
+        HashSet specimenIds = (HashSet) unstructuredSpecimenQuery(parts);
         Integer i = new Integer(specimenIds.size());
         return i.longValue();
     }
@@ -1275,16 +1109,13 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      * filtered by collection
      */
     public Long countSpecimensByCriteria(String query, Long collectionId) {
-        
         String[] parts = this.splitQuery(query);
         if(parts == null)
             return 0L;
-        HashSet specimenIds = (HashSet) unstructuredSpecimenQuery(parts, collectionId);
-        
+        HashSet specimenIds = (HashSet) unstructuredSpecimenQuery(parts);
         //Set intersection -> filter by collection
-        
+        specimenIds.retainAll(specimenEAOImpl.findByCollectionId(collectionId));
         Integer i = new Integer(specimenIds.size());
-        
         return i.longValue();
     }
     
@@ -1307,7 +1138,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
 
 
 
-    private Set<Long> unstructuredSpecimenQuery(String[] parts, Long collectionId){
+    private Set<Long> unstructuredSpecimenQuery(String[] parts){
         Set<Long> finalSpecimenIds = new HashSet();
         List<String> strings = new ArrayList();
         List<Long> numbers = new ArrayList();
@@ -1324,48 +1155,28 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         for (String inputString : strings) {
             /*******************BUSQUEDA POR RESPONSIBLE NAME******************/
             List<Long> listByResponsibleName =
-                    findSpecimenByResponsibleName(inputString, collectionId);
+                    findSpecimenByResponsibleName(inputString);
             finalSpecimenIds.addAll(listByResponsibleName);
-            
             /******************BUSQUEDA POR TAXON NAME*************************/
             List<Long> listByTaxonName =
-                    findSpecimenByTaxonName(inputString, collectionId);
+                    findSpecimenByTaxonName(inputString);
             finalSpecimenIds.addAll(listByTaxonName);
-            
             /********************BUSQUEDA POR SITE DESCRIPTION*****************/
             List<Long> listBySiteDescription =
-                    findSpecimenBySiteDescription(inputString, collectionId);
+                    findSpecimenBySiteDescription(inputString);
             finalSpecimenIds.addAll(listBySiteDescription);
-            
-             /*************** BUSQUEDA POR GATHERING OBSERVATION NUMBER **************/            
-            List<Long> gathObsDetails = gatheringObservationDetailEAOImpl.findByGathObsDetailNumber(inputString, collectionId);
-            
-            List<Long> specimenByGathObsDetail = new ArrayList<Long>();
-            
-            for(Long gathObsDetailId : gathObsDetails)
-            {
-               specimenByGathObsDetail.addAll(specimenEAOImpl.findByGathObsDetailId(gathObsDetailId, collectionId));
-            
-            }
-            finalSpecimenIds.addAll(specimenByGathObsDetail);
-            
-            
-            /******** BUSQUEDA POR GATHERING OBSERVATION COLLECTOR *******/
-            
-            List<Person> personCollectorIds = personEAOImpl.findByName(inputString);
-            
-                for (Person person : personCollectorIds) {
-                    List<Long> gathObsDetailIds = gatheringObservationDetailEAOImpl.findByResponsibleId(person.getPersonId());
-            
-                    
-                    for(Long gathObsDetailId : gathObsDetailIds)
-                    {                        
-                        finalSpecimenIds.addAll(specimenEAOImpl.findByGathObsDetailId(gathObsDetailId, collectionId));            
-                    }
-                    
-                }   
-            
-            
+            /**************BUSQUEDA POR PROVINCIA Y/O PAIS*********************/
+            //TODO
+//            List<Long> listByGeographicLayer =
+//                    findSpecimenByGeographicLayer(inputString);
+//            finalSpecimenIds.addAll(listByGeographicLayer);
+            /****************BUSQUEDA POR COLLECTION NAME**********************/
+            //Creo que no deberia buscar por collection name, sino devolver
+            //aquellos especimenes que pertenecen a la coleccion con la que se
+            //trabaja
+//            List<Long> listByCollectionName =
+//                    findSpecimenByCollectionName(inputString);
+//            finalSpecimenIds.addAll(listByCollectionName);
         }
         for (Long inputLong : numbers) {
             /**
@@ -1375,12 +1186,9 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
              */
             /****************BUSQUEDA POR CATALOG NUMBER***********************/
             List<Long> listByCatalogNumber = findSpecimenByCatalogNumber(String.
-                    valueOf(inputLong.intValue()), collectionId);
-            
-            
+                    valueOf(inputLong.intValue()));
             finalSpecimenIds.addAll(listByCatalogNumber);
         }
-        
         return finalSpecimenIds;
     }
 
@@ -1392,17 +1200,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         List list =  new ArrayList<Long>();
         list.add(specimenEAOImpl.findByCatalogNumber(catalogNumber));
         return list;
-    }
-    
-    private List<Long> findSpecimenByCatalogNumber(String catalogNumber, Long collectionId) {
-        List list =  new ArrayList<Long>();
-        Long specimenIdTmp = specimenEAOImpl.findByCatalogNumber(catalogNumber,collectionId);
-        if(specimenIdTmp != null)
-        {
-            list.add(specimenIdTmp);
-        }
-        return list;
-        
     }
 
     private List<Long> findSpecimenByGeoLayer(Long geoLayerType, Long layerId) {
@@ -1430,22 +1227,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
         return finalSpecimenList;
     }
 
-    
-      private List<Long> findSpecimenByTaxonName(String name, Long collectionId) {
-//          System.out.println("SEARCH FACADE: findSpecimenByTaxonName");
-  
-        ArrayList<Long> finalSpecimenList = new ArrayList();
-        List<Long> taxonIds = taxonEAOImpl.findByTaxonName(name);
-  
-        for (Long taxonId : taxonIds) {
-            List<Long> specimenList =
-                    identificationEAOImpl.findSpecimenByTaxonId(taxonId, collectionId);            
-  
-            finalSpecimenList.addAll(specimenList);
-        }
-        return finalSpecimenList;
-    }
-    
     /**
      * This method could overload the server.
      * @param name of the responsible person
@@ -1454,15 +1235,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     private List<Long> findSpecimenByResponsibleName(String name) {
         ArrayList<Long> finalSpecimenList = new ArrayList();
         List<Long> gathObsList = this.findGathObsByResponsibleName(name);
-        for (Long gatObsId : gathObsList) {
-            finalSpecimenList.addAll(specimenEAOImpl.findByGathObsId(gatObsId));
-        }
-        return finalSpecimenList;
-    }
-    
-        private List<Long> findSpecimenByResponsibleName(String name, Long collectionId) {
-        ArrayList<Long> finalSpecimenList = new ArrayList();
-        List<Long> gathObsList = this.findGathObsByResponsibleName(name, collectionId);
         for (Long gatObsId : gathObsList) {
             finalSpecimenList.addAll(specimenEAOImpl.findByGathObsId(gatObsId));
         }
@@ -1539,7 +1311,7 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
  
         List<Long> finalSpecimenList = this.identificationEAOImpl.findSpecimenByValuerPersonId(personId);
 
-        
+        System.out.println("size "  + finalSpecimenList.size());
       
         return finalSpecimenList;
     }
@@ -1853,19 +1625,9 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
      * @return  List of specimens related to multiple localities that matched
      * with the pattern
      */
-     private List<Long> findSpecimenBySiteDescription(String descr) {
+    private List<Long> findSpecimenBySiteDescription(String descr) {
         ArrayList<Long> finalSpecimenList = new ArrayList();
         List<Long> gathObsList = findGathObsBySiteDescription(descr);
-        for (Long gathObsId : gathObsList) {
-            finalSpecimenList.addAll(
-                    specimenEAOImpl.findByGathObsId(gathObsId));
-        }
-        return finalSpecimenList;
-    }
-     
-    private List<Long> findSpecimenBySiteDescription(String descr, Long collectionId) {
-        ArrayList<Long> finalSpecimenList = new ArrayList();
-        List<Long> gathObsList = findGathObsBySiteDescription(descr, collectionId);
         for (Long gathObsId : gathObsList) {
             finalSpecimenList.addAll(
                     specimenEAOImpl.findByGathObsId(gathObsId));
@@ -1895,7 +1657,6 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
     }
 
     private List getEntities(Set<Long> ids, Class t, int base, int offset) {
-        //System.out.println("--- SEARCH FACADE: Get Entities ---");
         List entitiesList = new ArrayList();
 		Object[] sortedIdentificationIds = ids.toArray();
         java.util.Arrays.sort(sortedIdentificationIds);
@@ -1907,21 +1668,8 @@ public class SearchFacadeImpl implements SearchFacadeRemote {
                     baseCounter++;
                 } else if(entitiesCounter < offset) {
                     if(t == Identification.class) {
-                        /*
-                         * * El compilador no entiende las listas de listas, y al obtener el primer elemento y tratar
-                         * de almacenarlo en un List<Identification> da error, pero compila si el primer elemento se
-                         * almacena en un Identification Entity, pero en tiempo de ejecución se cae porque no puede
-                         * hacer el cast de un ArrayList a Identification.
-                         * 
-                         * Se modifico a addAll para eliminar el error de la perdida de la estructura de datos,
-                         * ahora no se almacenan listas de Identification, sino los Identification se agregan
-                         * en una sola lista. Cuando se realice la modificación para manejar multitaxon hay
-                         * que evaluar como resolver el problema de la estructura de listas de listas.                       
-                         * 
-                         */
-                        entitiesList.addAll(identificationEAOImpl.
-                            findBySpecimenId((Long)id));                        
-                        
+                        entitiesList.add(identificationEAOImpl.
+                            findBySpecimenId((Long)id));
                     } else if(t == Specimen.class) {
                         entitiesList.add(specimenEAOImpl.findById(t, (Long)id));
                     } else if(t == GatheringObservation.class) {

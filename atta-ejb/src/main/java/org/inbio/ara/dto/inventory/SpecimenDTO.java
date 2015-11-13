@@ -22,7 +22,6 @@ package org.inbio.ara.dto.inventory;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import org.inbio.ara.dto.GenericDTO;
 
 /**
  * The fields will the comment "read only" will be ignored on persistence tasks
@@ -32,7 +31,7 @@ import org.inbio.ara.dto.GenericDTO;
 
 enum CoordType {DECIMAL,LAMBERT};
 
-public class SpecimenDTO extends GenericDTO implements Serializable{
+public class SpecimenDTO implements Serializable {
 
     /* null when the specimen is new*/
     private Long specimenKey;
@@ -137,10 +136,7 @@ public class SpecimenDTO extends GenericDTO implements Serializable{
     /*persited ignoring the valueName of the SelectionListDTO's*/
     private List<LifeStageSexDTO> lifeStageSexList;
 
-    private String gathObsDetailNumber;
-    private Long collectorGathObsDetail;
-    private String collectorNameGathObsDetail;
-    
+
     /** For Quering purposes **/
     private Integer radio;
     private Double latitude;
@@ -156,11 +152,8 @@ public class SpecimenDTO extends GenericDTO implements Serializable{
     public String toString() {
 
         String lssToString="";
-        if(getLifeStageSexList() != null)
-        {
-            for(LifeStageSexDTO lssDTO :getLifeStageSexList() )
-                lssToString = lssToString + lssDTO.toString();
-        }
+        for(LifeStageSexDTO lssDTO :getLifeStageSexList() )
+            lssToString = lssToString + lssDTO.toString();
 
         return "SpecimenDTO" +
                 "\n\tSpecimen id = " + specimenKey +
@@ -185,10 +178,9 @@ public class SpecimenDTO extends GenericDTO implements Serializable{
                 "\n\tLatitude = " + getLatitude()+
                 "\n\tRadio = " + getRadio()+
                 "\n\tDiscarted = " + isDiscarded()+
-                "\n\tDateTime = " +dateTime+
                 "\n\tLifeStafeSexDTO = \n" + lssToString +
                 "\n\tlabelID = " + labelId  +
-                "\n\tOriginalLabelID = " +originalLabelId                
+                "\n\tOriginalLabelID = " +originalLabelId
                 ;
     }
 
@@ -793,48 +785,6 @@ public class SpecimenDTO extends GenericDTO implements Serializable{
      */
     public void setOriginalLabelId(Long originalLabelId) {
         this.originalLabelId = originalLabelId;
-    }
-
-    /**
-     * @return the gathObsDetailNumber
-     */
-    public String getGathObsDetailNumber() {
-        return gathObsDetailNumber;
-    }
-
-    /**
-     * @param gathObsDetailNumber the gathObsDetailNumber to set
-     */
-    public void setGathObsDetailNumber(String gathObsDetailNumber) {
-        this.gathObsDetailNumber = gathObsDetailNumber;
-    }
-
-    /**
-     * @return the collectorGathObsDetail
-     */
-    public Long getCollectorGathObsDetail() {
-        return collectorGathObsDetail;
-    }
-
-    /**
-     * @param collectorGathObsDetail the collectorGathObsDetail to set
-     */
-    public void setCollectorGathObsDetail(Long collectorGathObsDetail) {
-        this.collectorGathObsDetail = collectorGathObsDetail;
-    }
-
-    /**
-     * @return the collectorNameGathObsDetail
-     */
-    public String getCollectorNameGathObsDetail() {
-        return collectorNameGathObsDetail;
-    }
-
-    /**
-     * @param collectorNameGathObsDetail the collectorNameGathObsDetail to set
-     */
-    public void setCollectorNameGathObsDetail(String collectorNameGathObsDetail) {
-        this.collectorNameGathObsDetail = collectorNameGathObsDetail;
     }
 }
 

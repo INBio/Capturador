@@ -11,8 +11,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import org.inbio.ara.eao.BaseEAOImpl;
 import org.inbio.ara.persistence.collection.Collection;
-import org.inbio.ara.persistence.taxonomy.Taxon;
-import org.inbio.ara.persistence.specimen.Specimen;
 
 /**
  *
@@ -26,15 +24,9 @@ public class CollectionEAOImpl extends BaseEAOImpl<Collection, Long> implements 
      * de estadisticas
      */
     public Long getSpecimensCountByCollectionId(Long collectionId) {
-        
-        /* quey original, se puede hacer consulta sin el left join
+
         Query q = em.createQuery(
                 "select count(s) as specimen_count" + " from Specimen as s " + " left join s.collection c " + " where s.collection.collectionId = c.collectionId " + " and c.collectionId = :collectionId");
-          */
-        
-        Query q = em.createQuery(
-                "select count(s) as specimen_count" + " from Specimen as s " + " where s.collectionId = :collectionId");
-        
         q.setParameter("collectionId", collectionId);
         return (Long) q.getSingleResult();
     }
@@ -123,22 +115,4 @@ public class CollectionEAOImpl extends BaseEAOImpl<Collection, Long> implements 
         Query q = em.createQuery("from Collection c where c.name = '" + collectionName + "'");
         return q.getResultList();
     }
-    
-    
-    public List<Taxon> findTaxonOfCollections() {
-        
-        Query q = em.createQuery(
-                "select t" +
-                " from Taxon as t " +
-                " inner join t.collection c " +
-                " where t.collectionId is not null " +
-                " and t.collection.collectionId = c.collectionId");
-
-        //q.setParameter("collectionId", collectionId);
-
-
-        return q.getResultList();
-    }
-    
-    
 }

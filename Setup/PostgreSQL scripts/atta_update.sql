@@ -1074,22 +1074,3 @@ SET DEFAULT nextval('atta.project_seq'::regclass);
 
 UPDATE atta.collection_protocol SET value='false' WHERE value = 'no';
 UPDATE atta.collection_protocol SET value='true' WHERE value = 'si';
-
----- 2013-01-16
--- gsulca
--- Aplica soloo para Atta Interno
-UPDATE atta.identification_status SET name='Valida' WHERE name = 'V';
-UPDATE atta.identification_status SET name='Temporal' WHERE name = 'T';
-
----- 2013-05-05
-CREATE INDEX idx_gatheringobsdet_gatobsid
-  ON atta.gathering_observation_detail
-  USING btree
-  (gathering_observation_id );
-
----- 2013-07-19
-INSERT INTO atta.protocol_attribute (protocol_attribute_id, name,description, created_by, creation_date, last_modification_by, last_modification_date)
-    values(13,'Número de catálogo alfanumérico','Indica si el número de catálogo está compuesta por letras y números o solo por letras', 'admin','2013-07-18','admin','2013-07-18');
-
-
-INSERT INTO atta.collection_protocol SELECT collection_id, 13, 'false', 'admin', '2013-07-18', 'admin', '2013-07-18' FROM atta.collection_protocol GROUP BY collection_id;

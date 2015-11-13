@@ -102,11 +102,6 @@
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>inventory$NewIdentification</managed-bean-name>
-        <managed-bean-class>org.inbio.ara.inventory.NewIdentification</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
         <managed-bean-name>inventory$EditSpecimen</managed-bean-name>
         <managed-bean-class>org.inbio.ara.inventory.EditSpecimen</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
@@ -1365,24 +1360,6 @@
             <to-view-id>/taxonomy/ListSpecies.jsp</to-view-id>
             <redirect/>
         </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/inventory/ListIdentification.jsp</from-view-id>
-        <navigation-case>
-            <from-outcome>new</from-outcome>
-            <to-view-id>/inventory/NewIdentification.jsp</to-view-id>
-            <redirect/>
-        </navigation-case>        
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/inventory/NewIdentification.jsp</from-view-id>
-        <navigation-case>
-            <from-outcome>back</from-outcome>
-            <to-view-id>/inventory/ListIdentification.jsp</to-view-id>
-            <redirect/>
-        </navigation-case>        
     </navigation-rule>
 
     <navigation-rule>

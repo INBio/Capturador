@@ -22,7 +22,6 @@ import com.sun.webui.jsf.model.Option;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
-import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.dto.agent.CollectionDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
@@ -126,24 +125,13 @@ public class TaxonomySessionBean extends AbstractSessionBean {
 	public List<CollectionDTO> getAllCollections(){
 		return taxonomyFacade.getAllCollections();
 	}
-        
-         /**
-     * <p>Return a reference to the scoped data bean.</p>
-     *
-     * @return reference to the scoped data bean
-     */
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
-    }
 
 	/**
 	 * Return all the taxon in the specified taxonomical hierarchy level.
 	 * @return List<TaxonDTO>
 	 */
 	public List<TaxonDTO> getAllTaxonByRange(Long taxonId){
-		return taxonomyFacade.getAllTaxonByRange(taxonId, this.getAraSessionBean().getGlobalCollectionId(),
-                        this.getAraSessionBean().getGlobalTaxonRangeCollection(),
-                        this.getAraSessionBean().getGlobalTaxonCollectionId());
+		return taxonomyFacade.getAllTaxonByRange(taxonId);
 	}
 
 	/**

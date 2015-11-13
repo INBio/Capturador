@@ -39,11 +39,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.inbio.ara.persistence.GenericEntity;
-import org.inbio.ara.persistence.LogGenericEntity;
 import org.inbio.ara.persistence.collection.Collection;
 import org.inbio.ara.persistence.gathering.ExtractionType;
 import org.inbio.ara.persistence.gathering.GatheringObservation;
-import org.inbio.ara.persistence.gathering.GatheringObservationDetail;
 import org.inbio.ara.persistence.gathering.GatheringObservationMethod;
 import org.inbio.ara.persistence.identification.Identification;
 import org.inbio.ara.persistence.institution.Institution;
@@ -56,9 +54,9 @@ import org.inbio.ara.persistence.label.OriginalLabel;
  */
 @Entity
 @Table(name = "specimen")
-public class Specimen extends LogGenericEntity {
+public class Specimen extends GenericEntity {
 
-    //private static long serialVersionUID = 1L;
+    private static long serialVersionUID = 1L;
     @Id
     //@GeneratedValue(strategy=GenerationType.AUTO)//Added
     @GeneratedValue(strategy=GenerationType.AUTO, generator="specimen")
@@ -109,10 +107,6 @@ public class Specimen extends LogGenericEntity {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private GatheringObservation gatheringObservation;
 
-    @JoinColumn(name = "gathering_observation_detail_id", referencedColumnName = "gathering_observation_detail_id", insertable=false, updatable=false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private GatheringObservationDetail gatheringObservationDetail;
-    
     @Column(name = "gathering_observation_detail_id")
     private Long gatheringObservationDetailId;
 
@@ -633,19 +627,5 @@ public class Specimen extends LogGenericEntity {
      */
     public void setOriginalLabelId(Long originalLabelId) {
         this.originalLabelId = originalLabelId;
-    }
-
-    /**
-     * @return the gatheringObservationDetail
-     */
-    public GatheringObservationDetail getGatheringObservationDetail() {
-        return gatheringObservationDetail;
-    }
-
-    /**
-     * @param gatheringObservationDetail the gatheringObservationDetail to set
-     */
-    public void setGatheringObservationDetail(GatheringObservationDetail gatheringObservationDetail) {
-        this.gatheringObservationDetail = gatheringObservationDetail;
     }
 }

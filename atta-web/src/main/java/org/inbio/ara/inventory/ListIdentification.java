@@ -21,7 +21,6 @@ import com.sun.rave.web.ui.appbase.AbstractPageBean;
 import com.sun.webui.jsf.component.DropDown;
 import com.sun.webui.jsf.component.Table;
 import com.sun.webui.jsf.component.TextField;
-import com.sun.webui.jsf.component.Label;
 import com.sun.webui.jsf.model.Option;
 import com.sun.webui.jsf.model.OptionTitle;
 import com.sun.webui.jsf.model.SingleSelectOptionsList;
@@ -32,10 +31,8 @@ import java.util.Locale;
 import javax.faces.FacesException;
 import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlDataTable;
-import javax.faces.component.html.HtmlColumn;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlPanelGrid;
-
 import javax.faces.context.FacesContext;
 import javax.faces.component.html.HtmlInputHidden;
 import org.inbio.ara.AraSessionBean;
@@ -47,8 +44,6 @@ import org.inbio.ara.dto.inventory.PersonDTO;
 import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.dto.inventory.TaxonomicalRangeDTO;
 import org.inbio.ara.label.LabelSessionBean;
-import org.inbio.ara.persistence.gathering.CollectionProtocolValuesEntity;
-import org.inbio.ara.persistence.gathering.ProtocolAtributeEntity;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.BundleHelper;
 import org.inbio.ara.util.MessageBean;
@@ -90,10 +85,6 @@ public class ListIdentification extends AbstractPageBean {
     private HtmlCommandButton btnAdvSeach = new HtmlCommandButton();
     private HtmlCommandButton btnReIdentify = new HtmlCommandButton();
     private TextField txCatalogNumber = new TextField();
-    
-    private TextField txGathObsDetail = new TextField();
-    private TextField txGathObsDetCollector = new TextField();
-    
     private TextField txTaxonName = new TextField();
     private TextField txIdentifierName = new TextField();
     // DropDown
@@ -121,15 +112,6 @@ public class ListIdentification extends AbstractPageBean {
 
 
     private HtmlInputHidden deleteConfirmationText = new HtmlInputHidden();
-    private HtmlColumn gathObsDetailColumn = new HtmlColumn();
-    private HtmlColumn collectorGathObsDetailColumn = new HtmlColumn();
-    private HtmlColumn catgNumberColumnFirst = new HtmlColumn();
-    private HtmlColumn catgNumberColumnLast = new HtmlColumn();
-    
-    private Label lbGathObsDetail = new Label();
-    private Label lbGathObsDetCollector = new Label();
-    private  boolean proceedSearch = false;
-    
     /**
      * <p>Construct a new Page bean instance.</p>
      */
@@ -199,17 +181,16 @@ public class ListIdentification extends AbstractPageBean {
         
         this.setTypeData();
         
-        //this.setTaxonomicLevelData();
+        this.setTaxonomicLevelData();
         
-        //this.loadValidatorData();
+        this.loadValidatorData();
         
-        //this.loadAddRemoveData(false);
+        this.loadAddRemoveData(false);
         
         this.getDeleteConfirmationText().setValue(BundleHelper.getDefaultBundleValue("delete_confirmation", this.getMyLocale()));
         
         //------------------------------ Control de GUI -------------------------------
         if (isb.isAdvancedSearch()) {
-            
             //Muestra el panel de busqueda avanzada
             this.gridpAdvancedSearch.setRendered(true);
         } //Verifica si esta re-identificando y muestra el panel
@@ -217,36 +198,20 @@ public class ListIdentification extends AbstractPageBean {
             //Muestra el panel de reidentificacion
             this.gridpReIdentify.setRendered(true);
         }
-        Long currentColl = this.getAraSessionBean().getGlobalCollectionId();
-        boolean useDetail = this.getIdentificationSessionBean().matchCollectionProtocol(currentColl,
-                    ProtocolAtributeEntity.USE_GATHERING_DETAIL.getId(),
-                    CollectionProtocolValuesEntity.TRUE_VALUE.getValue());
-        this.gathObsDetailColumn.setRendered(useDetail);
-        this.txGathObsDetail.setRendered(useDetail);
-        this.lbGathObsDetail.setRendered(useDetail);
-        this.txGathObsDetCollector.setRendered(useDetail);
-        this.lbGathObsDetCollector.setRendered(useDetail);
-        this.catgNumberColumnFirst.setRendered(!useDetail);
-        this.catgNumberColumnLast.setRendered(useDetail);
-        this.collectorGathObsDetailColumn.setRendered(useDetail);
         
         //-------------------------- Control de Paginador ------------------------------
         //Inicializar el dataprovider la primera vez (si la paginación es nula)
         //long inicioT = System.currentTimeMillis();
         long finalT;
         if (isb.getPagination()==null) {
-            System.out.println("Entro donde la paginacion es nula");
+        //    System.out.println("Entro donde la paginacion es nula");
             isb.initDataProvider();
         }
         //Actualizar los datos del paginador
         else
         {
-            System.out.println("Entro donde la paginacion NO es nula");
-            if(!isProceedSearch())
-            {
-                isb.getPagination().refreshList();
-                this.proceedSearch = false;
-            }
+          //  System.out.println("Entro donde la paginacion NO es nula");
+            isb.getPagination().refreshList();
         }
         //finalT = System.currentTimeMillis();
         //System.out.println("Tiempo al finalizar el prerender = "+(finalT-inicioT));
@@ -265,7 +230,43 @@ public class ListIdentification extends AbstractPageBean {
     public void destroy() {
     }
 
-    
+    /**
+     * Load the Validators (person whith validator rol) into a DropDown component
+     * on the interface
+     */
+    public void loadValidatorData() {
+
+        Option option = null;
+        String optionTitle = null;
+        Option[] allOptionsInArray = null;
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+
+
+        List<PersonDTO> aPList = isb.getValidatorsList();
+
+        ArrayList<Option> allOptions = new ArrayList<Option>();
+
+        // retrieve the default (no validator) option from the properties file.
+        optionTitle = BundleHelper.getDefaultBundleValue("drop_down_default",
+                                                         getMyLocale());
+        option = new OptionTitle(optionTitle);
+
+        allOptions.add(option);
+
+        // Create the options on the dropdown
+        for (PersonDTO aPDTO : aPList) {
+
+            option = new Option(aPDTO.getPersonKey(),
+                                aPDTO.getNaturalLongName());
+
+            allOptions.add(option);
+        }
+        
+        //Sets the elements in the SingleSelectedOptionList Object
+        allOptionsInArray = new Option[allOptions.size()];
+        this.ddValidatorsData.setItems(allOptions.toArray(allOptionsInArray));
+    }
+
     /**
      * Load the Types information from the database into a dropdown component.
      */
@@ -336,8 +337,106 @@ public class ListIdentification extends AbstractPageBean {
         this.ddStatusData.setOptions(allOptions.toArray(allOptionsInArray));
     }
 
-    
-    
+    /**
+     * Load the Taxonomical hierarchy ranges to a DropDown in the GUI.
+     */
+    public void setTaxonomicLevelData() {
+
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+        Option[] allOptionsInArray = null;
+        String optionTitle = null;
+        Option option = null;
+
+        List<TaxonomicalRangeDTO> aTRList = isb.getTaxonomicalRangeList();
+
+        ArrayList<Option> allOptions = new ArrayList<Option>();
+
+        optionTitle = BundleHelper.getDefaultBundleValue("drop_down_default",
+                                                         getMyLocale());
+        option = new OptionTitle(optionTitle);
+
+        allOptions.add(option);
+
+        // Populate the options on the dropdown
+        for (TaxonomicalRangeDTO trDTO : aTRList) {
+            option = new Option(trDTO.getTaxonomicalRangeKey(), trDTO.getName());
+            allOptions.add(option);
+        }
+
+        //Sets the elements in the SingleSelectedOptionList Object
+        allOptionsInArray = new Option[allOptions.size()];
+        this.ddTaxonomicalRangeData.setOptions(allOptions.toArray(allOptionsInArray));
+    }
+
+    /**
+     * Load or Clean the AddRemove components (Taxon and Identificator).
+     * @param reset (if true, AddRemove components becomes empty)
+     */
+    public void loadAddRemoveData(boolean reset) {
+
+        List<PersonDTO> identifierList = null;
+        List<TaxonDTO> taxonList = null;
+        List<Option> list = null;
+
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+
+        // Make AddRemove components empty.
+        if (reset) {
+
+            isb.getArIdentifierList().setAvailableOptions(new Option[0]);
+            isb.getArIdentifierList().setSelectedOptions(new Long[0]);
+
+            isb.getArTaxonList().setAvailableOptions(new Option[0]);
+            isb.getArTaxonList().setSelectedOptions(new Long[0]);
+
+        }
+
+        // Taxon AddRemove
+        if (isb.getArTaxonList() == null || isb.getArTaxonList().getAvailableOptions().length == 0) {
+
+            // Retrieve taxons
+            taxonList = isb.getAllTaxonByTaxonomicalRange(ROOT_TAXONOMICAL_RANGE_ID);
+            this.setTaxonListOptions(taxonList);
+        }
+
+        // AddRemove de Identificadores
+        if (isb.getArIdentifierList().getAvailableOptions() == null ||
+            isb.getArIdentifierList().getAvailableOptions().length == 0) {
+
+            list = new ArrayList<Option>();
+
+            // Retrieve identifiers.
+            identifierList = isb.getIdentifiersList();
+
+            for (PersonDTO identifier : identifierList) {
+                list.add(new Option(identifier.getPersonKey(),
+                                    identifier.getNaturalLongName()));
+            }
+
+            isb.getArIdentifierList().setAvailableOptions(list.toArray(new Option[list.size()]));
+        }
+
+        // Set the titles
+        isb.getArTaxonList().setLbTitle(
+            BundleHelper.getDefaultBundleValue("taxon", this.getMyLocale()));
+
+        isb.getArTaxonList().setLbAvailable(
+            BundleHelper.getDefaultBundleValue("available", this.getMyLocale()));
+
+        isb.getArTaxonList().setLbSelected(
+            BundleHelper.getDefaultBundleValue("selected", this.getMyLocale()));
+
+        isb.getArIdentifierList().setLbTitle(
+            BundleHelper.getDefaultBundleValue("person_identifier", this.getMyLocale()));
+
+        isb.getArIdentifierList().setLbAvailable(
+            BundleHelper.getDefaultBundleValue("available", this.getMyLocale()));
+
+        isb.getArIdentifierList().setLbSelected(
+            BundleHelper.getDefaultBundleValue("selected", this.getMyLocale()));
+
+    }
+
     /**
      * Show the advance search area.
      * @return null
@@ -392,21 +491,56 @@ public class ListIdentification extends AbstractPageBean {
     public String btnReIdentifyAction() {
 
         IdentificationSessionBean isb = this.getIdentificationSessionBean();
-        
-        List<IdentificationDTO> identList = this.selectedDataTableIdenfications();
-        
-        System.out.println("Los catalog numbre son: ");
-        for(IdentificationDTO idDTO : identList)
-        {
-             System.out.println(idDTO.getCatalogNumber());
+
+        boolean reIdentify = isb.isReIdentify();
+        isb.setAdvancedSearch(false);
+
+        if (reIdentify == false) { //Mostrar panel de Reidentificacion
+
+            //Limpiar los add-remove components
+            isb.setArTaxonList(new AddRemoveList());
+            isb.setArIdentifierList(new AddRemoveList());
+
+            isb.setReIdentify(true);
+            this.gridpAdvancedSearch.setRendered(false);
+
+            //Deshabilitar busqueda simple
+            this.txSearch.setRendered(false);
+            this.btnSeach.setRendered(false);
+            this.btnAdvSeach.setRendered(false);
+
+            //Cambia el text del boton de busqueda avanzada
+            this.btnReIdentify.setValue(
+                BundleHelper.getDefaultBundleValue("re_identify_back",
+                                                   getMyLocale()));
+
+            this.btnReIdentify.setStyle("width:190px");
+            this.gridpReIdentify.setRendered(true);
+
+        } else if (reIdentify == true) {
+
+            isb.setReIdentify(false);
+
+            //Ocultar el panel
+            this.gridpAdvancedSearch.setRendered(false);
+            isb.setSpecimenBarcodeList(new Option[0]);
+            this.gridpReIdentify.setRendered(false);
+
+            //Habilitar busqueda simple
+            this.txSearch.setRendered(true);
+            this.btnSeach.setRendered(true);
+            this.btnAdvSeach.setRendered(true);
+
+            //Cambia el text del boton de busqueda avanzada
+            this.btnReIdentify.setValue(
+                BundleHelper.getDefaultBundleValue("re_identify",
+                                                   getMyLocale()));
+
+            this.btnReIdentify.setStyle("width:160px");
+            this.loadAddRemoveData(true);
         }
 
-        isb.setSelectedIdentifications(identList);
-        boolean reIdentify = isb.isReIdentify();
-        isb.setSpecimenBarcodeList(new Option[0]);
-        isb.setAdvancedSearch(false);
-        isb.setResetReidentification(true);
-        return "new";
+        return null;
     }
 
     /**
@@ -463,29 +597,15 @@ public class ListIdentification extends AbstractPageBean {
         String indentifiersString = "";
         IdentificationDTO consulta = new IdentificationDTO();
         List<IdentifierDTO> identifierList = new ArrayList();
-        
 
         IdentificationSessionBean isb = this.getIdentificationSessionBean();
 
         // retrieve the necesary values from the interface bindings.
         String catalogNumber = (String) txCatalogNumber.getValue();
         String taxonName = (String) txTaxonName.getValue();
-        String gathObsDetail = (String)txGathObsDetail.getValue();
-        String gathObsDetCollector = (String)txGathObsDetCollector.getValue();
 
-        this.proceedSearch = true;
-        
         if (catalogNumber != null && !catalogNumber.isEmpty()) {
             consulta.setCatalogNumber(catalogNumber);
-        }
-        
-        if (gathObsDetail != null && !gathObsDetail.isEmpty()) {
-            consulta.setGathObsDetailNumber(gathObsDetail);
-        }
-        
-         if (gathObsDetCollector != null && !gathObsDetCollector.isEmpty()) {
-            consulta.setCollectorNameGathObsDetail(gathObsDetCollector);
-             
         }
 
         if (taxonName != null && !taxonName.isEmpty()) {
@@ -525,8 +645,41 @@ public class ListIdentification extends AbstractPageBean {
         return null;
     }
 
-    
-    
+    /**
+     * Update the taxon addRemove component depending on the taxonomical level
+     * DropDown
+     * @return null
+     */
+    public String updateTaxonListAction() {
+        List<TaxonDTO> taxonList = null;
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+
+        // retrieve all links by its taxonomical range/level.
+        taxonList = isb.getAllTaxonByTaxonomicalRange(this.ddTaxonomicalRangeSelected);
+        this.setTaxonListOptions(taxonList);
+
+        return null;
+    }
+
+    /**
+     * Populate the taxon AddRemove GUI component wthi the taxon list passed by
+     * parameter
+     * @param Taxon List.
+     */
+    private void setTaxonListOptions(List<TaxonDTO> taxonList) {
+
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+
+        List<Option> list = new ArrayList<Option>();
+        AddRemoveList arTaxon = isb.getArTaxonList();
+
+        for (TaxonDTO taxon : taxonList) {
+            list.add(new Option(taxon.getTaxonKey(), taxon.getDefaultName()));
+        }
+
+        arTaxon.setAvailableOptions(list.toArray(new Option[list.size()]));
+    }
+
 /**
  * Return a list of the selected identifications of the Table (selected by checkbox).
  * @return List<IdentificationDTO>
@@ -549,6 +702,211 @@ public class ListIdentification extends AbstractPageBean {
             }
         }
         return selectedIdentifications;
+    }
+
+/**
+ * Retrieve a list of the identifications introduced in the system trough the
+ * Bar code list GUI component
+ * @return List<IdentificationDTO>
+ */
+    public List<IdentificationDTO> processBarcodeListIdenfications(){
+
+        IdentificationDTO aIdentification = null;
+
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+
+        ArrayList<IdentificationDTO> selectedIdentifications =
+            new ArrayList<IdentificationDTO>();
+
+        for(Option op : isb.getSpecimenBarcodeList()){
+
+            aIdentification =
+                (IdentificationDTO) isb.getInventoryFacade()
+                    .getIdentificationByCatalogNumber(op.getLabel());
+
+            if(aIdentification == null){
+                MessageBean.
+                        setErrorMessageFromBundle( "identification_does_not_exists"
+                        ,this.getMyLocale()
+                        , op.getLabel());
+                continue;
+            }
+
+            selectedIdentifications.add(aIdentification);
+        }
+
+    return selectedIdentifications;
+}
+
+
+    /**
+     * Process the parameters and execute the reidentification with the selected
+     * items.
+     * @return null
+     */
+    public String btnProceedReIdentifyAction() {
+
+        List<IdentificationDTO> selectedIdentifications = null;
+
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+
+        Long[] selectedIdentifiers = isb.getArIdentifierList().getSelectedOptions();
+        Long[] selectedTaxons = isb.getArTaxonList().getSelectedOptions();
+
+        Long selectedValidator = this.ddValidatorSelected;
+        Long selectedStatus = this.ddStatusSelected;
+        Long selectedType = this.ddTypeSelected;
+
+        IdentifierDTO newIdentifier = null;
+        TaxonDTO newTaxon = null;
+
+        int arrayLength = -1;
+
+        //En caso de que no se seleccione ningun elemento
+        if ( (selectedStatus == null || selectedStatus == -1) && isb.getSpecimenBarcodeList().length < 1) {
+            MessageBean.setErrorMessageFromBundle("not_status_selected",
+                                                  this.getMyLocale());
+            return null;
+        }
+
+        //En caso de que no se seleccione ningun elemento
+        if (selectedTaxons == null || selectedTaxons.length == 0) {
+            MessageBean.setErrorMessageFromBundle("not_taxon_selected",
+                                                  this.getMyLocale());
+            return null;
+        }
+
+        if(isb.getSpecimenBarcodeList().length < 1){
+           selectedIdentifications = this.selectedDataTableIdenfications();
+        }else{
+           selectedIdentifications = this.processBarcodeListIdenfications();
+        }
+
+        for(IdentificationDTO iDTO: selectedIdentifications){
+
+            iDTO.setTypeId(selectedType);
+            iDTO.setStatusId(selectedStatus);
+            iDTO.setValuerPerson(new PersonDTO(selectedValidator));
+
+            arrayLength = selectedTaxons.length;
+
+            if(arrayLength > 1 && !iDTO.isMultitaxon() ){
+                MessageBean.setErrorMessageFromBundle( "cant_reidentify_single_taxon" ,this.getMyLocale());
+                return null;
+            }
+
+            iDTO.setIdentificationDate(Calendar.getInstance());
+            iDTO.setTaxa(new ArrayList<TaxonDTO>());
+
+            // Add taxons
+            for (int t = 0; t < arrayLength; t++) {
+                newTaxon = new TaxonDTO(selectedTaxons[t]);
+                iDTO.getTaxa().add(newTaxon);
+            }
+
+            iDTO.setIdentifiers(new ArrayList<IdentifierDTO>());
+
+            // Agrega identificadores
+            if (selectedIdentifiers != null) {
+                arrayLength = selectedIdentifiers.length;
+                // Agrega taxones
+                for (int t = 0; t < arrayLength; t++) {
+                    newIdentifier = new IdentifierDTO(selectedIdentifiers[t]);
+                    iDTO.getIdentifiers().add(newIdentifier);
+                }
+            }
+        }
+
+        //En caso de que no se seleccione ningun elemento
+        if (selectedIdentifications == null || selectedIdentifications.size() == 0) {
+            MessageBean.setErrorMessageFromBundle("not_identification_selected",
+                                                  this.getMyLocale());
+            return null;
+        }
+
+        //Realiza la re-identificación
+        isb.reidentify(selectedIdentifications);
+
+        //Cierra el panel de reidentificación.
+        this.btnReIdentifyAction();
+
+        //Refresca los datos cargados.
+        this.getIdentificationSessionBean().getPagination().refreshList();
+              
+        this.loadAddRemoveData(true);
+
+        return null;
+
+        // print the label (Agregado por Pula corrales)
+        /*String  Id = this.getIdentificationSessionBean().getCurrentIdentificationDTO().getCatalogNumber();
+        SpecimenDTO current =   this.getlabel$LabelSessionBean().getCurrentSpecimenDTO();
+        this.getlabel$LabelSessionBean().setCurrentSpecimenDTO(current);
+        return "edit";*/
+    }
+
+    /**
+ * Add a new barcode to the list that will be procesated after.
+ * @return
+ */
+     public String btnAddBarcodeAction() {
+
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+
+        Option[] optList = isb.getSpecimenBarcodeList();
+        
+        List<Option> newList = new ArrayList<Option>();
+        
+        if(optList == null)
+            optList = new Option[1];
+
+        for (Option op : optList)
+            newList.add(op);
+
+        String barcode = isb.getSpecimenBarcode();
+
+        Option opt = new Option(new Long(optList.length), barcode);
+        newList.add(opt);
+
+        isb.setSpecimenBarcodeList(newList.toArray(new Option[newList.size()]));
+        isb.setSpecimenBarcode("");
+        
+        return null;
+    }
+
+    /**
+     * Delete from the SpecimenBarcodeList  the selected items.
+     * @return null
+     */
+     public String btnDeleteBarcodeAction() {
+
+        IdentificationSessionBean isb = this.getIdentificationSessionBean();
+
+        Option[] optList = isb.getSpecimenBarcodeList();
+        Long[] selectedList = isb.getSpecimenBarcodeSelected();
+
+        List<Option> newList = new ArrayList<Option>();
+
+        if(optList == null)
+            return null;
+
+        for (Option op : optList)
+            newList.add(op);
+
+        Option op = null;
+        for (Long selected: selectedList){
+            for(int i = 0; i < newList.size(); i++){
+                op = newList.get(i);
+                if(selected.equals(op.getValue())){
+                    newList.remove(op);
+                }
+            }
+        }
+
+
+        
+        isb.setSpecimenBarcodeList(newList.toArray(new Option[newList.size()]));
+        
+        return null;
     }
 
     /**
@@ -779,133 +1137,5 @@ public class ListIdentification extends AbstractPageBean {
     
 
    // </editor-fold>
-
-    /**
-     * @return the txGathObsDetail
-     */
-    public TextField getTxGathObsDetail() {
-        return txGathObsDetail;
-    }
-
-    /**
-     * @param txGathObsDetail the txGathObsDetail to set
-     */
-    public void setTxGathObsDetail(TextField txGathObsDetail) {
-        this.txGathObsDetail = txGathObsDetail;
-    }
-
-    /**
-     * @return the proceedSearch
-     */
-    public boolean isProceedSearch() {
-        return proceedSearch;
-    }
-
-    /**
-     * @param proceedSearch the proceedSearch to set
-     */
-    public void setProceedSearch(boolean proceedSearch) {
-        this.proceedSearch = proceedSearch;
-    }
-
-    /**
-     * @return the gathObsDetailColumn
-     */
-    public HtmlColumn getGathObsDetailColumn() {
-        return gathObsDetailColumn;
-    }
-
-    /**
-     * @param gathObsDetailColumn the gathObsDetailColumn to set
-     */
-    public void setGathObsDetailColumn(HtmlColumn gathObsDetailColumn) {
-        this.gathObsDetailColumn = gathObsDetailColumn;
-    }
-
-    /**
-     * @return the lbGathObsDetail
-     */
-    public Label getLbGathObsDetail() {
-        return lbGathObsDetail;
-    }
-
-    /**
-     * @param lbGathObsDetail the lbGathObsDetail to set
-     */
-    public void setLbGathObsDetail(Label lbGathObsDetail) {
-        this.lbGathObsDetail = lbGathObsDetail;
-    }
-
-    /**
-     * @return the catgNumberColumnFirst
-     */
-    public HtmlColumn getCatgNumberColumnFirst() {
-        return catgNumberColumnFirst;
-    }
-
-    /**
-     * @param catgNumberColumnFirst the catgNumberColumnFirst to set
-     */
-    public void setCatgNumberColumnFirst(HtmlColumn catgNumberColumnFirst) {
-        this.catgNumberColumnFirst = catgNumberColumnFirst;
-    }
-
-    /**
-     * @return the catgNumberColumnLast
-     */
-    public HtmlColumn getCatgNumberColumnLast() {
-        return catgNumberColumnLast;
-    }
-
-    /**
-     * @param catgNumberColumnLast the catgNumberColumnLast to set
-     */
-    public void setCatgNumberColumnLast(HtmlColumn catgNumberColumnLast) {
-        this.catgNumberColumnLast = catgNumberColumnLast;
-    }
-
-    /**
-     * @return the collectorGathObsDetailColumn
-     */
-    public HtmlColumn getCollectorGathObsDetailColumn() {
-        return collectorGathObsDetailColumn;
-    }
-
-    /**
-     * @param collectorGathObsDetailColumn the collectorGathObsDetailColumn to set
-     */
-    public void setCollectorGathObsDetailColumn(HtmlColumn collectorGathObsDetailColumn) {
-        this.collectorGathObsDetailColumn = collectorGathObsDetailColumn;
-    }
-
-    /**
-     * @return the lbGathObsDetCollector
-     */
-    public Label getLbGathObsDetCollector() {
-        return lbGathObsDetCollector;
-    }
-
-    /**
-     * @param lbGathObsDetCollector the lbGathObsDetCollector to set
-     */
-    public void setLbGathObsDetCollector(Label lbGathObsDetCollector) {
-        this.lbGathObsDetCollector = lbGathObsDetCollector;
-    }
-
-    /**
-     * @return the txGathObsDetCollector
-     */
-    public TextField getTxGathObsDetCollector() {
-        return txGathObsDetCollector;
-    }
-
-    /**
-     * @param txGathObsDetCollector the txGathObsDetCollector to set
-     */
-    public void setTxGathObsDetCollector(TextField txGathObsDetCollector) {
-        this.txGathObsDetCollector = txGathObsDetCollector;
-    }
-
- 
 }
 

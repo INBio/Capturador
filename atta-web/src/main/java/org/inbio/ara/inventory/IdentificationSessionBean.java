@@ -34,7 +34,6 @@ import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
 import org.inbio.ara.facade.search.SearchFacadeRemote;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Set;
 import org.inbio.ara.AraSessionBean;
 import org.inbio.ara.util.AddRemoveList;
 import org.inbio.ara.util.PaginationControllerRemix;
@@ -86,8 +85,6 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
     private boolean queryMode = false;
     //Bandera para indicarle al paginador que trabaje en modo busqueda simple
     private boolean queryModeSimple = false;
-    
-    private boolean resetReidentification = false;
     //Specimen DTO seleccionado por el usuario para editar
     private IdentificationDTO currentIdentificationDTO = new IdentificationDTO();
     //SpecimenDTO que sera convertido en entidad y sera persistido
@@ -104,7 +101,6 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
     private Option[] specimenBarcodeList = new Option[0];
     private String specimenBarcode = new String("");
 
-    private List<IdentificationDTO> selectedIdentifications = null;
     /**
      * <p>Construct a new session data bean instance.</p>
      */
@@ -200,11 +196,11 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
         //this.setPagination(new PaginationControllerRemix(inventoryFacade.countIdentifications(getAraSessionBean().getGlobalCollectionId()).intValue(), getQuantity(), this));
         this.setPagination(new PaginationControllerRemix(countAllIdentification().intValue(), getQuantity(), this));
         finalT = System.currentTimeMillis();
-        //System.out.println("Tiempo de despues de this.setPagination) = "+(finalT-inicioT));
+        System.out.println("Tiempo de despues de this.setPagination) = "+(finalT-inicioT));
         finalT=inicioT;
         this.getPagination().firstResults();
         finalT = System.currentTimeMillis();
-        //System.out.println("Tiempo de despues de getPagination().firstResults()) = "+(finalT-inicioT));
+        System.out.println("Tiempo de despues de getPagination().firstResults()) = "+(finalT-inicioT));
         finalT=inicioT;
     }
 
@@ -217,19 +213,6 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
         return (AraSessionBean) getBean("AraSessionBean");
     }
 
-     /**
-     * La idea de este metodo es poder preguntar si determinado protocolo esta activado o no
-     * para una determinada colleccion
-     * @param collectionId
-     * @param protocolAtributeId
-     * @param value corresponde a alguno de los valores posibles para saber si el protocolo esta
-     * "activado" o "desactivado"
-     * @return
-     */
-    public boolean matchCollectionProtocol(Long collectionId, Long protocolAtributeId, String value) {
-        return this.inventoryFacade.matchCollectionProtocol(collectionId, protocolAtributeId, value);
-    }
-    
     public InventoryFacadeRemote getInventoryFacade() {
         return inventoryFacade;
     }
@@ -365,8 +348,7 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
     }
 
     public List<TaxonDTO> getAllTaxonByTaxonomicalRange(Long taxonomicalRangeId) {
-        return this.inventoryFacade.getAllTaxonByTaxononimcalRange(taxonomicalRangeId, this.getAraSessionBean().getGlobalCollectionId(),
-                this.getAraSessionBean().getGlobalTaxonRangeCollection(), this.getAraSessionBean().getGlobalTaxonCollectionId());
+        return this.inventoryFacade.getAllTaxonByTaxononimcalRange(taxonomicalRangeId);
     }
 
     public void reidentify(List<IdentificationDTO> selectedIdentifications) {
@@ -405,7 +387,9 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
 
     public List getResults(int firstResult, int maxResults) {
 
-        
+        System.out.println("Ingresa al getResults de IndicationSessionBean");
+        System.out.println("firstResult = "+ firstResult +", maxResults = "+ maxResults);
+
         long inicioT = System.currentTimeMillis();
         long finalT;
 
@@ -423,19 +407,13 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
                 IdentificationDTO idto = queryIdentificationDTO;
                 idto.setCollectionId(collectionId);
                 try {
-                    
-                    Set<Long> identificationResults = getSearchFacade().getIdentificationIds(idto);
-                    
-                    //Integer count = ;
-                    //i.longValue();
-                    getPagination().setTotalResults(identificationResults.size());
-                    //getPagination().setTotalResults(getSearchFacade().countIdentificationByCriteria(idto).intValue());
+                    getPagination().setTotalResults(getSearchFacade().countIdentificationByCriteria(idto).intValue());
 
                     //finalT= System.currentTimeMillis();
                     //System.out.println("Tiempo al finalizar getResult = "+(finalT-inicioT));
 
                     return myReturn(searchFacade.searchIdentificationByCriteria(idto,
-                            firstResult, maxResults, identificationResults));
+                            firstResult, maxResults));
                 } catch (Exception e) {
 
                     //finalT= System.currentTimeMillis();
@@ -520,33 +498,5 @@ public class IdentificationSessionBean extends AbstractSessionBean implements Se
 
     public void setSpecimenBarcode(String specimenBarcode) {
         this.specimenBarcode = specimenBarcode;
-    }
-
-    /**
-     * @return the selectedIdentifications
-     */
-    public List<IdentificationDTO> getSelectedIdentifications() {
-        return selectedIdentifications;
-    }
-
-    /**
-     * @param selectedIdentifications the selectedIdentifications to set
-     */
-    public void setSelectedIdentifications(List<IdentificationDTO> selectedIdentifications) {
-        this.selectedIdentifications = selectedIdentifications;
-    }
-
-    /**
-     * @return the resetReidentification
-     */
-    public boolean isResetReidentification() {
-        return resetReidentification;
-    }
-
-    /**
-     * @param resetReidentification the resetReidentification to set
-     */
-    public void setResetReidentification(boolean resetReidentification) {
-        this.resetReidentification = resetReidentification;
     }
 }

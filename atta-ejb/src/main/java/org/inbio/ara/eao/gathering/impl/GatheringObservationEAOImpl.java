@@ -34,16 +34,6 @@ public class GatheringObservationEAOImpl
         q.setParameter("siteId", siteId);
         return q.getResultList();
     }
-    
-      public List<Long> findBySiteId(Long siteId, Long collectionId) {
-        Query q = em.createQuery("select go.gatheringObservationId " +
-                "from GatheringObservation as go"
-                + " where go.site.siteId = :siteId"+
-                " and go.collectionId = :collectionId");
-        q.setParameter("siteId", siteId);
-        q.setParameter("collectionId", collectionId);
-        return q.getResultList();
-    }
 
     /**
      * Ej. select * from ara.gathering_observation where
@@ -70,16 +60,6 @@ public class GatheringObservationEAOImpl
                 "GatheringObservation as go"
                 + " where go.responsiblePerson.personId = :personId");
         q.setParameter("personId", personId);
-        return q.getResultList();
-    }
-    
-    public List<Long> findByResponsibleId(Long personId, Long collectionId) {
-        Query q = em.createQuery("select go.gatheringObservationId from " +
-                "GatheringObservation as go"
-                + " where go.responsiblePerson.personId = :personId"
-                + " and go.collectionId = :collectionId");
-        q.setParameter("personId", personId);
-        q.setParameter("collectionId", collectionId);
         return q.getResultList();
     }
 

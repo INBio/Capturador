@@ -315,7 +315,6 @@ public class SelectCollection extends AbstractPageBean {
         else if(collection!=null){
             
             this.getAraSessionBean().setGlobalCollectionId(collection);
-            
             return "next";
         }
         else if(nomenclatural!=null){

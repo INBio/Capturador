@@ -925,27 +925,6 @@ public class TaxonomyFacadeImpl implements TaxonomyFacadeRemote {
      * Return all the taxon in the specified taxonomical hierarchy level.
      * @return List<TaxonDTO>
      */
-    public List<TaxonDTO> getAllTaxonByRange(Long rangeId, Long collectionId, Long collRangeId, Long taxonCollId ) {
-        List<Taxon> taxonList = null;
-        List<TaxonDTO> taxonDTOList = null;
-
-        //taxonList = this.taxonEAOImpl.findByTaxononimcalRange(rangeId,collRangeId,taxonCollId);
-        //taxonDTOList = taxonDTOFactory.createDTOList(taxonList);
-        
-        if(rangeId <= collRangeId || rangeId.equals(TaxonomicalRangeEntity.DOMAIN.getId()))
-        {
-            taxonDTOList = taxonDTOFactory.createDTOList(taxonEAOImpl.
-                    findByTaxononimcalRange(rangeId));
-        }
-        else
-        {
-            taxonDTOList = taxonDTOFactory.createDTOList(taxonEAOImpl.
-                    findByTaxononimcalRange(rangeId,collRangeId, taxonCollId));
-        }
-
-        return taxonDTOList;
-    }
-    
     public List<TaxonDTO> getAllTaxonByRange(Long rangeId) {
         List<Taxon> taxonList = null;
         List<TaxonDTO> taxonDTOList = null;

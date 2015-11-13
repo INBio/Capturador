@@ -24,13 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.FacesException;
-import org.inbio.ara.AraSessionBean;
-import org.inbio.ara.dto.inventory.*;
+import org.inbio.ara.dto.inventory.IdentificationDTO;
+import org.inbio.ara.dto.inventory.PersonDTO;
+import org.inbio.ara.dto.inventory.SpecimenDTO;
+import org.inbio.ara.dto.inventory.TaxonCategoryDTO;
+import org.inbio.ara.dto.inventory.TaxonDTO;
 import org.inbio.ara.facade.inventory.InventoryFacadeRemote;
-import org.inbio.ara.persistence.gathering.CollectionProtocolValuesEntity;
-import org.inbio.ara.persistence.gathering.ProtocolAtributeEntity;
-import org.inbio.ara.persistence.specimen.Specimen;
-import org.inbio.ara.persistence.specimen.SpecimenCategoryEntity;
 import org.inbio.ara.util.AddRemoveList;
 
 /**
@@ -85,9 +84,6 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     private Long selectedTaxonomicLevel = null; //taxonomical range
     private Long selecctedValidator = null; //valuer person
 
-    private List<SpecimenDTO> newSpecimens = null;
-    
-    
     /**
      * <p>Construct a new session data bean instance.</p>
      */
@@ -167,10 +163,6 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     @Override
     public void destroy() {
     }
-    
-    protected AraSessionBean getAraSessionBean() {
-        return (AraSessionBean) getBean("AraSessionBean");
-    }
 
     /**
      * @return the specimenDTO
@@ -215,9 +207,7 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
     }
 
     public List<TaxonDTO> getAllTaxonByTaxonomicalRange(Long taxonomicalRangeId) {
-        return this.inventoryFacade.getAllTaxonByTaxononimcalRange(taxonomicalRangeId,
-          this.getAraSessionBean().getGlobalCollectionId(), this.getAraSessionBean().getGlobalTaxonRangeCollection(),
-          this.getAraSessionBean().getGlobalTaxonCollectionId());
+        return this.inventoryFacade.getAllTaxonByTaxononimcalRange(taxonomicalRangeId);
     }
 
     public List<PersonDTO> getIdentifiersList() {
@@ -386,119 +376,8 @@ public class SpecimenGenerationSessionBean extends AbstractSessionBean {
         this.selecctedValidator = selecctedValidator;
     }
 
-    //Se llama en el btnSpecimenGeneration_action
     public int generateSpecimens() {
-        /*return inventoryFacade.specimenGenerator(specimenDTO, identificationDTO,
-                lifeFormList, getSpecimenQuantity().intValue());*/
-        //identificationDTO.setUserName(this.getAraSessionBean().getGlobalUserName());
-        System.out.println("SPECIMEN GENERATION SESSION BEAN: GENERATE SPECIMENS");
-        //System.out.println("Idto.USER = "+identificationDTO.getUserName());
-        
-        return specimenGenerator(specimenDTO, identificationDTO,
+        return inventoryFacade.specimenGenerator(specimenDTO, identificationDTO,
                 lifeFormList, getSpecimenQuantity().intValue());
     }
-    
-    //Este es el de prueba para cargar la tabla
-    public int specimenGenerator(SpecimenDTO sDTO, IdentificationDTO iDTO,
-            List<Long> lifeForms, int quantity) {
-        String[] catalogNumbersAvailable;
-        List<LifeStageSexDTO> lssDTOList;
-        List<SpecimenDTO> catalogNumberGenerated;
-        
-        System.out.println("-- SGSB: SPECIMEN GENERATOR --");
-        newSpecimens = null;
-
-        if (sDTO == null) {
-            //Null specimenDTO
-            return 1;
-        } else {
-            inventoryFacade.validateSpecimenDTO(sDTO);
-        }
-        if (quantity == 0) {
-            //Not quantity specified
-            return 2;
-        }
-        lssDTOList = sDTO.getLifeStageSexList();
-
-        //Do I have an initial Catalog Number?
-        //No. Then set one.
-        sDTO.setCatalogNumber(inventoryFacade.getLastCatalogNumber(sDTO));
-        
-        sDTO.setUserName(this.getAraSessionBean().getGlobalUserName());
-        iDTO.setUserName(this.getAraSessionBean().getGlobalUserName());
-        
-        //Yes, I have or you assigned one to me
-        //Are all of them available?
-        catalogNumbersAvailable = inventoryFacade.catalogNumberChecker(sDTO.getCatalogNumber(),
-                quantity);
-        //No
-        if (catalogNumbersAvailable == null) {
-            //Catalog Number not available
-            return 3;
-        }
-        //Yes
-        
-        //llamar al metodo que los genera
-        //catalogNumberGenerated = inventoryFacade.specimenGeneration(catalogNumbersAvailable, sDTO, iDTO, lssDTOList, lifeForms);
-        newSpecimens = inventoryFacade.specimenGeneration(catalogNumbersAvailable, sDTO, iDTO, lssDTOList, lifeForms);
-        //System.out.println("catalogNumberGenerated = "+catalogNumberGenerated);
-        //if(catalogNumberGenerated == null)
-        if(newSpecimens == null)
-        {
-            return 4;           
-            
-        }
-        
-        //Do I have a life stage sex?
-            //Yes
-            if (lssDTOList != null) {
-                inventoryFacade.createLifeStageSex(lssDTOList, sDTO.getSpecimenKey());
-               
-            }
-            //Do I have a life form?
-            //Yes
-            if (lifeForms != null) {
-                inventoryFacade.createLifeForm(lifeForms, sDTO.getSpecimenKey());
-            }
-        
-        //newSpecimens = toSpecimenDTO(catalogNumberGenerated,sDTO);
-        return 0; //0 means everything is ok
-    }
-    
-    private List<SpecimenDTO> toSpecimenDTO(List<String> catalogNumbers, SpecimenDTO specimenDTO)
-    {
-        System.out.println("Ingresa a toSpecimen()");
-        System.out.println("CatalogNumbers = "+catalogNumbers.size());
-        List<SpecimenDTO> result = new ArrayList<SpecimenDTO>();
-        SpecimenDTO newSpecimenDTO;
-        for(String catalogNumberS: catalogNumbers)
-        {
-            
-            newSpecimenDTO = specimenDTO;
-            newSpecimenDTO.setCatalogNumber(catalogNumberS);            
-            result.add(newSpecimenDTO);
-             
-            
-            //result.add( );
-        }
-        
-        System.out.println("Tamaño de la lista = "+result.size());
-        return result;
-    }
-
-    /**
-     * @return the newSpecimens
-     */
-    public List<SpecimenDTO> getNewSpecimens() {
-        return newSpecimens;
-    }
-
-    /**
-     * @param newSpecimens the newSpecimens to set
-     */
-    public void setNewSpecimens(List<SpecimenDTO> newSpecimens) {
-        this.newSpecimens = newSpecimens;
-    }
-
-    
 }

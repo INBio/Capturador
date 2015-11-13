@@ -114,7 +114,7 @@
                                             style="height: 24px; left: 624px; top: 72px; position: absolute" width="165px"/>
                                         <webuijsf:label binding="#{inventory$SpecimenGeneration.lbDateObservation}" for="calDateObservation" id="lbDateObservation"
                                             rendered="false" style="height: 24px; left: 456px; top: 144px; position: absolute; width: 168px" text="#{resources.date_observation}"/>
-                                        <webuijsf:calendar binding="#{inventory$SpecimenGeneration.calDateObservation}" columns="19" dateFormatPattern="yyyy-MM-dd" 
+                                        <webuijsf:calendar binding="#{inventory$SpecimenGeneration.calDateObservation}" columns="19" dateFormatPattern="yyyy-MM-dd"
                                             id="calDateObservation" rendered="false" style="height: 24px; left: 614px; top: 144px; position: absolute; width: 154px"/>
                                         <webuijsf:label binding="#{inventory$SpecimenGeneration.lbTimeObservation}" for="txWhole" id="lbTimeObservation"
                                             rendered="false" style="height: 24px; left: 456px; top: 168px; position: absolute; width: 168px" text="#{resources.time_observation}"/>
@@ -333,74 +333,7 @@
                                     </h:panelGrid>
                                 </h:panelGrid>
                                 <!-- Final panel principal -->
-                                
-                                <!-- rows="#{inventory$SpecimenGenerationSessionBean.newSpecimens}"-->
                             </webuijsf:form>
-                                <h:panelGrid columns="1" id="gridpGenerationResults" style="height: 24px; left: 30px; position: relative" width="845" styleClass="My_panel_blue" rendered="#{inventory$SpecimenGeneration.showSpecimens}">
-                                    <h:dataTable binding="#{inventory$SpecimenGeneration.dataTableSpecimens}" cellspacing="0" columnClasses="list-columns"
-                                            headerClass="list-header" id="dataTableSpecimens" rowClasses="list-row-even,list-row-odd"
-                                            rendered="#{inventory$SpecimenGeneration.showSpecimens}"
-                                            style="border-top: solid rgb(214, 218, 221) 2px; border-bottom: solid rgb(214, 218, 221) 2px; border-left: solid rgb(214, 218, 221) 2px;width:100%;"
-                                            value="#{inventory$SpecimenGenerationSessionBean.newSpecimens}" var="currentRow">
-                                         
-                                            <h:column>
-                                                <f:facet name="header">                                                    
-                                                    <h:outputText value="#{resources.catalognumber}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['catalogNumber']}"/>
-                                            </h:column>                                     
-                                        <h:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{resources.institution}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['institutionCode']}"/>
-                                            </h:column>
-                                          
-                                            <h:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{resources.gathering_observation_id}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['gatheringObsevationId']}"/>
-                                            </h:column>
-                                            <h:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{resources.taxon_name}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['taxonName']}"/>
-                                            </h:column>
-                                            <h:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{resources.locality}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['localityDescription']}"/>
-                                            </h:column>
-                                            <h:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{resources.coordinates}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['coordinates']}"/>
-                                            </h:column>
-                                            <h:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{resources.country}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['countryName']}"/>
-                                            </h:column>
-                                            <h:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{resources.state}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['provinceName']}"/>
-                                            </h:column>
-                                            <h:column>
-                                                <f:facet name="header">
-                                                    <h:outputText value="#{resources.person_in_charge}"/>
-                                                </f:facet>
-                                                <h:outputText value="#{currentRow['responsibleName']}"/>
-                                            </h:column>
-                                            
-                                        </h:dataTable>
-                                </h:panelGrid>
                         </webuijsf:panelLayout> <!-- contenido ends -->
                         <jsp:directive.include file="/Footer.jspf"/>
                     </div> <!-- pageFormated ends -->

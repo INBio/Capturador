@@ -58,12 +58,4 @@ public interface SpecimenEAOLocal extends BaseLocalEAO<Specimen,Long>{
     public List<Specimen> getAllSpecimenIdentificatedPaginated(int first,
             int maxResults, Long collectionId);
 
-    public org.inbio.ara.persistence.specimen.Specimen findSpecimenByCatalogNumber(java.lang.String catalogNumber);
-
-    public java.lang.Long count(java.lang.Long collectionId);
-
-    public java.util.List<java.lang.Long> findByGathObsDetailId(java.lang.Long gathObsDetailId, java.lang.Long collection_id);
-
-    public java.lang.Long findByCatalogNumber(java.lang.String catalogNumber, java.lang.Long collectionId);
-
 }

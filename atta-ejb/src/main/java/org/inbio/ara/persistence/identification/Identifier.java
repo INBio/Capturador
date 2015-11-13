@@ -31,7 +31,6 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.inbio.ara.persistence.GenericEntity;
-import org.inbio.ara.persistence.LogGenericEntity;
 
 /**
  *
@@ -39,7 +38,7 @@ import org.inbio.ara.persistence.LogGenericEntity;
  */
 @Entity
 @Table(name = "identifier")
-public class Identifier extends LogGenericEntity{
+public class Identifier extends GenericEntity{
 
     private static final long serialVersionUID = 1L;
 

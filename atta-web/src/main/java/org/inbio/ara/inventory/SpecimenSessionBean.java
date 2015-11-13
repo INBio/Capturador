@@ -186,7 +186,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
      * Inicializar el data provider de especimenes
      */
     public void initDataProvider() {
-        this.setPagination(new PaginationControllerRemix(getInventoryFacade().countSpecimens(this.getAraSessionBean().getGlobalCollectionId()).intValue(), getQuantity(), this));
+        this.setPagination(new PaginationControllerRemix(getInventoryFacade().countSpecimens().intValue(), getQuantity(), this));
         this.getPagination().firstResults();
     }    
 
@@ -525,7 +525,7 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
             }
             else if(isQueryModeSimple()){ //En caso de que sea busqueda simple
                 try{
-                    getPagination().setTotalResults(getSearchFacade().countSpecimensByCriteria(getConsultaSimple(), collectionId).intValue());
+                    getPagination().setTotalResults(getSearchFacade().countSpecimensByCriteria(getConsultaSimple()).intValue());
                     return myReturn(searchFacade.searchSpecimenByCriteria
                             (getConsultaSimple(), collectionId, firstResult,
                             maxResults));
@@ -534,29 +534,12 @@ public class SpecimenSessionBean extends AbstractSessionBean implements Paginati
             }
             else { //Valores default
                 try{
-                    
-                    getPagination().setTotalResults(getInventoryFacade().countSpecimens(this.getAraSessionBean().getGlobalCollectionId()).intValue());
-                    
+                    getPagination().setTotalResults(getInventoryFacade().countSpecimens().intValue());
                     return myReturn(inventoryFacade.getAllSpecimenPaginated
                             (firstResult, maxResults, collectionId));
-                    
                 }
                 catch(Exception e){return auxResult;}
             }
-    }
-   
-   
-      /**
-     * La idea de este metodo es poder preguntar si determinado protocolo esta activado o no
-     * para una determinada colleccion
-     * @param collectionId
-     * @param protocolAtributeId
-     * @param value corresponde a alguno de los valores posibles para saber si el protocolo esta
-     * "activado" o "desactivado"
-     * @return
-     */
-    public boolean matchCollectionProtocol(Long collectionId, Long protocolAtributeId, String value) {
-        return this.inventoryFacade.matchCollectionProtocol(collectionId, protocolAtributeId, value);
     }
     
     

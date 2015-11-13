@@ -40,10 +40,10 @@ public enum TaxonomicalRangeEntity {
     SUBGENUS(new Long(14),"subgenusTaxonId"),
     SECTION(new Long(15),"sectionTaxonId"),
     SUBSECTION(new Long(16),"subsectionTaxonId"),
-    STIRPS(new Long(18),"stirpsTaxonId"),
-    SPECIES(new Long(19),"speciesTaxonId"),
-    SUBSPECIES(new Long(20),"subspeciesTaxonId"),
-    VARIETY(new Long(21),"varietyTaxonId"),
+    STIRPS(new Long(17),"stirpsTaxonId"),
+    SPECIES(new Long(18),"speciesTaxonId"),
+    SUBSPECIES(new Long(19),"subspeciesTaxonId"),
+    VARIETY(new Long(20),"varietyTaxonId"),
     FORM(new Long(22),""),
     DOMAIN(new Long(23),"dominiumTaxonId");
 

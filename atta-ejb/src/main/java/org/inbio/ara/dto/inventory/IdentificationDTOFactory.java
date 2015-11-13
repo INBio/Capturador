@@ -22,25 +22,19 @@ package org.inbio.ara.dto.inventory;
 import java.util.ArrayList;
 import java.util.List;
 import org.inbio.ara.dto.BaseDTOFactory;
-import org.inbio.ara.dto.BaseEntityOrDTOFactory;
-import org.inbio.ara.eao.agent.impl.PersonEAOImpl;
-import org.inbio.ara.persistence.gathering.GatheringObservationDetail;
-import org.inbio.ara.persistence.identification.*;
-import org.inbio.ara.persistence.person.Person;
-import org.inbio.ara.persistence.specimen.Specimen;
+import org.inbio.ara.persistence.identification.Identification;
 
 /**
  *
  * @author asanabria
  */
-public class IdentificationDTOFactory extends BaseEntityOrDTOFactory<Identification, IdentificationDTO> {
+public class IdentificationDTOFactory extends BaseDTOFactory<Identification, IdentificationDTO> {
 
 	/**
      *
      * @param entitiesList
      * @return
      */
-    /*
 	@Override
 	public List<IdentificationDTO> createDTOList(List identifcationsList) {
 		if(identifcationsList==null)
@@ -53,15 +47,14 @@ public class IdentificationDTOFactory extends BaseEntityOrDTOFactory<Identificat
 
 		return dtoList;
 	}
-*/
+
 	/**
 	 *
 	 * @param s
 	 * @return
 	 */
-	public IdentificationDTO createIdentificationsDTO(List<Identification> iList) {
+	public IdentificationDTO createDTO(List<Identification> iList) {
 
-            
 		List<TaxonDTO> tList = null;
 		TaxonDTOFactory taxonDTOFactory = null;
 
@@ -75,66 +68,20 @@ public class IdentificationDTOFactory extends BaseEntityOrDTOFactory<Identificat
 		// crea el DTO a retornar.
 		iDTO = new IdentificationDTO();
 
-       
+        if(iList.size() > 1){
+            iDTO.setMultitaxon(true);
+        }
 
 		// Toma el primer valor de la identificacion y lo guarda.
 		Identification i = iList.get(0);
-                iDTO = this.createDTO(i);
-                
-                 if(iList.size() > 1){
-                    iDTO.setMultitaxon(true);
-                }
 
-                
-		/* en el caso de que sea multitaxon se asignan todos los taxones a la
-		 * misma lista del DTO
-		 */
-		tList = new ArrayList<TaxonDTO>();
-		taxonDTOFactory = new TaxonDTOFactory();
-                
-		for (Identification ident : iList) {
-                        
-			tList.add(taxonDTOFactory.createDTO(ident.getTaxon()));
-		}
-		iDTO.setTaxa(tList);
-
-		return iDTO;
-	}
-	/**
-	 * Elimino el deprecated porque si se usa en varios casos dentro de SearchFacadeImpl
-         * e InventoryFacadeImpl. El multitaxon no esta funcionando al 100%
-	 * //deprecated No USAR: al ser Multi-Taxon las identificaciones se deben
-	 * manejar como <code>List<Identification></code>
-	 * @param entity
-	 * @return
-	 */
-	public IdentificationDTO createDTO(Identification i) {
-		//throw new UnsupportedOperationException("Not supported yet.");
-            //System.out.println("--- IDENTIFICATION DTO FACTORY: createDTO ---");
-            //System.out.println("La entidad a convertir = "+ i);
-            List<TaxonDTO> tList = null;
-            TaxonDTOFactory taxonDTOFactory = null;
-            IdentificationDTO iDTO = new IdentificationDTO();
-            Specimen tmpSpecimen = i.getSpecimen();
-            
-            if (i.getIdentificationPK() != null) {
+		if (i.getIdentificationPK() != null) {
 			iDTO.setSpecimenKey(i.getIdentificationPK().getSpecimenId());
 			iDTO.setInitialTimeStamp(i.getIdentificationPK().getInitialTimestamp());
 		}
 
-		if (tmpSpecimen != null) {
-			iDTO.setCatalogNumber(tmpSpecimen.getCatalogNumber());
-                        iDTO.setGatheringObservationId(tmpSpecimen.getGatheringObservation().getGatheringObservationId());
-                        
-                        //para usar y mostrar en Botanica
-                        //iDTO.setGathObsDetailId(i.getSpecimen().getGatheringObservationDetailId());
-		}
-                
-                if (tmpSpecimen.getGatheringObservationDetail() != null) {
-                        GatheringObservationDetail tmpGathObsDetail = tmpSpecimen.getGatheringObservationDetail();
-			iDTO.setGathObsDetailNumber(tmpGathObsDetail.getGatheringObservationDetailNumber());
-			iDTO.setCollectorGathObsDetail(tmpSpecimen.getGatheringObservationDetail().getGatheringObservationDetailPerson().getPersonId());
-                        iDTO.setCollectorNameGathObsDetail(tmpSpecimen.getGatheringObservationDetail().getGatheringObservationDetailPerson().getNaturalLongName());
+		if (i.getSpecimen() != null) {
+			iDTO.setCatalogNumber(i.getSpecimen().getCatalogNumber());
 		}
 
 		if (i.getIdentificationStatus() != null) {
@@ -153,10 +100,63 @@ public class IdentificationDTOFactory extends BaseEntityOrDTOFactory<Identificat
 			iDTO.setValuerPerson(personDTOFactory.createDTO(i.getValuerPerson()));
 			iDTO.setValuerPersonName(i.getValuerPerson().getNaturalLongName());
 		}
-                
-                if(i.getIdentificationDate() != null){
-			iDTO.setIdentificationDate(i.getIdentificationDate());
-			
+
+		iDTO.setDataEntryError(i.getDataEntryError());
+
+		if (i.getIdentifiers() != null) {
+			IdentifierDTOFactory iDTOF = new IdentifierDTOFactory();
+			iDTO.setIdentifiers(iDTOF.createDTOList(i.getIdentifiers()));
+		}
+		
+		/* en el caso de que sea multitaxon se asignan todos los taxones a la
+		 * misma lista del DTO
+		 */
+		tList = new ArrayList<TaxonDTO>();
+		taxonDTOFactory = new TaxonDTOFactory();
+
+		for (Identification ident : iList) {
+			tList.add(taxonDTOFactory.createDTO(ident.getTaxon()));
+		}
+		iDTO.setTaxa(tList);
+
+		return iDTO;
+	}
+	/**
+	 *
+	 * @deprecated No USAR: al ser Multi-Taxon las identificaciones se deben
+	 * manejar como <code>List<Identification></code>
+	 * @param entity
+	 * @return
+	 */
+	public IdentificationDTO createDTO(Identification i) {
+		//throw new UnsupportedOperationException("Not supported yet.");
+            List<TaxonDTO> tList = null;
+            TaxonDTOFactory taxonDTOFactory = null;
+            IdentificationDTO iDTO = new IdentificationDTO();
+            if (i.getIdentificationPK() != null) {
+			iDTO.setSpecimenKey(i.getIdentificationPK().getSpecimenId());
+			iDTO.setInitialTimeStamp(i.getIdentificationPK().getInitialTimestamp());
+		}
+
+		if (i.getSpecimen() != null) {
+			iDTO.setCatalogNumber(i.getSpecimen().getCatalogNumber());
+		}
+
+		if (i.getIdentificationStatus() != null) {
+			iDTO.setStatusName(i.getIdentificationStatus().getName());
+			iDTO.setStatusId(i.getIdentificationStatus().getIdentificationStatusId());
+		}
+
+		if (i.getIdentificationType() != null) {
+			iDTO.setTypeName(i.getIdentificationType().getName());
+			iDTO.setTypeId(i.getIdentificationType().getIdentificationTypeId());
+		}
+
+		PersonDTOFactory personDTOFactory = new PersonDTOFactory();
+
+		if(i.getValuerPerson() != null){
+			iDTO.setValuerPerson(personDTOFactory.createDTO(i.getValuerPerson()));
+			iDTO.setValuerPersonName(i.getValuerPerson().getNaturalLongName());
 		}
 
 		iDTO.setDataEntryError(i.getDataEntryError());
@@ -169,7 +169,6 @@ public class IdentificationDTOFactory extends BaseEntityOrDTOFactory<Identificat
                 tList = new ArrayList<TaxonDTO>();
 		taxonDTOFactory = new TaxonDTOFactory();
 
-                //aqui actualiza el taxon cuando es unitaxon
 		tList.add(taxonDTOFactory.createDTO(i.getTaxon()));
 
 		iDTO.setTaxa(tList);
@@ -177,65 +176,5 @@ public class IdentificationDTOFactory extends BaseEntityOrDTOFactory<Identificat
 
             return iDTO;
 	}
-
-    @Override
-    public Identification getEntityWithPlainValues(IdentificationDTO dto) {
-        
-        //System.out.println("--- IDENTIFICATION DTO FACTORY: getEntityWithPlainValues ---");
-        //System.out.println(" User = "+dto.getUserName());
-        if(dto == null) return null;
-        
-        Identification i = new Identification();
-        IdentificationPK ipk = new IdentificationPK();
-                      
-        ipk.setSpecimenId(dto.getSpecimenKey());
-        ipk.setInitialTimestamp(dto.getInitialTimeStamp());
-        i.setIdentificationPK(ipk);
-
-        i.setDataEntryError(dto.getDataEntryError());
-    
-        //los identifier se deben completar fuera del identificationDTOFactory
-        i.setIdentificationDate(dto.getIdentificationDate());
-        
-        return i;
-    }
-    
-
-    @Override
-    public Identification updateEntityWithPlainValues(IdentificationDTO dto, Identification i) {
-        if(dto == null) return null;
-        
-        
-        IdentificationPK ipk = i.getIdentificationPK();
-                      
-        ipk.setSpecimenId(dto.getSpecimenKey());
-        ipk.setInitialTimestamp(dto.getInitialTimeStamp());
-        i.setIdentificationPK(ipk);
-        //se actualiza el Specimen afuera, luego de llamar el plainValues
-        //se ocupan: catalogNumber y gatheringObservationId
-        i.setSpecimen(new Specimen()); 
-        //se actualiza el IdentificationStatus afuera, luego de llamar el plainValues
-        //se ocupan: name y statusId
-        i.setIdentificationStatus(new IdentificationStatus());
-        
-        //se actualiza el IdentificationType afuera, luego de llamar el plainValues
-        //se ocupan: name y typeId
-        i.setIdentificationType(new IdentificationType());
-            
-        PersonDTOFactory personDTOFactory = new PersonDTOFactory();
-
-        if(dto.getValuerPerson() != null){                
-            i.setValuerPerson(personDTOFactory.getEntityWithPlainValues(dto.getValuerPerson()));           
-            
-        }
-        
-        i.setIdentificationDate(dto.getIdentificationDate());
-        
-        i.setDataEntryError(dto.getDataEntryError());
-	        
-        //los identifier se deben completar fuera del identificationDTOFactory
-        
-        return i;
-    }
 	
 }

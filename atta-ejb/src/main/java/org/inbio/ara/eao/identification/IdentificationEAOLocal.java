@@ -60,10 +60,4 @@ public interface IdentificationEAOLocal
 
     public List<Identification> getAllIdentificatedPaginated(int first, int maxResults, Long collectionId);
 
-    public java.util.List<java.lang.Long> findByGathObsDetailId(java.lang.Long gathObsDetailId, Long collection_id);
-
-    public java.util.List<java.lang.Long> findByGathObsDetailId(java.lang.Long gathObsDetailId);
-
-    public java.util.List<java.lang.Long> findSpecimenByTaxonId(java.lang.Long taxonId, java.lang.Long collectionId);
-
 }

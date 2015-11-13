@@ -41,17 +41,6 @@ public class SpecimenEAOImpl extends BaseEAOImpl<Specimen,Long>
         q.setParameter("gathObsDetailId", gathObsDetailId);
         return q.getResultList();
     }
-    
-    
-       public List<Long> findByGathObsDetailId(Long gathObsDetailId, Long collection_id) {
-        String query = "select sp.specimenId from Specimen as sp where " +
-                "sp.gatheringObservationDetailId = :gathObsDetailId "+
-                "and sp.collectionId = :collectionId ";
-        Query q = em.createQuery(query);
-        q.setParameter("gathObsDetailId", gathObsDetailId);
-        q.setParameter("collectionId", collection_id);
-        return q.getResultList();
-    }
 
      /**
      * Ej.
@@ -125,31 +114,6 @@ public class SpecimenEAOImpl extends BaseEAOImpl<Specimen,Long>
             return null;
         }
     }
-    
-     public Long findByCatalogNumber(String catalogNumber, Long collectionId) {
-        String query = "select sp.specimenId from Specimen as sp where " +
-                "sp.catalogNumber = '"+catalogNumber+"' and sp.collectionId ="+collectionId;
-        
-        try {
-            Query q = em.createQuery(query);
-            return (Long) q.getSingleResult();
-        } catch (Exception e){
-            return null;
-        }
-        
-       
-    }
-    
-     public Specimen findSpecimenByCatalogNumber(String catalogNumber) {
-        String query = "select sp from Specimen as sp where " +
-                "sp.catalogNumber = '"+catalogNumber+"'";
-        try {
-            Query q = em.createQuery(query);
-            return (Specimen) q.getSingleResult();
-        } catch (Exception e){
-            return null;
-        }
-    }
 
     public List<Long> findByCatalogNumber(String catalogNumberFirst, String catalogNumberEnd) {
         String query = "select sp.specimenId from Specimen as sp where " +
@@ -211,17 +175,6 @@ public class SpecimenEAOImpl extends BaseEAOImpl<Specimen,Long>
         return q.getResultList();
     }
 
-    public Long count(Long collectionId)
-    {
-        Query q = em.createQuery("select count(sp) from Specimen as sp "+
-            "where sp.collectionId = " +
-            ":collectionId");
-        
-        q.setParameter("collectionId", collectionId);      
-        
-
-        return (Long)q.getSingleResult();
-    }
     /**
      *
      * @return the specimen with the greater Id

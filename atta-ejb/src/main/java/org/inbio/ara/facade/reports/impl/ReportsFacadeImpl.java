@@ -207,12 +207,18 @@ public class ReportsFacadeImpl implements ReportsFacadeRemote {
      * @return
      */
     public LinkedList<String> getAllElementsDwc(){
+        System.out.println("Entra al getAllElementsDwc");
         List<DwcElementDTO> elements = findDwCElements();
         LinkedList<String> result = new LinkedList();
+        //String encabezados ="";
+        
         for(DwcElementDTO element:elements){
+        //    encabezados += element;
+            System.out.println(element.getElementName());
             String e = element.getElementName().toLowerCase();
             result.add(e);
         }
+        //System.out.println(encabezados);
         return result;
     }
 

@@ -34,8 +34,4 @@ public interface GatheringObservationEAOLocal extends BaseLocalEAO<GatheringObse
 
     public java.util.List<java.lang.Long> findByCollectionId(java.lang.Long collectionId);
 
-    public java.util.List<java.lang.Long> findByResponsibleId(java.lang.Long personId, java.lang.Long collectionId);
-
-    public java.util.List<java.lang.Long> findBySiteId(java.lang.Long siteId, java.lang.Long collectionId);
-
 }

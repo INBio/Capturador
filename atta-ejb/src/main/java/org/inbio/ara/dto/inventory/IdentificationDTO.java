@@ -23,19 +23,17 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
-import org.inbio.ara.dto.GenericDTO;
 
 /**
  * The fields will the comment "read only" will be ignored on persistence tasks
  *
  * @author asanabria
  */
-public class IdentificationDTO extends GenericDTO implements Serializable {
+public class IdentificationDTO implements Serializable {
 
     private boolean selected = false;
     private boolean multitaxon = false;
     private Long specimenKey;
-    private Long gatheringObservationId;
     private Calendar initialTimeStamp;
     private String catalogNumber; /*Para ser mostrado en el list*/
 
@@ -51,11 +49,6 @@ public class IdentificationDTO extends GenericDTO implements Serializable {
     private Calendar identificationDate;
     private List<IdentifierDTO> identifiers;
     private List<TaxonDTO> taxa;
-    
-    private String gathObsDetailNumber;
-    private Long collectorGathObsDetail;
-    private String collectorNameGathObsDetail;
-    
     /**
      * OJO: este atributo debera ser "seteado" en el facade correspondiente
      * con un string formado por los diferentes identificadores que se
@@ -320,62 +313,4 @@ public class IdentificationDTO extends GenericDTO implements Serializable {
     public void setMultitaxon(boolean multitaxon) {
         this.multitaxon = multitaxon;
     }
-
-    /**
-     * @return the gatheringObservationId
-     */
-    public Long getGatheringObservationId() {
-        return gatheringObservationId;
-    }
-
-    /**
-     * @param gatheringObservationId the gatheringObservationId to set
-     */
-    public void setGatheringObservationId(Long gatheringObservationId) {
-        this.gatheringObservationId = gatheringObservationId;
-    }
-
-    /**
-     * @return the gathObsDetailNumber
-     */
-    public String getGathObsDetailNumber() {
-        return gathObsDetailNumber;
-    }
-
-    /**
-     * @param gathObsDetailNumber the gathObsDetailNumber to set
-     */
-    public void setGathObsDetailNumber(String gathObsDetailNumber) {
-        this.gathObsDetailNumber = gathObsDetailNumber;
-    }
-
-    /**
-     * @return the collectorGathObsDetail
-     */
-    public Long getCollectorGathObsDetail() {
-        return collectorGathObsDetail;
-    }
-
-    /**
-     * @param collectorGathObsDetail the collectorGathObsDetail to set
-     */
-    public void setCollectorGathObsDetail(Long collectorGathObsDetail) {
-        this.collectorGathObsDetail = collectorGathObsDetail;
-    }
-
-    /**
-     * @return the collectorNameGathObsDetail
-     */
-    public String getCollectorNameGathObsDetail() {
-        return collectorNameGathObsDetail;
-    }
-
-    /**
-     * @param collectorNameGathObsDetail the collectorNameGathObsDetail to set
-     */
-    public void setCollectorNameGathObsDetail(String collectorNameGathObsDetail) {
-        this.collectorNameGathObsDetail = collectorNameGathObsDetail;
-    }
-
-   
 }
